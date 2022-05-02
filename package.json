@@ -1,0 +1,60 @@
+{
+  "name": "@resourge/react-router",
+  "version": "0.0.0",  
+  "main": "./dist/main.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/umd/react-router.production.min.js",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "resourge",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/resourge/react-router.git"
+  },
+  "scripts": {
+    "commit": "git pull && git add . && git-cz",
+    "lint": "eslint \"./src/**/*.{ts,tsx}\"",
+    "lint:prod": "cross-env NODE_ENV=production npm run lint",
+    "fix-types": "replace 'declare' 'export declare' dist/index.d.ts --silent",
+    "dev": "vite",
+    "build": "rollup -c && npm run fix-types",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "semantic-release": "semantic-release"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
+    "@testing-library/user-event": "^14.1.1",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@vitejs/plugin-react": "^1.3.0",
+    "eslint": "^7.32.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-config-standard-with-typescript": "^21.0.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-testing-library": "3.9",
+    "jsdom": "^19.0.0",
+    "typescript": "^4.6.3",
+    "vite": "^2.9.5",
+    "vite-plugin-checker": "^0.4.6",
+    "vite-tsconfig-paths": "^3.4.1",
+    "vitest": "^0.10.0"
+  }
+}
