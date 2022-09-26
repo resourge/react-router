@@ -1,21 +1,11 @@
-import { compilePath } from './compilePath';
-import { createHistory } from './createHistory';
-import { createLocation, resolveToLocation } from './createLocation';
-import { createPath } from './createPath';
+import { generatePath } from './generatePath';
 import { matchPath } from './matchPath';
-import { parsePath } from './parsePath';
+import { resolveLocation } from './resolveLocation';
 
 export {
-	compilePath,
-
-	createHistory,
-
-	createLocation, 
-	resolveToLocation,
-
-	createPath,
+	generatePath,
 
 	matchPath,
-	
-	parsePath
+
+	resolveLocation
 }

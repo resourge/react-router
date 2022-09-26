@@ -1,39 +1,99 @@
-import { match, MatchFunction } from 'path-to-regexp'
+import { getUrlPattern, UrlPattern } from './getUrlPattern';
 
-import { RouteLocation } from '../contexts';
+export type MatchProps = UrlPattern
 
-export type MatchPathConfig = Parameters<typeof match>[1]
+export type MatchResult<Params extends Record<string, string> = Record<string, string>> = {
+	/**
+	 * Current {@link URLPatternResult}
+	 */
+	match: URLPatternResult
+	/**
+	 * Current route params
+	 */
+	params: Params
 
-const cache = new Map();
-const cacheLimit = 10000;
-let cacheCount = 0;
+	/**
+	 * Current route path (merged with previous path's)
+	 */
+	path: string
+	/**
+	 * Unique id for route. (prevents routes from rendering again if nothing changed)
+	 */
+	unique: string
 
-export const getPathToMatch = (location: RouteLocation, hash?: boolean) => {
-	return hash ? location.hash.replace('#', '') : location.pathname;
+	/**
+	 * Current route URL
+	 */
+	url: URL
+	/**
+	 * Current {@link URLPattern}
+	 */
+	urlPattern: URLPattern
+
+	/**
+	 * If current route is hashed
+	 */
+	hash?: boolean
+	/**
+	 * Hash path
+	 */
+	hashPath?: string
 }
 
 /**
- * Wrapper to cache `path-to-regexp` match
- * Note: Caches max 10000
- * @returns Method to match `URL`
+ * Method to match href to {@link MatchProps path}
+ * @param href {string}
+ * @param matchProps {@link MatchProps} - props to define the route
  */
-export function matchPath<Params extends Record<string, string>>(
-	path: string, 
-	options: MatchPathConfig = {
-		end: false
+export const matchPath = <Params extends Record<string, string> = Record<string, string>>(
+	href: string,
+	matchProps: MatchProps
+): MatchResult<Params> | null => {
+	const {
+		hash, path, hashPath 
+	} = matchProps;
+	const pattern = getUrlPattern(matchProps);
+
+	const match = pattern.exec(href);
+
+	if ( match ) {
+		const matchUrl = hash ? match.hash : match.pathname;
+
+		const pathname = matchUrl.groups[0] 
+			? matchUrl.input.replace(`/${matchUrl.groups[0]}`, '') 
+			: matchUrl.input
+
+		const search = hash ? '' : match.search.input;
+
+		const url = new URL(
+			`${pathname}${search ? `?${search}` : ''}`,
+			window.location.origin
+		)
+
+		const params: Params = Object.entries(matchUrl.groups)
+		.reduce<Record<string, string>>((obj, [key, value]) => {
+			if ( key !== '0' && value ) {
+				obj[key] = value;
+			}
+
+			return obj;
+		}, {}) as Params
+
+		const unique = hash 
+			? href.substring(href.indexOf(match.hash.input), href.length) 
+			: href.substring(0, href.lastIndexOf(match.hash.input));
+
+		return {
+			unique,
+			path,
+			url,
+			params,
+			urlPattern: pattern,
+			match,
+			hash,
+			hashPath
+		}
 	}
-): MatchFunction<Params> {
-	const end = options.end ?? false;
-	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-	const cacheKey = `${path}_${end}_${options.strict ?? ''}_${options.sensitive ?? ''}`;
-	if (cache.has(cacheKey)) return cache.get(cacheKey);
 
-	const generator = match<Params>(path, { ...options, end });
-
-	if (cacheCount < cacheLimit) {
-		cache.set(cacheKey, generator)
-		cacheCount++;
-	}
-
-	return generator;
+	return null
 }

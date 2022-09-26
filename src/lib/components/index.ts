@@ -1,3 +1,5 @@
+import BrowserRouter from './BrowserRouter';
+import type { BrowserRouterProps } from './BrowserRouter';
 import Link from './Link';
 import type { LinkProps } from './Link';
 import Navigate from './Navigate';
@@ -8,8 +10,8 @@ import Redirect from './Redirect';
 import type { RedirectProps } from './Redirect';
 import Route from './Route';
 import type { RouteProps } from './Route';
-import Router from './Router';
-import type { RouterProps } from './Router';
+import SearchRoute from './SearchRoute';
+import type { SearchRouteProps } from './SearchRoute';
 import Switch from './Switch';
 import type { SwitchProps } from './Switch';
 
@@ -29,8 +31,11 @@ export {
 	Route,
 	RouteProps,
 
-	Router,
-	RouterProps,
+	BrowserRouter,
+	BrowserRouterProps as RouterProps,
+
+	SearchRoute,
+	SearchRouteProps,
 
 	Switch,
 	SwitchProps

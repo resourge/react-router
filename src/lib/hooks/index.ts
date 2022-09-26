@@ -1,54 +1,51 @@
-import { useBeforeRouteChange } from './useBeforeRouteChange';
-import { useHashNavigate } from './useHashNavigate';
-import type { HashNavigateOptions } from './useHashNavigate';
-import { useHistory } from './useHistory';
-import { useLocation } from './useLocation';
-import { useMatch } from './useMatch';
-import type { UseMatchConfig } from './useMatch';
+import { useBeforeURLChange } from './useBeforeURLChange';
+import { useBlocker } from './useBlocker';
+import type { Blocker } from './useBlocker';
+import { useLink } from './useLink';
+import type { UseLinkProps } from './useLink';
+import { useMatchRoute, matchRoute } from './useMatchRoute';
+import type { MatchPropsRoute } from './useMatchRoute';
 import { useNavigate } from './useNavigate';
-import type { NavigateTo, NavigateOptions } from './useNavigate';
+import type { NavigateOptions } from './useNavigate';
+import type { NavigateTo } from './useNormalizeUrl';
+import { useNormalizeUrl } from './useNormalizeUrl';
 import { useParams } from './useParams';
 import type { StringifyObjectParams } from './useParams';
+import type { UsePromptProps } from './usePrompt';
 import { usePrompt } from './usePrompt';
-import type { PromptWhen, PromptMessage } from './usePrompt';
-import { useRoute } from './useRoute';
-import type { RouteConfig } from './useRoute';
-import { useRouter } from './useRouter';
-import type { RouterConfig } from './useRouter';
 import { useSearchParams } from './useSearchParams';
+import { useSearchRoute } from './useSearchRoute';
+import type { UseSearchRouteProps } from './useSearchRoute';
 import { useSwitch } from './useSwitch';
 
-export {
-	useBeforeRouteChange,
+export { 
+	useBeforeURLChange,
 	
-	useHistory,
+	useBlocker,
+	Blocker,
 	
-	useLocation,
-
-	useHashNavigate,
-	HashNavigateOptions,
-
-	useMatch,
-	UseMatchConfig,
-	
-	useNavigate,
+	useNormalizeUrl,
 	NavigateTo,
+
+	useLink,
+	UseLinkProps,
+
+	useMatchRoute, matchRoute,
+	MatchPropsRoute,
+
+	useNavigate,
 	NavigateOptions,
-	
+
 	useParams,
 	StringifyObjectParams,
 
 	usePrompt,
-	PromptWhen,
-	PromptMessage,
-	
-	useRoute,
-	RouteConfig,
-	
-	useRouter,
-	RouterConfig,
+	UsePromptProps,
 
 	useSearchParams,
+
+	useSearchRoute,
+	UseSearchRouteProps,
 
 	useSwitch
 }

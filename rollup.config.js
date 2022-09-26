@@ -2,13 +2,40 @@ import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import dts from 'rollup-plugin-dts';
-import size from 'rollup-plugin-size';
+import filsesize from 'rollup-plugin-filesize';
 import { terser } from 'rollup-plugin-terser';
 
-import { name, author, license } from './package.json';
+import { name, author, license } from './package.json'
 
-const external = ['react'];
-const globals = { react: 'React' }
+const external = ['react', '@resourge/react-search-params', 'urlpattern-polyfill'];
+const globals = {
+	react: 'React',
+	'@resourge/react-search-params': 'ResourgeReactSearchParams' 
+}
+
+const babelPlugins = [
+	'babel-plugin-dev-expression'
+]
+
+const babelPresetEnv = ['@babel/preset-env', {
+	targets: [
+		'defaults',
+		'not IE 11',
+		'chrome > 78', // To remove in the future
+		'maintained node versions'
+	],
+	loose: true,
+	bugfixes: true
+}]
+
+const defaultExtPlugin = [
+	filsesize({
+		showBeforeSizes: 'build'
+	}),
+	nodeResolve({
+		extensions: ['.tsx', '.ts']
+	})
+]
 
 function createBanner(libraryName, version, authorName, license) {
 	return `/**
@@ -25,7 +52,8 @@ function createBanner(libraryName, version, authorName, license) {
 function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
-function getName() {
+
+function getName(name) {
 	const arr = name.split('/');
 
 	return arr[arr.length - 1];
@@ -34,238 +62,325 @@ function getName() {
 /**
  * Package Json info
  */
-const PROJECT_NAME = getName()
 const VERSION = process.env.PROJECT_VERSION;
 const AUTHOR_NAME = author;
 const LICENSE = license;
-/**
- * Folders
- */
-const SOURCE_INDEX_FILE = './src/lib/index.ts';
-const OUTPUT_DIR = './dist';
-const CJS_DIR = `${OUTPUT_DIR}/cjs`;
-const UMD_DIR = `${OUTPUT_DIR}/umd`;
-/**
- * Options
- */
-const filename = PROJECT_NAME;
-const sourcemap = true;
-const banner = createBanner(PROJECT_NAME, VERSION, AUTHOR_NAME, LICENSE);
-const umdName = PROJECT_NAME.split('-').map(capitalizeFirstLetter).join('')
 
-const babelPlugins = [
-	'babel-plugin-dev-expression'
-]
+const getPackage = (
+	BASE_OUTPUT_DIR,
+	SOURCE_FOLDER,
+	PACKAGE_NAME
+) => {
+	const OUTPUT_DIR = `${BASE_OUTPUT_DIR}dist`
+	const SOURCE_INDEX_FILE = `${SOURCE_FOLDER}/index.ts`
+	const PROJECT_NAME = getName(PACKAGE_NAME);
 
-const babelPresetEnv = ['@babel/preset-env', { 
-	targets: [
-		'defaults',
-		'not IE 11',
-		'maintained node versions'
-	],
-	loose: true,
-	bugfixes: true
-}]
+	/**
+	 * Folders
+	 */
+	const CJS_DIR = `${OUTPUT_DIR}/cjs`;
+	const UMD_DIR = `${OUTPUT_DIR}/umd`;
+	/**
+	 * Options
+	 */
+	const sourcemap = true;
+	const banner = createBanner(PROJECT_NAME, VERSION, AUTHOR_NAME, LICENSE);
+	const umdName = PROJECT_NAME.split('-').map(capitalizeFirstLetter).join('')
 
-const defaultExtPlugin = [
-	size(),
-	nodeResolve({
-		extensions: ['.tsx', '.ts']
-	})
-]
+	const SETUP_PATHS_INDEX = `${SOURCE_FOLDER}/setupPaths/index.ts`;
 
-// JS modules for bundlers
-const modules = [
-	{
-		input: SOURCE_INDEX_FILE,
-		output: {
-			file: `${OUTPUT_DIR}/index.js`,
-			format: 'esm',
-			sourcemap,
-			banner: banner
-			
-		},
-		external,
-		plugins: [
-			...defaultExtPlugin,
-			babel({
-				exclude: /node_modules/,
-				babelHelpers: 'bundled',
-				presets: [
-					babelPresetEnv,
-					'@babel/preset-react',
-					'@babel/preset-typescript'
-				],
-				plugins: babelPlugins,
-				extensions: ['.ts', '.tsx']
-			})
-		]
-	},
-	{
-		input: SOURCE_INDEX_FILE,
-		output: [{
-			file: `${OUTPUT_DIR}/index.d.ts`,
-			format: 'esm',
-			banner: banner
-		}],
-		plugins: [
-			size(),
-			dts()
-		]
-	}
-];
-
-// JS modules for <script type=module>
-const cjsModules = [
-	{
-		input: SOURCE_INDEX_FILE,
-		output: {
-			file: `${CJS_DIR}/${filename}.development.js`,
-			format: 'cjs',
-			sourcemap,
-			banner: banner
-		},
-		external,
-		plugins: [
-			...defaultExtPlugin,
-			babel({
-				exclude: /node_modules/,
-				babelHelpers: 'bundled',
-				presets: [
-					'@babel/preset-typescript',
-					'@babel/preset-react',
-					babelPresetEnv
-				],
-				plugins: babelPlugins,
-				extensions: ['.ts', '.tsx']
-			}),
-			replace({
-				preventAssignment: true,
-				'process.env.NODE_ENV': JSON.stringify('development')
-			})
-		]
-	},
-	{
-		input: SOURCE_INDEX_FILE,
-		output: {
-			file: `${CJS_DIR}/${filename}.production.min.js`,
-			format: 'cjs',
-			sourcemap,
-			banner: banner
-		},
-		external,
-		plugins: [
-			...defaultExtPlugin,
-			babel({
-				exclude: /node_modules/,
-				babelHelpers: 'bundled',
-				presets: [
-					babelPresetEnv,
-					[
-						'@babel/preset-react',
-						{
-							// Compile JSX Spread to Object.assign(), which is reliable in ESM browsers.
+	// JS modules for bundlers
+	const modules = [
+		{
+			input: {
+				index: SOURCE_INDEX_FILE
+			},
+			output: {
+				dir: OUTPUT_DIR,
+				format: 'esm',
+				sourcemap,
+				banner
+			},
+			external,
+			plugins: [
+				...defaultExtPlugin,
+				replace({
+					preventAssignment: true,
+					delimiters: ['\\b', '\\b(?!\\.)'],
+					values: {
+						setupPaths: 'utils'
+					}
+				}),
+				babel({
+					assumptions: {
+						setSpreadProperties: true
+					},
+					exclude: /node_modules/,
+					babelHelpers: 'bundled',
+					presets: [
+						babelPresetEnv,
+						['@babel/preset-react', {
 							useBuiltIns: true
-						}
+						}],
+						'@babel/preset-typescript'
 					],
-					'@babel/preset-typescript'
-				],
-				plugins: babelPlugins,
-				extensions: ['.ts', '.tsx']
-			}),
-			replace({
-				preventAssignment: true,
-				'process.env.NODE_ENV': JSON.stringify('production')
-			}),
-			terser({ ecma: 8, safari10: true })
-		]
-	}
-];
+					plugins: babelPlugins,
+					extensions: ['.ts', '.tsx']
+				})
+			]
+		},
+		{
+			input: {
+				index: SOURCE_INDEX_FILE
+			},
+			output: [{
+				dir: OUTPUT_DIR,
+				format: 'esm',
+				banner
+			}],
+			plugins: [
+				replace({
+					preventAssignment: true,
+					delimiters: ['\\b', '\\b(?!\\.)'],
+					values: {
+						setupPaths: 'utils'
+					}
+				}),
+				dts()
+			]
+		},
+		{
+			input: {
+				'setupPaths/index': SETUP_PATHS_INDEX
+			},
+			output: {
+				dir: OUTPUT_DIR,
+				format: 'esm',
+				sourcemap,
+				banner
+			},
+			external,
+			plugins: [
+				...defaultExtPlugin,
+				babel({
+					exclude: /node_modules/,
+					babelHelpers: 'bundled',
+					presets: [
+						babelPresetEnv,
+						'@babel/preset-react',
+						'@babel/preset-typescript'
+					],
+					plugins: babelPlugins,
+					extensions: ['.ts', '.tsx']
+				})
+			]
+		},
+		{
+			input: {
+				'setupPaths/index': SETUP_PATHS_INDEX
+			},
+			output: [{
+				dir: OUTPUT_DIR,
+				format: 'esm',
+				banner
+			}],
+			plugins: [
+				dts()
+			]
+		}
+	];
 
-// UMD modules for <script> tags and CommonJS (node)
-const umdModules = [
-	{
-		input: SOURCE_INDEX_FILE,
-		output: {
-			file: `${UMD_DIR}/${filename}.development.js`,
-			format: 'umd',
-			sourcemap,
-			banner: banner,
-			globals,
-			name: umdName
+	// JS modules for <script type=module>
+	const cjsModules = [
+		{
+			input: SOURCE_INDEX_FILE,
+			output: {
+				file: `${CJS_DIR}/${PROJECT_NAME}.development.js`,
+				format: 'cjs',
+				sourcemap,
+				banner
+			},
+			external,
+			plugins: [
+				...defaultExtPlugin,
+				replace({
+					preventAssignment: true,
+					delimiters: ['\\b', '\\b(?!\\.)'],
+					values: {
+						'src/lib': '../../lib'
+					}
+				}),
+				babel({
+					exclude: /node_modules/,
+					babelHelpers: 'bundled',
+					presets: [
+						'@babel/preset-typescript',
+						'@babel/preset-react',
+						babelPresetEnv
+					],
+					plugins: babelPlugins,
+					extensions: ['.ts', '.tsx']
+				}),
+				replace({
+					preventAssignment: true,
+					'process.env.NODE_ENV': JSON.stringify('development')
+				})
+			]
 		},
-		external,
-		plugins: [
-			...defaultExtPlugin,
-			babel({
-				exclude: /node_modules/,
-				babelHelpers: 'bundled',
-				presets: [
-					babelPresetEnv,
-					'@babel/preset-react',
-					'@babel/preset-typescript'
-				],
-				plugins: ['babel-plugin-dev-expression'],
-				extensions: ['.ts', '.tsx']
-			}),
-			replace({
-				preventAssignment: true,
-				'process.env.NODE_ENV': JSON.stringify('development')
-			})
-		]
-	},
-	{
-		input: SOURCE_INDEX_FILE,
-		output: {
-			file: `${UMD_DIR}/${filename}.production.min.js`,
-			format: 'umd',
-			sourcemap,
-			banner: banner,
-			globals,
-			name: umdName
-		},
-		external,
-		plugins: [
-			...defaultExtPlugin,
-			babel({
-				exclude: /node_modules/,
-				babelHelpers: 'bundled',
-				presets: [
-					babelPresetEnv,
-					'@babel/preset-react',
-					'@babel/preset-typescript'
-				],
-				plugins: ['babel-plugin-dev-expression'],
-				extensions: ['.ts', '.tsx']
-			}),
-			replace({
-				preventAssignment: true,
-				'process.env.NODE_ENV': JSON.stringify('production')
-			}),
-			terser()
-		]
-	}
-];
+		{
+			input: SOURCE_INDEX_FILE,
+			output: {
+				file: `${CJS_DIR}/${PROJECT_NAME}.production.min.js`,
+				format: 'cjs',
+				sourcemap,
+				banner
+			},
+			external,
+			plugins: [
+				...defaultExtPlugin,
+				replace({
+					preventAssignment: true,
+					delimiters: ['\\b', '\\b(?!\\.)'],
+					values: {
+						'src/lib': '../../lib'
+					}
+				}),
+				babel({
+					exclude: /node_modules/,
+					babelHelpers: 'bundled',
+					presets: [
+						babelPresetEnv,
+						[
+							'@babel/preset-react',
+							{
+								// Compile JSX Spread to Object.assign(), which is reliable in ESM browsers.
+								useBuiltIns: true
+							}
+						],
+						'@babel/preset-typescript'
+					],
+					plugins: babelPlugins,
+					extensions: ['.ts', '.tsx']
+				}),
+				replace({
+					preventAssignment: true,
+					'process.env.NODE_ENV': JSON.stringify('production')
+				}),
+				terser({
+					ecma: 8,
+					safari10: true 
+				})
+			]
+		}
+	];
 
-const main = [
-	{
-		input: './main.js',
-		output: {
-			file: `${OUTPUT_DIR}/main.js`,
-			format: 'cjs',
-			banner: banner
+	// UMD modules for <script> tags and CommonJS (node)
+	const umdModules = [
+		{
+			input: SOURCE_INDEX_FILE,
+			output: {
+				file: `${UMD_DIR}/${PROJECT_NAME}.development.js`,
+				format: 'umd',
+				sourcemap,
+				banner,
+				globals,
+				name: umdName
+			},
+			external,
+			plugins: [
+				...defaultExtPlugin,
+				replace({
+					preventAssignment: true,
+					delimiters: ['\\b', '\\b(?!\\.)'],
+					values: {
+						'src/lib': '../../lib'
+					}
+				}),
+				babel({
+					exclude: /node_modules/,
+					babelHelpers: 'bundled',
+					presets: [
+						babelPresetEnv,
+						'@babel/preset-react',
+						'@babel/preset-typescript'
+					],
+					plugins: babelPlugins,
+					extensions: ['.ts', '.tsx']
+				}),
+				replace({
+					preventAssignment: true,
+					'process.env.NODE_ENV': JSON.stringify('development')
+				})
+			]
 		},
-		plugins: [
-			size(),
-			replace({
-				preventAssignment: true,
-				devFile: `${UMD_DIR}/${filename}.development.js`.replace(OUTPUT_DIR, '.'),
-				prodFile: `${UMD_DIR}/${filename}.production.min.js`.replace(OUTPUT_DIR, '.')
-			})
-		]
-	}
-];
+		{
+			input: SOURCE_INDEX_FILE,
+			output: {
+				file: `${UMD_DIR}/${PROJECT_NAME}.production.min.js`,
+				format: 'umd',
+				sourcemap,
+				banner,
+				globals,
+				name: umdName
+			},
+			external,
+			plugins: [
+				...defaultExtPlugin,
+				replace({
+					preventAssignment: true,
+					delimiters: ['\\b', '\\b(?!\\.)'],
+					values: {
+						'src/lib': '../../lib'
+					}
+				}),
+				babel({
+					exclude: /node_modules/,
+					babelHelpers: 'bundled',
+					presets: [
+						babelPresetEnv,
+						'@babel/preset-react',
+						'@babel/preset-typescript'
+					],
+					plugins: babelPlugins,
+					extensions: ['.ts', '.tsx']
+				}),
+				replace({
+					preventAssignment: true,
+					'process.env.NODE_ENV': JSON.stringify('production')
+				}),
+				terser()
+			]
+		}
+	];
+
+	const mainModule = [
+		{
+			input: './main.js',
+			output: {
+				file: `${OUTPUT_DIR}/main.js`,
+				format: 'cjs',
+				banner
+			},
+			plugins: [
+				...defaultExtPlugin,
+				replace({
+					preventAssignment: true,
+					devFile: `${UMD_DIR}/${PROJECT_NAME}.development.js`.replace(OUTPUT_DIR, '.'),
+					prodFile: `${UMD_DIR}/${PROJECT_NAME}.production.min.js`.replace(OUTPUT_DIR, '.')
+				})
+			]
+		}
+	];
+
+	return [...modules, ...cjsModules, ...umdModules, ...mainModule];
+}
 
 export default function rollup() {
-	return [...modules, ...cjsModules, ...umdModules, ...main];
+	return [
+		...getPackage(
+			'./',
+			'./src/lib',
+			name
+		)
+	];
 }

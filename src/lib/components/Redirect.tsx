@@ -1,20 +1,27 @@
-import { VFC } from 'react';
+import { FC } from 'react';
 
-import Navigate from './Navigate';
-import Route, { RouteProps } from './Route'
+import Navigate, { NavigateProps } from './Navigate';
+import Route, { RouteProps } from './Route';
 
 export type RedirectProps = {
-	to: string
-} & Omit<RouteProps, 'children' | 'component'>
+	from: RouteProps['path']
+} & NavigateProps & Omit<RouteProps, 'path'>
 
 /**
  * Navigates from `path` to `to`.
  *
- * Note: This component uses component Route and Navigate.
+ * Note: This component uses the component Route and Navigate.
  */
-const Redirect: VFC<RedirectProps> = ({ to, ...routeProps }) => (
-	<Route {...routeProps}>
-		<Navigate to={to} />
+const Redirect: FC<RedirectProps> = ({ 
+	from,
+	to, replace,
+	...routeProps
+}: RedirectProps) => (
+	<Route path={from} {...routeProps}>
+		<Navigate 
+			replace={replace}
+			to={to}
+		/>
 	</Route>
 );
 

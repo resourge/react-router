@@ -1,21 +1,24 @@
-import { useRouteContext } from '../contexts/RouteContext';
+import { useRoute } from '../contexts/RouteContext';
 
-export type StringifyObjectParams<T extends object> = {
+export type StringifyObjectParams<T extends Record<string, any>> = {
 	[Key in keyof T]: string
 }
+
+export type TransformParams<Params extends Record<string, string> = Record<string, string>> = (params: StringifyObjectParams<Params>) => Params
 
 /**
  * Returns the current route params
  *
- * @param cb Method to transform the params
+ * @param transformsParams Method to transform the params
  */
-export const useParams = <T extends object>(
-	cb: (params: StringifyObjectParams<T>) => T = (params) => params as T
-): T => {
-	const routeParent = useRouteContext<StringifyObjectParams<T>>();
+export const useParams = <Params extends Record<string, string> = Record<string, string>>(
+	transformsParams: TransformParams<Params> = (params) => params as Params
+): Params => {
+	const route = useRoute<Params>();
 
-	// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-	const params: StringifyObjectParams<T> = routeParent?.params ?? {} as StringifyObjectParams<T>;
+	const params: StringifyObjectParams<Params> = {
+		...route.params
+	};
 
-	return cb(params)
+	return transformsParams(params)
 }

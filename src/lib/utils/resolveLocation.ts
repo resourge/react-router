@@ -1,8 +1,4 @@
 /* eslint-disable no-useless-escape */
-/* eslint-disable no-restricted-globals */
-import { Action, RouteLocation } from '../contexts/LocationContext';
-
-import { createPath } from './createPath'
 
 /**
  * Method to resolve `URL`'s
@@ -18,9 +14,11 @@ import { createPath } from './createPath'
  * url: "../../products" // /products
  * url: "../../../products" // /products
  */
-export function resolveToLocation(url: string, _baseURL?: string): Omit<RouteLocation, 'action' | 'state'> {
+export function resolveLocation(url: string, _baseURL?: string): URL {
 	const baseURL = _baseURL ? (_baseURL.lastIndexOf('/') === _baseURL.length - 1) ? _baseURL : `${_baseURL}/` : undefined
-	const m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(?:\/\/(?:([^:@\/?#]*)(?::([^:@\/?#]*))?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
+	const m = String(url)
+	.replace(/^\s+|\s+$/g, '')
+	.match(/^([^:\/?#]+:)?(?:\/\/(?:([^:@\/?#]*)(?::([^:@\/?#]*))?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
 	if (!m) {
 		throw new RangeError();
 	}
@@ -28,10 +26,13 @@ export function resolveToLocation(url: string, _baseURL?: string): Omit<RouteLoc
 	let search = m[8] || '';
 	const hash = m[9] || '';
 	if (baseURL !== undefined) {
-		const base = resolveToLocation(baseURL);
+		const base = resolveLocation(baseURL);
 		if (pathname === '' && search === '') {
 			search = base.search;
 		}
+		/* if (pathname.charAt(0) !== '/') {
+			pathname = (pathname !== '' ? `${(base.pathname === '' ? '/' : '')}${base.pathname.lastIndexOf('/') !== base.pathname.length ? `${base.pathname}/` : base.pathname}${pathname}` : base.pathname);
+		} */
 		if (pathname.charAt(0) !== '/') {
 			pathname = (pathname !== '' ? `${(base.pathname === '' ? '/' : '')}${base.pathname.slice(0, (base.pathname ).lastIndexOf('/') + 1)}${pathname}` : base.pathname);
 		}
@@ -49,40 +50,12 @@ export function resolveToLocation(url: string, _baseURL?: string): Omit<RouteLoc
 			}
 			return p;
 		});
-		pathname = output.join('').replace(/^\//, pathname.charAt(0) === '/' ? '/' : '');
+		pathname = output.join('')
+		.replace(/^\//, pathname.charAt(0) === '/' ? '/' : '');
 	}
 
-	return {
-		hash,
-		path: pathname + search + hash,
-		pathname,
-		search
-	}
-}
-
-export const createLocation = (action: Action, isHash?: boolean): RouteLocation => {
-	const { 
-		hash,
-		pathname,
-		search
-	} = location;
-
-	return {
-		state: window.history.state,
-		action,
-		hash,
-		pathname,
-		search,
-		path: createPath(
-			isHash ? { 
-				hash: '',
-				pathname: hash,
-				search
-			} : { 
-				hash,
-				pathname,
-				search
-			}
-		)
-	}
+	return new URL(
+		pathname + search + hash,
+		window.location.origin
+	)
 }

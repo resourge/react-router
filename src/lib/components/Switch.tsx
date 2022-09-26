@@ -1,9 +1,11 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactElement } from 'react';
 
 import { useSwitch } from '../hooks/useSwitch';
 
+import { BaseRouteProps } from './Route';
+
 export type SwitchProps = {
-	children: ReactNode[]
+	children: Array<ReactElement<BaseRouteProps>> | ReactElement<BaseRouteProps>
 }
 
 /**
@@ -11,10 +13,8 @@ export type SwitchProps = {
  *
  * Note: This component mainly uses `useSwitch` hook.
  */
-const Switch: FC<SwitchProps> = ({ children }) => {
-	const component = useSwitch(children);
-
-	return component;
+const Switch: FC<SwitchProps> = ({ children }: SwitchProps) => {
+	return useSwitch(children);
 };
 
 export default Switch;

@@ -1,0 +1,28 @@
+import invariant from 'tiny-invariant';
+
+/**
+ * Converter param's of path into there respective value.
+ * @param path {string}
+ * @param params {T} Object containing key and values of path params
+ * @returns 
+ */
+export function generatePath<T extends Record<string, any>>(path: string, params: T): string {
+	return path
+	.replace(/:(\w+)\?{0,1}(\(.*\)){0,1}/g, (originalKey, key: string) => {
+		const value = params[key]
+		if ( __DEV__ ) {
+			invariant(!(!originalKey.includes('?') && value === undefined), `Value of key '${key}' for path '${path}' cannot be undefined.`)
+		}
+		return value ?? ''
+	})
+	.replace(/\/*\*$/, () => params['*'] == null ? '' : params['*'].replace(/^\/*/, '/'));
+}
+
+export function createPathWithCurrentLocationHasHash(path: string) {
+	const newPath = new URL(path, window.location.origin)
+
+	const windowURL = new URL(window.location as any);
+	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : ''
+
+	return newPath.href;
+}

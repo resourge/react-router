@@ -1,32 +1,29 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, ReactNode } from 'react';
 
-import { PromptContext } from '../contexts/PromptContext';
-import { PromptMessage, PromptWhen, usePrompt } from '../hooks/usePrompt';
+import { PromptNextContext } from '../contexts/PromptNextContext';
+import { usePrompt, UsePromptProps } from '../hooks/usePrompt';
 
-export type PromptProps = PropsWithChildren<{
-	when: PromptWhen
-	message?: PromptMessage
-}>
+export type PromptProps = {
+	children?: ReactNode
+} & UsePromptProps
 
 /**
  * Component for prompting the user before navigating.
  * 
- * If `message` is undefined it will show children (for developer to show it's own prompt)
- * 
  * * Note: This component mainly uses `usePrompt` hook.
  */
-const Prompt: FC<PromptProps> = ({ when, message, children }) => {
-	const promptState = usePrompt(when, message)
+const Prompt: FC<PromptProps> = ({ children, ...promptProps }) => {
+	const [isBlocking, next] = usePrompt(promptProps)
 
-	if ( promptState[0] ) {
-		return (
-			<PromptContext.Provider value={promptState}>
-				{children}
-			</PromptContext.Provider>
-		);
+	if ( !isBlocking ) {
+		return (<></>);
 	}
 
-	return null;
+	return (
+		<PromptNextContext.Provider value={next}>
+			{ children }
+		</PromptNextContext.Provider>
+	);
 };
 
 export default Prompt;

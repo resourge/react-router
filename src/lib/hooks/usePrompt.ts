@@ -1,86 +1,38 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable no-restricted-globals */
+import { EVENTS } from '@resourge/react-search-params'
 
-import { useEffect, useRef, useState } from 'react';
+import { useBlocker, Blocker } from './useBlocker'
 
-import { RouteLocation } from '../contexts/LocationContext';
-
-import { useBeforeRouteChange } from './useBeforeRouteChange';
-import { useLocation } from './useLocation';
-
-export type PromptWhen = boolean | ((currentLocation: RouteLocation, nextLocation?: RouteLocation) => boolean | Promise<boolean>)
-
-export type PromptMessage = string | ((currentLocation: RouteLocation, nextLocation?: RouteLocation) => string)
-
-type State = {
-	showChildren: boolean
-	navigate?: () => void
+export type UsePromptProps = {
+	/**
+	 * When true blocks url change
+	 */
+	when: boolean | Blocker
+	message?: string | ((routeUrl: URL, url: URL, action: typeof EVENTS[keyof typeof EVENTS]) => string)
 }
 
 /**
  * @param when When `true` it will prompt the user 
  * 	before navigating away from a screen. 
- *  (accepts method that return's either boolean or promise boolean).
+ *  (accepts method that return's boolean).
  * @param message When set, will prompt the user with native `confirm` and message.
- * 	When `undefined` will show `children` and either wait `when` to be `false` 
- *  or the `[1]` method to be called
- * @returns [0] Boolean to show or not show children
+ * 	When `undefined` will wait `[1]` method to be called
+ * @returns [0] true/false for if it is blocking
  * 			[1] Method that call's the original navigation
  */
-export const usePrompt = (
-	when: PromptWhen,
-	message?: PromptMessage
-) => {
-	const location = useLocation();
-	const [
-		{
-			showChildren,
-			navigate: next
-		}, 
-		setShowChildren
-	] = useState<State>({
-		showChildren: false
-	});
-	const whenRef = useRef(when)
-	whenRef.current = when;
+export const usePrompt = ({ when, message }: UsePromptProps): [boolean, () => void] => {
+	const _blocker = typeof when === 'boolean' ? () => when : (when)
 
-	useBeforeRouteChange(async (currentLocation, nextLocation, next) => {
-		const when = typeof whenRef.current === 'function' ? (await Promise.resolve(whenRef.current(currentLocation, nextLocation))) : whenRef.current
-		if ( when ) {
-			if ( message ) {
-				const _message = typeof message === 'function' ? message(currentLocation, nextLocation) : message
-			
-				return confirm(_message);
-			}
-			setShowChildren({
-				showChildren: true,
-				navigate: next
-			})
-			return false;
-		}
-		if ( showChildren ) {
-			setShowChildren({
-				showChildren: false
-			})
-		}
-		return true
-	});
+	const [isBlocking, next] = useBlocker((routeUrl, url, action) => {
+		const isBlocking = _blocker(routeUrl, url, action);
 
-	useEffect(() => {
-		if ( showChildren ) {
-			setShowChildren({
-				showChildren: false
-			})
-			next && next() 
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [when, location.path])
+		if ( isBlocking && message ) {
+			const _message = typeof message === 'string' ? message : message(routeUrl, url, action)
 
-	return [
-		showChildren, 
-		() => {
-			whenRef.current = false;
-			next && next() 
+			return !window.confirm(_message)
 		}
-	] as const;
+
+		return isBlocking;
+	})
+
+	return [isBlocking, next]
 }

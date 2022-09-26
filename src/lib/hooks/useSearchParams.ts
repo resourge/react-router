@@ -1,40 +1,39 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { useLocation } from './useLocation';
-import { NavigateOptions, useNavigate } from './useNavigate';
+import { parseParams, parseSearchParams, createNewUrlWithSearch } from '@resourge/react-search-params';
 
-/**
- * Parses search string into object using `URLSearchParams`
- */
-const parseSearch = <T extends object>(search: string): T => {
-	const params = new URLSearchParams(search.replace('?', ''));
+import { useRoute } from '../contexts/RouteContext';
+import { useUrl } from '../contexts/RouterContext';
 
-	return Object.fromEntries(params) as T;
-}
+import { useNavigate } from './useNavigate';
 
 /**
  * Returns the current search parameters and a method to change
+ * @param defaultParams {T}
  */
-export const useSearchParams = <T extends object>() => {
-	const _navigate = useNavigate()
-	const location = useLocation();
+export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T) => {
+	const {
+		hash,
+		url: routeUrl
+	} = useRoute();
+	const url = useUrl();
+	const navigate = useNavigate()
 
-	const params = useMemo(() => parseSearch<T>(location.search), [location.search])
+	const search = routeUrl.search;
+	const _searchParams = routeUrl.searchParams;
 
-	const setSearchParams = useCallback(<SearchParams extends object>(searchParams: SearchParams, { replace = true, resolveToLocation }: NavigateOptions = {}) => {
-		_navigate(
-			{
-				pathname: location.pathname,
-				search: searchParams,
-				hash: location.hash
-			},
-			{
-				replace,
-				resolveToLocation
-			}
-		)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location.pathname]);
+	const searchParams = useMemo(() => parseSearchParams<T>(_searchParams, defaultParams), [search]);
 
-	return [params, setSearchParams] as const
+	const setParams = (newParams: Partial<T>) => {
+		const newSearch = parseParams(newParams);
+
+		if (search !== newSearch) {
+			const newURL = createNewUrlWithSearch(url, newSearch, hash);
+
+			navigate(newURL)
+		}
+	};
+
+	return [searchParams, setParams] as const;
 }

@@ -1,36 +1,15 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react'
 
-import { MatchFunction } from 'path-to-regexp';
+import { MatchResult } from '../utils/matchPath'
 
-export type RouteContextObject<Params extends Record<string, string>> = {
-	/**
-	 * Boolean if path matches current `URL`
-	 */
-	match: boolean
-	/**
-	 * Current route path (merged with previous path's)
-	 */
-	path: string
-	/**
-	 * Current route params
-	 */
-	params: Params
-	/**
-	 * Transforms current route tree into hashed route
-	 */
-	hash?: boolean
-	/**
-	 * Method to check `URL`
-	 */
-	regexp: MatchFunction<any>
-	/**
-	 * Parent route RouteContextObject
-	 */
-	parent: RouteContextObject<Params> | null
-}
+export type RouteContextObject<Params extends Record<string, string> = Record<string, string>> = MatchResult<Params>
 
-export const RouteContext = createContext<RouteContextObject<any> | null>(null)
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export const RouteContext = createContext<RouteContextObject | null>(null)
 
-export const useRouteContext = <Params extends Record<string, string>>() => {
-	return useContext<RouteContextObject<Params> | null>(RouteContext);
+/**
+ * Hook to access first parent 'Route'.
+ */
+export const useRoute = <Params extends Record<string, string> = Record<string, string>>() => {
+	return useContext(RouteContext) as RouteContextObject<Params>
 }

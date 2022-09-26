@@ -1,0 +1,12 @@
+import { path } from './Path';
+import type { PathType } from './Path';
+import { SetupPaths } from './SetupPaths';
+import type { SetupPathsResult } from './SetupPaths';
+
+export {
+	path,
+	PathType as PathConfig,
+
+	SetupPaths, 
+	SetupPathsResult
+}

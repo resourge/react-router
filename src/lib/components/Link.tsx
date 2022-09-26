@@ -1,64 +1,46 @@
-import { AnchorHTMLAttributes, ForwardedRef, forwardRef, MouseEvent } from 'react';
+/* eslint-disable react/display-name */
+import { ForwardedRef, forwardRef } from 'react';
 
-import { useLocation } from '../hooks/useLocation';
-import { useNavigate, NavigateOptions } from '../hooks/useNavigate';
-import { resolveToLocation } from '../utils/createLocation';
+import { useUrl } from '../contexts';
+import { useLink, UseLinkProps } from '../hooks/useLink';
+import { MatchPropsRoute } from '../hooks/useMatchRoute';
 
-export type LinkProps = {
-	to: string
-} 
-& NavigateOptions
-& Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>
-
-function isModifiedEvent(event: MouseEvent<any>) {
-	return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
-}
+export type LinkProps = UseLinkProps & {
+	matchClassName?: string
+} & Omit<MatchPropsRoute, 'path'>
 
 /**
  * Component extends element `a` and navigates to `to`.
+ * 
+ * Note: This component mainly uses `useLink` hook to navigate to `to` and `useMatchRoute` to match route.
  */
 const Link = forwardRef((
-	{ 
-		to, 
-		replace,
-		resolveToLocation: _resolveToLocation,
-		...aProps 
-	}: LinkProps,
+	props: LinkProps,
 	ref: ForwardedRef<HTMLAnchorElement>
 ) => {
-	const navigate = useNavigate();
-	const location = useLocation();
+	const { 
+		to, 
+		replace,
 
-	let href = to;
+		exact,
+		hash,
 
-	if ( _resolveToLocation ) {
-		href = resolveToLocation(href, location.path).path
-	}
+		className,
+		matchClassName,
 
-	const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
-		try {
-			if (aProps.onClick) aProps.onClick(event);
-		}
-		catch (ex) {
-			event.preventDefault();
-			throw ex;
-		}
+		...aProps 
+	} = props
+	const url = useUrl();
+	const [href, onClick] = useLink(props)
+	const match = href === url.href;
 
-		if (
-			!event.defaultPrevented && 
-			event.button === 0 && (
-				!aProps.target || aProps.target === '_self'
-			) &&
-			!isModifiedEvent(event)
-		) {
-			event.preventDefault();
-			navigate(to, { replace, resolveToLocation: _resolveToLocation });
-		}
-	}
+	const _class = [className, match ? matchClassName : ''].filter(cn => cn);
+
+	const _className = _class && _class.length ? _class.join(' ') : undefined;
 
 	return (
 		// eslint-disable-next-line jsx-a11y/anchor-has-content
-		<a {...aProps} ref={ref} href={href} onClick={onClick} />
+		<a {...aProps} ref={ref} className={_className} href={href} onClick={onClick} />
 	);
 });
 
