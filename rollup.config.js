@@ -7,9 +7,8 @@ import { terser } from 'rollup-plugin-terser';
 
 import { name, author, license } from './package.json'
 
-const external = ['react', '@resourge/react-search-params', 'urlpattern-polyfill'];
+const external = ['react', 'react/jsx-runtime', '@resourge/react-search-params', 'urlpattern-polyfill'];
 const globals = {
-	react: 'React',
 	'@resourge/react-search-params': 'ResourgeReactSearchParams' 
 }
 
@@ -112,15 +111,13 @@ const getPackage = (
 					}
 				}),
 				babel({
-					assumptions: {
-						setSpreadProperties: true
-					},
 					exclude: /node_modules/,
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
 						['@babel/preset-react', {
-							useBuiltIns: true
+							useBuiltIns: true,
+							runtime: 'automatic'
 						}],
 						'@babel/preset-typescript'
 					],
@@ -167,7 +164,10 @@ const getPackage = (
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
-						'@babel/preset-react',
+						['@babel/preset-react', {
+							useBuiltIns: true,
+							runtime: 'automatic'
+						}],
 						'@babel/preset-typescript'
 					],
 					plugins: babelPlugins,
@@ -215,7 +215,10 @@ const getPackage = (
 					babelHelpers: 'bundled',
 					presets: [
 						'@babel/preset-typescript',
-						'@babel/preset-react',
+						['@babel/preset-react', {
+							useBuiltIns: true,
+							runtime: 'automatic'
+						}],
 						babelPresetEnv
 					],
 					plugins: babelPlugins,
@@ -250,13 +253,10 @@ const getPackage = (
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
-						[
-							'@babel/preset-react',
-							{
-								// Compile JSX Spread to Object.assign(), which is reliable in ESM browsers.
-								useBuiltIns: true
-							}
-						],
+						['@babel/preset-react', {
+							useBuiltIns: true,
+							runtime: 'automatic'
+						}],
 						'@babel/preset-typescript'
 					],
 					plugins: babelPlugins,
@@ -301,7 +301,10 @@ const getPackage = (
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
-						'@babel/preset-react',
+						['@babel/preset-react', {
+							useBuiltIns: true,
+							runtime: 'automatic'
+						}],
 						'@babel/preset-typescript'
 					],
 					plugins: babelPlugins,
@@ -338,7 +341,10 @@ const getPackage = (
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
-						'@babel/preset-react',
+						['@babel/preset-react', {
+							useBuiltIns: true,
+							runtime: 'automatic'
+						}],
 						'@babel/preset-typescript'
 					],
 					plugins: babelPlugins,
