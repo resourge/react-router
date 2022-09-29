@@ -44,8 +44,8 @@
     "lint": "eslint \"./src/**/*.{ts,tsx}\"",
     "lint:prod": "cross-env NODE_ENV=production npm run lint",
     "fix-types": "node ./scripts/FixTypes.js",
-    "remove-routes-d": "node ./scripts/RemoveRoutePaths.js",
-    "fix-route-paths": "node ./scripts/FixRoutePaths.js",
+    "remove-routes-d": "node ./scripts/RemoveSetupPaths.js",
+    "fix-route-paths": "node ./scripts/FixSetupPaths.js",
     "dev": "vite",
     "build:vite": "vite build",
     "build": "rollup -c && npm run remove-routes-d && npm run fix-route-paths && npm run fix-types",
@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@resourge/react-search-params": "^1.4.0",
+    "tiny-invariant": "^1.2.0",
     "urlpattern-polyfill": "^5.0.9"
   },
   "devDependencies": {

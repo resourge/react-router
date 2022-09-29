@@ -7,9 +7,18 @@ import { terser } from 'rollup-plugin-terser';
 
 import { name, author, license } from './package.json'
 
-const external = ['react', 'react/jsx-runtime', '@resourge/react-search-params', 'urlpattern-polyfill'];
+const external = [
+	'react', 
+	'react/jsx-runtime', 
+	'@resourge/react-search-params', 
+	'urlpattern-polyfill', 
+	'tiny-invariant'
+];
 const globals = {
-	'@resourge/react-search-params': 'ResourgeReactSearchParams' 
+	'@resourge/react-search-params': 'ResourgeReactSearchParams',
+	react: 'React',
+	'react/jsx-runtime': 'ReactJsxRuntime',
+	'tiny-invariant': 'invariant'
 }
 
 const babelPlugins = [
@@ -92,7 +101,8 @@ const getPackage = (
 	const modules = [
 		{
 			input: {
-				index: SOURCE_INDEX_FILE
+				index: SOURCE_INDEX_FILE,
+				'setupPaths/index': SETUP_PATHS_INDEX
 			},
 			output: {
 				dir: OUTPUT_DIR,
@@ -128,7 +138,8 @@ const getPackage = (
 		},
 		{
 			input: {
-				index: SOURCE_INDEX_FILE
+				index: SOURCE_INDEX_FILE,
+				'setupPaths/index': SETUP_PATHS_INDEX
 			},
 			output: [{
 				dir: OUTPUT_DIR,
@@ -143,48 +154,6 @@ const getPackage = (
 						setupPaths: 'utils'
 					}
 				}),
-				dts()
-			]
-		},
-		{
-			input: {
-				'setupPaths/index': SETUP_PATHS_INDEX
-			},
-			output: {
-				dir: OUTPUT_DIR,
-				format: 'esm',
-				sourcemap,
-				banner
-			},
-			external,
-			plugins: [
-				...defaultExtPlugin,
-				babel({
-					exclude: /node_modules/,
-					babelHelpers: 'bundled',
-					presets: [
-						babelPresetEnv,
-						['@babel/preset-react', {
-							useBuiltIns: true,
-							runtime: 'automatic'
-						}],
-						'@babel/preset-typescript'
-					],
-					plugins: babelPlugins,
-					extensions: ['.ts', '.tsx']
-				})
-			]
-		},
-		{
-			input: {
-				'setupPaths/index': SETUP_PATHS_INDEX
-			},
-			output: [{
-				dir: OUTPUT_DIR,
-				format: 'esm',
-				banner
-			}],
-			plugins: [
 				dts()
 			]
 		}

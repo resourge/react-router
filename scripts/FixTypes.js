@@ -19,6 +19,9 @@ const fixTypes = (typePath) => {
 	// Remove last line break
 	const lastLine = content.lastIndexOf('\n');
 	content = content.substring(0, lastLine);
+
+	// Replace useParams for urlpattern-polyfill
+	content = content.replace('src/lib/hooks/useParams', 'urlpattern-polyfill');
 	
 	// Write File
 	fs.writeFileSync(typesFilePath, content);
