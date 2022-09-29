@@ -15,7 +15,10 @@ export type BaseRouteProps = MatchPropsRoute
 export type RouteProps = BaseRouteProps & ({
 	children: ReactNode
 	component?: ReactElement
-})
+} | ({
+	component: ReactElement
+	children?: ReactNode
+}))
 
 export type IRouteProps = RouteProps & {
 	computedMatch?: MatchResult | null

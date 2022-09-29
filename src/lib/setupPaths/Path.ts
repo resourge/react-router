@@ -7,7 +7,7 @@ import invariant from 'tiny-invariant';
 import { StringifyObjectParams, useParams } from 'src/lib/hooks/useParams';
 import { generatePath } from 'src/lib/utils/generatePath';
 
-import { Param, ParamsConfig } from './Param';
+import { Param, ParamsConfig, ParamsConfigOptional } from './Param';
 
 export function createPathWithCurrentLocationHasHash(path: string) {
 	const newPath = new URL(path, window.location.origin)
@@ -26,13 +26,13 @@ export type PathType<
 	 * Method to obtain the true path.
 	 * Calling it with `params` will replace the params with the params value on the path.
 	 */
-	get: Record<string, any> extends Params ? () => string : (params: Params) => string
+	get: string extends keyof Params ? () => string : (params: Params) => string
 	/**
 	 * Generated string from chain functions. Includes path with `params`.
 	 */
 	path: string
 } & PathsType<Paths> & (
-	Record<string, any> extends Params ? {} : {
+	string extends keyof Params ? {} : {
 		/**
 		 * Hook to receive the params related to the route.
 		 * Here all the transform method will transform the params to the desired params. 
@@ -121,30 +121,28 @@ export class Path<
 	 * @param value {string} - param name
 	 */
 	public param<
-		K extends keyof Params = keyof Params, 
+		K extends string = string, 
 		V extends Params[K] | string | undefined = string
 	>(
 		value: K
 	): Path<
-		Params & { [key in K]: V }, 
+		(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
 		SubPaths
 	>
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
 	 * @param value {string} - param name
-	 * @param config {ParamsConfig<V>} - param configuration.
+	 * @param config {ParamsConfigOptional<V>} - param configuration.
 	 */
 	public param<
-		K extends keyof Params = keyof Params, 
-		V extends Params[K] | string | undefined = string
+		K extends string = string, 
+		V extends Params[K] | string | undefined = string,
+		V1 = Params[K]
 	>(
 		value: K, 
-		config: ParamsConfig<V> & { 
-			optional: true
-			transform?: (value?: string) => V | undefined 
-		}
+		config: ParamsConfigOptional<V, V1> 
 	): Path<
-		Params & { [key in K]?: V }, 
+		(string extends keyof Params ? {} : Params) & { [key in K]?: V }, 
 		SubPaths
 	>;
 	/**
@@ -153,13 +151,14 @@ export class Path<
 	 * @param config {ParamsConfig<V>} - param configuration.
 	 */
 	public param<
-		K extends keyof Params = keyof Params, 
-		V extends Params[K] | string | undefined = string
+		K extends string = string,
+		V extends Params[K] | string | undefined = string,
+		V1 = Params[K]
 	>(
 		value: K, 
-		config: ParamsConfig<V>
+		config: ParamsConfig<V, V1> 
 	): Path<
-		Params & { [key in K]: V }, 
+		(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
 		SubPaths
 	>;
 
@@ -169,16 +168,17 @@ export class Path<
 	 * @param config {ParamsConfig<V>} - param configuration.
 	 */
 	public param<
-		K extends keyof Params = keyof Params, 
-		V extends Params[K] | string | undefined = string
+		K extends string = string,
+		V extends Params[K] | string | undefined = string,
+		V1 = Params[K]
 	>(
 		value: K, 
-		config?: ParamsConfig<V>
+		config?: ParamsConfig<V, V1> 
 	): Path<
-		Params & { [key in K]: V }, 
+		(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
 		SubPaths
 	> {
-		const _this = this.clone<Params & { [key in K]: V }, SubPaths>();
+		const _this = this.clone<(string extends keyof Params ? {} : Params) & { [key in K]: V }, SubPaths>();
 
 		_this.paths.push(
 			Param.createParam(
@@ -233,9 +233,12 @@ export class Path<
 		transforms?: Array<(params: StringifyObjectParams<Exclude<Params, undefined>>) => void>, 
 		beforePaths?: Array<(params: Exclude<Params, undefined>) => void>
 	): PathType<SubPaths, Params> {
+		// Groups new transformations with transformations from parents
 		const _transforms: Array<(params: StringifyObjectParams<Exclude<Params, undefined>>) => void> = transforms ? [...transforms] : [];
+		// Groups new transformations with transformations from parents
 		const _beforePaths: Array<(params: Exclude<Params, undefined>) => void> = beforePaths ? [...beforePaths] : [];
 
+		// Creates path for current route
 		const path = `${this.getBasePath(basePath)}/${this.paths
 		.map((path) => {
 			if ( typeof path === 'string' ) {
@@ -255,9 +258,10 @@ export class Path<
 		})
 		.join('/')}`
 
+		// Generates subPaths
 		const paths = Object.entries(this.subPaths ?? {})
 		.reduce((obj, [key, value]) => {
-			(obj as any)[key] = value.createPath(path);
+			(obj as any)[key] = value.createPath(path === '/' ? '' : path, _transforms, _beforePaths);
 			return obj;
 		}, {} as PathsType<SubPaths>) 
 

@@ -1,8 +1,23 @@
-export type ParamsConfig<ParamResult = any> = { 
+export type ParamsConfigOptional<ParamResult = any, BeforePath = ParamResult> = { 
+	/**
+	 * Makes param optional
+	 */
+	optional: true
 	/**
 	 * Transforms param before path creation (get).
 	 */
-	beforePath?: (value: ParamResult) => string | ParamResult
+	beforePath?: (value: BeforePath) => string | BeforePath
+	/**
+	 * Transform's param on useParam.
+	 */
+	transform?: (value?: string) => ParamResult | undefined 
+}
+
+export type ParamsConfig<ParamResult = any, BeforePath = ParamResult> = { 
+	/**
+	 * Transforms param before path creation (get).
+	 */
+	beforePath?: (value: BeforePath) => string | BeforePath
 	/**
 	 * Makes param optional
 	 */
@@ -11,20 +26,7 @@ export type ParamsConfig<ParamResult = any> = {
 	 * Transform's param on useParam.
 	 */
 	transform?: (value: string) => ParamResult 
-} | { 
-	/**
-	 * Makes param optional
-	 */
-	optional: true
-	/**
-	 * Transforms param before path creation (get).
-	 */
-	beforePath?: (value: ParamResult) => string | ParamResult
-	/**
-	 * Transform's param on useParam.
-	 */
-	transform?: (value?: string) => ParamResult | undefined 
-}
+} | ParamsConfigOptional<ParamResult, BeforePath>
 
 export class Param<Value = any> {
 	public key: string = ''
