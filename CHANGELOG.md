@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/resourge/react-router/compare/v1.0.2...v1.0.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* **setuppaths:** fix setuppaths on subpaths without parent path having label ([152a930](https://github.com/resourge/react-router/commit/152a930ac81e2167751a581db3664b032f915af6))
+
 ## [1.0.2](https://github.com/resourge/react-router/compare/v1.0.1...v1.0.2) (2022-09-29)
 
 
