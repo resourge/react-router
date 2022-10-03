@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/resourge/react-router/compare/v1.1.0...v1.1.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **hooks/index.ts:** add useAction to export ([0917166](https://github.com/resourge/react-router/commit/09171660319f90fc2c15bb1e910ac1d25fe6e21e))
+
 # [1.1.0](https://github.com/resourge/react-router/compare/v1.0.3...v1.1.0) (2022-10-03)
 
 
