@@ -1,3 +1,4 @@
+import { useAction } from './useAction';
 import { useBeforeURLChange } from './useBeforeURLChange';
 import { useBlocker } from './useBlocker';
 import type { Blocker } from './useBlocker';
@@ -19,6 +20,7 @@ import type { UseSearchRouteProps } from './useSearchRoute';
 import { useSwitch } from './useSwitch';
 
 export { 
+	useAction,
 	useBeforeURLChange,
 	
 	useBlocker,
