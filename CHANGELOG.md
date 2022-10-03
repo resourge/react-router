@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/resourge/react-router/compare/v1.0.3...v1.1.0) (2022-10-03)
+
+
+### Features
+
+* **package.json:** update @resourge/react-search-params to latest version ([1816fea](https://github.com/resourge/react-router/commit/1816fea8fa840db40438bbfd058e6bf9756bf9e8))
+
 ## [1.0.3](https://github.com/resourge/react-router/compare/v1.0.2...v1.0.3) (2022-09-29)
 
 
