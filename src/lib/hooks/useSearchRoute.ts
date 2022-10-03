@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 import { useRoute } from '../contexts/RouteContext'
-import { useUrl } from '../contexts/RouterContext'
+import { useRouter } from '../contexts/RouterContext'
 import { MatchResult } from '../utils/matchPath'
 
 import { MatchPropsRoute, matchRoute } from './useMatchRoute'
@@ -49,7 +49,7 @@ export const matchSearchRoute = (
  * @returns null if it is a no match, otherwise returns {@link MatchResult}
  */
 export const useSearchRoute = (matchSearchProps: UseSearchRouteProps, computedMatch?: MatchResult | null) => {
-	const url = useUrl()
+	const { url } = useRouter()
 	const parentRoute = useRoute();
 	const ref = useRef<MatchResult | null | undefined>();
 	

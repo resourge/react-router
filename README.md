@@ -167,7 +167,7 @@ RoutePaths.PRODUCT.FORMV2.useParams() // '{ productId: 1, productName: undefined
 ## BrowserRouter
 
 First component that creates the context for the rest of the children. <br>
-_Note: This component mainly uses `useUrl` hook._
+_Note: This component mainly uses `useUrl` hook from '@resourge/react-search-params'._
 
 ```JSX
 import { BrowserRouter } from '@resourge/react-router'
@@ -456,17 +456,27 @@ import { useRoute } from '@resourge/react-router'
 const route = useRoute()
 ```
 
-## useUrl
+## useRouter
 
 Hook to access to current URL.
 
 ```JSX
-import { useUrl } from '@resourge/react-router'
+import { useRouter } from '@resourge/react-router'
 
-const url = useUrl()
+const { url, action } = useRouter()
 ```
 
-## useUrl
+## useAction
+
+Hook to access action that lead to the current `URL`.
+
+```JSX
+import { useAction } from '@resourge/react-router'
+
+const action = useAction()
+```
+
+## usePromptNext
 
 To use inside Prompt components.
 Contains the `next` method to navigate after "Prompt" is finished.

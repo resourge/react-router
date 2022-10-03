@@ -7,7 +7,7 @@ import { RedirectProps } from '../components/Redirect';
 import { BaseRouteProps } from '../components/Route';
 import { BaseSearchRouteProps } from '../components/SearchRoute';
 import { RouteContextObject, useRoute } from '../contexts/RouteContext';
-import { useUrl } from '../contexts/RouterContext';
+import { useRouter } from '../contexts/RouterContext';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
 import { matchRoute } from './useMatchRoute';
@@ -62,7 +62,7 @@ const getMatchFromProps = (
  * Returns the first children component who props `path` or `search` matches the current location.
  */
 export const useSwitch = (children: Array<ReactElement<Props>> | ReactElement<Props>): ReactElement<BaseRouteProps> | null => {	
-	const url = useUrl()
+	const { url } = useRouter()
 	const parentRoute = useRoute();
 
 	const childArray = Children.toArray(children) as Array<ReactElement<Props>>;

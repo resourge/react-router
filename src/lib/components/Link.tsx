@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import { ForwardedRef, forwardRef } from 'react';
 
-import { useUrl } from '../contexts';
+import { useRouter } from '../contexts/RouterContext';
 import { useLink, UseLinkProps } from '../hooks/useLink';
 import { MatchPropsRoute } from '../hooks/useMatchRoute';
 
@@ -30,7 +30,7 @@ const Link = forwardRef((
 
 		...aProps 
 	} = props
-	const url = useUrl();
+	const { url } = useRouter();
 	const [href, onClick] = useLink(props)
 	const match = href === url.href;
 

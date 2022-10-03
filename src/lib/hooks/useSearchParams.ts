@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { parseParams, parseSearchParams, createNewUrlWithSearch } from '@resourge/react-search-params';
 
 import { useRoute } from '../contexts/RouteContext';
-import { useUrl } from '../contexts/RouterContext';
+import { useRouter } from '../contexts/RouterContext';
 
 import { useNavigate } from './useNavigate';
 
@@ -16,7 +16,7 @@ export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T
 		hash,
 		url: routeUrl
 	} = useRoute();
-	const url = useUrl();
+	const { url } = useRouter();
 	const navigate = useNavigate()
 
 	const search = routeUrl.search;

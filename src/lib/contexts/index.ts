@@ -1,7 +1,7 @@
 import { PromptNextContext, usePromptNext } from './PromptNextContext'
 import { RouteContext, useRoute } from './RouteContext'
 import type { RouteContextObject } from './RouteContext'
-import { RouterContext, useUrl } from './RouterContext'
+import { RouterContext, useRouter } from './RouterContext'
 
 export {
 	PromptNextContext, 
@@ -12,5 +12,5 @@ export {
 	RouteContextObject,
 
 	RouterContext,
-	useUrl
+	useRouter
 }

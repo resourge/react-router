@@ -1,13 +1,20 @@
 import { createContext, useContext } from 'react';
 
+import { ActionType } from '@resourge/react-search-params';
 import invariant from 'tiny-invariant'
 
-export const RouterContext = createContext<URL>(new URL(window.location.href));
+type RouterContextType = {
+	action: ActionType
+	url: URL
+}
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export const RouterContext = createContext<RouterContextType>(null!);
 
 /**
  * Hook to access to current URL
  */
-export const useUrl = () => {
+export const useRouter = () => {
 	const context = useContext(RouterContext);
 
 	if ( __DEV__ ) {

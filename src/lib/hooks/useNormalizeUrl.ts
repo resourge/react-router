@@ -1,5 +1,5 @@
 import { useRoute } from '../contexts/RouteContext';
-import { useUrl } from '../contexts/RouterContext';
+import { useRouter } from '../contexts/RouterContext';
 import { generatePath } from '../utils/generatePath';
 import { resolveLocation } from '../utils/resolveLocation';
 
@@ -66,7 +66,7 @@ const normalizeUrl = (
  * Returns a method for making a url from `to`.
  */
 export const useNormalizeUrl = () => {
-	const url = useUrl();
+	const { url } = useRouter();
 	const {
 		url: routeUrl,
 		params,
