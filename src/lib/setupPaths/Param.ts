@@ -36,8 +36,11 @@ export class Param<Value = any> {
 	public static createParam<Value = any>(param: string, config?: ParamsConfig<Value>) {
 		const instance = new this<Value>();
 
+		const _params = `:${param}`;
 		instance.key = param;
-		instance.param = `:${param}${config?.optional ? '?' : ''}`;
+		if ( config?.optional ) {
+			instance.param = `{${_params}}?`;
+		}
 		instance.config = config;
 
 		return instance;
