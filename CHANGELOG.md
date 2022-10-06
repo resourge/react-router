@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/resourge/react-router/compare/v1.1.1...v1.1.2) (2022-10-06)
+
+
+### Bug Fixes
+
+* **params.ts:** change the way optional params are defined to match URLPattern optional params ([3397fde](https://github.com/resourge/react-router/commit/3397fdebcd99a393c291a6cf96304f617d355276))
+
 ## [1.1.1](https://github.com/resourge/react-router/compare/v1.1.0...v1.1.1) (2022-10-03)
 
 
