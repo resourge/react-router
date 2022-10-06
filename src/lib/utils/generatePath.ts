@@ -8,7 +8,7 @@ import invariant from 'tiny-invariant';
  */
 export function generatePath<T extends Record<string, any>>(path: string, params: T): string {
 	return path
-	.replace(/:(\w+)\?{0,1}(\(.*\)){0,1}/g, (originalKey, key: string) => {
+	.replace(/{{0,1}:(\w+)\?{0,1}(\(.*\)){0,1}}{0,1}/g, (originalKey, key: string) => {
 		const value = params[key]
 		if ( __DEV__ ) {
 			invariant(!(!originalKey.includes('?') && value === undefined), `Value of key '${key}' for path '${path}' cannot be undefined.`)
