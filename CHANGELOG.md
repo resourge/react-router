@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/resourge/react-router/compare/v1.1.2...v1.1.3) (2022-10-06)
+
+
+### Bug Fixes
+
+* **generatepath:** update generatePath regex with new optional param pattern ([d471fb8](https://github.com/resourge/react-router/commit/d471fb8be2bc200e8617bf16fef9b4741d095579))
+
 ## [1.1.2](https://github.com/resourge/react-router/compare/v1.1.1...v1.1.2) (2022-10-06)
 
 
