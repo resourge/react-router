@@ -145,7 +145,8 @@ const RoutePaths = SetupPaths({
 	.param('productName', {
 		optional: true
 	})
-  })
+  }),
+  DELIVERY: path('delivery').param('id').addPath('details')
 })
 
 
@@ -159,9 +160,13 @@ RoutePaths.PRODUCT.FORM.path // '/product/:productId'
 RoutePaths.PRODUCT.FORM.get({ product: '1' }) // '/product/1'
 RoutePaths.PRODUCT.FORM.useParams() // '{ productId: '1' }'
 
-RoutePaths.PRODUCT.FORMV2.path // '/product/v2/:productId/:productName?'
+RoutePaths.PRODUCT.FORMV2.path // '/product/v2/:productId/{:productName?}'
 RoutePaths.PRODUCT.FORMV2.get({ product: 1 }) // '/product/v2/1/'
 RoutePaths.PRODUCT.FORMV2.useParams() // '{ productId: 1, productName: undefined }'
+
+RoutePaths.DELIVERY.path // '/delivery/:id/details'
+RoutePaths.DELIVERY.get({ id: 1 }) // '/delivery/1/details'
+RoutePaths.DELIVERY.useParams() // '{ id: 1 }'
 ```
 
 ## BrowserRouter
