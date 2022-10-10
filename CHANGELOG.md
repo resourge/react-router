@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/resourge/react-router/compare/v1.1.3...v1.1.4) (2022-10-10)
+
+
+### Bug Fixes
+
+* **param:** fix param not working ([e21515e](https://github.com/resourge/react-router/commit/e21515eff0a1ba3626e012f368b75a00ff9e50ed))
+
 ## [1.1.3](https://github.com/resourge/react-router/compare/v1.1.2...v1.1.3) (2022-10-06)
 
 
