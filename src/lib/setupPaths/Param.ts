@@ -36,10 +36,10 @@ export class Param<Value = any> {
 	public static createParam<Value = any>(param: string, config?: ParamsConfig<Value>) {
 		const instance = new this<Value>();
 
-		const _params = `:${param}`;
+		instance.param = `:${param}`;
 		instance.key = param;
 		if ( config?.optional ) {
-			instance.param = `{${_params}}?`;
+			instance.param = `{${instance.param}}?`;
 		}
 		instance.config = config;
 
