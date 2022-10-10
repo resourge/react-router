@@ -29,7 +29,7 @@ export const validateRouteProps = __DEV__ ? (matchProps: MatchPropsRoute) => {
 			)
 		), 
 		typeof matchProps.path === 'string' 
-			? `Path '${matchProps.path}' start with # but 'Route' doesn't have prop hash.`
+			? `Path '${matchProps.path}' ${matchProps.hash === true ? 'doesn\'t start' : 'start'} with # but 'Route' ${matchProps.hash === true ? 'has' : 'doesn\'t have'} prop hash.`
 			: `Paths '${matchProps.path.filter((p) => p.startsWith('#')).join(', ')}' start with # but 'Route' doesn't have prop hash.`
 	);
 } : () => {}
