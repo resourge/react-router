@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/resourge/react-router/compare/v1.1.4...v1.2.0) (2022-10-11)
+
+
+### Bug Fixes
+
+* **validaterouteprops:** fix message showing the wrong error ([084b6e1](https://github.com/resourge/react-router/commit/084b6e1ed5ad54a1ce33587d90fc4d892c57523e))
+
+
+### Features
+
+* **package.json:** update @resourge/react-search-params to latest version ([936361a](https://github.com/resourge/react-router/commit/936361ae1b86ca0327a193cb07ca5f3f322faa6e))
+
 ## [1.1.4](https://github.com/resourge/react-router/compare/v1.1.3...v1.1.4) (2022-10-10)
 
 
