@@ -58,7 +58,7 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@resourge/react-search-params": "^1.5.0",
+    "@resourge/react-search-params": "^1.6.0",
     "tiny-invariant": "^1.2.0",
     "urlpattern-polyfill": "^5.0.9"
   },
