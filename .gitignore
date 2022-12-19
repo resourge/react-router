@@ -12,6 +12,7 @@ dist
 maybes
 coverage
 dist-ssr
+src/todo
 *.local
 
 # Editor directories and files
