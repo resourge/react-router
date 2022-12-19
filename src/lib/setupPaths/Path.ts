@@ -178,6 +178,12 @@ export class Path<
 		(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
 		SubPaths
 	> {
+		if ( __DEV__ ) { 
+			invariant(
+				!value.includes(':'),
+				'Don\'t use \':\' inside `param`.'
+			);
+		}
 		const _this = this.clone<(string extends keyof Params ? {} : Params) & { [key in K]: V }, SubPaths>();
 
 		_this.paths.push(

@@ -39,22 +39,19 @@ const getMatchFromProps = (
 		
 		return matchRoute(url, {
 			...props,
-			path,
-			exact: true
+			path
 		}, parentRoute)
 	}
 	const searchBaseProps = (props as BaseSearchRouteProps)
 	if ( searchBaseProps.search ) {
 		return matchSearchRoute(url, {
-			...searchBaseProps,
-			exact: true
+			...searchBaseProps
 		}, parentRoute)
 	}
 
 	return matchRoute(url, {
 		...searchBaseProps,
-		path: '*',
-		exact: true
+		path: '*'
 	}, parentRoute)
 }
 
