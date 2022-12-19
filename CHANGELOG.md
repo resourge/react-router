@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/resourge/react-router/compare/v1.2.0...v1.2.1) (2022-12-19)
+
+
+### Bug Fixes
+
+* **switch:** fix Switch not working with 'no exact' route paths ([a946787](https://github.com/resourge/react-router/commit/a9467879a99d9996c805ee1a3540633cc9587966))
+
 # [1.2.0](https://github.com/resourge/react-router/compare/v1.1.4...v1.2.0) (2022-10-11)
 
 
