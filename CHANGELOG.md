@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/resourge/react-router/compare/v1.2.1...v1.3.0) (2022-12-20)
+
+
+### Features
+
+* **package.json:** update package versions ([1155766](https://github.com/resourge/react-router/commit/1155766cdd0b16b661749b6670cc411bf9342a10))
+
 ## [1.2.1](https://github.com/resourge/react-router/compare/v1.2.0...v1.2.1) (2022-12-19)
 
 
