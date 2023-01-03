@@ -32,7 +32,7 @@ export {
 	RouteProps,
 
 	BrowserRouter,
-	BrowserRouterProps as RouterProps,
+	BrowserRouterProps,
 
 	SearchRoute,
 	SearchRouteProps,
