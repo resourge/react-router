@@ -8,39 +8,52 @@ import { useBeforeURLChange } from './useBeforeURLChange';
 
 export type Blocker = (routeUrl: URL, url: URL, action: typeof EVENTS[keyof typeof EVENTS]) => boolean
 
+export type BlockerResult = {
+	continueNavigation: () => void
+	finishBlocking: () => void
+	isBlocking: boolean
+}
+
 /**
  * Fires before the route change, and serves to block or not the current route.
  * @param blocker {Blocker}
- * @returns [0] true/false for if it is blocking
- * 			[1] Method that is going to call the original navigation
+ * @returns blockerResult {BlockerResult}
  */
 export const useBlocker = (
 	blocker: Blocker
-): [boolean, () => void] => {
+): BlockerResult => {
 	const { url } = useRoute();
-	const [{ isBlocking, next }, setNext] = useState<{ isBlocking: boolean, next: () => void }>({
+	const [{ isBlocking, continueNavigation }, setBlocker] = useState<{ continueNavigation: () => void, isBlocking: boolean }>({
 		isBlocking: false,
-		next: () => {}
+		continueNavigation: () => {}
 	})
 
+	const finishBlocking = () => {
+		setBlocker({
+			isBlocking: false,
+			continueNavigation: () => {}
+		})
+	}
+
 	useBeforeURLChange((event) => {
-		const next = () => {
+		const continueNavigation = () => {
 			event.next();
-			setNext({
-				isBlocking: false,
-				next: () => {}
-			})
+			finishBlocking();
 		}
 		const isBlocking = blocker(url, event.url, event.action);
 
 		if ( isBlocking ) {
-			setNext({
+			setBlocker({
 				isBlocking: true,
-				next
+				continueNavigation
 			})
 		}
 		return !isBlocking
 	})
 
-	return [isBlocking, next];
+	return {
+		isBlocking, 
+		continueNavigation, 
+		finishBlocking
+	};
 }

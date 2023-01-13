@@ -13,14 +13,14 @@ export type PromptProps = {
  * * Note: This component mainly uses `usePrompt` hook.
  */
 const Prompt: FC<PromptProps> = ({ children, ...promptProps }) => {
-	const [isBlocking, next] = usePrompt(promptProps)
+	const promptResult = usePrompt(promptProps)
 
-	if ( !isBlocking ) {
+	if ( !promptResult.isBlocking ) {
 		return (<></>);
 	}
 
 	return (
-		<PromptNextContext.Provider value={next}>
+		<PromptNextContext.Provider value={promptResult}>
 			{ children }
 		</PromptNextContext.Provider>
 	);

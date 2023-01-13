@@ -2,7 +2,9 @@ import { createContext, useContext } from 'react';
 
 import invariant from 'tiny-invariant'
 
-export const PromptNextContext = createContext<(() => void) | null>(null);
+import { BlockerResult } from '../hooks/useBlocker';
+
+export const PromptNextContext = createContext<BlockerResult | null>(null);
 
 /**
  * To use inside Prompt components.
@@ -15,5 +17,5 @@ export const usePromptNext = () => {
 		invariant(context, 'usePromptNext can only be used in the context of a <PromptContext/Prompt> component.')
 	}
 
-	return context;
+	return context as BlockerResult;
 }

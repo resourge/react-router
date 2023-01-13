@@ -1,6 +1,6 @@
 import { EVENTS } from '@resourge/react-search-params'
 
-import { useBlocker, Blocker } from './useBlocker'
+import { useBlocker, Blocker, BlockerResult } from './useBlocker'
 
 export type UsePromptProps = {
 	/**
@@ -16,13 +16,12 @@ export type UsePromptProps = {
  *  (accepts method that return's boolean).
  * @param message When set, will prompt the user with native `confirm` and message.
  * 	When `undefined` will wait `[1]` method to be called
- * @returns [0] true/false for if it is blocking
- * 			[1] Method that call's the original navigation
+ * @returns promptResult {BlockerResult}
  */
-export const usePrompt = ({ when, message }: UsePromptProps): [boolean, () => void] => {
+export const usePrompt = ({ when, message }: UsePromptProps): BlockerResult => {
 	const _blocker = typeof when === 'boolean' ? () => when : (when)
 
-	const [isBlocking, next] = useBlocker((routeUrl, url, action) => {
+	return useBlocker((routeUrl, url, action) => {
 		const isBlocking = _blocker(routeUrl, url, action);
 
 		if ( isBlocking && message ) {
@@ -33,6 +32,4 @@ export const usePrompt = ({ when, message }: UsePromptProps): [boolean, () => vo
 
 		return isBlocking;
 	})
-
-	return [isBlocking, next]
 }
