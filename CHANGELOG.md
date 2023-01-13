@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/resourge/react-router/compare/v1.3.1...v1.4.0) (2023-01-13)
+
+
+### Features
+
+* **useblocker and useprompt:** update to also include a ways to finishBlocking ([0a3bc4d](https://github.com/resourge/react-router/commit/0a3bc4da240fe74b966464e9f617bf9b675d817e))
+
 ## [1.3.1](https://github.com/resourge/react-router/compare/v1.3.0...v1.3.1) (2023-01-03)
 
 
