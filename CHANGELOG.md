@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/resourge/react-router/compare/v1.4.0...v1.4.1) (2023-01-17)
+
+
+### Bug Fixes
+
+* **setuppaths:** fix param not injected into routes params and update variables names ([eae5ccf](https://github.com/resourge/react-router/commit/eae5ccf38aa1a140daef76cdb2f8d3d42fdb35db))
+
 # [1.4.0](https://github.com/resourge/react-router/compare/v1.3.1...v1.4.0) (2023-01-13)
 
 
