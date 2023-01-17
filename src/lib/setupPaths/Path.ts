@@ -19,7 +19,7 @@ export function createPathWithCurrentLocationHasHash(path: string) {
 }
 
 export type PathType<
-	Paths extends Record<string, Path<any, any>>, 
+	Routes extends Record<string, Path<any, any>>, 
 	Params extends Record<string, any> | undefined = undefined
 > = {
 	/**
@@ -31,7 +31,7 @@ export type PathType<
 	 * Generated string from chain functions. Includes path with `params`.
 	 */
 	path: string
-} & PathsType<Paths> & (
+} & InjectParamsIntoPathType<Routes, Params> & (
 	string extends keyof Params ? {} : {
 		/**
 		 * Hook to receive the params related to the route.
@@ -41,9 +41,48 @@ export type PathType<
 	}
 )
 
-export type PathsType<Paths extends Record<string, Path<any, any>>> = {
-	[K in keyof Paths]: PathType<Paths[K]['subPaths'], Paths[K]['_params']>
+export type InjectParamsIntoPathType<
+	Paths extends Record<string, Path<any, any>>, 
+	Params extends Record<string, any> | undefined = undefined
+> = {
+	[K in keyof Paths]: PathType<
+		// @ts-expect-error Want to protect value, but also access it with types
+		Paths[K]['_routes'], 
+		string extends keyof Params 
+			// @ts-expect-error Want to protect value, but also access it with types
+			? Paths[K]['_params'] 
+			: (
+				// @ts-expect-error Want to protect value, but also access it with types
+				string extends keyof Paths[K]['_params']
+					? Params
+					// @ts-expect-error Want to protect value, but also access it with types
+					: Paths[K]['_params'] & Params
+			)
+	>
 }
+
+export type InjectParamsIntoPath<
+	Params extends Record<string, any>, 
+	Paths extends Record<string, Path<any, any>>
+> = string extends keyof Params ? Paths : {
+	[K in keyof Paths]: Path<
+		string extends keyof Params 
+			// @ts-expect-error Want to protect value, but also access it with types
+			? Paths[K]['_params'] 
+			// @ts-expect-error Want to protect value, but also access it with types
+			: Paths[K]['_params'] & Params, 
+		InjectParamsIntoPath<
+			string extends keyof Params 
+				// @ts-expect-error Want to protect value, but also access it with types
+				? Paths[K]['_params'] 
+				// @ts-expect-error Want to protect value, but also access it with types
+				: Paths[K]['_params'] & Params, 
+			// @ts-expect-error Want to protect value, but also access it with types
+			Paths[K]['_routes']
+		>
+	>
+}
+// Paths[K]['_params'] & Params
 
 /**
  * @important This config is not used in children paths
@@ -65,13 +104,14 @@ type PathConfig = {
 }
 
 export class Path<
-	Params extends Record<string, any> = Record<string, any>, 
-	SubPaths extends Record<string, Path<any, any>> = Record<string, Path<any, any>>
+	Params extends Record<string, any>, 
+	Routes extends Record<string, Path<any, any>>
 > {
-	public _params!: Params;
+	protected _params!: Params;
+	protected _routes!: Routes;
+
 	protected config: PathConfig = {}
 	protected paths: Array<Param<Params[keyof Params]> | string> = [];
-	public subPaths!: SubPaths;
 	private _includeCurrentURL?: boolean;
 
 	constructor(config?: PathConfig) {
@@ -80,14 +120,14 @@ export class Path<
 
 	protected clone<
 		Params extends Record<string, any> = Record<string, any>, 
-		SubPaths extends Record<string, Path<any, any>> = Record<string, Path<any, any>>
+		Routes extends Record<string, Path<any, any>> = Record<string, Path<any, any>>
 	>() { 
-		const _this = new Path<Params, SubPaths>();
+		const _this = new Path<Params, Routes>();
 
 		_this.paths = [...this.paths] as unknown as Array<Param<Params[keyof Params]> | string>;
-		_this.subPaths = {
-			...this.subPaths
-		} as unknown as SubPaths;
+		_this._routes = {
+			...this._routes
+		} as unknown as Routes;
 		_this._includeCurrentURL = this._includeCurrentURL;
 		_this.config = this.config;
 
@@ -99,7 +139,7 @@ export class Path<
 	 * @param includeCurrentURL {boolean}
 	 */
 	public includeCurrentURL(includeCurrentURL?: boolean) {
-		const _this = this.clone<Params, SubPaths>();
+		const _this = this.clone<Params, Routes>();
 		_this._includeCurrentURL = includeCurrentURL;
 		return _this;
 	}
@@ -109,7 +149,7 @@ export class Path<
 	 * @param path {string} - new path part
 	 */
 	public addPath(path?: string) {
-		const _this = this.clone<Params, SubPaths>();
+		const _this = this.clone<Params, Routes>();
 		if ( path ) {
 			_this.paths.push(path);
 		}
@@ -127,7 +167,10 @@ export class Path<
 		value: K
 	): Path<
 		(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
-		SubPaths
+		InjectParamsIntoPath<
+			(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
+			Routes
+		>
 	>
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -143,7 +186,10 @@ export class Path<
 		config: ParamsConfigOptional<V, V1> 
 	): Path<
 		(string extends keyof Params ? {} : Params) & { [key in K]?: V }, 
-		SubPaths
+		InjectParamsIntoPath<
+			(string extends keyof Params ? {} : Params) & { [key in K]?: V }, 
+			Routes
+		>
 	>;
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -159,7 +205,10 @@ export class Path<
 		config: ParamsConfig<V, V1> 
 	): Path<
 		(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
-		SubPaths
+		InjectParamsIntoPath<
+			(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
+			Routes
+		>
 	>;
 
 	/**
@@ -176,7 +225,10 @@ export class Path<
 		config?: ParamsConfig<V, V1> 
 	): Path<
 		(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
-		SubPaths
+		InjectParamsIntoPath<
+			(string extends keyof Params ? {} : Params) & { [key in K]: V }, 
+			Routes
+		>
 	> {
 		if ( __DEV__ ) { 
 			invariant(
@@ -184,7 +236,7 @@ export class Path<
 				'Don\'t use \':\' inside `param`.'
 			);
 		}
-		const _this = this.clone<(string extends keyof Params ? {} : Params) & { [key in K]: V }, SubPaths>();
+		const _this = this.clone<(string extends keyof Params ? {} : Params) & { [key in K]: V }, Routes>();
 
 		_this.paths.push(
 			Param.createParam(
@@ -193,29 +245,29 @@ export class Path<
 			)
 		);
 
-		return _this;
+		return _this as any;
 	}
 
 	/**
 	 * Children path's of current path.
 	 * 
-	 * @param subPaths {IPaths} - object containing the current path children path's
+	 * @param routes {Record<string, Path<any, any>>} - object containing the current path children path's
 	 */
-	public routes<IPaths extends Record<string, Path<any, any>> = Record<string, Path<any, any>>>(
-		subPaths: IPaths
-	): Path<Params, IPaths> {
-		const _this = this.clone<Params, IPaths>();
+	public routes<S extends Record<string, Path<any, any>>>(
+		routes: S
+	): Path<Params, S> {
+		const _this = this.clone<Params, S>();
 
 		if ( __DEV__ ) {
 			invariant(
-				Object.entries(subPaths).find(([key, value]) => {
+				Object.entries(routes).find(([key, value]) => {
 					return !(value.config.hash || value.config.hashModal)
 				}),
 				'Path\'s inside \'.routes({ ... })\' cannot be hash path\'s'
 			);
 		}
 
-		_this.subPaths = subPaths;
+		_this._routes = routes;
 
 		return _this;
 	}
@@ -238,7 +290,7 @@ export class Path<
 		basePath?: string, 
 		transforms?: Array<(params: StringifyObjectParams<Exclude<Params, undefined>>) => void>, 
 		beforePaths?: Array<(params: Exclude<Params, undefined>) => void>
-	): PathType<SubPaths, Params> {
+	): PathType<Routes, Params> {
 		// Groups new transformations with transformations from parents
 		const _transforms: Array<(params: StringifyObjectParams<Exclude<Params, undefined>>) => void> = transforms ? [...transforms] : [];
 		// Groups new transformations with transformations from parents
@@ -264,12 +316,13 @@ export class Path<
 		})
 		.join('/')}`
 
-		// Generates subPaths
-		const paths = Object.entries(this.subPaths ?? {})
+		// Generates routes
+		const paths = Object.entries(this._routes ?? {})
 		.reduce((obj, [key, value]) => {
-			(obj as any)[key] = value.createPath(path === '/' ? '' : path, _transforms, _beforePaths);
+			obj[key] = value.createPath(path === '/' ? '' : path, _transforms, _beforePaths);
 			return obj;
-		}, {} as PathsType<SubPaths>) 
+			// Too hard to put a working type that doesn't create a problem in return
+		}, {} as any) 
 
 		return {
 			path,
@@ -303,7 +356,7 @@ export class Path<
 				})
 			},
 			...paths
-		} as any
+		}
 	}
 }
 
@@ -311,6 +364,9 @@ export class Path<
  * Creates a new path
  * @param path {string} - path base/start
  */
-export const path = (path?: string, config?: PathConfig) => {
-	return new Path(config).addPath(path);
+export const path = <
+	Params extends Record<string, any>,
+	Paths extends Record<string, Path<Params, any>> = Record<string, Path<Params, any>>
+>(path?: string, config?: PathConfig): Path<Params, Paths> => {
+	return new Path(config).addPath(path) as Path<Params, Paths>;
 }
