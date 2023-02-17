@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/resourge/react-router/compare/v1.6.0...v1.6.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* **route:** fix a bug where cloneElement was not including the component children ([d2a78c0](https://github.com/resourge/react-router/commit/d2a78c0e23d6a8d7f9277b7e737c8179bceac4d4))
+
 # [1.6.0](https://github.com/resourge/react-router/compare/v1.5.1...v1.6.0) (2023-02-17)
 
 
