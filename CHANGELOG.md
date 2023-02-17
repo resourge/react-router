@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/resourge/react-router/compare/v1.5.0...v1.5.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* **useswitch:** fix bug where not having path was giving an error ([9615e35](https://github.com/resourge/react-router/commit/9615e35d75056901b55ca6a233dd52aaaa11919e))
+
 # [1.5.0](https://github.com/resourge/react-router/compare/v1.4.1...v1.5.0) (2023-02-17)
 
 
