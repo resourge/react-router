@@ -42,7 +42,7 @@ const Route: FC<RouteProps> = ({
 	if ( match ) {
 		return (
 			<RouteContext.Provider value={match}>
-				{ component ? cloneElement(component, {}, children) : children }
+				{ component ? cloneElement(component, {}, component.props.children, children) : children }
 			</RouteContext.Provider>
 		)
 	}
