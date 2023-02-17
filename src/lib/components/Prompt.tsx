@@ -1,7 +1,7 @@
-import { FC, ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 
 import { PromptNextContext } from '../contexts/PromptNextContext';
-import { usePrompt, UsePromptProps } from '../hooks/usePrompt';
+import { usePrompt, type UsePromptProps } from '../hooks/usePrompt';
 
 export type PromptProps = {
 	children?: ReactNode

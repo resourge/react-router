@@ -1,4 +1,4 @@
-import { PathType, Path } from './Path';
+import { type PathType, type Path } from './Path';
 
 type PathStructures = Record<string, Path<any, any>>
 

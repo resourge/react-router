@@ -1,10 +1,7 @@
 import { createContext, useContext } from 'react';
 
-import { EVENTS } from '@resourge/react-search-params';
+import { type ActionType } from '@resourge/react-search-params';
 import invariant from 'tiny-invariant'
-
-// Done this way make index.d.ts not import all @resourge/react-search-params
-export type ActionType = typeof EVENTS[keyof typeof EVENTS]
 
 type RouterContextType = {
 	action: ActionType

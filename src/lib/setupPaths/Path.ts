@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 /* eslint-disable @typescript-eslint/prefer-reduce-type-parameter */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import invariant from 'tiny-invariant';
 
-import { StringifyObjectParams, useParams } from 'src/lib/hooks/useParams';
+import { type StringifyObjectParams, useParams } from 'src/lib/hooks/useParams';
 import { generatePath } from 'src/lib/utils/generatePath';
 
-import { Param, ParamsConfig, ParamsConfigOptional } from './Param';
+import { Param, type ParamsConfig, type ParamsConfigOptional } from './Param';
 
 export function createPathWithCurrentLocationHasHash(path: string) {
 	const newPath = new URL(path, window.location.origin)

@@ -1,13 +1,13 @@
 import {
 	cloneElement,
-	FC,
-	ReactElement,
-	ReactNode
+	type FC,
+	type ReactElement,
+	type ReactNode
 } from 'react'
 
 import { RouteContext } from '../contexts/RouteContext';
-import { UseSearchRouteProps, useSearchRoute } from '../hooks/useSearchRoute';
-import { MatchResult } from '../utils/matchPath';
+import { type UseSearchRouteProps, useSearchRoute } from '../hooks/useSearchRoute';
+import { type MatchResult } from '../utils/matchPath';
 
 export type BaseSearchRouteProps = UseSearchRouteProps
 

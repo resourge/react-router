@@ -1,7 +1,7 @@
-import { AnchorHTMLAttributes, MouseEvent } from 'react';
+import { type AnchorHTMLAttributes, type MouseEvent } from 'react';
 
-import { NavigateOptions, useNavigate } from './useNavigate'
-import { NavigateTo, useNormalizeUrl } from './useNormalizeUrl';
+import { type NavigateOptions, useNavigate } from './useNavigate'
+import { type NavigateTo, useNormalizeUrl } from './useNormalizeUrl';
 
 export type UseLinkProps = {
 	to: NavigateTo

@@ -9,7 +9,7 @@ export {
 
 	RouteContext, 
 	useRoute,
-	RouteContextObject,
+	type RouteContextObject,
 
 	RouterContext,
 	useRouter

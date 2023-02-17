@@ -1,4 +1,4 @@
-import { getUrlPattern, UrlPattern } from './getUrlPattern';
+import { getUrlPattern, type UrlPattern } from './getUrlPattern';
 
 export type MatchProps = UrlPattern
 

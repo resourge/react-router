@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { EVENTS } from '@resourge/react-search-params';
+import { type EVENTS } from '@resourge/react-search-params';
 
 import { useRoute } from '../contexts/RouteContext';
 

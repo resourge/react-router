@@ -1,8 +1,8 @@
-import { FC, ReactElement } from 'react';
+import { type FC, type ReactElement } from 'react';
 
 import { useSwitch } from '../hooks/useSwitch';
 
-import { BaseRouteProps } from './Route';
+import { type BaseRouteProps } from './Route';
 
 export type SwitchProps = {
 	children: Array<ReactElement<BaseRouteProps>> | ReactElement<BaseRouteProps>

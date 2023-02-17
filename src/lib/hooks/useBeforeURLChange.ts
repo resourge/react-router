@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { BeforeUrlChangeEvent } from '@resourge/react-search-params';
+import { type BeforeUrlChangeEvent } from '@resourge/react-search-params';
 
 /**
  * Fires before the route changes.

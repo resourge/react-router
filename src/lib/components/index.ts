@@ -17,26 +17,26 @@ import type { SwitchProps } from './Switch';
 
 export {
 	Link,
-	LinkProps,
+	type LinkProps,
 
 	Navigate,
-	NavigateProps,
+	type NavigateProps,
 
 	Prompt,
-	PromptProps,
+	type PromptProps,
 
 	Redirect,
-	RedirectProps,
+	type RedirectProps,
 
 	Route,
-	RouteProps,
+	type RouteProps,
 
 	BrowserRouter,
-	BrowserRouterProps,
+	type BrowserRouterProps,
 
 	SearchRoute,
-	SearchRouteProps,
+	type SearchRouteProps,
 
 	Switch,
-	SwitchProps
+	type SwitchProps
 }

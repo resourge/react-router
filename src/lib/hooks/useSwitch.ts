@@ -1,12 +1,12 @@
-import { Children, ReactElement, cloneElement } from 'react';
+import { Children, type ReactElement, cloneElement } from 'react';
 
 import invariant from 'tiny-invariant'
 
-import { NavigateProps } from '../components/Navigate';
-import { RedirectProps } from '../components/Redirect';
-import { BaseRouteProps } from '../components/Route';
-import { BaseSearchRouteProps } from '../components/SearchRoute';
-import { RouteContextObject, useRoute } from '../contexts/RouteContext';
+import { type NavigateProps } from '../components/Navigate';
+import { type RedirectProps } from '../components/Redirect';
+import { type BaseRouteProps } from '../components/Route';
+import { type BaseSearchRouteProps } from '../components/SearchRoute';
+import { type RouteContextObject, useRoute } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
@@ -22,9 +22,9 @@ const getMatchFromProps = (
 ) => {
 	if ( __DEV__ ) {
 		invariant(
-			(props as BaseRouteProps).path ||
+			Boolean((props as BaseRouteProps).path) ||
 			(props as BaseSearchRouteProps).search ||
-			(props as RedirectProps).from ||
+			Boolean((props as RedirectProps).from) ||
 			(props as NavigateProps).to,
 			'`useSwitch` can only accept component\'s with `path`, `search`, `from` or `to` attributes'
 		);

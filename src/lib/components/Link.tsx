@@ -1,9 +1,9 @@
 /* eslint-disable react/display-name */
-import { ForwardedRef, forwardRef } from 'react';
+import { type ForwardedRef, forwardRef } from 'react';
 
 import { useRouter } from '../contexts/RouterContext';
-import { useLink, UseLinkProps } from '../hooks/useLink';
-import { MatchPropsRoute } from '../hooks/useMatchRoute';
+import { useLink, type UseLinkProps } from '../hooks/useLink';
+import { type MatchPropsRoute } from '../hooks/useMatchRoute';
 
 export type LinkProps = UseLinkProps & {
 	matchClassName?: string

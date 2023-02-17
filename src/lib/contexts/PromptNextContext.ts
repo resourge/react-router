@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 import invariant from 'tiny-invariant'
 
-import { BlockerResult } from '../hooks/useBlocker';
+import { type BlockerResult } from '../hooks/useBlocker';
 
 export const PromptNextContext = createContext<BlockerResult | null>(null);
 

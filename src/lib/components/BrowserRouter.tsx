@@ -1,10 +1,10 @@
-import { FC, PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 
 import { useUrl } from '@resourge/react-search-params';
 
 import { RouterContext } from '../contexts/RouterContext';
 
-import Route, { BaseRouteProps } from './Route';
+import Route, { type BaseRouteProps } from './Route';
 
 export type BrowserRouterProps = PropsWithChildren<{
 	base?: string

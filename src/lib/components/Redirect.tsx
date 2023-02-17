@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 
-import Navigate, { NavigateProps } from './Navigate';
-import Route, { RouteProps } from './Route';
+import Navigate, { type NavigateProps } from './Navigate';
+import Route, { type RouteProps } from './Route';
 
 export type RedirectProps = {
 	from: RouteProps['path']

@@ -2,9 +2,9 @@ import { useRef } from 'react'
 
 import { useRoute } from '../contexts/RouteContext'
 import { useRouter } from '../contexts/RouterContext'
-import { MatchResult } from '../utils/matchPath'
+import { type MatchResult } from '../utils/matchPath'
 
-import { MatchPropsRoute, matchRoute } from './useMatchRoute'
+import { type MatchPropsRoute, matchRoute } from './useMatchRoute'
 
 export type UseSearchRouteProps = {
 	/**

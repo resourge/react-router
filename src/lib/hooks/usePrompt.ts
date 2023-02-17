@@ -1,6 +1,6 @@
-import { EVENTS } from '@resourge/react-search-params'
+import { type EVENTS } from '@resourge/react-search-params'
 
-import { useBlocker, Blocker, BlockerResult } from './useBlocker'
+import { useBlocker, type Blocker, type BlockerResult } from './useBlocker'
 
 export type UsePromptProps = {
 	/**

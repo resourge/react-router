@@ -5,8 +5,8 @@ import type { SetupPathsResult } from './SetupPaths';
 
 export {
 	path,
-	PathType,
+	type PathType,
 
 	SetupPaths, 
-	SetupPathsResult
+	type SetupPathsResult
 }

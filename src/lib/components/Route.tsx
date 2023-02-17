@@ -1,13 +1,13 @@
 import {
 	cloneElement,
-	FC,
-	ReactElement,
-	ReactNode
+	type FC,
+	type ReactElement,
+	type ReactNode
 } from 'react'
 
 import { RouteContext } from '../contexts/RouteContext';
-import { MatchPropsRoute, useMatchRoute } from '../hooks/useMatchRoute';
-import { MatchResult } from '../utils/matchPath';
+import { type MatchPropsRoute, useMatchRoute } from '../hooks/useMatchRoute';
+import { type MatchResult } from '../utils/matchPath';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
 export type BaseRouteProps = MatchPropsRoute

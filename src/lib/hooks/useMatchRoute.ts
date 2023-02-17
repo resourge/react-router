@@ -3,7 +3,7 @@ import { useRef } from 'react';
 
 import { useRoute } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
-import { matchPath, MatchResult } from '../utils/matchPath';
+import { matchPath, type MatchResult } from '../utils/matchPath';
 
 export type MatchPropsRoute = {
 	/**

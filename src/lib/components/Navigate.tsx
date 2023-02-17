@@ -1,7 +1,7 @@
-import { FC, useEffect } from 'react';
+import { type FC, useEffect } from 'react';
 
-import { NavigateOptions, useNavigate } from '../hooks/useNavigate';
-import { NavigateTo } from '../hooks/useNormalizeUrl';
+import { type NavigateOptions, useNavigate } from '../hooks/useNavigate';
+import { type NavigateTo } from '../hooks/useNormalizeUrl';
 
 export type NavigateProps = {
 	to: NavigateTo

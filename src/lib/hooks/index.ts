@@ -24,30 +24,30 @@ export {
 	useBeforeURLChange,
 	
 	useBlocker,
-	Blocker,
+	type Blocker,
 	
 	useNormalizeUrl,
-	NavigateTo,
+	type NavigateTo,
 
 	useLink,
-	UseLinkProps,
+	type UseLinkProps,
 
 	useMatchRoute, matchRoute,
-	MatchPropsRoute,
+	type MatchPropsRoute,
 
 	useNavigate,
-	NavigateOptions,
+	type NavigateOptions,
 
 	useParams,
-	StringifyObjectParams,
+	type StringifyObjectParams,
 
 	usePrompt,
-	UsePromptProps,
+	type UsePromptProps,
 
 	useSearchParams,
 
 	useSearchRoute,
-	UseSearchRouteProps,
+	type UseSearchRouteProps,
 
 	useSwitch
 }
