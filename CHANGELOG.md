@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/resourge/react-router/compare/v1.5.1...v1.6.0) (2023-02-17)
+
+
+### Features
+
+* **setuptypes:** remove folder separation ([a43b411](https://github.com/resourge/react-router/commit/a43b4117e6c8f49965d09414c6b4da4a6b48d4a2))
+
 ## [1.5.1](https://github.com/resourge/react-router/compare/v1.5.0...v1.5.1) (2023-02-17)
 
 
