@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/resourge/react-router/compare/v1.4.1...v1.5.0) (2023-02-17)
+
+
+### Features
+
+* **route:** make path not mandatory ([6c32a61](https://github.com/resourge/react-router/commit/6c32a614a3d5bced24e7508d5921a539c35b8b24))
+
 ## [1.4.1](https://github.com/resourge/react-router/compare/v1.4.0...v1.4.1) (2023-01-17)
 
 
