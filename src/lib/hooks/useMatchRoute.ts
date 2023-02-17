@@ -7,10 +7,6 @@ import { matchPath, MatchResult } from '../utils/matchPath';
 
 export type MatchPropsRoute = {
 	/**
-	 * Route path(s)
-	 */
-	path: string | string[]
-	/**
 	 * Makes it so 'URL' needs to be exactly as the path
 	 * @default false
 	 */
@@ -20,6 +16,11 @@ export type MatchPropsRoute = {
 	 * @default false
 	 */
 	hash?: boolean
+	/**
+	 * Route path(s)
+	 * @default '*'
+	 */
+	path?: string | string[]
 }
 
 /**
@@ -32,7 +33,7 @@ export type MatchPropsRoute = {
 export const matchRoute = (
 	url: URL,
 	{
-		path, hash, exact
+		path = '*', hash, exact
 	}: MatchPropsRoute, 
 	parentRoute: MatchResult | undefined
 ): MatchResult<Record<string, string>> | null => {
