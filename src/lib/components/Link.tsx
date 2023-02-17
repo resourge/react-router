@@ -1,5 +1,4 @@
-/* eslint-disable react/display-name */
-import { type ForwardedRef, forwardRef } from 'react';
+import React, { type ForwardedRef, forwardRef } from 'react';
 
 import { useRouter } from '../contexts/RouterContext';
 import { useLink, type UseLinkProps } from '../hooks/useLink';
@@ -43,5 +42,7 @@ const Link = forwardRef((
 		<a {...aProps} ref={ref} className={_className} href={href} onClick={onClick} />
 	);
 });
+
+Link.displayName = 'Link'
 
 export default Link;

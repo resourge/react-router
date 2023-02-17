@@ -1,23 +1,12 @@
 {
   "name": "@resourge/react-router",
-  "version": "1.5.1",
+  "version": "1.5.0",
   "main": "./dist/main.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/umd/react-router.production.min.js",
   "private": false,
   "type": "module",
-  "exports": {
-    ".": "./dist/index.js",
-    "./setupPaths": "./dist/setupPaths/index.js"
-  },
-  "typesVersions": {
-    "*": {
-      "setupPaths": [
-        "./dist/setupPaths/index.d.ts"
-      ]
-    }
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -45,11 +34,9 @@
     "lint": "eslint \"./src/**/*.{ts,tsx}\"",
     "lint:prod": "cross-env NODE_ENV=production npm run lint",
     "fix-types": "ts-node-esm ./scripts/FixTypes.ts",
-    "remove-routes-d": "ts-node-esm ./scripts/RemoveSetupPaths.ts",
-    "fix-route-paths": "ts-node-esm ./scripts/FixSetupPaths.ts",
     "dev": "vite",
     "build:vite": "vite build",
-    "build": "rollup -c && npm run remove-routes-d && npm run fix-route-paths && npm run fix-types",
+    "build": "rollup -c && npm run fix-types",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",

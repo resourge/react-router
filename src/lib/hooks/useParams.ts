@@ -1,8 +1,5 @@
 import { useRoute } from '../contexts/RouteContext';
-
-export type StringifyObjectParams<T extends Record<string, any>> = {
-	[Key in keyof T]: string
-}
+import { type StringifyObjectParams } from '../types/StringifyObjectParams';
 
 export type TransformParams<Params extends Record<string, string> = Record<string, string>> = (params: StringifyObjectParams<Params>) => Params
 

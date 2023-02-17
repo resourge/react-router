@@ -14,15 +14,20 @@ const fixTypes = (typePath: string) => {
 	// Change declare to export
 	content = content.replace(/declare/g, 'export declare');
 
-	// Fix _resourge_react_search_params
-	content = content.replace("import * as _resourge_react_search_params from '@resourge/react-search-params';", '');
+	content = content.replace(`
+    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params']>;`, `
+	// @ts-expect-error Want to protect value, but also access it with types
+    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params']>;`)
 
-	// Fix _resourge_react_search_params
-	content = content.replace(/_resourge_react_search_params./g, '');
+	content = content.replace(`
+    [K in keyof Paths]: PathType<Paths[K]['_routes'], string extends keyof Params ? Paths[K]['_params'] : (string extends keyof Paths[K]['_params'] ? Params : Paths[K]['_params'] & Params)>;`, `
+	// @ts-expect-error Want to protect value, but also access it with types
+    [K in keyof Paths]: PathType<Paths[K]['_routes'], string extends keyof Params ? Paths[K]['_params'] : (string extends keyof Paths[K]['_params'] ? Params : Paths[K]['_params'] & Params)>;`)
 
-	//Fix SetupPaths
-	content = content.replace(/export.*SetupPaths-.*';/g, "");
-	content = content.replace("import 'src/lib/hooks/useParams';", "");
+	content = content.replace(`
+    [K in keyof Paths]: Path<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, InjectParamsIntoPath<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, Paths[K]['_routes']>>;`, `
+	// @ts-expect-error Want to protect value, but also access it with types
+    [K in keyof Paths]: Path<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, InjectParamsIntoPath<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, Paths[K]['_routes']>>;`)
 
 	// Remover last export
 	const lastExport = content.lastIndexOf('export {');

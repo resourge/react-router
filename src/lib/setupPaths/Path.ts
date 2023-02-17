@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 /* eslint-disable @typescript-eslint/prefer-reduce-type-parameter */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+/* eslint-disable @typescript-eslint/ban-types */
 import invariant from 'tiny-invariant';
 
-import { type StringifyObjectParams, useParams } from 'src/lib/hooks/useParams';
-import { generatePath } from 'src/lib/utils/generatePath';
+import { useParams } from '../hooks/useParams';
+import { type StringifyObjectParams } from '../types/StringifyObjectParams';
+import { generatePath } from '../utils/generatePath';
 
 import { Param, type ParamsConfig, type ParamsConfigOptional } from './Param';
 

@@ -1,4 +1,5 @@
-import { createContext, useContext } from 'react'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { createContext, useContext } from 'react'
 
 import { type MatchResult } from '../utils/matchPath'
 

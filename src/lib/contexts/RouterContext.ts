@@ -1,9 +1,10 @@
-import { createContext, useContext } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { createContext, useContext } from 'react';
 
 import { type ActionType } from '@resourge/react-search-params';
 import invariant from 'tiny-invariant'
 
-type RouterContextType = {
+export type RouterContextType = {
 	action: ActionType
 	url: URL
 }

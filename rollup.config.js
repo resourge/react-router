@@ -13,32 +13,36 @@ const {
 
 const external = [
 	'react', 
-	'react/jsx-runtime', 
 	'@resourge/react-search-params', 
 	'urlpattern-polyfill', 
-	'tiny-invariant'
+	'tiny-invariant',
+	'react/jsx-runtime' 
 ];
+
 const globals = {
-	'@resourge/react-search-params': 'ResourgeReactSearchParams',
 	react: 'React',
-	'react/jsx-runtime': 'ReactJsxRuntime',
-	'tiny-invariant': 'invariant'
+	reactSearchParams: '@resourge/react-search-params',
+	invariant: 'tiny-invariant',
+	'react/jsx-runtime': 'ReactJsxRuntime'
 }
 
 const babelPlugins = [
 	'babel-plugin-dev-expression'
 ]
 
-const babelPresetEnv = ['@babel/preset-env', {
-	targets: [
-		'defaults',
-		'not IE 11',
-		'chrome > 78', // To remove in the future
-		'maintained node versions'
-	],
-	loose: true,
-	bugfixes: true
-}]
+const babelPresetEnv = [
+	'@babel/preset-env',
+	{
+		targets: [
+			'defaults',
+			'not IE 11',
+			'chrome > 78', // To remove in the future
+			'maintained node versions'
+		],
+		loose: true,
+		bugfixes: true
+	}
+]
 
 const defaultExtPlugin = [
 	filsesize({
@@ -99,15 +103,10 @@ const getPackage = (
 	const banner = createBanner(PROJECT_NAME, VERSION, AUTHOR_NAME, LICENSE);
 	const umdName = PROJECT_NAME.split('-').map(capitalizeFirstLetter).join('')
 
-	const SETUP_PATHS_INDEX = `${SOURCE_FOLDER}/setupPaths/index.ts`;
-
 	// JS modules for bundlers
 	const modules = [
 		{
-			input: {
-				index: SOURCE_INDEX_FILE,
-				'setupPaths/index': SETUP_PATHS_INDEX
-			},
+			input: SOURCE_INDEX_FILE,
 			output: {
 				dir: OUTPUT_DIR,
 				format: 'esm',
@@ -117,13 +116,6 @@ const getPackage = (
 			external,
 			plugins: [
 				...defaultExtPlugin,
-				replace({
-					preventAssignment: true,
-					delimiters: ['\\b', '\\b(?!\\.)'],
-					values: {
-						setupPaths: 'utils'
-					}
-				}),
 				babel({
 					exclude: /node_modules/,
 					babelHelpers: 'bundled',
@@ -141,23 +133,13 @@ const getPackage = (
 			]
 		},
 		{
-			input: {
-				index: SOURCE_INDEX_FILE,
-				'setupPaths/index': SETUP_PATHS_INDEX
-			},
+			input: SOURCE_INDEX_FILE,
 			output: [{
 				dir: OUTPUT_DIR,
 				format: 'esm',
 				banner
 			}],
 			plugins: [
-				replace({
-					preventAssignment: true,
-					delimiters: ['\\b', '\\b(?!\\.)'],
-					values: {
-						setupPaths: 'utils'
-					}
-				}),
 				dts()
 			]
 		}
@@ -176,22 +158,14 @@ const getPackage = (
 			external,
 			plugins: [
 				...defaultExtPlugin,
-				replace({
-					preventAssignment: true,
-					delimiters: ['\\b', '\\b(?!\\.)'],
-					values: {
-						'src/lib': '../../lib'
-					}
-				}),
 				babel({
 					exclude: /node_modules/,
 					babelHelpers: 'bundled',
 					presets: [
-						'@babel/preset-typescript',
 						['@babel/preset-react', {
-							useBuiltIns: true,
-							runtime: 'automatic'
+							useBuiltIns: true
 						}],
+						'@babel/preset-typescript',
 						babelPresetEnv
 					],
 					plugins: babelPlugins,
@@ -214,21 +188,13 @@ const getPackage = (
 			external,
 			plugins: [
 				...defaultExtPlugin,
-				replace({
-					preventAssignment: true,
-					delimiters: ['\\b', '\\b(?!\\.)'],
-					values: {
-						'src/lib': '../../lib'
-					}
-				}),
 				babel({
 					exclude: /node_modules/,
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
 						['@babel/preset-react', {
-							useBuiltIns: true,
-							runtime: 'automatic'
+							useBuiltIns: true
 						}],
 						'@babel/preset-typescript'
 					],
@@ -262,21 +228,14 @@ const getPackage = (
 			external,
 			plugins: [
 				...defaultExtPlugin,
-				replace({
-					preventAssignment: true,
-					delimiters: ['\\b', '\\b(?!\\.)'],
-					values: {
-						'src/lib': '../../lib'
-					}
-				}),
 				babel({
 					exclude: /node_modules/,
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
 						['@babel/preset-react', {
-							useBuiltIns: true,
-							runtime: 'automatic'
+							useBuiltIns: true
+							
 						}],
 						'@babel/preset-typescript'
 					],
@@ -302,21 +261,13 @@ const getPackage = (
 			external,
 			plugins: [
 				...defaultExtPlugin,
-				replace({
-					preventAssignment: true,
-					delimiters: ['\\b', '\\b(?!\\.)'],
-					values: {
-						'src/lib': '../../lib'
-					}
-				}),
 				babel({
 					exclude: /node_modules/,
 					babelHelpers: 'bundled',
 					presets: [
 						babelPresetEnv,
 						['@babel/preset-react', {
-							useBuiltIns: true,
-							runtime: 'automatic'
+							useBuiltIns: true
 						}],
 						'@babel/preset-typescript'
 					],
