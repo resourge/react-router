@@ -22,7 +22,6 @@ const getMatchFromProps = (
 ) => {
 	if ( __DEV__ ) {
 		invariant(
-			Boolean((props as BaseRouteProps).path) ||
 			(props as BaseSearchRouteProps).search ||
 			Boolean((props as RedirectProps).from) ||
 			(props as NavigateProps).to,
@@ -30,7 +29,7 @@ const getMatchFromProps = (
 		);
 	}
 
-	const path = (props as BaseRouteProps).path ?? (props as RedirectProps).from
+	const path = (props as RedirectProps).from ?? (props as BaseRouteProps).path ?? '*'
 	if ( path ) {
 		validateRouteProps({
 			...(props as BaseRouteProps),
