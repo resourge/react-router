@@ -6,11 +6,13 @@ import {
 } from 'react'
 
 import { RouteContext } from '../contexts/RouteContext';
-import { type MatchPropsRoute, useMatchRoute } from '../hooks/useMatchRoute';
+import { type MatchRouteProps, useMatchRoute } from '../hooks/useMatchRoute';
 import { type MatchResult } from '../utils/matchPath';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
-export type BaseRouteProps = MatchPropsRoute
+export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
+	path?: MatchRouteProps['path']
+}
 
 export type RouteProps = BaseRouteProps & ({
 	children: ReactNode
@@ -27,7 +29,7 @@ export type IRouteProps = RouteProps & {
 /**
  * Component that only renders at a certain path.
  *
- * Note: This component mainly uses `useMatchRoute` hook.
+ * Note: This component mainly uses `useMatchRoute` hook. And Route without `path` will be treated as normal components.
  */
 const Route: FC<RouteProps> = ({
 	children, component,
@@ -37,7 +39,18 @@ const Route: FC<RouteProps> = ({
 }: IRouteProps) => {
 	validateRouteProps(matchProps);
 
-	const match = useMatchRoute(matchProps, computedMatch)
+	if ( 
+		!matchProps.path 
+	) {
+		return (
+			<>
+				{ component ? cloneElement(component, {}, component.props.children, children) : children }
+			</>
+		)
+	}
+
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch)
 
 	if ( match ) {
 		return (

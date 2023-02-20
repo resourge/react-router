@@ -5,7 +5,12 @@ import { useRoute } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { matchPath, type MatchResult } from '../utils/matchPath';
 
-export type MatchPropsRoute = {
+export type MatchRouteProps = {
+	/**
+	 * Route path(s)
+	 * @default '*'
+	 */
+	path: string | string[]
 	/**
 	 * Makes it so 'URL' needs to be exactly as the path
 	 * @default false
@@ -16,25 +21,20 @@ export type MatchPropsRoute = {
 	 * @default false
 	 */
 	hash?: boolean
-	/**
-	 * Route path(s)
-	 * @default '*'
-	 */
-	path?: string | string[]
 }
 
 /**
  * Method to match `url` to `url`
  * 
  * @param url {URL} - Current url.
- * @param matchRoute {MatchPropsRoute}
+ * @param matchRoute {MatchRouteProps}
  * @param parentRoute {MatchResult} - Current route parent.
  */
 export const matchRoute = (
 	url: URL,
 	{
-		path = '*', hash, exact
-	}: MatchPropsRoute, 
+		path, hash, exact
+	}: MatchRouteProps, 
 	parentRoute: MatchResult | undefined
 ): MatchResult<Record<string, string>> | null => {
 	const baseURL = url.origin;
@@ -79,7 +79,7 @@ export const matchRoute = (
  * Hook to match path to current `url`.
  * @returns null if it is a no match, otherwise returns {@link MatchResult}
  */
-export const useMatchRoute = (matchProps: MatchPropsRoute, matchResult?: MatchResult | null) => {
+export const useMatchRoute = (matchProps: MatchRouteProps, matchResult?: MatchResult | null) => {
 	const { url } = useRouter()
 	const parentRoute = useRoute();
 	const ref = useRef<MatchResult | null | undefined>();

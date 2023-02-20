@@ -1,8 +1,9 @@
 import invariant from 'tiny-invariant';
 
-import { type MatchPropsRoute } from '../hooks';
+import { type MatchRouteProps } from '../hooks';
 
-export const validateRouteProps = __DEV__ ? (matchProps: MatchPropsRoute) => {
+export const validateRouteProps = __DEV__ ? (matchProps: Partial<MatchRouteProps>) => {
+	matchProps.path = matchProps.path ? matchProps.path : '';
 	invariant(
 		(
 			(

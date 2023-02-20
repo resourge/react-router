@@ -5,7 +5,7 @@ import { type Blocker } from './useBlocker';
 import { useLink } from './useLink';
 import { type UseLinkProps } from './useLink';
 import { useMatchRoute, matchRoute } from './useMatchRoute';
-import { type MatchPropsRoute } from './useMatchRoute';
+import { type MatchRouteProps } from './useMatchRoute';
 import { useNavigate } from './useNavigate';
 import { type NavigateOptions } from './useNavigate';
 import { type NavigateTo } from './useNormalizeUrl';
@@ -32,7 +32,7 @@ export {
 	type UseLinkProps,
 
 	useMatchRoute, matchRoute,
-	type MatchPropsRoute,
+	type MatchRouteProps,
 
 	useNavigate,
 	type NavigateOptions,

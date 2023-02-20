@@ -15,6 +15,23 @@ import { matchSearchRoute } from './useSearchRoute';
 
 type Props = BaseRouteProps | BaseSearchRouteProps | RedirectProps | NavigateProps;
 
+const isNavigateOrRedirect = (props: RedirectProps | NavigateProps) => {
+	return props.to !== undefined
+}
+
+const isSearchRoute = (props: BaseSearchRouteProps) => {
+	return props.search !== undefined
+}
+
+const isRoute = (
+	props: Props
+) => {
+	return (
+		!isNavigateOrRedirect(props as RedirectProps) &&
+		!isSearchRoute(props as BaseSearchRouteProps)
+	)
+}
+
 const getMatchFromProps = (
 	url: URL, 
 	parentRoute: RouteContextObject<Record<string, string>>, 
@@ -23,13 +40,21 @@ const getMatchFromProps = (
 	if ( __DEV__ ) {
 		invariant(
 			(props as BaseSearchRouteProps).search ||
-			Boolean((props as RedirectProps).from) ||
-			(props as NavigateProps).to,
+			(props as NavigateProps).to ||
+			!(props as BaseRouteProps).path ||
+			(props as BaseRouteProps).path,
 			'`useSwitch` can only accept component\'s with `path`, `search`, `from` or `to` attributes'
 		);
 	}
 
-	const path = (props as RedirectProps).from ?? (props as BaseRouteProps).path ?? '*'
+	const searchBaseProps = (props as BaseSearchRouteProps)
+	if ( isSearchRoute(searchBaseProps) ) {
+		return matchSearchRoute(url, {
+			...searchBaseProps
+		}, parentRoute)
+	}
+	
+	const path = (props as BaseRouteProps).path ?? (props as RedirectProps).from;
 	if ( path ) {
 		validateRouteProps({
 			...(props as BaseRouteProps),
@@ -41,12 +66,6 @@ const getMatchFromProps = (
 			path
 		}, parentRoute)
 	}
-	const searchBaseProps = (props as BaseSearchRouteProps)
-	if ( searchBaseProps.search ) {
-		return matchSearchRoute(url, {
-			...searchBaseProps
-		}, parentRoute)
-	}
 
 	return matchRoute(url, {
 		...searchBaseProps,
@@ -55,7 +74,7 @@ const getMatchFromProps = (
 }
 
 /**
- * Returns the first children component who props `path` or `search` matches the current location.
+ * Returns the first children component with props `path`, `search`, `to/from` that matches the current location or without previous props.
  */
 export const useSwitch = (children: Array<ReactElement<Props>> | ReactElement<Props>): ReactElement<BaseRouteProps> | null => {	
 	const { url } = useRouter()
@@ -66,6 +85,10 @@ export const useSwitch = (children: Array<ReactElement<Props>> | ReactElement<Pr
 	for (let i = 0; i < childArray.length; i++) {
 		const child = childArray[i];
 
+		if ( isRoute(child.props) && (child.props as BaseRouteProps).path === 'undefined' ) {
+			return child as unknown as ReactElement<BaseRouteProps>;
+		}
+	
 		const match = getMatchFromProps(url, parentRoute, child.props);
 
 		if ( match ) {
