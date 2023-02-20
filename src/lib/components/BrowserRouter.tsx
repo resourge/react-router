@@ -21,10 +21,11 @@ const BrowserRouter: FC<BrowserRouterProps> = ({
 	const [url, action] = useUrl();
 
 	return (
-		<RouterContext.Provider value={{
-			url,
-			action 
-		}}
+		<RouterContext.Provider 
+			value={{
+				url,
+				action 
+			}}
 		>
 			<Route path={base} {...routeProps}>
 				{ children }

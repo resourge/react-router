@@ -40,7 +40,7 @@ const Route: FC<RouteProps> = ({
 	validateRouteProps(matchProps);
 
 	if ( 
-		!matchProps.path 
+		matchProps.path === undefined
 	) {
 		return (
 			<>

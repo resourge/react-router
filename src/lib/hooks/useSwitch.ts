@@ -85,7 +85,7 @@ export const useSwitch = (children: Array<ReactElement<Props>> | ReactElement<Pr
 	for (let i = 0; i < childArray.length; i++) {
 		const child = childArray[i];
 
-		if ( isRoute(child.props) && (child.props as BaseRouteProps).path === 'undefined' ) {
+		if ( isRoute(child.props) && (child.props as BaseRouteProps).path === undefined ) {
 			return child as unknown as ReactElement<BaseRouteProps>;
 		}
 	
