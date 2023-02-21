@@ -20,14 +20,14 @@ const fixTypes = (typePath: string) => {
     [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params'], R[K]['_useParams']>`)
 
 	content = content.replace(`
-    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams>`, `
+    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams)>`, `
 	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams>`)
+    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams)>`)
 
 	content = content.replace(`
-    [K in keyof Paths]: Path<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, InjectParamsIntoPath<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, Paths[K]['_routes']>>;`, `
+    [K in keyof Paths]: Path<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), InjectParamsIntoPath<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), Paths[K]['_routes']>, Paths[K]['_isHash']>;`, `
 	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof Paths]: Path<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, InjectParamsIntoPath<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, Paths[K]['_routes']>>;`)
+    [K in keyof Paths]: Path<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), InjectParamsIntoPath<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), Paths[K]['_routes']>, Paths[K]['_isHash']>;`)
 
 	// Remover last export
 	const lastExport = content.lastIndexOf('export {');

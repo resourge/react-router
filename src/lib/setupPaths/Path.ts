@@ -24,7 +24,7 @@ export function createPathWithCurrentLocationHasHash(path: string) {
 }
 
 export type PathType<
-	Routes extends Record<string, Path<any, any, any>>, 
+	Routes extends Record<string, Path<any, any, any, boolean>>, 
 	Params extends Record<string, any> | undefined = undefined, 
 	UseParams extends Record<string, any> | undefined = undefined
 > = {
@@ -61,7 +61,7 @@ export type PathType<
 )
 
 export type InjectParamsIntoPathType<
-	Paths extends Record<string, Path<any, any, any>>, 
+	Paths extends Record<string, Path<any, any, any, boolean>>, 
 	Params extends Record<string, any> | undefined = undefined, 
 	UseParams extends Record<string, any> | undefined = undefined
 > = {
@@ -69,30 +69,32 @@ export type InjectParamsIntoPathType<
 		// @ts-expect-error Want to protect value, but also access it with types
 		Paths[K]['_routes'], 
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_params'] & Params,
+		Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params),
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_useParams'] & UseParams
+		Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams)
 	>
 }
 
 export type InjectParamsIntoPath<
 	Params extends Record<string, any>, 
 	UseParams extends Record<string, any>, 
-	Paths extends Record<string, Path<any, any, any>>
+	Paths extends Record<string, Path<any, any, any, boolean>>
 > = string extends keyof Params ? Paths : {
 	[K in keyof Paths]: Path<
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_params'] & Params, 
+		Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), 
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_useParams'] & UseParams, 
+		Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), 
 		InjectParamsIntoPath<
 			// @ts-expect-error Want to protect value, but also access it with types
-			Paths[K]['_params'] & Params, 
+			Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), 
 			// @ts-expect-error Want to protect value, but also access it with types
-			Paths[K]['_useParams'] & UseParams, 
+			Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), 
 			// @ts-expect-error Want to protect value, but also access it with types
 			Paths[K]['_routes']
-		>
+		>,
+		// @ts-expect-error Want to protect value, but also access it with types
+		Paths[K]['_isHash']
 	>
 }
 
@@ -118,11 +120,13 @@ type PathConfig = {
 export class Path<
 	Params extends Record<string, any>, 
 	UseParams extends Record<string, any>, 
-	Routes extends Record<string, Path<any, any, any>>
+	Routes extends Record<string, Path<any, any, any, boolean>>, 
+	IsHash extends boolean
 > {
 	protected _params!: Params;
 	protected _useParams!: UseParams;
 	protected _routes!: Routes;
+	protected _isHash!: IsHash;
 
 	protected config: PathConfig = {}
 	protected paths: Array<ParamPath<keyof Params, Params[keyof Params]> | string> = [];
@@ -135,9 +139,9 @@ export class Path<
 	protected clone<
 		Params extends Record<string, any> = Record<string, any>, 
 		UseParams extends Record<string, any> = Record<string, any>, 
-		Routes extends Record<string, Path<any, any, any>> = Record<string, Path<any, any, any>>
+		Routes extends Record<string, Path<any, any, any, boolean>> = Record<string, Path<any, any, any, boolean>>
 	>() { 
-		const _this = new Path<Params, UseParams, Routes>();
+		const _this = new Path<Params, UseParams, Routes, IsHash>();
 
 		_this.paths = [...this.paths] as unknown as Array<ParamPath<Params[keyof Params]> | string>;
 		_this._routes = {
@@ -187,7 +191,8 @@ export class Path<
 			CleanObjects<Params, { [key in K]: ParamsValue }>, 
 			CleanObjects<UseParams, { [key in K]: ParamsValue }>, 
 			Routes
-		>
+		>,
+		IsHash
 	>
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -208,7 +213,8 @@ export class Path<
 			CleanObjects<Params, { [key in K]?: ParamsValue }>, 
 			CleanObjects<UseParams, { [key in K]?: UseParamsValue }>, 
 			Routes
-		>
+		>,
+		IsHash
 	>;
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -229,7 +235,8 @@ export class Path<
 			CleanObjects<Params, { [key in K]: ParamsValue }>, 
 			CleanObjects<UseParams, { [key in K]: UseParamsValue }>, 
 			Routes
-		>
+		>,
+		IsHash
 	>;
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -249,7 +256,8 @@ export class Path<
 			CleanObjects<Params, (IsOptional extends false ? { [key in K]?: ParamsValue } : { [key in K]: ParamsValue })>, 
 			CleanObjects<UseParams, (IsOptional extends false ? { [key in K]?: UseParamsValue } : { [key in K]: UseParamsValue })>, 
 			Routes
-		>
+		>,
+		IsHash
 	>;
 
 	/**
@@ -271,7 +279,8 @@ export class Path<
 			CleanObjects<Params, { [key in K]: ParamsValue }>, 
 			CleanObjects<UseParams, { [key in K]: UseParamsValue }>, 
 			Routes
-		>
+		>,
+		IsHash
 	> {
 		const _this = this.clone<(string extends keyof Params ? {} : Params) & { [key in K]: ParamsValue }, Routes>();
 
@@ -297,9 +306,9 @@ export class Path<
 	 * 
 	 * @param routes {Record<string, Path<any, any, any>>} - object containing the current path children path's
 	 */
-	public routes<S extends Record<string, Path<any, any, any>>>(
+	public routes<S extends Record<string, Path<any, any, any, boolean>>>(
 		routes: S
-	): Path<Params, UseParams, S> {
+	): Path<Params, UseParams, S, IsHash> {
 		const _this = this.clone<Params, UseParams, S>();
 
 		/* if ( __DEV__ ) {
@@ -317,7 +326,7 @@ export class Path<
 	}
 
 	protected getBasePath(basePath: string = '') {
-		let newBasePath = '';
+		let newBasePath = basePath;
 
 		if ( this.config.hash || this.config.hashModal ) {
 			newBasePath = '#';
@@ -326,8 +335,6 @@ export class Path<
 		if ( this.config.isModal || this.config.hashModal ) {
 			newBasePath += '/modal';
 		}
-
-		newBasePath += basePath;
 
 		return newBasePath;
 	}
@@ -410,10 +417,34 @@ export class Path<
  * Creates a new path
  * @param path {string} - path base/start
  */
-export const path = <
+export function path <
 	Params extends Record<string, any>,
 	UseParams extends Record<string, any>,
-	Paths extends Record<string, Path<Params, UseParams, any>> = Record<string, Path<Params, UseParams, any>>
->(path?: string, config?: PathConfig): Path<Params, UseParams, Paths> => {
-	return new Path(config).addPath(path) as Path<Params, UseParams, Paths>;
+	Paths extends Record<string, Path<Params, UseParams, any, boolean>> = Record<string, Path<Params, UseParams, any, boolean>>
+>(): Path<Params, UseParams, Paths, false> 
+export function path <
+	Params extends Record<string, any>,
+	UseParams extends Record<string, any>,
+	Paths extends Record<string, Path<Params, UseParams, any, boolean>> = Record<string, Path<Params, UseParams, any, boolean>>
+>(path: string): Path<Params, UseParams, Paths, false> 
+export function path <
+	Params extends Record<string, any>,
+	UseParams extends Record<string, any>,
+	Paths extends Record<string, Path<Params, UseParams, any, boolean>> = Record<string, Path<Params, UseParams, any, boolean>>
+>(path: string, config: PathConfig & {
+	hash: true
+}): Path<Params, UseParams, Paths, true> 
+export function path <
+	Params extends Record<string, any>,
+	UseParams extends Record<string, any>,
+	Paths extends Record<string, Path<Params, UseParams, any, boolean>> = Record<string, Path<Params, UseParams, any, boolean>>
+>(path: string, config: PathConfig & {
+	hashModal: true
+}): Path<Params, UseParams, Paths, true> 
+export function path <
+	Params extends Record<string, any>,
+	UseParams extends Record<string, any>,
+	Paths extends Record<string, Path<Params, UseParams, any, boolean>> = Record<string, Path<Params, UseParams, any, boolean>>
+>(path?: string, config?: PathConfig): Path<Params, UseParams, Paths, boolean> {
+	return new Path(config).addPath(path) as Path<Params, UseParams, Paths, boolean>;
 }

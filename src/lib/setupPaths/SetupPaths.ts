@@ -1,6 +1,6 @@
 import { type PathType, type Path } from './Path';
 
-type PathStructures = Record<string, Path<any, any, any>>
+type PathStructures = Record<string, Path<any, any, any, boolean>>
 
 export type SetupPathsResult<R extends PathStructures> = { 
 	// @ts-expect-error Want to protect value, but also access it with types
