@@ -1,10 +1,10 @@
 import { type PathType, type Path } from './Path';
 
-type PathStructures = Record<string, Path<any, any>>
+type PathStructures = Record<string, Path<any, any, any>>
 
 export type SetupPathsResult<R extends PathStructures> = { 
 	// @ts-expect-error Want to protect value, but also access it with types
-	[K in keyof R]: PathType<R[K]['_routes'], R[K]['_params']> 
+	[K in keyof R]: PathType<R[K]['_routes'], R[K]['_params'], R[K]['_useParams']> 
 }
 
 /**

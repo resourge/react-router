@@ -15,19 +15,19 @@ const fixTypes = (typePath: string) => {
 	content = content.replace(/declare/g, 'export declare');
 
 	content = content.replace(`
-    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params']>;`, `
+    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params'], R[K]['_useParams']>`, `
 	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params']>;`)
+    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params'], R[K]['_useParams']>`)
 
 	content = content.replace(`
-    [K in keyof Paths]: PathType<Paths[K]['_routes'], string extends keyof Params ? Paths[K]['_params'] : (string extends keyof Paths[K]['_params'] ? Params : Paths[K]['_params'] & Params)>;`, `
+    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams>`, `
 	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof Paths]: PathType<Paths[K]['_routes'], string extends keyof Params ? Paths[K]['_params'] : (string extends keyof Paths[K]['_params'] ? Params : Paths[K]['_params'] & Params)>;`)
+    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams>`)
 
 	content = content.replace(`
-    [K in keyof Paths]: Path<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, InjectParamsIntoPath<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, Paths[K]['_routes']>>;`, `
+    [K in keyof Paths]: Path<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, InjectParamsIntoPath<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, Paths[K]['_routes']>>;`, `
 	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof Paths]: Path<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, InjectParamsIntoPath<string extends keyof Params ? Paths[K]['_params'] : Paths[K]['_params'] & Params, Paths[K]['_routes']>>;`)
+    [K in keyof Paths]: Path<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, InjectParamsIntoPath<Paths[K]['_params'] & Params, Paths[K]['_useParams'] & UseParams, Paths[K]['_routes']>>;`)
 
 	// Remover last export
 	const lastExport = content.lastIndexOf('export {');

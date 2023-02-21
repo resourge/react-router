@@ -1,3 +1,5 @@
+import invariant from 'tiny-invariant'
+
 export type ParamsConfigOptional<ParamResult = any, BeforePath = ParamResult> = { 
 	/**
 	 * Makes param optional
@@ -13,7 +15,7 @@ export type ParamsConfigOptional<ParamResult = any, BeforePath = ParamResult> = 
 	transform?: (value?: string) => ParamResult | undefined 
 }
 
-export type ParamsConfig<ParamResult = any, BeforePath = ParamResult> = { 
+export type ParamsConfigNotOptional<ParamResult = any, BeforePath = ParamResult> = { 
 	/**
 	 * Transforms param before path creation (get).
 	 */
@@ -26,23 +28,44 @@ export type ParamsConfig<ParamResult = any, BeforePath = ParamResult> = {
 	 * Transform's param on useParam.
 	 */
 	transform?: (value: string) => ParamResult 
-} | ParamsConfigOptional<ParamResult, BeforePath>
+}
 
-export class Param<Value = any> {
-	public key: string = ''
+export type ParamsConfig<ParamResult = any, BeforePath = ParamResult> = ParamsConfigNotOptional<ParamResult, BeforePath> | ParamsConfigOptional<ParamResult, BeforePath>
+
+export class ParamPath<Key = any, Params = any, UseParams = Params, IsOptional = false> {
+	public key: Key = '' as Key
 	public param: string = ''
-	public config?: ParamsConfig<Value>
+	public config?: IsOptional extends true 
+		? ParamsConfigOptional<UseParams, Params> 
+		: ParamsConfigNotOptional<UseParams, Params>
+}
 
-	public static createParam<Value = any>(param: string, config?: ParamsConfig<Value>) {
-		const instance = new this<Value>();
-
-		instance.param = `:${param}`;
-		instance.key = param;
-		if ( config?.optional ) {
-			instance.param = `{${instance.param}}?`;
-		}
-		instance.config = config;
-
-		return instance;
+export const Param = < 
+	K extends string = string,
+	Params extends any | undefined = string,
+	UseParams = Params,
+	IsOptional extends boolean = false
+>(
+	param: K, 
+	config?: ParamsConfig<UseParams extends Params ? Params : UseParams, Params> & {
+		optional?: IsOptional
 	}
+): ParamPath<K, Params, UseParams, IsOptional extends true ? false : true> => {
+	if ( __DEV__ ) { 
+		invariant(
+			!param.includes(':'),
+			'Don\'t use \':\' inside `param`.'
+		);
+	}
+
+	const instance = new ParamPath<K, Params, UseParams, IsOptional extends true ? false : true>();
+
+	instance.param = `:${param}`;
+	instance.key = param;
+	if ( config?.optional ) {
+		instance.param = `{${instance.param}}?`;
+	}
+	instance.config = config as any
+
+	return instance;
 }

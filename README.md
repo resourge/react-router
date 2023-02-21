@@ -41,9 +41,10 @@ import {
   Switch,
   Navigate,
   path,
-  Redirect
+  Redirect,
+  SetupPaths, 
+  path
 } from '@resourge/react-router'
-import { SetupPaths, path } from '@resourge/react-router/setupPaths';
 
 // Lazy loads
 const ProductList = React.lazy(() => import('./ProductList'));
@@ -133,7 +134,12 @@ SetupPaths serves to simplify navigation between routes, by putting path creatio
 //	                })
 //                In this example 'const { productId } = RoutePaths.PRODUCT.FORM.useParams()', productId will be number because of transform
 // }
-import { SetupPaths, path } from '@resourge/react-router/setupPaths';
+import { SetupPaths, path, param } from '@resourge/react-router';
+
+// For multiple instance of the same param
+const deliveryIdParam = param('deliveryId', {
+	transform: (deliveryId) => Number(deliveryId)
+})
 
 const RoutePaths = SetupPaths({
   HOME: path(),
@@ -148,7 +154,7 @@ const RoutePaths = SetupPaths({
 		optional: true
 	})
   }),
-  DELIVERY: path('delivery').param('id').addPath('details')
+  DELIVERY: path('delivery').param(deliveryIdParam).addPath('details')
 })
 
 
