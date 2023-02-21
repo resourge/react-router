@@ -1,3 +1,17 @@
+# [1.7.0](https://github.com/resourge/react-router/compare/v1.6.1...v1.7.0) (2023-02-21)
+
+
+### Bug Fixes
+
+* **path:** fix hash type not working as intended ([b1ae0ea](https://github.com/resourge/react-router/commit/b1ae0ea1d289cdfe9216289cec5f3b5113936177))
+* **route/switch:** fix undefined path not work as intended ([60ac20b](https://github.com/resourge/react-router/commit/60ac20b2a0eab77e232ae523ad2d47766f96cfa1))
+* **setuppaths:** fix types ([cfefe28](https://github.com/resourge/react-router/commit/cfefe282b408146791cb0541ce02ba4b3c6b2ac9))
+
+
+### Features
+
+* **switch:** add ability to also use components without path inside ([52e93d5](https://github.com/resourge/react-router/commit/52e93d545859a0acff282ec749c35673d08d553e))
+
 ## [1.6.1](https://github.com/resourge/react-router/compare/v1.6.0...v1.6.1) (2023-02-17)
 
 
