@@ -157,7 +157,7 @@ export class Path<
 	 * Makes method `get` to return the current path as hash.
 	 * @param includeCurrentURL {boolean}
 	 */
-	public includeCurrentURL(includeCurrentURL?: boolean) {
+	public includeCurrentURL(includeCurrentURL: boolean = true) {
 		const _this = this.clone<Params, UseParams, Routes>();
 		_this._includeCurrentURL = includeCurrentURL;
 		return _this;
