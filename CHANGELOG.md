@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/resourge/react-router/compare/v1.7.0...v1.7.1) (2023-02-22)
+
+
+### Bug Fixes
+
+* **path:** fix includeCurrentURL not being true by default ([b72359d](https://github.com/resourge/react-router/commit/b72359d44a0795f1b99d91f5b7a4faf21289689f))
+
 # [1.7.0](https://github.com/resourge/react-router/compare/v1.6.1...v1.7.0) (2023-02-21)
 
 
