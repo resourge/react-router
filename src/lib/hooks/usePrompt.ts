@@ -24,7 +24,7 @@ export const usePrompt = ({ when, message }: UsePromptProps): BlockerResult => {
 	return useBlocker((routeUrl, url, action) => {
 		const isBlocking = _blocker(routeUrl, url, action);
 
-		if ( isBlocking && message ) {
+		if ( isBlocking && message && action !== 'beforeunload' ) {
 			const _message = typeof message === 'string' ? message : message(routeUrl, url, action)
 
 			return !window.confirm(_message)

@@ -21,8 +21,8 @@ const external = [
 
 const globals = {
 	react: 'React',
-	reactSearchParams: '@resourge/react-search-params',
-	invariant: 'tiny-invariant',
+	'@resourge/react-search-params': 'reactSearchParams',
+	'tiny-invariant': 'invariant',
 	'react/jsx-runtime': 'ReactJsxRuntime'
 }
 

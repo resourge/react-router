@@ -1,4 +1,4 @@
-import React, { type ForwardedRef, forwardRef } from 'react';
+import { type ForwardedRef, forwardRef } from 'react';
 
 import { useRouter } from '../contexts/RouterContext';
 import { useLink, type UseLinkProps } from '../hooks/useLink';

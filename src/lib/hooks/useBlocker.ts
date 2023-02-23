@@ -41,10 +41,10 @@ export const useBlocker = (
 			finishBlocking();
 		}
 		const isBlocking = blocker(url, event.url, event.action);
-
+		
 		if ( isBlocking ) {
 			setBlocker({
-				isBlocking: true,
+				isBlocking: event.action !== 'beforeunload',
 				continueNavigation
 			})
 		}
