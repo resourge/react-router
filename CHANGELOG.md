@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/resourge/react-router/compare/v1.7.1...v1.7.2) (2023-02-24)
+
+
+### Bug Fixes
+
+* **useprompt:** trigger new versino ([a72759c](https://github.com/resourge/react-router/commit/a72759c7a1d1d6d2f03cfaca4b2dd45f2469af69))
+
 ## [1.7.1](https://github.com/resourge/react-router/compare/v1.7.0...v1.7.1) (2023-02-22)
 
 
