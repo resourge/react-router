@@ -13,9 +13,7 @@ export const useParams = <Params extends Record<string, string> = Record<string,
 ): Params => {
 	const route = useRoute<Params>();
 
-	const params: StringifyObjectParams<Params> = {
+	return transformsParams({
 		...route.params
-	};
-
-	return transformsParams(params)
+	})
 }
