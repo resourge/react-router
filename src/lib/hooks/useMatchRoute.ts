@@ -1,7 +1,7 @@
 
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 
-import { useRoute } from '../contexts/RouteContext';
+import { RouteContext, type RouteContextObject } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { matchPath, type MatchResult } from '../utils/matchPath';
 
@@ -81,7 +81,7 @@ export const matchRoute = (
  */
 export const useMatchRoute = (matchProps: MatchRouteProps, matchResult?: MatchResult | null) => {
 	const { url } = useRouter()
-	const parentRoute = useRoute();
+	const parentRoute = useContext(RouteContext) as RouteContextObject<Record<string, any>>;
 	const ref = useRef<MatchResult | null | undefined>();
 
 	const _matchResult = matchResult ?? matchRoute(url, matchProps, parentRoute);
