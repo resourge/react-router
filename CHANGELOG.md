@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/resourge/react-router/compare/v1.7.2...v1.7.3) (2023-02-24)
+
+
+### Bug Fixes
+
+* **usematchroute:** fix parentRoute error when RouteContext is null ([39aaa2f](https://github.com/resourge/react-router/commit/39aaa2f36bff4b3a2fb96e7fe2b7cac8874e3c7d))
+
 ## [1.7.2](https://github.com/resourge/react-router/compare/v1.7.1...v1.7.2) (2023-02-24)
 
 
