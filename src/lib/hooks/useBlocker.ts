@@ -6,7 +6,7 @@ import { useRoute } from '../contexts/RouteContext';
 
 import { useBeforeURLChange } from './useBeforeURLChange';
 
-export type Blocker = (routeUrl: URL, url: URL, action: typeof EVENTS[keyof typeof EVENTS]) => boolean
+export type Blocker = (currentUrl: URL, nextUrl: URL, action: typeof EVENTS[keyof typeof EVENTS]) => boolean
 
 export type BlockerResult = {
 	continueNavigation: () => void

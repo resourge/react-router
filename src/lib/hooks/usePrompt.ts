@@ -7,7 +7,7 @@ export type UsePromptProps = {
 	 * When true blocks url change
 	 */
 	when: boolean | Blocker
-	message?: string | ((routeUrl: URL, url: URL, action: typeof EVENTS[keyof typeof EVENTS]) => string)
+	message?: string | ((currentUrl: URL, nextUrl: URL, action: typeof EVENTS[keyof typeof EVENTS]) => string)
 }
 
 /**
@@ -21,11 +21,11 @@ export type UsePromptProps = {
 export const usePrompt = ({ when, message }: UsePromptProps): BlockerResult => {
 	const _blocker = typeof when === 'boolean' ? () => when : (when)
 
-	return useBlocker((routeUrl, url, action) => {
-		const isBlocking = _blocker(routeUrl, url, action);
+	return useBlocker((currentUrl, nextUrl, action) => {
+		const isBlocking = _blocker(currentUrl, nextUrl, action);
 
 		if ( isBlocking && message && action !== 'beforeunload' ) {
-			const _message = typeof message === 'string' ? message : message(routeUrl, url, action)
+			const _message = typeof message === 'string' ? message : message(currentUrl, nextUrl, action)
 
 			return !window.confirm(_message)
 		}
