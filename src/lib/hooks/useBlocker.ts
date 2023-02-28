@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { type EVENTS } from '@resourge/react-search-params';
 
-import { useRoute } from '../contexts/RouteContext';
+import { useRouter } from '../contexts';
 
 import { useBeforeURLChange } from './useBeforeURLChange';
 
@@ -22,7 +22,7 @@ export type BlockerResult = {
 export const useBlocker = (
 	blocker: Blocker
 ): BlockerResult => {
-	const { url } = useRoute();
+	const { url } = useRouter();
 	const [{ isBlocking, continueNavigation }, setBlocker] = useState<{ continueNavigation: () => void, isBlocking: boolean }>({
 		isBlocking: false,
 		continueNavigation: () => {}
