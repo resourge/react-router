@@ -1,3 +1,11 @@
+## [1.7.4](https://github.com/resourge/react-router/compare/v1.7.3...v1.7.4) (2023-02-28)
+
+
+### Bug Fixes
+
+* **navigate:** fix Navigate component pushing instead of replacing url's ([ee7657c](https://github.com/resourge/react-router/commit/ee7657cb8b61ed8bb0d6732fee3b27ab162745a4))
+* **useblocker:** change from routeUrl to actual url ([11c772b](https://github.com/resourge/react-router/commit/11c772b842528ee6c7e7bcc69614c33a1afdfb5d))
+
 ## [1.7.3](https://github.com/resourge/react-router/compare/v1.7.2...v1.7.3) (2023-02-24)
 
 
