@@ -1,3 +1,10 @@
+## [1.7.5](https://github.com/resourge/react-router/compare/v1.7.4...v1.7.5) (2023-02-28)
+
+
+### Bug Fixes
+
+* **resourge/react-search-params:** update resourge/react-search-params to fix some bugs ([1f2690d](https://github.com/resourge/react-router/commit/1f2690d01bd6d93a4eeba3b559392dc8e51df168))
+
 ## [1.7.4](https://github.com/resourge/react-router/compare/v1.7.3...v1.7.4) (2023-02-28)
 
 
