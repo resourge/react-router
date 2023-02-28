@@ -1,3 +1,10 @@
+## [1.7.6](https://github.com/resourge/react-router/compare/v1.7.5...v1.7.6) (2023-02-28)
+
+
+### Bug Fixes
+
+* **generatepath:** fix path not working with optional values ([76e515b](https://github.com/resourge/react-router/commit/76e515b89436337b943ac320a428baa49813f58d))
+
 ## [1.7.5](https://github.com/resourge/react-router/compare/v1.7.4...v1.7.5) (2023-02-28)
 
 
