@@ -63,7 +63,8 @@ export const matchRoute = (
 				hash,
 				hashPath,
 				baseURL,
-				exact
+				exact,
+				paths
 			}
 		)
 

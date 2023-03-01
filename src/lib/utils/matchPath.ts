@@ -1,30 +1,34 @@
 import { getUrlPattern, type UrlPattern } from './getUrlPattern';
 
-export type MatchProps = UrlPattern
+export type MatchProps = UrlPattern & {
+	/** */
+	paths?: string[]
+}
 
 export type MatchResult<Params extends Record<string, string> = Record<string, string>> = {
+	/**
+	 * Get current route params
+	 */
+	getParams: () => Params
 	/**
 	 * Current {@link URLPatternResult}
 	 */
 	match: URLPatternResult
-	/**
-	 * Current route params
-	 */
-	params: Params
 
 	/**
 	 * Current route path (merged with previous path's)
 	 */
 	path: string
 	/**
+	 * Current route search
+	 */
+	search: string
+
+	/**
 	 * Unique id for route. (prevents routes from rendering again if nothing changed)
 	 */
 	unique: string
-
-	/**
-	 * Current route URL
-	 */
-	url: URL
+	
 	/**
 	 * Current {@link URLPattern}
 	 */
@@ -50,34 +54,14 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 	matchProps: MatchProps
 ): MatchResult<Params> | null => {
 	const {
-		hash, path, hashPath 
+		hash, path, hashPath, paths
 	} = matchProps;
-	const pattern = getUrlPattern(matchProps);
+	const urlPattern = getUrlPattern(matchProps);
 
-	const match = pattern.exec(href);
+	const match = urlPattern.exec(href);
 
 	if ( match ) {
-		const matchUrl = hash ? match.hash : match.pathname;
-
-		const pathname = matchUrl.groups[0] 
-			? matchUrl.input.replace(`/${matchUrl.groups[0]}`, '') 
-			: matchUrl.input
-
 		const search = hash ? '' : match.search.input;
-
-		const url = new URL(
-			`${pathname}${search ? `?${search}` : ''}`,
-			window.location.origin
-		)
-
-		const params: Params = Object.entries(matchUrl.groups)
-		.reduce<Record<string, string>>((obj, [key, value]) => {
-			if ( key !== '0' && value ) {
-				obj[key] = value;
-			}
-
-			return obj;
-		}, {}) as Params
 
 		const unique = hash 
 			? href.substring(href.indexOf(match.hash.input), href.length) 
@@ -86,9 +70,34 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 		return {
 			unique,
 			path,
-			url,
-			params,
-			urlPattern: pattern,
+			search,
+			getParams: () => {
+				return (paths ?? [path])
+				.map((path) => {
+					const pattern = getUrlPattern({
+						...matchProps,
+						path
+					});
+
+					const match = pattern.exec(href);
+
+					if ( match ) {
+						const matchUrl = hash ? match.hash : match.pathname;
+
+						return Object.entries(matchUrl.groups)
+						.filter(([key, value]) => key !== '0' && value) as Array<[string, string]>
+					}
+
+					return []
+				})
+				.flat()
+				.reduce<Record<string, string>>((obj, [key, value]) => {
+					obj[key] = value
+
+					return obj;
+				}, {}) as Params
+			},
+			urlPattern,
 			match,
 			hash,
 			hashPath

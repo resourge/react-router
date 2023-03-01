@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useRoute } from '../contexts/RouteContext';
 import { type StringifyObjectParams } from '../types/StringifyObjectParams';
 
@@ -13,7 +15,8 @@ export const useParams = <Params extends Record<string, string> = Record<string,
 ): Params => {
 	const route = useRoute<Params>();
 
-	return transformsParams({
-		...route.params
-	})
+	return useMemo(() => transformsParams({
+		...route.getParams()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}), [route.hash ? route.match.hash.input : route.match.pathname.input]);
 }

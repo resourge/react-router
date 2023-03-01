@@ -14,16 +14,21 @@ import { useNavigate } from './useNavigate';
 export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T) => {
 	const {
 		hash,
-		url: routeUrl
+		search
 	} = useRoute();
 	const { url } = useRouter();
 	const navigate = useNavigate()
 
-	const search = routeUrl.search;
-	const _searchParams = routeUrl.searchParams;
+	const searchParams = useMemo(() => {
+		const url = new URL(
+			`${search ? `?${search}` : ''}`,
+			window.location.origin
+		)
+		const searchParams = url.searchParams;
 
+		return parseSearchParams<T>(searchParams, defaultParams)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const searchParams = useMemo(() => parseSearchParams<T>(_searchParams, defaultParams), [search]);
+	}, [search]);
 
 	const setParams = (newParams: Partial<T>) => {
 		const newSearch = parseParams(newParams);

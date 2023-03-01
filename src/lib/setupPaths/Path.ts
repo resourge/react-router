@@ -170,7 +170,7 @@ export class Path<
 	public addPath(path?: string) {
 		const _this = this.clone<Params, UseParams, Routes>();
 		if ( path ) {
-			_this.paths.push(path);
+			_this.paths.push(`/${path}`);
 		}
 		return _this;
 	}
@@ -350,7 +350,7 @@ export class Path<
 		const _beforePaths: Array<(params: Exclude<Params, undefined>) => void> = beforePaths ? [...beforePaths] : [];
 
 		// Creates path for current route
-		const path = `${this.getBasePath(basePath)}/${this.paths
+		let path = `${this.getBasePath(basePath)}${this.paths
 		.map((path) => {
 			if ( typeof path === 'string' ) {
 				return path;
@@ -367,7 +367,9 @@ export class Path<
 			}
 			return path.param;
 		})
-		.join('/')}`
+		.join('')}`
+
+		path = path === '' ? '/' : path
 
 		// Generates routes
 		const paths = Object.entries(this._routes ?? {})

@@ -11,14 +11,13 @@ type NavigateParams = {
 
 type NavigateObject = NavigateURL | NavigateParams
 
-export type NavigateTo = string | URL | NavigateObject | ((url: URL, routeUrl: URL) => string | URL | NavigateObject)
+export type NavigateTo = string | URL | NavigateObject | ((url: URL) => string | URL | NavigateObject)
 
 const normalizeUrl = (
 	to: NavigateTo, 
 	path: string,
 	params: Record<string, any>,
-	url: URL, 
-	routeUrl: URL
+	url: URL
 ): URL => {
 	// If to is string, resolve to with current url
 	if ( typeof to === 'string' ) {
@@ -30,11 +29,10 @@ const normalizeUrl = (
 	}
 	else if ( typeof to === 'function' ) {
 		return normalizeUrl(
-			to(url, routeUrl),
+			to(url),
 			path,
 			params,
-			url,
-			routeUrl
+			url
 		);
 	}
 	else {
@@ -68,8 +66,7 @@ const normalizeUrl = (
 export const useNormalizeUrl = () => {
 	const { url } = useRouter();
 	const {
-		url: routeUrl,
-		params,
+		getParams: params,
 		path
 	} = useRoute();
 
@@ -78,8 +75,7 @@ export const useNormalizeUrl = () => {
 			to,
 			path,
 			params,
-			url,
-			routeUrl
+			url
 		)
 	}
 }

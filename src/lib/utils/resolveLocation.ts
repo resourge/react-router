@@ -14,8 +14,7 @@
  * url: "../../products" // /products
  * url: "../../../products" // /products
  */
-export function resolveLocation(url: string, _baseURL?: string): URL {
-	const baseURL = _baseURL ? (_baseURL.lastIndexOf('/') === _baseURL.length - 1) ? _baseURL : `${_baseURL}/` : undefined
+export function resolveLocation(url: string, baseURL?: string): URL {
 	const m = String(url)
 	.replace(/^\s+|\s+$/g, '')
 	.match(/^([^:\/?#]+:)?(?:\/\/(?:([^:@\/?#]*)(?::([^:@\/?#]*))?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
