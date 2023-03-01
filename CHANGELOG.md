@@ -1,3 +1,10 @@
+## [1.7.7](https://github.com/resourge/react-router/compare/v1.7.6...v1.7.7) (2023-03-01)
+
+
+### Bug Fixes
+
+* **params:** fix params not working as intended when using multiple paths ([c5682a3](https://github.com/resourge/react-router/commit/c5682a3b6187bc0f23e03fda554f84b1fce9b042))
+
 ## [1.7.6](https://github.com/resourge/react-router/compare/v1.7.5...v1.7.6) (2023-02-28)
 
 
