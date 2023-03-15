@@ -1,3 +1,10 @@
+## [1.7.12](https://github.com/resourge/react-router/compare/v1.7.11...v1.7.12) (2023-03-15)
+
+
+### Bug Fixes
+
+* **geturlpattern:** fix previous commit making other urls not working as intended ([225ca64](https://github.com/resourge/react-router/commit/225ca640210c9f0fc410e9bd4f381467b606dac7))
+
 ## [1.7.11](https://github.com/resourge/react-router/compare/v1.7.10...v1.7.11) (2023-03-15)
 
 
