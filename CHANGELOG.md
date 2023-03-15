@@ -1,3 +1,10 @@
+## [1.7.9](https://github.com/resourge/react-router/compare/v1.7.8...v1.7.9) (2023-03-15)
+
+
+### Bug Fixes
+
+* **geturlpattern:** fix pattern not working without a final / ([4d3734c](https://github.com/resourge/react-router/commit/4d3734ca0109bf5fc05e3e2a1edb4c0751b2dbf4))
+
 ## [1.7.8](https://github.com/resourge/react-router/compare/v1.7.7...v1.7.8) (2023-03-02)
 
 
