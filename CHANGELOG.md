@@ -1,3 +1,10 @@
+## [1.7.10](https://github.com/resourge/react-router/compare/v1.7.9...v1.7.10) (2023-03-15)
+
+
+### Bug Fixes
+
+* **geturlpattern:** add unitary testing to prevent url's not working ([ee46029](https://github.com/resourge/react-router/commit/ee46029b20712bf45fe45360112c208367245a90))
+
 ## [1.7.9](https://github.com/resourge/react-router/compare/v1.7.8...v1.7.9) (2023-03-15)
 
 
