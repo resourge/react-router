@@ -23,7 +23,7 @@ export const getUrlPattern = ({
 	if (cacheCompile.has(`${path}_${String(hashPath)}_${String(exact)}`)) return cacheCompile.get(`${path}_${String(hashPath)}_${String(exact)}`)!;
 
 	const pathname = !hash ? `${path}${_exact ? '' : '{/*}?'}` : '*'
-	const _hash = hash ? `${hashPath ?? ''}${_exact ? '' : '{/*}?*?'}` : '*'
+	const _hash = hash ? `${hashPath ?? ''}${_exact ? '' : '{/*}?{#*}?'}` : '*'
 
 	const generator = new URLPattern(
 		{

@@ -37,11 +37,16 @@ export const RoutePaths = SetupPaths({
 				hashModal: true
 			})
 			.routes({
-				EDIT: path()
+				ENDS_WITH_PATH: path()
 				.param('index', {
 					transform: (index) => Number(index)
 				})
 				.addPath('edit'),
+
+				ENDS_WITH_PARAM: path()
+				.param('index', {
+					transform: (index) => Number(index)
+				}),
 
 				CREATE: path('create')
 			})
@@ -129,9 +134,13 @@ describe('getUrlPattern', () => {
 		testPathPattern(RoutePaths.PRODUCT.CATEGORY.TEST as any)
 	})
 
-	it('hash', () => {
-		const pathPattern = RoutePaths.PRODUCT.CATEGORY.MODAL.EDIT;
-
+	const testHashPattern = (
+		pathPattern: PathType<
+			Record<string, Path<any, any, any, boolean>>,
+			Record<string, any>,
+			Record<string, any>
+		>
+	) => {
 		const url = getUrlPattern({
 			baseURL,
 			path: '',
@@ -196,5 +205,10 @@ describe('getUrlPattern', () => {
 				)
 			)
 		).toBeFalsy();
+	}
+
+	it('hash', () => {
+		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PATH as any);
+		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PARAM as any);
 	})
 })
