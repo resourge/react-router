@@ -1,3 +1,10 @@
+## [1.7.11](https://github.com/resourge/react-router/compare/v1.7.10...v1.7.11) (2023-03-15)
+
+
+### Bug Fixes
+
+* **geturlpattern:** fix param inside hash not working as intended ([79c3c8d](https://github.com/resourge/react-router/commit/79c3c8ddcc1daec69b990c56c646b5c92aa8ef3c))
+
 ## [1.7.10](https://github.com/resourge/react-router/compare/v1.7.9...v1.7.10) (2023-03-15)
 
 
