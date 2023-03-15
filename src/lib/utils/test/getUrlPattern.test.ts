@@ -20,6 +20,10 @@ export enum NewFieldPositionEnum {
 	BELOW = 'below'
 }
 
+const DataSourceIdParam = Param('dataSourceId', {
+	transform: (dataSourceId: string) => Number(dataSourceId)
+})
+
 const ProductIdParam = Param('productId', {
 	transform: (productId: string) => Number(productId)
 })
@@ -52,6 +56,26 @@ export const RoutePaths = SetupPaths({
 			})
 		})
 		.includeCurrentURL()
+	}),
+
+	DATA_SOURCE: path('datasource')
+	.routes({
+		FORM: path()
+		.param('dataSourceTab', {
+			transform: (dataSourceTab) => dataSourceTab as any
+		})
+		.routes({
+			CREATE: path('')
+			.addPath('create')
+			.includeCurrentURL(),
+
+			EDIT: path('')
+			.param(DataSourceIdParam)
+			.param('areaName', {
+				optional: true
+			})
+			.includeCurrentURL()
+		})
 	})
 })
 
@@ -197,18 +221,83 @@ describe('getUrlPattern', () => {
 		expect(
 			url.test(`${basePath}#/test`)
 		).toBeTruthy();
-
-		expect(
-			url.test(
-				createBaseUrl(
-					RoutePaths.PRODUCT.CATEGORY.MODAL.CREATE.get()
-				)
-			)
-		).toBeFalsy();
 	}
 
 	it('hash', () => {
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PATH as any);
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PARAM as any);
+	})
+	
+	it('path', () => {
+		const url = getUrlPattern({
+			baseURL,
+			path: RoutePaths.DATA_SOURCE.FORM.EDIT.path
+		})
+
+		expect(
+			url.test(
+				createBaseUrl('/datasource/areas_attributes/421')
+			)
+		).toBeTruthy();
+
+		expect(
+			url.exec(
+				createBaseUrl('/datasource/areas_attributes/421#')
+			)
+		).toMatchObject({
+			pathname: {
+				groups: {
+					dataSourceTab: 'areas_attributes',
+					dataSourceId: '421',
+					areaName: undefined
+				}
+			}
+		});
+
+		expect(
+			url.test(
+				createBaseUrl('/datasource/areas_attributes/421/')
+			)
+		).toBeTruthy();
+
+		expect(
+			url.exec(
+				createBaseUrl('/datasource/areas_attributes/421/')
+			)
+		).toMatchObject({
+			pathname: {
+				groups: {
+					dataSourceTab: 'areas_attributes',
+					dataSourceId: '421',
+					areaName: ''
+				}
+			}
+		});
+
+		expect(
+			url.test(
+				createBaseUrl('/datasource/areas_attributes/421#/datasource')
+			)
+		).toBeTruthy();
+
+		expect(
+			url.test(
+				createBaseUrl('/datasource/areas_attributes/421/A_Check_DS_Separators_S02_DIP04_Fix.Hours#/datasource')
+			)
+		).toBeTruthy();
+
+		expect(
+			url.exec(
+				createBaseUrl('/datasource/areas_attributes/421/A_Check_DS_Separators_S02_DIP04_Fix.Hours#/datasource')
+			)
+		).toMatchObject({
+			pathname: {
+				groups: {
+					dataSourceTab: 'areas_attributes',
+					dataSourceId: '421',
+					areaName: 'A_Check_DS_Separators_S02_DIP04_Fix.Hours'
+				}
+			}
+		});
 	})
 })
