@@ -1,6 +1,6 @@
 {
   "name": "@resourge/react-router",
-  "version": "1.7.12",
+  "version": "1.7.13",
   "main": "./dist/main.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,3 +1,10 @@
+## [1.7.13](https://github.com/resourge/react-router/compare/v1.7.12...v1.7.13) (2023-03-15)
+
+
+### Bug Fixes
+
+* **geturlpattern:** rever previous commits to add atual fix ([ccf0eb5](https://github.com/resourge/react-router/commit/ccf0eb53df34daefaa6da951bd9f92d5800ef5a3))
+
 ## [1.7.12](https://github.com/resourge/react-router/compare/v1.7.11...v1.7.12) (2023-03-15)
 
 
