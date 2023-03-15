@@ -92,7 +92,7 @@ describe('getUrlPattern', () => {
 			path: pathPattern.path
 		})
 
-		const productId = 10;
+		const productId = 'Product_Name';
 
 		const _basePath = pathPattern.get({
 			productId
@@ -236,6 +236,12 @@ describe('getUrlPattern', () => {
 
 		expect(
 			url.test(
+				createBaseUrl('/')
+			)
+		).toBeFalsy();
+
+		expect(
+			url.test(
 				createBaseUrl('/datasource/areas_attributes/421')
 			)
 		).toBeTruthy();
@@ -269,7 +275,7 @@ describe('getUrlPattern', () => {
 				groups: {
 					dataSourceTab: 'areas_attributes',
 					dataSourceId: '421',
-					areaName: ''
+					areaName: undefined
 				}
 			}
 		});

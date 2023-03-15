@@ -60,7 +60,7 @@ export const Param = <
 
 	const instance = new ParamPath<K, Params, UseParams, IsOptional extends true ? false : true>();
 
-	instance.param = `/:${param}([^/]*)`;
+	instance.param = `/:${param}`;
 	instance.key = param;
 	if ( config?.optional ) {
 		instance.param = `{${instance.param}}?`;

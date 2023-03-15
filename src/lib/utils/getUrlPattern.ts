@@ -22,8 +22,8 @@ export const getUrlPattern = ({
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	if (cacheCompile.has(`${path}_${String(hashPath)}_${String(exact)}`)) return cacheCompile.get(`${path}_${String(hashPath)}_${String(exact)}`)!;
 
-	const pathname = !hash ? `${path}${_exact ? '' : '{*}?'}` : '*'
-	const _hash = hash ? `${hashPath ?? ''}${_exact ? '' : '{*}?{#*}?'}` : '*'
+	const pathname = !hash ? `${path}${_exact ? '' : '{/*}?'}` : '*'
+	const _hash = hash ? `${hashPath ? `${hashPath}${/:(\w+)$/.test(hashPath) ? '([^/]*)' : ''}` : ''}${_exact ? '' : '{/*}?{#*}?'}` : '*'
 
 	const generator = new URLPattern(
 		{
