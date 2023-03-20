@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/resourge/react-router/compare/v1.7.13...v1.8.0) (2023-03-20)
+
+
+### Features
+
+* **usematchpath:** add usematchpath ([24d5bc7](https://github.com/resourge/react-router/commit/24d5bc735540fe22a8bf764c12a0cd7f25a0d593))
+
 ## [1.7.13](https://github.com/resourge/react-router/compare/v1.7.12...v1.7.13) (2023-03-15)
 
 
