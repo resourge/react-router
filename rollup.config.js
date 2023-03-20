@@ -5,11 +5,12 @@ import terser from '@rollup/plugin-terser';
 import dts from 'rollup-plugin-dts';
 import filsesize from 'rollup-plugin-filesize';
 
-import packageJson from './package.json' assert { type: 'json' }
+import { readFileSync } from "fs";
+const pkg = JSON.parse(readFileSync('package.json', { encoding: 'utf8' }));
 
 const {
 	name, author, license
-} = packageJson
+} = pkg
 
 const external = [
 	'react', 

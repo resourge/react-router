@@ -6,7 +6,7 @@ import {
 } from 'react'
 
 import { RouteContext } from '../contexts/RouteContext';
-import { type MatchRouteProps, useMatchRoute } from '../hooks/useMatchRoute';
+import { useMatchRoute, type MatchRouteProps } from '../hooks/useMatchRoute';
 import { type MatchResult } from '../utils/matchPath';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
@@ -39,23 +39,23 @@ const Route: FC<RouteProps> = ({
 }: IRouteProps) => {
 	validateRouteProps(matchProps);
 
-	if ( 
-		matchProps.path === undefined
-	) {
-		return (
-			<>
-				{ component ? cloneElement(component, {}, component.props.children, children) : children }
-			</>
-		)
-	}
-
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch)
 
 	if ( match ) {
+		const Component = component ? cloneElement(component, {}, component.props.children, children) : children;
+		
+		if ( match === 'NO_ROUTE' ) {
+			return (
+				<>
+					{ Component }
+				</>
+			)
+		}
+
 		return (
 			<RouteContext.Provider value={match}>
-				{ component ? cloneElement(component, {}, component.props.children, children) : children }
+				{ Component }
 			</RouteContext.Provider>
 		)
 	}

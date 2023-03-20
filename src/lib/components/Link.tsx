@@ -2,11 +2,11 @@ import { type ForwardedRef, forwardRef } from 'react';
 
 import { useRouter } from '../contexts/RouterContext';
 import { useLink, type UseLinkProps } from '../hooks/useLink';
-import { type MatchRouteProps } from '../hooks/useMatchRoute';
+import { type MatchPathProps } from '../hooks/useMatchPath';
 
 export type LinkProps = UseLinkProps & {
 	matchClassName?: string
-} & Omit<MatchRouteProps, 'path'>
+} & Omit<MatchPathProps, 'path'>
 
 /**
  * Component extends element `a` and navigates to `to`.

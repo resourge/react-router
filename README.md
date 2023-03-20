@@ -348,15 +348,15 @@ const [href, onClick] = useLink({
 })
 ```
 
-## useMatchRoute
+## useMatchPath
 
 Hook to match path to current `url`.
 Returns null if it is a no match, otherwise returns match result.
 
 ```JSX
-import { useMatchRoute } from '@resourge/react-router'
+import { useMatchPath } from '@resourge/react-router'
 
-const match = useMatchRoute({
+const match = useMatchPath({
   path: '/product'
 })
 ```

@@ -4,14 +4,14 @@ import { useRoute } from '../contexts/RouteContext'
 import { useRouter } from '../contexts/RouterContext'
 import { type MatchResult } from '../utils/matchPath'
 
-import { type MatchRouteProps, matchRoute } from './useMatchRoute'
+import { type MatchPathProps, matchRoute } from './useMatchPath'
 
 export type UseSearchRouteProps = {
 	/**
 	 * Route search
 	 */
 	search: string | string[]
-} & Omit<MatchRouteProps, 'path'>
+} & Omit<MatchPathProps, 'path'>
 
 /**
  * Method to match `search(s)` to `url`
@@ -32,7 +32,7 @@ export const matchSearchRoute = (
 	const hashUrl = new URL(url.hash.replace('#', ''), url.origin)
 
 	if ( _search.every((search) => hashUrl.searchParams.has(search)) ) {
-		const matchProps: MatchRouteProps = {
+		const matchProps: MatchPathProps = {
 			path: '*',
 			exact,
 			hash

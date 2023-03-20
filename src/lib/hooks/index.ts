@@ -4,7 +4,9 @@ import { useBlocker } from './useBlocker';
 import { type Blocker } from './useBlocker';
 import { useLink } from './useLink';
 import { type UseLinkProps } from './useLink';
-import { useMatchRoute, matchRoute } from './useMatchRoute';
+import { useMatchPath } from './useMatchPath';
+import { type MatchPathProps } from './useMatchPath';
+import { useMatchRoute } from './useMatchRoute';
 import { type MatchRouteProps } from './useMatchRoute';
 import { useNavigate } from './useNavigate';
 import { type NavigateOptions } from './useNavigate';
@@ -31,8 +33,8 @@ export {
 	useLink,
 	type UseLinkProps,
 
-	useMatchRoute, matchRoute,
-	type MatchRouteProps,
+	useMatchPath,
+	type MatchPathProps,
 
 	useNavigate,
 	type NavigateOptions,
@@ -47,5 +49,8 @@ export {
 	useSearchRoute,
 	type UseSearchRouteProps,
 
-	useSwitch
+	useSwitch,
+
+	useMatchRoute,
+	type MatchRouteProps
 }

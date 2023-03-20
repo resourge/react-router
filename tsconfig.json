@@ -30,7 +30,7 @@
 	"include": [
 		"src",
 		".eslintrc.js",
-		"rollup.config.js",
+		"rollup.config.mjss",
 	],
 	"exclude": [
 		"_dist",

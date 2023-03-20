@@ -10,7 +10,7 @@ import { type RouteContextObject, useRoute } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
-import { matchRoute } from './useMatchRoute';
+import { matchRoute } from './useMatchPath';
 import { matchSearchRoute } from './useSearchRoute';
 
 type Props = BaseRouteProps | BaseSearchRouteProps | RedirectProps | NavigateProps;
