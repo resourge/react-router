@@ -9,20 +9,34 @@ const createBaseUrl = (path: string) => {
 }
 
 describe('matchPath', () => {
-	it('path', () => {
-		const match = matchPath(
-			createBaseUrl('/products/1460?id=10#/hash'), 
-			{
-				baseURL,
-				path: '/products/:productId'
-			}
-		)
+	describe('path', () => {
+		it('base /', () => {
+			const matchBase = matchPath(
+				createBaseUrl('/'), 
+				{
+					baseURL,
+					path: '/'
+				}
+			)
 
-		expect(match).not.toBeNull();
+			expect(matchBase).not.toBeNull();
+		})
 
-		expect(match!.getParams()).toMatchObject({
-			productId: '1460' 
-		});
+		it('pathname', () => {
+			const match = matchPath(
+				createBaseUrl('/products/1460?id=10#/hash'), 
+				{
+					baseURL,
+					path: '/products/:productId'
+				}
+			)
+
+			expect(match).not.toBeNull();
+
+			expect(match!.getParams()).toMatchObject({
+				productId: '1460' 
+			});
+		})
 	})
 
 	describe('hash', () => {
