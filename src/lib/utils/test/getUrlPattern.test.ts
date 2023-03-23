@@ -174,11 +174,13 @@ describe('getUrlPattern', () => {
 
 		const index = 10;
 
-		const basePath = createBaseUrl(
+		const _basePath = createBaseUrl(
 			pathPattern.get({
 				index
 			})
 		);
+
+		const basePath = `${baseURL}${_basePath.substring(_basePath.indexOf('#') + 1)}`
 
 		expect(
 			url.test(basePath)
@@ -187,7 +189,7 @@ describe('getUrlPattern', () => {
 		expect(
 			url.exec(`${basePath}/test`)
 		).toMatchObject({
-			hash: {
+			pathname: {
 				groups: {
 					index: String(index)
 				}
@@ -197,7 +199,7 @@ describe('getUrlPattern', () => {
 		expect(
 			url.exec(basePath)
 		).toMatchObject({
-			hash: {
+			pathname: {
 				groups: {
 					index: String(index)
 				}
@@ -207,7 +209,7 @@ describe('getUrlPattern', () => {
 		expect(
 			url.exec(basePath)
 		).not.toMatchObject({
-			hash: {
+			pathname: {
 				groups: {
 					index: String(12)
 				}

@@ -11,10 +11,9 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 */
 	getParams: () => Params
 	/**
-	 * Current {@link URLPatternResult}
+	 * If current route is hashed
 	 */
-	match: URLPatternResult
-
+	hash: boolean
 	/**
 	 * Current route path (merged with previous path's)
 	 */
@@ -23,21 +22,10 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 * Current route search
 	 */
 	search: string
-
 	/**
 	 * Unique id for route. (prevents routes from rendering again if nothing changed)
 	 */
 	unique: string
-	
-	/**
-	 * Current {@link URLPattern}
-	 */
-	urlPattern: URLPattern
-
-	/**
-	 * If current route is hashed
-	 */
-	hash?: boolean
 	/**
 	 * Hash path
 	 */
@@ -46,7 +34,7 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 
 /**
  * Method to match href to {@link MatchProps path}
- * @param href {string}
+ * @param _href {string}
  * @param matchProps {@link MatchProps} - props to define the route
  */
 export const matchPath = <Params extends Record<string, string> = Record<string, string>>(
@@ -58,14 +46,16 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 	} = matchProps;
 	const urlPattern = getUrlPattern(matchProps);
 
-	const match = urlPattern.exec(href);
+	const url = new URL(href)
+
+	const _href = matchProps.hash ? `${url.origin}${url.hash.substring(1)}` : href.substring(0, href.indexOf('#'))
+
+	const match = urlPattern.exec(_href);
 
 	if ( match ) {
-		const search = hash ? '' : match.search.input;
+		const search = match.search.input;
 
-		const unique = hash 
-			? href.substring(href.indexOf(match.hash.input), href.length) 
-			: href.substring(0, href.lastIndexOf(match.hash.input));
+		const unique = _href;
 
 		return {
 			unique,
@@ -79,10 +69,10 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 						path
 					});
 
-					const match = pattern.exec(href);
+					const match = pattern.exec(_href);
 
 					if ( match ) {
-						const matchUrl = hash ? match.hash : match.pathname;
+						const matchUrl = match.pathname;
 
 						return Object.entries(matchUrl.groups)
 						.filter(([key, value]) => key !== '0' && value) as Array<[string, string]>
@@ -97,9 +87,7 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 					return obj;
 				}, {}) as Params
 			},
-			urlPattern,
-			match,
-			hash,
+			hash: hash ?? false,
 			hashPath
 		}
 	}
