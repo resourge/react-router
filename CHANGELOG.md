@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/resourge/react-router/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Bug Fixes
+
+* **matchpath:** not working as intended on hash routes ([3821103](https://github.com/resourge/react-router/commit/382110357b16df1fa76d5635eef8789f429439d9))
+
 # [1.8.0](https://github.com/resourge/react-router/compare/v1.7.13...v1.8.0) (2023-03-20)
 
 
