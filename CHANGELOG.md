@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/resourge/react-router/compare/v1.8.1...v1.8.2) (2023-03-23)
+
+
+### Bug Fixes
+
+* **matchpath:** improve matchPath unitary tests ([6a1b730](https://github.com/resourge/react-router/commit/6a1b730293dc3b8c66e07bcb6753c42efcc82432))
+
 ## [1.8.1](https://github.com/resourge/react-router/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 
