@@ -17,7 +17,7 @@ export const useRouter = (): RouterContextType => {
 	const context = useContext(RouterContext);
 
 	if ( __DEV__ ) {
-		invariant(context, 'useUrl can only be used in the context of a <RouterContext>.')
+		invariant(context, 'useRouter can only be used in the context of a <RouterContext>.')
 	}
 
 	return useContext(RouterContext) as RouterContextType
