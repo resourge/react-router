@@ -1,3 +1,12 @@
+## [1.9.1](https://github.com/resourge/react-router/compare/v1.9.0...v1.9.1) (2023-08-07)
+
+
+### Performance Improvements
+
+* **browserroute:** remove unecessary Route inside browserRoute ([a1d507d](https://github.com/resourge/react-router/commit/a1d507d7d907df85fc2d9beb2ddd14b7e1625cdf))
+* **matchpath:** small improve, putting new URL inside if ([138055f](https://github.com/resourge/react-router/commit/138055f778bde9900beb278c67cc26d7188f4aa6))
+* **switch:** change order and remove spreads ([bba8dc8](https://github.com/resourge/react-router/commit/bba8dc8ebabdd5f00f9e8027dd238f6a98ac120a))
+
 # [1.9.0](https://github.com/resourge/react-router/compare/v1.8.2...v1.9.0) (2023-08-07)
 
 
