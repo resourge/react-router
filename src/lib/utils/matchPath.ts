@@ -46,10 +46,9 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 	} = matchProps;
 	const urlPattern = getUrlPattern(matchProps);
 
-	const url = new URL(href);
-
 	let _href = '';
 	if ( matchProps.hash ) {
+		const url = new URL(href);
 		_href = `${url.origin}${url.hash.substring(1)}`
 	}
 	else {

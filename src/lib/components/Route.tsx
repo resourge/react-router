@@ -45,21 +45,23 @@ const Route: FC<RouteProps> = ({
 	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch)
 
 	if ( match ) {
-		const Component = component ? cloneElement(component, {}, component.props.children, children) : children;
+		const Component = (
+			<Suspense fallback={fallback}>
+				{ component ? cloneElement(component, {}, component.props.children, children) : children }
+			</Suspense>
+		)
 		
 		if ( match === 'NO_ROUTE' ) {
 			return (
-				<Suspense fallback={fallback}>
+				<>
 					{ Component }
-				</Suspense>
+				</>
 			)
 		}
 
 		return (
 			<RouteContext.Provider value={match}>
-				<Suspense fallback={fallback}>
-					{ Component }
-				</Suspense>
+				{ Component }
 			</RouteContext.Provider>
 		)
 	}
