@@ -1,5 +1,6 @@
 import {
 	cloneElement,
+	Suspense,
 	type FC,
 	type ReactElement,
 	type ReactNode
@@ -14,8 +15,9 @@ export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
 	path?: MatchRouteProps['path']
 }
 
-export type RouteProps = BaseRouteProps & ({
+export type RouteProps = BaseRouteProps & { fallback?: ReactNode } & ({
 	children: ReactNode
+	
 	component?: ReactElement
 } | ({
 	component: ReactElement
@@ -34,7 +36,7 @@ export type IRouteProps = RouteProps & {
 const Route: FC<RouteProps> = ({
 	children, component,
 	computedMatch,
-
+	fallback,
 	...matchProps
 }: IRouteProps) => {
 	validateRouteProps(matchProps);
@@ -47,15 +49,17 @@ const Route: FC<RouteProps> = ({
 		
 		if ( match === 'NO_ROUTE' ) {
 			return (
-				<>
+				<Suspense fallback={fallback}>
 					{ Component }
-				</>
+				</Suspense>
 			)
 		}
 
 		return (
 			<RouteContext.Provider value={match}>
-				{ Component }
+				<Suspense fallback={fallback}>
+					{ Component }
+				</Suspense>
 			</RouteContext.Provider>
 		)
 	}
