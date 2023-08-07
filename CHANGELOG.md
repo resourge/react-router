@@ -1,3 +1,15 @@
+# [1.9.0](https://github.com/resourge/react-router/compare/v1.8.2...v1.9.0) (2023-08-07)
+
+
+### Bug Fixes
+
+* **routercontext:** fix userouter error message ([26c2af0](https://github.com/resourge/react-router/commit/26c2af0c4d72d8d11eacb90530a96348e807de4a))
+
+
+### Features
+
+* **route/switc:** add suspense and fallback prop ([f2971de](https://github.com/resourge/react-router/commit/f2971decea8cd85dd0b8b2f9a94a918958351df2))
+
 ## [1.8.2](https://github.com/resourge/react-router/compare/v1.8.1...v1.8.2) (2023-03-23)
 
 
