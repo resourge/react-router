@@ -34,7 +34,7 @@ const isRoute = (
 
 const getMatchFromProps = (
 	url: URL, 
-	parentRoute: RouteContextObject<Record<string, string>>, 
+	parentRoute: RouteContextObject<Record<string, string>> | undefined, 
 	props: Props
 ) => {
 	if ( __DEV__ ) {

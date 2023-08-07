@@ -16,7 +16,7 @@ export type NavigateTo = string | URL | NavigateObject | ((url: URL) => string |
 const normalizeUrl = (
 	to: NavigateTo, 
 	path: string,
-	params: Record<string, any>,
+	getParams: (() => Record<string, string>) | undefined,
 	url: URL
 ): URL => {
 	// If to is string, resolve to with current url
@@ -31,7 +31,7 @@ const normalizeUrl = (
 		return normalizeUrl(
 			to(url),
 			path,
-			params,
+			getParams,
 			url
 		);
 	}
@@ -41,7 +41,7 @@ const normalizeUrl = (
 		if ( (to as NavigateParams).params ) {
 			if ( path ) {
 				const newParams = {
-					...params,
+					...(getParams ? getParams() : {}),
 					...(to as NavigateParams).params
 				}
 	
@@ -65,16 +65,13 @@ const normalizeUrl = (
  */
 export const useNormalizeUrl = () => {
 	const { url } = useRouter();
-	const {
-		getParams: params,
-		path
-	} = useRoute();
+	const { getParams, path } = useRoute();
 
 	return (to: NavigateTo) => {
 		return normalizeUrl(
 			to,
 			path,
-			params,
+			getParams,
 			url
 		)
 	}

@@ -5,6 +5,7 @@ import invariant from 'tiny-invariant'
 
 export type RouterContextType = {
 	action: ActionType
+	baseUrl: string
 	url: URL
 }
 
