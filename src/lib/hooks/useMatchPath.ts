@@ -32,9 +32,8 @@ export type MatchPathProps = {
  */
 export const matchRoute = (
 	url: URL,
-	{
-		path, hash, exact
-	}: MatchPathProps, 
+	{ hash, exact }: Omit<MatchPathProps, 'path'>, 
+	path: MatchPathProps['path'],
 	parentRoute: MatchResult | undefined
 ): MatchResult<Record<string, string>> | null => {
 	const baseURL = url.origin;
@@ -88,7 +87,7 @@ export const useMatchPath = (
 	const { url } = useRouter()
 	const ref = useRef<MatchResult | null | undefined>();
 
-	const _matchResult = matchResult ?? matchRoute(url, matchProps, parentRoute);
+	const _matchResult = matchResult ?? matchRoute(url, matchProps, matchProps.path, parentRoute);
 
 	// This is to make sure only routes that changed are render again
 	if ( !ref.current || !_matchResult || ref.current.unique !== _matchResult.unique ) {

@@ -39,7 +39,9 @@ const Route: FC<RouteProps> = ({
 	fallback,
 	...matchProps
 }: IRouteProps) => {
-	validateRouteProps(matchProps);
+	if ( __DEV__ ) {
+		validateRouteProps(matchProps);
+	}
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch)

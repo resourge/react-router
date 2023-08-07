@@ -10,7 +10,7 @@ import { type RouteContextObject, useRoute } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
-import { matchRoute } from './useMatchPath';
+import { type MatchPathProps, matchRoute } from './useMatchPath';
 import { matchSearchRoute } from './useSearchRoute';
 
 type Props = BaseRouteProps | BaseSearchRouteProps | RedirectProps | NavigateProps;
@@ -46,31 +46,24 @@ const getMatchFromProps = (
 			'`useSwitch` can only accept component\'s with `path`, `search`, `from` or `to` attributes'
 		);
 	}
+	const path = (props as BaseRouteProps).path ?? (props as RedirectProps).from;
+	if ( path ) {
+		if ( __DEV__ ) {
+			validateRouteProps({
+				...(props as BaseRouteProps),
+				path
+			})
+		}
+		
+		return matchRoute(url, props as MatchPathProps, path, parentRoute)
+	}
 
 	const searchBaseProps = (props as BaseSearchRouteProps)
 	if ( isSearchRoute(searchBaseProps) ) {
-		return matchSearchRoute(url, {
-			...searchBaseProps
-		}, parentRoute)
-	}
-	
-	const path = (props as BaseRouteProps).path ?? (props as RedirectProps).from;
-	if ( path ) {
-		validateRouteProps({
-			...(props as BaseRouteProps),
-			path
-		})
-		
-		return matchRoute(url, {
-			...props,
-			path
-		}, parentRoute)
+		return matchSearchRoute(url, searchBaseProps, parentRoute)
 	}
 
-	return matchRoute(url, {
-		...searchBaseProps,
-		path: '*'
-	}, parentRoute)
+	return matchRoute(url, searchBaseProps, '*', parentRoute)
 }
 
 /**

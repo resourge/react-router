@@ -32,13 +32,12 @@ export const matchSearchRoute = (
 	const hashUrl = new URL(url.hash.replace('#', ''), url.origin)
 
 	if ( _search.every((search) => hashUrl.searchParams.has(search)) ) {
-		const matchProps: MatchPathProps = {
-			path: '*',
+		const matchProps: Omit<MatchPathProps, 'path'> = {
 			exact,
 			hash
 		}
 
-		return matchRoute(url, matchProps, parentRoute);
+		return matchRoute(url, matchProps, '*', parentRoute);
 	}
 
 	return null;
