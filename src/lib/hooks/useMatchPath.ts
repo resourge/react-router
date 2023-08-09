@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { type RouteContextObject } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { matchPath, type MatchResult } from '../utils/matchPath';
+import { resolveSlash } from '../utils/resolveLocation';
 
 export type MatchPathProps = {
 	/**
@@ -49,9 +50,9 @@ export const matchRoute = (
 		let hashPath = hash ? p : undefined;
 	
 		if ( parentRoute ) {
-			_path = `${parentRoute.path}${!hash ? _path.replace(parentRoute.path, '') : ''}`
+			_path = resolveSlash(parentRoute.path, !hash ? _path.replace(parentRoute.path, '') : '');
 			if ( parentRoute.hashPath ) {
-				hashPath = `${parentRoute.hashPath}${(hashPath ?? '').replace(parentRoute.hashPath, '')}`
+				hashPath = resolveSlash(parentRoute.hashPath, (hashPath ?? '').replace(parentRoute.hashPath, ''));
 			}
 		}
 	
@@ -62,8 +63,7 @@ export const matchRoute = (
 				hash,
 				hashPath,
 				baseURL,
-				exact,
-				paths
+				exact
 			}
 		)
 

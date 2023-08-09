@@ -30,7 +30,9 @@ export type ParamsConfigNotOptional<ParamResult = any, BeforePath = ParamResult>
 	transform?: (value: string) => ParamResult 
 }
 
-export type ParamsConfig<ParamResult = any, BeforePath = ParamResult> = ParamsConfigNotOptional<ParamResult, BeforePath> | ParamsConfigOptional<ParamResult, BeforePath>
+export type ParamsConfig<ParamResult = any, BeforePath = ParamResult> = {
+	options?: string[]
+} & (ParamsConfigNotOptional<ParamResult, BeforePath> | ParamsConfigOptional<ParamResult, BeforePath>)
 
 export class ParamPath<Key = any, Params = any, UseParams = Params, IsOptional = false> {
 	public key: Key = '' as Key
@@ -60,7 +62,7 @@ export const Param = <
 
 	const instance = new ParamPath<K, Params, UseParams, IsOptional extends true ? false : true>();
 
-	instance.param = `/:${param}`;
+	instance.param = `/:${param}${config?.options && config?.options.length ? `(${config.options.join('|')})` : ''}`;
 	instance.key = param;
 	if ( config?.optional ) {
 		instance.param = `{${instance.param}}?`;

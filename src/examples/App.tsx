@@ -89,3 +89,55 @@ function App() {
 }
 
 export default App
+
+/*
+import {
+	BrowserRouter,
+	Route,
+	SetupPaths,
+	path
+} from './lib'
+import BaseRoute from './lib/components/BaseRoute'
+
+const Routes = SetupPaths({
+	id: path('id'),
+	name: path('name'),
+	idParam: path('').param('id')
+})
+
+console.log('Routes', Routes)
+
+function App() {
+	return (
+		<BrowserRouter>
+			<Route path={Routes.id.path}>
+				<div>Id</div>
+				<Route path={Routes.name.path}>
+					<div>Name</div>
+					<BaseRoute
+						base={Routes.idParam.path}
+						params={{
+							check: ({ id }) => {
+								if ( id === 'fr' ) {
+									return 'REMOVE_CURRENT_PARAMS'
+								}
+								return id === 'en' || id === 'pt'
+							},
+							fallback: () => {
+								return {
+									id: 'pt'
+								}
+							}
+						}}
+					>
+						<div>Test</div>
+					</BaseRoute>
+				</Route>
+			</Route>
+		</BrowserRouter>
+	)
+}
+
+export default App
+
+*/

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import { type EVENTS } from '@resourge/react-search-params';
+import { type ActionType } from '@resourge/react-search-params';
 
 import { useRouter } from '../contexts';
 
 import { useBeforeURLChange } from './useBeforeURLChange';
 
-export type Blocker = (currentUrl: URL, nextUrl: URL, action: typeof EVENTS[keyof typeof EVENTS]) => boolean
+export type Blocker = (currentUrl: URL, nextUrl: URL, action: ActionType) => boolean
 
 export type BlockerResult = {
 	continueNavigation: () => void

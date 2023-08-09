@@ -1,7 +1,7 @@
 
 import { useContext } from 'react';
 
-import { RouteContext, type RouteContextObject } from '../contexts/RouteContext';
+import { RouteContext } from '../contexts/RouteContext';
 import { type MatchResult } from '../utils/matchPath';
 
 import { type MatchPathProps, useMatchPath } from './useMatchPath';
@@ -13,7 +13,7 @@ export type MatchRouteProps = MatchPathProps
  * @returns null if it is a no match, if returns 'NO_ROUTE' is a route without context, otherwise returns {@link MatchResult}
  */
 export const useMatchRoute = (matchProps: MatchRouteProps, matchResult?: MatchResult | null) => {
-	const parentRoute = useContext(RouteContext) as RouteContextObject<Record<string, any>>;
+	const parentRoute = useContext(RouteContext);
 
 	if ( 
 		matchProps.path === undefined

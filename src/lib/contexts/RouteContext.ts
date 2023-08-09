@@ -4,8 +4,6 @@ import { createContext, useContext } from 'react'
 
 import { type MatchResult } from '../utils/matchPath'
 
-import { useRouter } from './RouterContext'
-
 export type RouteContextObject<Params extends Record<string, string> = Record<string, string>> = MatchResult<Params>
 
 export const RouteContext = createContext<RouteContextObject | undefined>(undefined)
@@ -14,7 +12,6 @@ export const RouteContext = createContext<RouteContextObject | undefined>(undefi
  * Hook to access first parent 'Route'.
  */
 export const useRoute = <Params extends Record<string, string> = Record<string, string>>(): RouteContextObject<Params> => {
-	const { baseUrl } = useRouter();
 	const context = useContext(RouteContext);
 
 	/* if ( __DEV__ ) {
@@ -24,8 +21,11 @@ export const useRoute = <Params extends Record<string, string> = Record<string, 
 	return (context ?? {
 		getParams: () => ({}),
 		hash: false,
-		path: baseUrl,
+		path: '',
 		search: '',
-		unique: baseUrl
+		unique: '',
+		baseURL: '',
+		exact: true,
+		hashPath: ''
 	}) as RouteContextObject<Params>
 }

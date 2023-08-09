@@ -1,6 +1,26 @@
 /* eslint-disable no-useless-escape */
 
 /**
+ * Resolves slash
+ */
+export function resolveSlash(...args: Array<string | undefined>) {
+	return `/${(args.filter((pathname) => pathname) as string[])
+	.map((pathname: string) => {
+		pathname = pathname.trim();
+		if ( pathname.charAt(0) === '/' ) {
+			pathname = pathname.substring(1)
+		}
+
+		const pathnameLength = pathname.length - 1;
+		if ( pathname.charAt(pathnameLength) === '/' ) {
+			pathname = pathname.substring(0, pathnameLength)
+		} 
+
+		return pathname
+	}).join('/')}`
+}
+
+/**
  * Method to resolve `URL`'s
  *  Ex:
  * baseUrl: /home/dashboard

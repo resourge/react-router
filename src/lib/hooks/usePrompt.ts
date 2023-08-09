@@ -1,4 +1,4 @@
-import { type EVENTS } from '@resourge/react-search-params'
+import { type ActionType } from '@resourge/react-search-params'
 
 import { useBlocker, type Blocker, type BlockerResult } from './useBlocker'
 
@@ -7,7 +7,7 @@ export type UsePromptProps = {
 	 * When true blocks url change
 	 */
 	when: boolean | Blocker
-	message?: string | ((currentUrl: URL, nextUrl: URL, action: typeof EVENTS[keyof typeof EVENTS]) => string)
+	message?: string | ((currentUrl: URL, nextUrl: URL, action: ActionType) => string)
 }
 
 /**

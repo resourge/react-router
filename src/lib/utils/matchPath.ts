@@ -1,9 +1,6 @@
 import { getUrlPattern, type UrlPattern } from './getUrlPattern';
 
-export type MatchProps = UrlPattern & {
-	/** */
-	paths?: string[]
-}
+export type MatchProps = UrlPattern
 
 export type MatchResult<Params extends Record<string, string> = Record<string, string>> = {
 	/**
@@ -27,6 +24,14 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 */
 	unique: string
 	/**
+	 * Base url
+	 */
+	baseURL?: string
+	/**
+	 * If URL pattern is exact
+	 */
+	exact?: boolean
+	/**
 	 * Hash path
 	 */
 	hashPath?: string
@@ -42,7 +47,7 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 	matchProps: MatchProps
 ): MatchResult<Params> | null => {
 	const {
-		hash, path, hashPath, paths
+		hash, path, hashPath, exact, baseURL
 	} = matchProps;
 	const urlPattern = getUrlPattern(matchProps);
 
@@ -64,29 +69,16 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 		const unique = _href;
 
 		return {
+			exact, 
+			baseURL,
 			unique,
 			path,
 			search,
 			getParams: () => {
-				return (paths ?? [path])
-				.map((path) => {
-					const pattern = getUrlPattern({
-						...matchProps,
-						path
-					});
+				const matchUrl = match.pathname;
 
-					const match = pattern.exec(_href);
-
-					if ( match ) {
-						const matchUrl = match.pathname;
-
-						return Object.entries(matchUrl.groups)
-						.filter(([key, value]) => key !== '0' && value) as Array<[string, string]>
-					}
-
-					return []
-				})
-				.flat()
+				return (Object.entries(matchUrl.groups)
+				.filter(([key, value]) => key !== '0' && value) as Array<[string, string]>)
 				.reduce<Record<string, string>>((obj, [key, value]) => {
 					obj[key] = value
 

@@ -4,24 +4,21 @@ import { useUrl } from '@resourge/react-search-params';
 
 import { RouterContext } from '../contexts/RouterContext';
 
-export type BrowserRouterProps = PropsWithChildren<{
-	base?: string
-}>
+export type BrowserRouterProps = PropsWithChildren
 
 /**
  * First component that creates the context for the rest of the children.
  *
  * Note: This component mainly uses `useUrl` hook from '@resourge/react-search-params'.
  */
-const BrowserRouter: FC<BrowserRouterProps> = ({ base = '', children }) => {
+const BrowserRouter: FC<BrowserRouterProps> = ({ children }) => {
 	const [url, action] = useUrl();
 
 	return (
 		<RouterContext.Provider 
 			value={{
 				url,
-				action,
-				baseUrl: base
+				action
 			}}
 		>
 			{ children }
