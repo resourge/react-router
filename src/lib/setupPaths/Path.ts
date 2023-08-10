@@ -84,7 +84,11 @@ export type AddConfigParamsIntoRoutes<
 			// @ts-expect-error Want to protect value, but also access it with types
 			Routes[K]['_routes'],
 			// @ts-expect-error Want to protect value, but also access it with types
-			IsHashPath<Routes[K]['_key']> extends true ? Routes[K]['_configParams'] : ConfigParams & Routes[K]['_configParams'],
+			IsHashPath<Routes[K]['_key']> extends true 
+				// @ts-expect-error Want to protect value, but also access it with types
+				? Routes[K]['_configParams'] 
+				// @ts-expect-error Want to protect value, but also access it with types
+				: ConfigParams & Routes[K]['_configParams']
 		>,
 		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_key'],
