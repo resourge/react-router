@@ -1,6 +1,8 @@
 import invariant from 'tiny-invariant'
 
-export type ParamsConfigOptional<ParamResult = any, BeforePath = ParamResult> = { 
+import { type AsConst } from '../types/AsConst'
+
+export type ParamsConfigOptional = { 
 	/**
 	 * Makes param optional
 	 */
@@ -8,18 +10,18 @@ export type ParamsConfigOptional<ParamResult = any, BeforePath = ParamResult> = 
 	/**
 	 * Transforms param before path creation (get).
 	 */
-	beforePath?: (value: BeforePath) => string | BeforePath
+	beforePath?: (value: unknown) => string
 	/**
 	 * Transform's param on useParam.
 	 */
-	transform?: (value?: string) => ParamResult | undefined 
+	transform?: (value?: string) => unknown | undefined 
 }
 
-export type ParamsConfigNotOptional<ParamResult = any, BeforePath = ParamResult> = { 
+export type ParamsConfigNotOptional = { 
 	/**
 	 * Transforms param before path creation (get).
 	 */
-	beforePath?: (value: BeforePath) => string | BeforePath
+	beforePath?: (value: unknown) => string
 	/**
 	 * Makes param optional
 	 */
@@ -27,32 +29,26 @@ export type ParamsConfigNotOptional<ParamResult = any, BeforePath = ParamResult>
 	/**
 	 * Transform's param on useParam.
 	 */
-	transform?: (value: string) => ParamResult 
+	transform?: (value: string) => unknown 
 }
 
-export type ParamsConfig<ParamResult = any, BeforePath = ParamResult> = {
+export type ParamsConfig = {
 	options?: string[]
-} & (ParamsConfigNotOptional<ParamResult, BeforePath> | ParamsConfigOptional<ParamResult, BeforePath>)
+} & (ParamsConfigNotOptional | ParamsConfigOptional)
 
-export class ParamPath<Key = any, Params = any, UseParams = Params, IsOptional = false> {
+export class ParamPath<Key, Config extends ParamsConfig = ParamsConfig> {
 	public key: Key = '' as Key
 	public param: string = ''
-	public config?: IsOptional extends true 
-		? ParamsConfigOptional<UseParams, Params> 
-		: ParamsConfigNotOptional<UseParams, Params>
+	public config?: Config
 }
 
 export const Param = < 
-	K extends string = string,
-	Params extends any | undefined = string,
-	UseParams = Params,
-	IsOptional extends boolean = false
+	K extends string,
+	Config extends ParamsConfig
 >(
 	param: K, 
-	config?: ParamsConfig<UseParams extends Params ? Params : UseParams, Params> & {
-		optional?: IsOptional
-	}
-): ParamPath<K, Params, UseParams, IsOptional extends true ? false : true> => {
+	config?: AsConst<Config>
+): ParamPath<K, Config> => {
 	if ( __DEV__ ) { 
 		invariant(
 			!param.includes(':'),
@@ -60,7 +56,7 @@ export const Param = <
 		);
 	}
 
-	const instance = new ParamPath<K, Params, UseParams, IsOptional extends true ? false : true>();
+	const instance = new ParamPath<K, Config>();
 
 	instance.param = `/:${param}${config?.options && config?.options.length ? `(${config.options.join('|')})` : ''}`;
 	instance.key = param;

@@ -1,4 +1,6 @@
-import { Param, path, SetupPaths } from 'src/lib/setupPaths'
+import { Param } from 'src/lib/setupPaths/Param'
+import { path } from 'src/lib/setupPaths/Path'
+import { SetupPaths } from 'src/lib/setupPaths/SetupPaths'
 
 const DataSourceIdParam = Param('dataSourceId', {
 	transform: (dataSourceId: string) => Number(dataSourceId)

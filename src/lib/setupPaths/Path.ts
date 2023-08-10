@@ -4,17 +4,18 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { useParams } from '../hooks/useParams';
 import { type AsConst } from '../types/AsConst';
-import { type Replace, type ResolveSlash } from '../types/StringTypes';
+import { type TransformStringIntoObj } from '../types/GetParamsFromString';
+import {
+	type ParamString,
+	type IsHashPath,
+	type ResolveSlash,
+	type ReplaceStringWithParams
+} from '../types/StringTypes'
 import { type StringifyObjectParams } from '../types/StringifyObjectParams';
-import { type CleanObjects, type IsAllOptional } from '../types/types';
+import { type IsAllOptional } from '../types/types';
 import { generatePath } from '../utils/generatePath';
 
-import {
-	Param,
-	ParamPath,
-	type ParamsConfig,
-	type ParamsConfigOptional
-} from './Param'
+import { Param, ParamPath, type ParamsConfig } from './Param'
 
 export function createPathWithCurrentLocationHasHash(path: string) {
 	const newPath = new URL(path, window.location.origin)
@@ -25,119 +26,70 @@ export function createPathWithCurrentLocationHasHash(path: string) {
 	return newPath.href;
 }
 
-type UnionToIntersection<U> = (U extends never ? never : (arg: U) => never) extends (arg: infer I) => void
-	? I
-	: never;
-
-type UnionToTuple<T, A extends any[] = []> = UnionToIntersection<T extends never ? never : (t: T) => T> extends (_: never) => infer W
-	? UnionToTuple<Exclude<T, W>, [...A, W]>
-	: A;
-
-type Entries<T> = UnionToTuple<{
-	[K in keyof T]: [K, T[K]]
-}[keyof T]>
-
-type ReplaceStringWithObjEntries<S extends string, ObjEntries> = ObjEntries extends [infer E, ...infer R] 
-	? E extends [infer Key, infer Value]
-		? string extends Value 
-			? ReplaceStringWithObjEntries<S, R>
-			: Replace<
-				ReplaceStringWithObjEntries<S, R>, 
-				ParamString<Key extends string 
-					? Key 
-					: ''
-				>, 
-				Value extends string 
-					? Value 
-					: ''
-			> 
-		: ReplaceStringWithObjEntries<S, R>
-	: S
-
-type ReplaceStringWithParams<S extends string, Params> = Params extends Record<string, any> 
-	? ReplaceStringWithObjEntries<S, Entries<Params>>
-	: S;
-
-type ParamString<T extends string> = `:${T}`;
+type MergeValueOfUIntoT<T extends Record<string, any>, U extends Record<string, any>> = {
+	[K in keyof T & keyof U]: undefined extends U[K]
+		? string
+		: U[K]
+}
 
 export type PathType<
 	Key extends string,
-	Routes extends Record<string, Path<any, any, any, boolean, string>>, 
-	Params extends Record<string, any> | undefined = undefined, 
-	UseParams extends Record<string, any> | undefined = undefined
+	ConfigParams extends Record<string, any>,
+	Routes extends Record<string, Path<any, string>>
 > = {
 	/**
 	 * Method to obtain the true path.
 	 * Calling it with `params` will replace the params with the params value on the path.
 	 */
-	get: Params extends undefined 
-		? (() => string)
-		: IsAllOptional<Params> extends true 
-			? (
-				(<P extends Params>(params?: AsConst<P>) => ReplaceStringWithParams<Key, P>)
-			) : <P extends Params>(params: AsConst<P>) => ReplaceStringWithParams<Key, P>
+	get: TransformStringIntoObj<Key> extends never 
+		? () => Key
+		: IsAllOptional<TransformStringIntoObj<Key>> extends true 
+			? <P extends TransformStringIntoObj<Key>>(params?: AsConst<P>) => ReplaceStringWithParams<Key, P> 
+			: <P extends TransformStringIntoObj<Key>>(params: AsConst<P>) => ReplaceStringWithParams<Key, P>
 	/**
 	 * Generated string from chain functions. Includes path with `params`.
 	 */
 	path: Key
-} & InjectParamsIntoPathType<Key, Routes, Params, UseParams> & (
-	IsAllOptional<UseParams> extends false ? {
-		/**
-		 * Hook to receive the params related to the route.
-		 * Here all the transform method will transform the params to the desired params. 
-		 */
-		useParams: () => UseParams
-	} : (
-		undefined extends UseParams ? {} : {
-		/**
-		 * Hook to receive the params related to the route.
-		 * Here all the transform method will transform the params to the desired params. 
-		 */
-			useParams: () => UseParams
-		}
-	)
+} & InjectParamsIntoPathType<Key, Routes, ConfigParams> & (
+	TransformStringIntoObj<Key> extends never ? {} : {
+	/**
+	 * Hook to receive the params related to the route.
+	 * Here all the transform method will transform the params to the desired params. 
+	 */
+		useParams: () => MergeValueOfUIntoT<TransformStringIntoObj<Key>, ConfigParams>
+	}
 )
 
 export type InjectParamsIntoPathType<
 	BaseKey extends string,
-	Paths extends Record<string, Path<any, any, any, boolean, string>>, 
-	Params extends Record<string, any> | undefined = undefined, 
-	UseParams extends Record<string, any> | undefined = undefined
+	Routes extends Record<string, Path<any, string>>,
+	ConfigParams extends Record<string, any>,
 > = {
-	[K in keyof Paths]: PathType<
+	[K in keyof Routes]: PathType<
 		// @ts-expect-error Want to protect value, but also access it with types
-		ResolveSlash<[Paths[K]['_isHash'] extends true ? '' : BaseKey, Paths[K]['_key']]>,
+		ResolveSlash<[IsHashPath<Routes[K]['_key']> extends true ? '' : BaseKey, Routes[K]['_key']]>,
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_routes'], 
+		IsHashPath<Routes[K]['_key']> extends true ? Routes[K]['_configParams'] : ConfigParams & Routes[K]['_configParams'],
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params),
-		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams)
+		Routes[K]['_routes']
 	>
 }
 
-export type InjectParamsIntoPath<
-	Params extends Record<string, any>, 
-	UseParams extends Record<string, any>, 
-	Paths extends Record<string, Path<any, any, any, boolean, string>>
-> = string extends keyof Params ? Paths : {
-	[K in keyof Paths]: Path<
-		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), 
-		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), 
-		InjectParamsIntoPath<
+export type AddConfigParamsIntoRoutes<
+	Routes extends Record<string, Path<any, string>>,
+	ConfigParams extends Record<string, any>,
+> = {
+	[K in keyof Routes]: Path<
+		AddConfigParamsIntoRoutes<
 			// @ts-expect-error Want to protect value, but also access it with types
-			Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), 
+			Routes[K]['_routes'],
 			// @ts-expect-error Want to protect value, but also access it with types
-			Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), 
-			// @ts-expect-error Want to protect value, but also access it with types
-			Paths[K]['_routes']
+			IsHashPath<Routes[K]['_key']> extends true ? Routes[K]['_configParams'] : ConfigParams & Routes[K]['_configParams'],
 		>,
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_isHash'],
+		Routes[K]['_key'],
 		// @ts-expect-error Want to protect value, but also access it with types
-		Paths[K]['_key']
+		Routes[K]['_configParams']
 	>
 }
 
@@ -152,34 +104,26 @@ type PathConfig = {
 }
 
 export class Path<
-	Params extends Record<string, any>, 
-	UseParams extends Record<string, any>, 
-	Routes extends Record<string, Path<any, any, any, boolean, string>>, 
-	IsHash extends boolean,
-	Key extends string
+	Routes extends Record<string, Path<any, string>>, 
+	Key extends string,
+	ConfigParams extends Record<string, any> = Record<string, any>
 > {
-	protected _params!: Params;
-	protected _useParams!: UseParams;
 	protected _routes!: Routes;
-	protected _isHash!: IsHash;
 	protected _key!: Key;
+	protected _configParams!: ConfigParams;
 
 	protected config: PathConfig = {}
-	protected paths: Array<ParamPath<keyof Params, Params[keyof Params]> | string> = [];
+	protected paths: Array<ParamPath<string> | string> = [];
 	private _includeCurrentURL?: boolean;
 
 	constructor(config?: PathConfig) {
 		this.config = config ?? {};
 	}
 
-	protected clone<
-		Params extends Record<string, any> = Record<string, any>, 
-		UseParams extends Record<string, any> = Record<string, any>, 
-		Routes extends Record<string, Path<any, any, any, boolean, string>> = Record<string, Path<any, any, any, boolean, string>>
-	>() { 
-		const _this = new Path<Params, UseParams, Routes, IsHash, Key>();
+	protected clone() { 
+		const _this = new Path<Routes, Key, ConfigParams>();
 
-		_this.paths = [...this.paths] as unknown as Array<ParamPath<Params[keyof Params]> | string>;
+		_this.paths = [...this.paths] as unknown as Array<ParamPath<string> | string>;
 		_this._routes = {
 			...this._routes
 		} as unknown as Routes;
@@ -194,7 +138,7 @@ export class Path<
 	 * @param includeCurrentURL {boolean} @default true
 	 */
 	public includeCurrentURL(includeCurrentURL: boolean = true) {
-		const _this = this.clone<Params, UseParams, Routes>();
+		const _this = this.clone();
 		_this._includeCurrentURL = includeCurrentURL;
 		return _this;
 	}
@@ -204,7 +148,7 @@ export class Path<
 	 * @param path {string} - new path part
 	 */
 	public addPath(path?: string) {
-		const _this = this.clone<Params, UseParams, Routes>();
+		const _this = this.clone();
 		if ( path ) {
 			_this.paths.push(`/${path}`);
 		}
@@ -216,43 +160,52 @@ export class Path<
 	 * @param value {string} - param name
 	 */
 	public param<
-		K extends string = string, 
-		ParamsValue extends Params[K] | string | undefined = string
+		K extends string = string
 	>(
 		value: K
 	): Path<
-		CleanObjects<Params, { [key in K]: ParamsValue }>, 
-		CleanObjects<UseParams, { [key in K]: ParamsValue }>, 
-		InjectParamsIntoPath<
-			CleanObjects<Params, { [key in K]: ParamsValue }>, 
-			CleanObjects<UseParams, { [key in K]: ParamsValue }>, 
-			Routes
+		AddConfigParamsIntoRoutes<
+			Routes,
+			ConfigParams
 		>,
-		IsHash,
-		ResolveSlash<[Key, ParamString<K>]>
+		ResolveSlash<[Key, ParamString<K>]>, 
+		ConfigParams
 	>
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
 	 * @param value {string} - param name
-	 * @param config {ParamsConfigOptional<ParamsValue>} - param configuration.
 	 */
 	public param<
-		K extends string = string, 
-		ParamsValue extends Params[K] | string | undefined = string,
-		UseParamsValue = ParamsValue
+		K extends string = string,
+		Config extends ParamsConfig = ParamsConfig
+	>(
+		value: ParamPath<K, Config>
+	): Path<
+		AddConfigParamsIntoRoutes<
+			Routes,
+			ConfigParams
+		>,
+		ResolveSlash<[Key, ParamString<K>]>, 
+		ConfigParams
+	>
+	/**
+	 * Add's param to the path. (Add's the param into the path in the calling other).
+	 * @param value {string} - param name
+	 * @param config {ParamsConfig<ParamsValue>} - param configuration.
+	 */
+	public param<
+		K extends string = string,
+		Config extends ParamsConfig = ParamsConfig
 	>(
 		value: K, 
-		config: ParamsConfigOptional<UseParamsValue extends ParamsValue ? ParamsValue : UseParamsValue, ParamsValue> 
+		config: Config
 	): Path<
-		CleanObjects<Params, { [key in K]?: ParamsValue }>, 
-		CleanObjects<UseParams, { [key in K]?: UseParamsValue }>, 
-		InjectParamsIntoPath<
-			CleanObjects<Params, { [key in K]?: ParamsValue }>, 
-			CleanObjects<UseParams, { [key in K]?: UseParamsValue }>, 
-			Routes
+		AddConfigParamsIntoRoutes<
+			Routes,
+			ConfigParams
 		>,
-		IsHash,
-		ResolveSlash<[Key, ParamString<K>]>
+		ResolveSlash<[Key, ParamString<Config['optional'] extends true ? `${K}?` : K>]>,
+		Config['transform'] extends undefined ? ConfigParams : ConfigParams & { [Key in K]: ReturnType<NonNullable<Config['transform']>> } 
 	>;
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -261,69 +214,19 @@ export class Path<
 	 */
 	public param<
 		K extends string = string,
-		ParamsValue extends Params[K] | string | undefined = string,
-		UseParamsValue = ParamsValue
+		Config extends ParamsConfig = ParamsConfig
 	>(
-		value: K, 
-		config: ParamsConfig<UseParamsValue extends ParamsValue ? ParamsValue : UseParamsValue, ParamsValue> 
+		value: K | ParamPath<K, Config>, 
+		config?: Config
 	): Path<
-		CleanObjects<Params, { [key in K]: ParamsValue }>, 
-		CleanObjects<UseParams, { [key in K]: UseParamsValue }>, 
-		InjectParamsIntoPath<
-			CleanObjects<Params, { [key in K]: ParamsValue }>, 
-			CleanObjects<UseParams, { [key in K]: UseParamsValue }>, 
-			Routes
+		AddConfigParamsIntoRoutes<
+			Routes,
+			ConfigParams
 		>,
-		IsHash,
-		ResolveSlash<[Key, ParamString<K>]>
-	>;
-	/**
-	 * Add's param to the path. (Add's the param into the path in the calling other).
-	 * @param value {ParamPath} - Param
-	 */
-	public param<
-		K extends string = string,
-		ParamsValue extends Params[K] | string | undefined = string,
-		UseParamsValue = ParamsValue,
-		IsOptional = false
-	>(
-		value: ParamPath<K, ParamsValue, UseParamsValue, IsOptional>
-	): Path<
-		CleanObjects<Params, (IsOptional extends false ? { [key in K]?: ParamsValue } : { [key in K]: ParamsValue })>, 
-		CleanObjects<UseParams, (IsOptional extends false ? { [key in K]?: UseParamsValue } : { [key in K]: UseParamsValue })>, 
-		InjectParamsIntoPath<
-			CleanObjects<Params, (IsOptional extends false ? { [key in K]?: ParamsValue } : { [key in K]: ParamsValue })>, 
-			CleanObjects<UseParams, (IsOptional extends false ? { [key in K]?: UseParamsValue } : { [key in K]: UseParamsValue })>, 
-			Routes
-		>,
-		IsHash,
-		ResolveSlash<[Key, ParamString<K>]>
-	>;
-
-	/**
-	 * Add's param to the path. (Add's the param into the path in the calling other).
-	 * @param value {string} - param name
-	 * @param config {ParamsConfig<ParamsValue>} - param configuration.
-	 */
-	public param<
-		K extends string = string,
-		ParamsValue extends Params[K] | string | undefined = string,
-		UseParamsValue = ParamsValue
-	>(
-		value: K | ParamPath<K, ParamsValue>, 
-		config?: ParamsConfig<UseParamsValue extends ParamsValue ? ParamsValue : UseParamsValue, ParamsValue> 
-	): Path<
-		CleanObjects<Params, { [key in K]: ParamsValue }>, 
-		CleanObjects<UseParams, { [key in K]: UseParamsValue }>, 
-		InjectParamsIntoPath<
-			CleanObjects<Params, { [key in K]: ParamsValue }>, 
-			CleanObjects<UseParams, { [key in K]: UseParamsValue }>, 
-			Routes
-		>,
-		IsHash,
-		ResolveSlash<[Key, ParamString<K>]>
+		ResolveSlash<[Key, ParamString<K>]>,
+		Config['transform'] extends undefined ? ConfigParams : ConfigParams & { [Key in K]: ReturnType<NonNullable<Config['transform']>> } 
 	> {
-		const _this = this.clone<(string extends keyof Params ? {} : Params) & { [key in K]: ParamsValue }, Routes>();
+		const _this = this.clone();
 
 		if ( value instanceof ParamPath ) {
 			_this.paths.push(
@@ -333,9 +236,9 @@ export class Path<
 		}
 
 		_this.paths.push(
-			Param<K, UseParamsValue, any>(
+			Param<K, Config>(
 				value,
-				config as any
+				config as AsConst<Config>
 			) as any
 		);
 
@@ -347,10 +250,10 @@ export class Path<
 	 * 
 	 * @param routes {Record<string, Path<any, any, any>>} - object containing the current path children path's
 	 */
-	public routes<S extends Record<string, Path<any, any, any, boolean, string>>>(
+	public routes<S extends Record<string, Path<any, string>>>(
 		routes: S
-	): Path<Params, UseParams, S, IsHash, Key> {
-		const _this = this.clone<Params, UseParams, S>();
+	): Path<S, Key, ConfigParams> {
+		const _this = this.clone() as unknown as Path<S, Key, ConfigParams>;
 
 		/* if ( __DEV__ ) {
 			invariant(
@@ -372,13 +275,13 @@ export class Path<
 
 	protected createPath(
 		basePath?: string, 
-		transforms?: Array<(params: StringifyObjectParams<Exclude<Params, undefined>>) => void>, 
-		beforePaths?: Array<(params: Exclude<Params, undefined>) => void>
-	): PathType<Key, Routes, Params, UseParams> {
+		transforms?: Array<(params: StringifyObjectParams<Record<string, any>>) => void>, 
+		beforePaths?: Array<(params: Record<string, any>) => void>
+	): any {
 		// Groups new transformations with transformations from parents
-		const _transforms: Array<(params: StringifyObjectParams<Exclude<Params, undefined>>) => void> = transforms ? [...transforms] : [];
+		const _transforms: Array<(params: StringifyObjectParams<Record<string, any>>) => void> = transforms ? [...transforms] : [];
 		// Groups new transformations with transformations from parents
-		const _beforePaths: Array<(params: Exclude<Params, undefined>) => void> = beforePaths ? [...beforePaths] : [];
+		const _beforePaths: Array<(params: Record<string, any>) => void> = beforePaths ? [...beforePaths] : [];
 
 		// Creates path for current route
 		let path = `${this.getBasePath(basePath)}${this.paths
@@ -387,12 +290,12 @@ export class Path<
 				return path;
 			}
 			if ( path.config?.transform ) {
-				_transforms.push((params: StringifyObjectParams<Exclude<Params, undefined>>) => {
+				_transforms.push((params) => {
 					(params as any)[path.key] = path.config!.transform!(params[path.key]);
 				})
 			}
 			if ( path.config?.beforePath ) {
-				_beforePaths.push((params: Exclude<Params, undefined>) => {
+				_beforePaths.push((params) => {
 					(params as any)[path.key] = path.config!.beforePath!(params[path.key]);
 				})
 			}
@@ -412,10 +315,10 @@ export class Path<
 
 		return {
 			path,
-			get: (params: Params) => {
-				const _params: Exclude<Params, undefined> = (params ? {
+			get: (params: TransformStringIntoObj<Key>) => {
+				const _params: Exclude<TransformStringIntoObj<Key>, undefined> = (params ? {
 					...params 
-				} : {}) as Exclude<Params, undefined>;
+				} : {}) as Exclude<TransformStringIntoObj<Key>, undefined>;
 
 				_beforePaths.forEach((beforePaths) => {
 					beforePaths(_params);
@@ -433,7 +336,7 @@ export class Path<
 				return newPath;
 			},
 			useParams: () => {
-				return useParams<StringifyObjectParams<Exclude<Params, undefined>>>((params) => {
+				return useParams<StringifyObjectParams<Exclude<TransformStringIntoObj<Key>, undefined>>>((params) => {
 					_transforms.forEach((transform) => {
 						transform(params);
 					})
@@ -451,29 +354,25 @@ export class Path<
  * @param path {string} - path base/start
  */
 export function path <
-	Params extends Record<string, any>,
-	UseParams extends Record<string, any>,
-	Paths extends Record<string, Path<Params, UseParams, any, boolean, string>> = Record<string, Path<Params, UseParams, any, boolean, string>>
->(): Path<Params, UseParams, Paths, false, ''> 
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	ConfigParams extends Record<string, any> = Record<string, any>
+>(): Path<Routes, '', ConfigParams> 
 export function path <
-	Params extends Record<string, any>,
-	UseParams extends Record<string, any>,
-	Paths extends Record<string, Path<Params, UseParams, any, boolean, string>> = Record<string, Path<Params, UseParams, any, boolean, string>>,
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	ConfigParams extends Record<string, any> = Record<string, any>,
 	Key extends string = string
->(path: Key): Path<Params, UseParams, Paths, false, Key> 
+>(path: Key): Path<Routes, Key, ConfigParams> 
 export function path <
-	Params extends Record<string, any>,
-	UseParams extends Record<string, any>,
-	Paths extends Record<string, Path<Params, UseParams, any, boolean, string>> = Record<string, Path<Params, UseParams, any, boolean, string>>,
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	ConfigParams extends Record<string, any> = Record<string, any>,
 	Key extends string = string
 >(path: Key, config: PathConfig & {
 	hash: true
-}): Path<Params, UseParams, Paths, true, ResolveSlash<['#', Key]>> 
+}): Path<Routes, ResolveSlash<['#', Key]>, ConfigParams> 
 export function path <
-	Params extends Record<string, any>,
-	UseParams extends Record<string, any>,
-	Paths extends Record<string, Path<Params, UseParams, any, boolean, string>> = Record<string, Path<Params, UseParams, any, boolean, string>>,
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	ConfigParams extends Record<string, any> = Record<string, any>,
 	Key extends string = string
->(path?: Key, config?: PathConfig): Path<Params, UseParams, Paths, boolean, Key> {
-	return new Path(config).addPath(path) as Path<Params, UseParams, Paths, boolean, Key>;
+>(path?: Key, config?: PathConfig): Path<Routes, Key, ConfigParams> {
+	return new Path(config).addPath(path) as Path<Routes, Key, ConfigParams>;
 }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { type ActionType } from '@resourge/react-search-params';
 
-import { useRouter } from '../contexts';
+import { useRouter } from '../contexts/RouterContext';
 
 import { useBeforeURLChange } from './useBeforeURLChange';
 

@@ -7,7 +7,7 @@ import {
 
 import { RouteContext, useRoute } from '../contexts/RouteContext';
 import { useMatchRoute, type MatchRouteProps } from '../hooks/useMatchRoute';
-import { generatePath } from '../utils';
+import { generatePath } from '../utils/generatePath';
 import { getUrlPattern } from '../utils/getUrlPattern';
 import { type MatchResult } from '../utils/matchPath';
 import { resolveSlash } from '../utils/resolveLocation';

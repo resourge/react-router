@@ -1,11 +1,7 @@
 
-import {
-	Param,
-	path,
-	type PathType,
-	SetupPaths
-} from 'src/lib/setupPaths'
-import { type Path } from 'src/lib/setupPaths/Path'
+import { Param } from 'src/lib/setupPaths/Param'
+import { path, type PathType, type Path } from 'src/lib/setupPaths/Path'
+import { SetupPaths } from 'src/lib/setupPaths/SetupPaths'
 
 import { getUrlPattern } from '../getUrlPattern'
 
@@ -62,7 +58,7 @@ export const RoutePaths = SetupPaths({
 	.routes({
 		FORM: path()
 		.param('dataSourceTab', {
-			transform: (dataSourceTab) => dataSourceTab as any
+			transform: (dataSourceTab) => dataSourceTab 
 		})
 		.routes({
 			CREATE: path('')
@@ -82,10 +78,9 @@ export const RoutePaths = SetupPaths({
 describe('getUrlPattern', () => {
 	const testPathPattern = (
 		pathPattern: PathType<
-			string,
-			Record<string, Path<any, any, any, boolean, string>>,
+			':productId',
 			Record<string, any>,
-			Record<string, any>
+			Record<string, Path<any, string>>
 		>
 	) => {
 		const url = getUrlPattern({
@@ -161,10 +156,9 @@ describe('getUrlPattern', () => {
 
 	const testHashPattern = (
 		pathPattern: PathType<
-			string,
-			Record<string, Path<any, any, any, boolean, string>>,
+			':index',
 			Record<string, any>,
-			Record<string, any>
+			Record<string, Path<any, string>>
 		>
 	) => {
 		const url = getUrlPattern({
