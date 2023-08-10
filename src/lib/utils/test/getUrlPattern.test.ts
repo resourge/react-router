@@ -38,7 +38,7 @@ export const RoutePaths = SetupPaths({
 		.routes({
 			TEST: path('test'),
 			MODAL: path('category', {
-				hashModal: true
+				hash: true
 			})
 			.routes({
 				ENDS_WITH_PATH: path()
@@ -82,7 +82,8 @@ export const RoutePaths = SetupPaths({
 describe('getUrlPattern', () => {
 	const testPathPattern = (
 		pathPattern: PathType<
-			Record<string, Path<any, any, any, boolean>>,
+			string,
+			Record<string, Path<any, any, any, boolean, string>>,
 			Record<string, any>,
 			Record<string, any>
 		>
@@ -160,7 +161,8 @@ describe('getUrlPattern', () => {
 
 	const testHashPattern = (
 		pathPattern: PathType<
-			Record<string, Path<any, any, any, boolean>>,
+			string,
+			Record<string, Path<any, any, any, boolean, string>>,
 			Record<string, any>,
 			Record<string, any>
 		>

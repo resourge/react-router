@@ -18,7 +18,7 @@ export const RoutePaths = SetupPaths({
 		.routes({
 			TEST: path('test'),
 			MODAL: path('category', {
-				hashModal: true
+				hash: true
 			})
 			.routes({
 				ENDS_WITH_PATH: path()

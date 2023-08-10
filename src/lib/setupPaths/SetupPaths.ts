@@ -1,10 +1,22 @@
-import { type PathType, type Path } from './Path';
+import { type PathType, type Path, type IncludeSlash } from './Path'
 
-type PathStructures = Record<string, Path<any, any, any, boolean>>
+type PathStructures = Record<string, Path<any, any, any, boolean, string>>
 
 export type SetupPathsResult<R extends PathStructures> = { 
+	[K in keyof R]: PathType<
 	// @ts-expect-error Want to protect value, but also access it with types
-	[K in keyof R]: PathType<R[K]['_routes'], R[K]['_params'], R[K]['_useParams']> 
+		R[K]['_isHash'] extends true 
+		// @ts-expect-error Want to protect value, but also access it with types
+			? R[K]['_key']
+		// @ts-expect-error Want to protect value, but also access it with types
+			: IncludeSlash<R[K]['_key']>, 
+	// @ts-expect-error Want to protect value, but also access it with types
+		R[K]['_routes'], 
+	// @ts-expect-error Want to protect value, but also access it with types
+		R[K]['_params'], 
+	// @ts-expect-error Want to protect value, but also access it with types
+		R[K]['_useParams']
+	> 
 }
 
 /**

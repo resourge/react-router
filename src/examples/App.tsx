@@ -33,7 +33,7 @@ const a = SetupPaths({
 	}),
 	TEST2: path('test2'),
 	TEMPLATE_MODAL: path('template', {
-		hashModal: true 
+		hash: true 
 	})
 });
 
