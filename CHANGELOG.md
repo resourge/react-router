@@ -1,3 +1,12 @@
+# [1.10.0](https://github.com/resourge/react-router/compare/v1.9.1...v1.10.0) (2023-08-10)
+
+
+### Features
+
+* **baseroute:** add baseroute component to replace base prop from browserrouter ([9091d18](https://github.com/resourge/react-router/commit/9091d18e376243bce6ff44f98993987ac88069f9))
+* **path:** add path result to typescript info ([ab5d09a](https://github.com/resourge/react-router/commit/ab5d09ac1ddbdb2dd7c479808476d28e388065ce))
+* **setuppaths types:** improve types to be more easy to use and see what is happening ([469fdb3](https://github.com/resourge/react-router/commit/469fdb3213460b902f48faddf4fbea389ad9b2d5))
+
 ## [1.9.1](https://github.com/resourge/react-router/compare/v1.9.0...v1.9.1) (2023-08-07)
 
 
