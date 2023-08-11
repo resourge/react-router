@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/resourge/react-router/compare/v1.11.1...v1.12.0) (2023-08-11)
+
+
+### Features
+
+* **usepreviousurl:** add usePreviousUrl hook, and previouUrl and previousAction to useRouter ([7a4636a](https://github.com/resourge/react-router/commit/7a4636a6c2c591dd998cfebbb703daa126c343e3))
+
 ## [1.11.1](https://github.com/resourge/react-router/compare/v1.11.0...v1.11.1) (2023-08-11)
 
 
