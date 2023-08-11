@@ -12,13 +12,15 @@ export type BrowserRouterProps = PropsWithChildren
  * Note: This component mainly uses `useUrl` hook from '@resourge/react-search-params'.
  */
 const BrowserRouter: FC<BrowserRouterProps> = ({ children }) => {
-	const [url, action] = useUrl();
+	const [url, action, previousValue] = useUrl();
 
 	return (
 		<RouterContext.Provider 
 			value={{
 				url,
-				action
+				action,
+				previousUrl: previousValue ? previousValue[0] : undefined,
+				previousAction: previousValue ? previousValue[1] : undefined
 			}}
 		>
 			{ children }

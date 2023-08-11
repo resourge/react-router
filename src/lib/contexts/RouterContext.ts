@@ -6,6 +6,9 @@ import invariant from 'tiny-invariant'
 export type RouterContextType = {
 	action: ActionType
 	url: URL
+
+	previousAction?: ActionType
+	previousUrl?: URL
 }
 
 export const RouterContext = createContext<RouterContextType | null>(null);

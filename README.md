@@ -403,6 +403,16 @@ const params = useParams((params) => {
   }
 })
 ```
+## usePreviousUrl
+
+Hook to return the previous URL.
+_Note: This hook will always return the first previous URL (In first render, saves previousUrl)_
+
+```JSX
+import { usePreviousUrl } from '@resourge/react-router'
+
+const previousURL = usePreviousUrl()
+```
 
 ## usePrompt
 
