@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/resourge/react-router/compare/v1.11.0...v1.11.1) (2023-08-11)
+
+
+### Bug Fixes
+
+* **setuppaths:** fix withSearchParams type also return path even tho it does nothing with it ([50dd7dd](https://github.com/resourge/react-router/commit/50dd7dd4edceaa1e266a6ed4928faaee1fe9042b))
+
 # [1.11.0](https://github.com/resourge/react-router/compare/v1.10.0...v1.11.0) (2023-08-11)
 
 
