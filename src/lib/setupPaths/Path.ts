@@ -43,10 +43,6 @@ export type PathType<
 		: IsAllOptional<TransformStringIntoObj<Key>> extends true 
 			? <P extends TransformStringIntoObj<Key>>(params?: AsConst<P>) => ReplaceStringWithParams<Key, P> 
 			: <P extends TransformStringIntoObj<Key>>(params: AsConst<P>) => ReplaceStringWithParams<Key, P>
-	/**
-	 * Generated string from chain functions. Includes path with `params`.
-	 */
-	path: Key
 } 
 & (WithSearchParams extends false ? { } : InjectParamsIntoPathType<Key, Routes, ConfigParams>) 
 & (
@@ -59,6 +55,10 @@ export type PathType<
 	}
 ) 
 & (WithSearchParams extends true ? { 
+	/**
+	 * Generated string from chain functions. Includes path with `params`.
+	 */
+	path: Key
 	withSearchParams: <SP extends Record<string, any>>(searchParams: SP) => PathType<`${Key}?${ObjectToSearchParams<SP>}`, ConfigParams, Routes, false> 
 } : {})
 
