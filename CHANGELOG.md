@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/resourge/react-router/compare/v1.10.0...v1.11.0) (2023-08-11)
+
+
+### Features
+
+* **setuppaths:** add withSeaarchParams to automatically add searchParams to route ([15973ba](https://github.com/resourge/react-router/commit/15973ba8ee386493a4252b410bf99f79d3dc3dad))
+
 # [1.10.0](https://github.com/resourge/react-router/compare/v1.9.1...v1.10.0) (2023-08-10)
 
 
