@@ -1,3 +1,5 @@
+import { type Entries } from './Entries'
+
 /* eslint-disable @typescript-eslint/ban-types */
 type GetParamsFromString<S extends string> = S extends `${infer E}/${infer R}` 
 	? [...GetParamsFromString<E>, ...GetParamsFromString<R>]
@@ -25,3 +27,13 @@ type TransformArrayIntoObj<P extends string[]> = P extends []
 export type TransformStringIntoObj<S extends string, P extends string[] = GetParamsFromString<S>> = P extends [] 
 	? never
 	: MergeObjectUnion<TransformArrayIntoObj<P>>
+
+type ArrayToSearchParams<T extends any[]> = T extends any[] 
+	? T extends [infer E, ...infer R]
+		? E extends [infer Key, infer Value]
+			? `${Key extends string ? Key : ''}=${Value extends string | number | bigint | boolean ? `${Value}` : ''}${ArrayToSearchParams<R> extends '' ? '' : `&${ArrayToSearchParams<R>}`}`
+			: ''
+		: ''
+	: ''
+
+export type ObjectToSearchParams<SP extends Record<string, any>> = ArrayToSearchParams<Entries<SP>>;

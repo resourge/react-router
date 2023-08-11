@@ -2,9 +2,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 /* eslint-disable @typescript-eslint/ban-types */
+import { parseParams } from '@resourge/react-search-params';
+
 import { useParams } from '../hooks/useParams';
 import { type AsConst } from '../types/AsConst';
-import { type TransformStringIntoObj } from '../types/GetParamsFromString';
+import { type ObjectToSearchParams, type TransformStringIntoObj } from '../types/ConvertToStringTypes';
 import {
 	type ParamString,
 	type IsHashPath,
@@ -12,7 +14,7 @@ import {
 	type ReplaceStringWithParams
 } from '../types/StringTypes'
 import { type StringifyObjectParams } from '../types/StringifyObjectParams';
-import { type IsAllOptional } from '../types/types';
+import { type MergeValueOfUIntoT, type IsAllOptional } from '../types/types';
 import { generatePath } from '../utils/generatePath';
 
 import { Param, ParamPath, type ParamsConfig } from './Param'
@@ -26,16 +28,11 @@ export function createPathWithCurrentLocationHasHash(path: string) {
 	return newPath.href;
 }
 
-type MergeValueOfUIntoT<T extends Record<string, any>, U extends Record<string, any>> = {
-	[K in keyof T & keyof U]: undefined extends U[K]
-		? string
-		: U[K]
-}
-
 export type PathType<
 	Key extends string,
 	ConfigParams extends Record<string, any>,
-	Routes extends Record<string, Path<any, string>>
+	Routes extends Record<string, Path<any, string>>,
+	WithSearchParams extends boolean = true
 > = {
 	/**
 	 * Method to obtain the true path.
@@ -50,7 +47,9 @@ export type PathType<
 	 * Generated string from chain functions. Includes path with `params`.
 	 */
 	path: Key
-} & InjectParamsIntoPathType<Key, Routes, ConfigParams> & (
+} 
+& (WithSearchParams extends false ? { } : InjectParamsIntoPathType<Key, Routes, ConfigParams>) 
+& (
 	TransformStringIntoObj<Key> extends never ? {} : {
 	/**
 	 * Hook to receive the params related to the route.
@@ -58,7 +57,10 @@ export type PathType<
 	 */
 		useParams: () => MergeValueOfUIntoT<TransformStringIntoObj<Key>, ConfigParams>
 	}
-)
+) 
+& (WithSearchParams extends true ? { 
+	withSearchParams: <SP extends Record<string, any>>(searchParams: SP) => PathType<`${Key}?${ObjectToSearchParams<SP>}`, ConfigParams, Routes, false> 
+} : {})
 
 export type InjectParamsIntoPathType<
 	BaseKey extends string,
@@ -317,8 +319,15 @@ export class Path<
 			// Too hard to put a working type that doesn't create a problem in return
 		}, {} as any) 
 
+		let searchParams = '';
+
 		return {
 			path,
+			withSearchParams(sp: Record<string, any>) {
+				searchParams = parseParams(sp)
+
+				return this
+			},
 			get: (params: TransformStringIntoObj<Key>) => {
 				const _params: Exclude<TransformStringIntoObj<Key>, undefined> = (params ? {
 					...params 
@@ -337,7 +346,7 @@ export class Path<
 					newPath = createPathWithCurrentLocationHasHash(newPath);
 				} 
 
-				return newPath;
+				return `${newPath}${searchParams}`;
 			},
 			useParams: () => {
 				return useParams<StringifyObjectParams<Exclude<TransformStringIntoObj<Key>, undefined>>>((params) => {
