@@ -14,7 +14,7 @@ import {
 	type ReplaceStringWithParams
 } from '../types/StringTypes'
 import { type StringifyObjectParams } from '../types/StringifyObjectParams';
-import { type MergeValueOfUIntoT, type IsAllOptional } from '../types/types';
+import { type IsAllOptional } from '../types/types';
 import { generatePath } from '../utils/generatePath';
 
 import { Param, ParamPath, type ParamsConfig } from './Param'
@@ -51,7 +51,7 @@ export type PathType<
 	 * Hook to receive the params related to the route.
 	 * Here all the transform method will transform the params to the desired params. 
 	 */
-		useParams: () => MergeValueOfUIntoT<TransformStringIntoObj<Key>, ConfigParams>
+		useParams: () => ConfigParams
 	}
 ) 
 & (WithSearchParams extends true ? { 
