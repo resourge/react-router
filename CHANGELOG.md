@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/resourge/react-router/compare/v1.12.0...v1.12.1) (2023-09-01)
+
+
+### Bug Fixes
+
+* **useparams:** fix useparams always return string even when a param has a transformation ([0c35230](https://github.com/resourge/react-router/commit/0c35230419cc3ffcdd4e5d53b0a2da814895cc9b))
+
 # [1.12.0](https://github.com/resourge/react-router/compare/v1.11.1...v1.12.0) (2023-08-11)
 
 
