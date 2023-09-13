@@ -175,7 +175,7 @@ export class Path<
 			ConfigParams
 		>,
 		ResolveSlash<[Key, ParamString<K>]>, 
-		ConfigParams
+		ConfigParams & { [Key in K]: string }
 	>
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -192,7 +192,7 @@ export class Path<
 			ConfigParams
 		>,
 		ResolveSlash<[Key, ParamString<K>]>, 
-		ConfigParams
+		ConfigParams & { [Key in K]: string }
 	>
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -211,7 +211,7 @@ export class Path<
 			ConfigParams
 		>,
 		ResolveSlash<[Key, ParamString<Config['optional'] extends true ? `${K}?` : K>]>,
-		Config['transform'] extends undefined ? ConfigParams : ConfigParams & { [Key in K]: ReturnType<NonNullable<Config['transform']>> } 
+		ConfigParams & { [Key in K]: Config['transform'] extends undefined ? string : ReturnType<NonNullable<Config['transform']>> }
 	>;
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -230,7 +230,7 @@ export class Path<
 			ConfigParams
 		>,
 		ResolveSlash<[Key, ParamString<K>]>,
-		Config['transform'] extends undefined ? ConfigParams : ConfigParams & { [Key in K]: ReturnType<NonNullable<Config['transform']>> } 
+		ConfigParams & { [Key in K]: Config['transform'] extends undefined ? string : ReturnType<NonNullable<Config['transform']>> }
 	> {
 		const _this = this.clone();
 
