@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/resourge/react-router/compare/v1.12.1...v1.12.2) (2023-09-14)
+
+
+### Bug Fixes
+
+* **path:** fix useParams ([f1ad709](https://github.com/resourge/react-router/commit/f1ad7095f464879f4d101e4def7135155f246325))
+
 ## [1.12.1](https://github.com/resourge/react-router/compare/v1.12.0...v1.12.1) (2023-09-01)
 
 
