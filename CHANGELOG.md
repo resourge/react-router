@@ -1,3 +1,10 @@
+## [1.12.3](https://github.com/resourge/react-router/compare/v1.12.2...v1.12.3) (2023-09-18)
+
+
+### Bug Fixes
+
+* **entries:** possible performance improve on generic type entries ([c1405cc](https://github.com/resourge/react-router/commit/c1405cc5d8993676b547068da145afba510298d7))
+
 ## [1.12.2](https://github.com/resourge/react-router/compare/v1.12.1...v1.12.2) (2023-09-14)
 
 
