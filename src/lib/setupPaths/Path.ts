@@ -324,11 +324,14 @@ export class Path<
 		return {
 			path,
 			withSearchParams(sp: Record<string, any>) {
+				searchParams = '';
 				searchParams = parseParams(sp)
 
 				return this
 			},
 			get: (params: TransformStringIntoObj<Key>) => {
+				const _searchParams = searchParams;
+				searchParams = '';
 				const _params: Exclude<TransformStringIntoObj<Key>, undefined> = (params ? {
 					...params 
 				} : {}) as Exclude<TransformStringIntoObj<Key>, undefined>;
@@ -346,7 +349,7 @@ export class Path<
 					newPath = createPathWithCurrentLocationHasHash(newPath);
 				} 
 
-				return `${newPath}${searchParams}`;
+				return `${newPath}${_searchParams}`;
 			},
 			useParams: () => {
 				return useParams<StringifyObjectParams<Exclude<TransformStringIntoObj<Key>, undefined>>>((params) => {
