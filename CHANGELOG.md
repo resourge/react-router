@@ -1,3 +1,10 @@
+## [1.12.4](https://github.com/resourge/react-router/compare/v1.12.3...v1.12.4) (2023-09-20)
+
+
+### Bug Fixes
+
+* **path:** fix withSearchparams not clearing params ([22ea3fe](https://github.com/resourge/react-router/commit/22ea3fe2fe1411e69be17ee68ebf1d021ef1e12c))
+
 ## [1.12.3](https://github.com/resourge/react-router/compare/v1.12.2...v1.12.3) (2023-09-18)
 
 
