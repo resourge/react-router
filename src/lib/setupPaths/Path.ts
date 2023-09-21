@@ -319,19 +319,16 @@ export class Path<
 			// Too hard to put a working type that doesn't create a problem in return
 		}, {} as any) 
 
-		let searchParams = '';
+		const _includeCurrentURL = this._includeCurrentURL
 
 		return {
 			path,
 			withSearchParams(sp: Record<string, any>) {
-				searchParams = '';
-				searchParams = parseParams(sp)
-
-				return this
+				return Object.assign({}, this, {
+					searchParams: parseParams(sp) 
+				})
 			},
-			get: (params: TransformStringIntoObj<Key>) => {
-				const _searchParams = searchParams;
-				searchParams = '';
+			get(this: { searchParams?: string }, params: TransformStringIntoObj<Key>) {
 				const _params: Exclude<TransformStringIntoObj<Key>, undefined> = (params ? {
 					...params 
 				} : {}) as Exclude<TransformStringIntoObj<Key>, undefined>;
@@ -345,13 +342,13 @@ export class Path<
 					_params
 				)
 
-				if ( this._includeCurrentURL ) {
+				if ( _includeCurrentURL ) {
 					newPath = createPathWithCurrentLocationHasHash(newPath);
 				} 
 
-				return `${newPath}${_searchParams}`;
+				return `${newPath}${this.searchParams ?? ''}`;
 			},
-			useParams: () => {
+			useParams() {
 				return useParams<StringifyObjectParams<Exclude<TransformStringIntoObj<Key>, undefined>>>((params) => {
 					_transforms.forEach((transform) => {
 						transform(params);
