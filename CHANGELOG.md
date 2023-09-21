@@ -1,3 +1,10 @@
+## [1.12.5](https://github.com/resourge/react-router/compare/v1.12.4...v1.12.5) (2023-09-21)
+
+
+### Bug Fixes
+
+* **path:** improve previous fix ([eec7a0e](https://github.com/resourge/react-router/commit/eec7a0e4c55c9010e5caabab280b9d666a4d863f))
+
 ## [1.12.4](https://github.com/resourge/react-router/compare/v1.12.3...v1.12.4) (2023-09-20)
 
 
