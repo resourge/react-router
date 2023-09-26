@@ -10,7 +10,7 @@ export type ParamsConfigOptional = {
 	/**
 	 * Transforms param before path creation (get).
 	 */
-	beforePath?: (value: unknown) => string
+	beforePath?: (value: any) => string
 	/**
 	 * Transform's param on useParam.
 	 */
@@ -21,7 +21,7 @@ export type ParamsConfigNotOptional = {
 	/**
 	 * Transforms param before path creation (get).
 	 */
-	beforePath?: (value: unknown) => string
+	beforePath?: (value: any) => string
 	/**
 	 * Makes param optional
 	 */

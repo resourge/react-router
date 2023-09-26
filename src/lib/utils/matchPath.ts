@@ -1,3 +1,5 @@
+import { type Metadata } from '../types/Metadata';
+
 import { getUrlPattern, type UrlPattern } from './getUrlPattern';
 
 export type MatchProps = UrlPattern
@@ -35,6 +37,10 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 * Hash path
 	 */
 	hashPath?: string
+	/**
+	 * Route metadata
+	 */
+	metadata?: Metadata
 }
 
 /**
@@ -42,10 +48,10 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
  * @param _href {string}
  * @param matchProps {@link MatchProps} - props to define the route
  */
-export const matchPath = <Params extends Record<string, string> = Record<string, string>>(
+export function matchPath<Params extends Record<string, string> = Record<string, string>>(
 	href: string,
 	matchProps: MatchProps
-): MatchResult<Params> | null => {
+): MatchResult<Params> | null {
 	const {
 		hash, path, hashPath, exact, baseURL
 	} = matchProps;
@@ -74,6 +80,7 @@ export const matchPath = <Params extends Record<string, string> = Record<string,
 			unique,
 			path,
 			search,
+			metadata: arguments[3],
 			getParams: () => {
 				const matchUrl = match.pathname;
 

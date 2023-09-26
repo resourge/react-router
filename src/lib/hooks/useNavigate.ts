@@ -1,4 +1,3 @@
-
 import { type ActionType } from '@resourge/react-search-params';
 
 import { type NavigateTo, useNormalizeUrl } from './useNormalizeUrl';

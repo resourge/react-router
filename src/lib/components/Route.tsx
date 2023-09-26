@@ -1,7 +1,6 @@
 import {
 	cloneElement,
 	Suspense,
-	type FC,
 	type ReactElement,
 	type ReactNode
 } from 'react'
@@ -11,11 +10,11 @@ import { useMatchRoute, type MatchRouteProps } from '../hooks/useMatchRoute';
 import { type MatchResult } from '../utils/matchPath';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
-export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
-	path?: MatchRouteProps['path']
+export type BaseRouteProps<Params extends Record<string, any> = any> = Omit<MatchRouteProps, 'path'> & {
+	path?: MatchRouteProps<Params>['path']
 }
 
-export type RouteProps = BaseRouteProps & { fallback?: ReactNode } & ({
+export type RouteProps<Params extends Record<string, any> = any> = BaseRouteProps<Params> & { fallback?: ReactNode } & ({
 	children: ReactNode
 	
 	component?: ReactElement
@@ -33,12 +32,13 @@ export type IRouteProps = RouteProps & {
  *
  * Note: This component mainly uses `useMatchRoute` hook. And Route without `path` will be treated as normal components.
  */
-const Route: FC<RouteProps> = ({
-	children, component,
-	computedMatch,
-	fallback,
-	...matchProps
-}: IRouteProps) => {
+function Route<Params extends Record<string, any> = any>(props: RouteProps<Params>) {
+	const {
+		children, component,
+		computedMatch,
+		fallback,
+		...matchProps
+	} = props as IRouteProps
 	if ( __DEV__ ) {
 		validateRouteProps(matchProps);
 	}

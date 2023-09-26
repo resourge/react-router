@@ -1,63 +1,20 @@
-import { useRoute } from '../contexts/RouteContext';
+import { useLanguageContext } from '../contexts/LanguageContext';
 import { useRouter } from '../contexts/RouterContext';
-import { generatePath } from '../utils/generatePath';
-import { resolveLocation } from '../utils/resolveLocation';
+import { resolveLocation, resolveSlash } from '../utils/resolveLocation';
 
-type NavigateURL = Pick<Partial<URL>, 'pathname' | 'hash' | 'search'> 
-
-type NavigateParams = {
-	params: Record<string, any>
-}
-
-type NavigateObject = NavigateURL | NavigateParams
-
-export type NavigateTo = string | URL | NavigateObject | ((url: URL) => string | URL | NavigateObject)
+export type NavigateTo = string | URL
 
 const normalizeUrl = (
 	to: NavigateTo, 
-	path: string,
-	getParams: (() => Record<string, string>) | undefined,
-	url: URL
+	url: URL,
+	base?: string
 ): URL => {
 	// If to is string, resolve to with current url
 	if ( typeof to === 'string' ) {
-		return resolveLocation(to, url.href)
+		return resolveLocation(base ? resolveSlash(base, to) : to, url.href)
 	}
-	// If to is URL, just navigate to URL
-	else if ( to instanceof URL ) {
-		return to
-	}
-	else if ( typeof to === 'function' ) {
-		return normalizeUrl(
-			to(url),
-			path,
-			getParams,
-			url
-		);
-	}
-	else {
-		const newUrl = new URL(url);
-
-		if ( (to as NavigateParams).params ) {
-			if ( path ) {
-				const newParams = {
-					...(getParams ? getParams() : {}),
-					...(to as NavigateParams).params
-				}
 	
-				const newPath = generatePath(path, newParams);
-				newUrl.pathname = newPath;
-			}
-		}
-		else {
-			(Object.entries(to) as Array<[keyof NavigateURL, string]>)
-			.forEach(([key, value]) => {
-				newUrl[key] = value;
-			})
-		}
-
-		return newUrl
-	}
+	return to
 }
 
 /**
@@ -65,14 +22,13 @@ const normalizeUrl = (
  */
 export const useNormalizeUrl = () => {
 	const { url } = useRouter();
-	const { getParams, path } = useRoute();
+	const base = useLanguageContext();
 
 	return (to: NavigateTo) => {
 		return normalizeUrl(
 			to,
-			path,
-			getParams,
-			url
+			url,
+			base
 		)
 	}
 }

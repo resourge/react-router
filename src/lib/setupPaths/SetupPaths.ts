@@ -13,6 +13,8 @@ export type SetupPathsResult<R extends PathStructures> = {
 			// @ts-expect-error Want to protect value, but also access it with types
 			: IncludeSlash<R[K]['_key']>, 
 		// @ts-expect-error Want to protect value, but also access it with types
+		R[K]['_params'], 
+		// @ts-expect-error Want to protect value, but also access it with types
 		R[K]['_paramsResult'], 
 		// @ts-expect-error Want to protect value, but also access it with types
 		R[K]['_routes']

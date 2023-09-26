@@ -1,5 +1,3 @@
-import { type Entries } from './Entries'
-
 export type IsString<T> = T extends string 
 	? T extends ''
 		? false
@@ -23,40 +21,3 @@ export type Replace<T extends string, S extends string, D extends string,
 export type IsHashPath<S> = S extends `#${string}` ? true : false
 
 export type ParamString<T extends string> = `:${T}`;
-
-type IsLiterally<T> = string extends T
-	? true
-	: number extends T
-		? true
-		: boolean extends T
-			? true
-			: bigint extends T
-				? true
-				: boolean extends T
-					? true
-					: null extends T
-						? true
-						: undefined extends T
-							? true
-							: false
-
-export type ReplaceStringWithObjEntries<S extends string, ObjEntries> = ObjEntries extends [infer E, ...infer R] 
-	? E extends [infer Key, infer Value]
-		? IsLiterally<Value> extends true
-			? ReplaceStringWithObjEntries<S, R>
-			: Replace<
-				ReplaceStringWithObjEntries<S, R>, 
-				ParamString<Key extends string 
-					? Key 
-					: ''
-				>, 
-				Value extends string | number | bigint | boolean | null | undefined
-					? `${Value}`
-					: ''
-			> 
-		: ReplaceStringWithObjEntries<S, R>
-	: S
-
-export type ReplaceStringWithParams<S extends string, Params> = Params extends Record<string, any> 
-	? ReplaceStringWithObjEntries<S, Entries<Params>>
-	: S;

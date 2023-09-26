@@ -37,5 +37,5 @@ type UnionToTuple<T, R extends unknown[] = []> = {
 }[[T] extends [never] ? 'result' : 'next']
 
 export type Entries<T> = UnionToTuple<{
-	[K in keyof T]: [K, T[K]]
+	[K in keyof T]: [K]
 }[keyof T]>

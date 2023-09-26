@@ -26,7 +26,7 @@ const Link = forwardRef((
 
 		className,
 		matchClassName,
-
+		children,
 		...aProps 
 	} = props
 	const { url } = useRouter();
@@ -39,7 +39,9 @@ const Link = forwardRef((
 
 	return (
 		// eslint-disable-next-line jsx-a11y/anchor-has-content
-		<a {...aProps} ref={ref} className={_className} href={href} onClick={onClick} />
+		<a {...aProps} ref={ref} className={_className} href={href} onClick={onClick}>
+			{ children }
+		</a>
 	);
 });
 

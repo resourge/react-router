@@ -1,4 +1,3 @@
-
 type ConstRecord <T> = {
 	[P in keyof T]: T[P] extends string 
 		? string extends T[P] 

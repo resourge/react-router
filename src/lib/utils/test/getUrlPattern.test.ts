@@ -1,4 +1,3 @@
-
 import { Param } from 'src/lib/setupPaths/Param'
 import { path, type PathType, type Path } from 'src/lib/setupPaths/Path'
 import { SetupPaths } from 'src/lib/setupPaths/SetupPaths'
@@ -79,6 +78,7 @@ describe('getUrlPattern', () => {
 	const testPathPattern = (
 		pathPattern: PathType<
 			':productId',
+			{ productId: string },
 			Record<string, any>,
 			Record<string, Path<any, string>>
 		>
@@ -157,6 +157,7 @@ describe('getUrlPattern', () => {
 	const testHashPattern = (
 		pathPattern: PathType<
 			':index',
+			{ index: number },
 			Record<string, any>,
 			Record<string, Path<any, string>>
 		>

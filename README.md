@@ -54,8 +54,20 @@ const ProductForm = React.lazy(() => import('./ProductForm'));
 const RoutePaths = SetupPaths({
   HOME: path(),
   PRODUCT: path('product')
+  .metadata({
+    title: 'Product',
+    description: 'Product description'
+  })
   .routes({
     FORM: path().param('productId')
+	.metadata({
+      title: {
+		en: 'Product'
+	  },
+      description: {
+		en: 'Product description'
+	  }
+    })
   })
 })
 
@@ -83,15 +95,15 @@ function App() {
         Product
       </Link>
       <Switch>
-        <Route path={RoutePaths.HOME.path}>
+        <Route path={RoutePaths.HOME}>
           Home
         </Route>
         <Route 
-          path={RoutePaths.PRODUCT.path}
+          path={RoutePaths.PRODUCT}
         >
           <ProductList />
         </Route>
-        <Route path={RoutePaths.PRODUCT.FORM.path}>
+        <Route path={RoutePaths.PRODUCT.FORM}>
           <ProductForm />
         </Route>
         {/* Redirect */}
@@ -207,9 +219,49 @@ import { Route } from '@resourge/react-router'
 	// exact // Makes it so 'URL' path needs to be exactly as the path (default: false)
 	// hash // Turn 'route' into 'hash route' (default: false)
 	// component={<>Home page</>} When defined Route children will be injected into the component
+	// fallback // Component to be used inside suspense
 >
 	Home page
 </Route>
+```
+
+## LanguageRoute
+
+Component that makes sure language is present at the begin of the route.
+
+```JSX
+import { LanguageRoute } from '@resourge/react-router'
+
+<LanguageRoute
+	// Languages allowed
+	languages={['en', 'pt']}
+	/**
+	 * Incase there is no language or the language is not accepted
+	 */
+	// fallbackLanguage='pt' // Incase there is no language or the language is not accepted
+	// checkLanguage={(lang) => true} // For custom language validation
+>
+	....
+</LanguageRoute>
+```
+
+### useLanguageContext
+
+```JSX
+import { useLanguageContext } from '@resourge/react-router'
+
+// Route language in case LanguageRoute exist's.
+const language = useLanguageContext(); 
+```
+
+### updateLanguageRoute
+
+Method to update language in route.
+
+```JSX
+import { updateLanguageRoute } from '@resourge/react-router'
+
+updateLanguageRoute('en')
 ```
 
 ## Link
@@ -443,6 +495,19 @@ Returns the current search parameters and a method to change.
 import { useSearchParams } from '@resourge/react-router'
 
 const [searchParams, setParams] = useSearchParams({} /* default params */)
+```
+
+## useRouteMetadata
+
+Hook set page title and description. It requires metadata from SetupPaths.
+
+```JSX
+import { useRouteMetadata } from '@resourge/react-router'
+
+useRouteMetadata()
+
+// For custom title
+useRouteMetadata('Custom title page')
 ```
 
 ## useSearchRoute

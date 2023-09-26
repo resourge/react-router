@@ -1,17 +1,18 @@
-
 import { useRef } from 'react';
 
+import { useLanguageContext } from '../contexts/LanguageContext';
 import { type RouteContextObject } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
+import { type AnyPath } from '../setupPaths/Path';
 import { matchPath, type MatchResult } from '../utils/matchPath';
 import { resolveSlash } from '../utils/resolveLocation';
 
-export type MatchPathProps = {
+export type MatchPathProps<Params extends Record<string, any> = Record<string, any>> = {
 	/**
 	 * Route path(s)
 	 * @default '*'
 	 */
-	path: string | string[]
+	path: string | string[] | AnyPath<Params> | Array<AnyPath<Params>>
 	/**
 	 * Makes it so 'URL' needs to be exactly as the path
 	 * @default false
@@ -35,7 +36,8 @@ export const matchRoute = (
 	url: URL,
 	{ hash, exact }: Omit<MatchPathProps, 'path'>, 
 	path: MatchPathProps['path'],
-	parentRoute: MatchResult | undefined
+	parentRoute: MatchResult | undefined,
+	base?: string
 ): MatchResult<Record<string, string>> | null => {
 	const baseURL = url.origin;
 	const href = url.href;
@@ -45,9 +47,19 @@ export const matchRoute = (
 	const length = paths.length;
 	for (let i = 0; i < length; i++) {
 		const p = paths[i];
-		let _path = paths[i];
+		let routePath: string = p as string;
+		let metadata = parentRoute ? parentRoute.metadata : {};
+		if ( typeof p === 'object' ) {
+			routePath = p.path;
+			metadata = {
+				...metadata,
+				...p._metadata 
+			};
+		}
 
-		let hashPath = hash ? p : undefined;
+		let _path = resolveSlash(base, routePath);
+
+		let hashPath = hash ? routePath : undefined;
 	
 		if ( parentRoute ) {
 			_path = resolveSlash(parentRoute.path, !hash ? _path.replace(parentRoute.path, '') : '');
@@ -64,7 +76,9 @@ export const matchRoute = (
 				hashPath,
 				baseURL,
 				exact
-			}
+			},
+			// @ts-expect-error For developer only
+			metadata
 		)
 
 		if ( match ) {
@@ -85,9 +99,16 @@ export const useMatchPath = (
 	matchResult?: MatchResult | null
 ) => {
 	const { url } = useRouter()
+	const baseContext = useLanguageContext()
 	const ref = useRef<MatchResult | null | undefined>();
 
-	const _matchResult = matchResult ?? matchRoute(url, matchProps, matchProps.path, parentRoute);
+	const _matchResult = matchResult ?? matchRoute(
+		url, 
+		matchProps,
+		matchProps.path, 
+		parentRoute,
+		baseContext
+	);
 
 	// This is to make sure only routes that changed are render again
 	if ( !ref.current || !_matchResult || ref.current.unique !== _matchResult.unique ) {
