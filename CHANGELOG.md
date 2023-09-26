@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/resourge/react-router/compare/v1.12.5...v1.13.0) (2023-09-26)
+
+
+### Features
+
+* **languageroute and page ata:** add Languageroute for language in routes and add useroutemetadata ([3f2a658](https://github.com/resourge/react-router/commit/3f2a658af8d1fd236e87bc03dba7cf7a0a1cb3a7))
+
 ## [1.12.5](https://github.com/resourge/react-router/compare/v1.12.4...v1.12.5) (2023-09-21)
 
 
