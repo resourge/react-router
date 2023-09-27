@@ -3,9 +3,9 @@ import invariant from 'tiny-invariant';
 import { type MatchRouteProps } from '../hooks/useMatchRoute';
 
 export const validateRouteProps = (matchProps: Partial<MatchRouteProps>) => {
-	matchProps.path = matchProps.path ? matchProps.path : '';
+	const path = matchProps.path ? matchProps.path : '';
 
-	const paths = (Array.isArray(matchProps.path) ? matchProps.path : [matchProps.path])
+	const paths = (Array.isArray(path) ? path : [path])
 	.map((p) => typeof p === 'object' ? p.path : p)
 	.filter((p) => p) as string[];
 
