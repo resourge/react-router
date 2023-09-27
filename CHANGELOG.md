@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/resourge/react-router/compare/v1.13.1...v1.13.2) (2023-09-27)
+
+
+### Bug Fixes
+
+* **validaterouteprops:** fix changing path from undefined to empty string ([bb2fa3b](https://github.com/resourge/react-router/commit/bb2fa3bb415f6dd3a18c50b806dfcbb485948848))
+
 ## [1.13.1](https://github.com/resourge/react-router/compare/v1.13.0...v1.13.1) (2023-09-27)
 
 
