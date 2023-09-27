@@ -296,11 +296,7 @@ export class Path<
 	>(
 		routes: S
 	): Path<
-		AddConfigParamsIntoRoutes<
-			S,
-			Params,
-			ParamsResult
-		>, 
+		S, 
 		Key, 
 		Params, 
 		ParamsResult

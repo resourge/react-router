@@ -44,4 +44,8 @@ export type MergeObj<
 	U extends Record<string, any>, 
 > = string extends keyof T
 	? U
-	: T & U
+	: T & (
+		string extends keyof U
+			? T
+			: U
+	)
