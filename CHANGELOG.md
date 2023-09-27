@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/resourge/react-router/compare/v1.13.0...v1.13.1) (2023-09-27)
+
+
+### Bug Fixes
+
+* **types:** fix path not sharing it's owns param with routes ([37985d6](https://github.com/resourge/react-router/commit/37985d65376f176a7e4dc70463dbf3547049f0d0))
+
 # [1.13.0](https://github.com/resourge/react-router/compare/v1.12.5...v1.13.0) (2023-09-26)
 
 
