@@ -1,3 +1,11 @@
+# [1.14.0](https://github.com/resourge/react-router/compare/v1.13.2...v1.14.0) (2023-10-02)
+
+
+### Features
+
+* **browserrouter:** add defaultfallback for all routes and ([cf7ca5b](https://github.com/resourge/react-router/commit/cf7ca5b09f477c37c7fd722d0b7d14edab2436d8))
+* **usematchpath:** add currentPath and all paths ([cc4b273](https://github.com/resourge/react-router/commit/cc4b27306a7c2d0ac83a2d2c0d1888f2880950fa))
+
 ## [1.13.2](https://github.com/resourge/react-router/compare/v1.13.1...v1.13.2) (2023-09-27)
 
 
