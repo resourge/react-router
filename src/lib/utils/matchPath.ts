@@ -2,7 +2,10 @@ import { type Metadata } from '../types/Metadata';
 
 import { getUrlPattern, type UrlPattern } from './getUrlPattern';
 
-export type MatchProps = UrlPattern
+type MatchProps = UrlPattern & {
+	currentPath?: string
+	paths?: string[]
+}
 
 export type MatchResult<Params extends Record<string, string> = Record<string, string>> = {
 	/**
@@ -30,6 +33,10 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 */
 	baseURL?: string
 	/**
+	 * Current paths
+	 */
+	currentPath?: string
+	/**
 	 * If URL pattern is exact
 	 */
 	exact?: boolean
@@ -41,6 +48,10 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 * Route metadata
 	 */
 	metadata?: Metadata
+	/**
+	 * All possible paths for the route
+	 */
+	paths?: string[]
 }
 
 /**
@@ -53,7 +64,7 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 	matchProps: MatchProps
 ): MatchResult<Params> | null {
 	const {
-		hash, path, hashPath, exact, baseURL
+		hash, path, hashPath, exact, baseURL, paths, currentPath
 	} = matchProps;
 	const urlPattern = getUrlPattern(matchProps);
 
@@ -93,7 +104,9 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 				}, {}) as Params
 			},
 			hash: hash ?? false,
-			hashPath
+			hashPath,
+			currentPath,
+			paths
 		}
 	}
 

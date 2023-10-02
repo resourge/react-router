@@ -75,7 +75,9 @@ export const matchRoute = (
 				hash,
 				hashPath,
 				baseURL,
-				exact
+				exact,
+				currentPath: routePath,
+				paths
 			},
 			// @ts-expect-error For developer only
 			metadata
