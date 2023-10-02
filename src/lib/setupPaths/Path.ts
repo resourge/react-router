@@ -330,7 +330,7 @@ export class Path<
 	}
 
 	protected createPath(
-		basePath?: string, 
+		previousPaths: Array<string | ParamPath<string, ParamsConfig>> = [],
 		transforms?: Array<(params: StringifyObjectParams<Record<string, any>>) => void>, 
 		beforePaths?: Array<(params: Record<string, any>) => void>
 	): any {
@@ -339,32 +339,37 @@ export class Path<
 		// Groups new transformations with transformations from parents
 		const _beforePaths: Array<(params: Record<string, any>) => void> = beforePaths ? [...beforePaths] : [];
 
-		// Creates path for current route
-		let path = `${this.getBasePath(basePath)}${this.paths
-		.map((path) => {
-			if ( typeof path === 'string' ) {
-				return path;
-			}
-			if ( path.config?.transform ) {
-				_transforms.push((params) => {
-					(params as any)[path.key] = path.config!.transform!(params[path.key]);
-				})
-			}
-			if ( path.config?.beforePath ) {
-				_beforePaths.push((params) => {
-					(params as any)[path.key] = path.config!.beforePath!(params[path.key]);
-				})
-			}
-			return path.param;
-		})
-		.join('')}`
+		const newPaths = [
+			...(this.config.hash ? ['#'] : previousPaths), 
+			...this.paths
+		];
 
-		path = path === '' ? '/' : path
+		// Creates path for current route
+		const path = (
+			newPaths
+			.map((path, index, arr) => {
+				if ( typeof path === 'string' ) {
+					return path;
+				}
+				if ( path.config?.transform ) {
+					_transforms.push((params) => {
+						(params as any)[path.key] = path.config!.transform!(params[path.key]);
+					})
+				}
+				if ( path.config?.beforePath ) {
+					_beforePaths.push((params) => {
+						(params as any)[path.key] = path.config!.beforePath!(params[path.key]);
+					})
+				}
+				return path.parseParam((arr.length - 1) !== index );
+			})
+			.join('')
+		) || '/'
 
 		// Generates routes
 		const paths = Object.entries(this._routes ?? {})
 		.reduce((obj, [key, value]) => {
-			obj[key] = value.createPath(path === '/' ? '' : path, _transforms, _beforePaths);
+			obj[key] = value.createPath(newPaths, _transforms, _beforePaths);
 			return obj;
 			// Too hard to put a working type that doesn't create a problem in return
 		}, {} as any) 

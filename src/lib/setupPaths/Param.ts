@@ -40,6 +40,16 @@ export class ParamPath<Key, Config extends ParamsConfig = ParamsConfig> {
 	public key: Key = '' as Key
 	public param: string = ''
 	public config?: Config
+
+	public parseParam(hasNextPath: boolean) {
+		const doesNotHaveTheSlash = hasNextPath && this.config?.optional;
+		let param = `${(doesNotHaveTheSlash) ? '' : '/'}:${this.param}${this.config?.options && this.config?.options.length ? `(${this.config.options.join('|')})` : ''}`;
+		if ( this.config?.optional ) {
+			param = `${doesNotHaveTheSlash ? '/' : ''}{${param}}?`;
+		}
+
+		return param;
+	}
 }
 
 export const Param = < 
@@ -58,11 +68,8 @@ export const Param = <
 
 	const instance = new ParamPath<K, Config>();
 
-	instance.param = `/:${param}${config?.options && config?.options.length ? `(${config.options.join('|')})` : ''}`;
+	instance.param = param
 	instance.key = param;
-	if ( config?.optional ) {
-		instance.param = `{${instance.param}}?`;
-	}
 	instance.config = config as any
 
 	return instance;
