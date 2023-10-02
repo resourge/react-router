@@ -35,6 +35,7 @@
 	],
 	"exclude": [
 		"_dist",
+		"src/examples/**/*",
 		"./main.js",
 		"./src/lib_old"
 	],

@@ -4,12 +4,12 @@ import React from 'react';
 import { path, SetupPaths } from '../lib';
 import BrowserRouter from '../lib/components/BrowserRouter';
 import Route from '../lib/components/Route';
-import { useParams } from '../lib/hooks/useParams';
+// import { useParams } from '../lib/hooks/useParams';
 
 const MatchedRoute: React.FC<{
 	label: string
 }> = ({ label }) => {
-	const params = useParams()
+	// const params = useParams()
 	return (
 		<>
 			<br/> 
@@ -45,7 +45,7 @@ console.log('a', a.TEST.get({
 function App() {
 	const path = '/foo/:name'
 	const path1 = '/modal/products'
-	const path11 = '/modal/pc'
+	// const path11 = '/modal/pc'
 	const path2 = '/category'
 	const hash = '#/delivery'
 	const hash1 = '#/product'
