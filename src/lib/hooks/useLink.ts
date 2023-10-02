@@ -34,11 +34,11 @@ export const useLink = ({
 		}
 
 		if (
-			!event.defaultPrevented && 
-			event.button === 0 && (
+			!event.defaultPrevented 
+			&& event.button === 0 && (
 				!aProps.target || aProps.target === '_self'
-			) &&
-			!isModifiedEvent(event)
+			)
+			&& !isModifiedEvent(event)
 		) {
 			event.preventDefault();
 			navigate(url, {

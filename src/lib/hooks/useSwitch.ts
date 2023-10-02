@@ -28,8 +28,8 @@ const isRoute = (
 	props: Props
 ) => {
 	return (
-		!isNavigateOrRedirect(props as RedirectProps) &&
-		!isSearchRoute(props as BaseSearchRouteProps)
+		!isNavigateOrRedirect(props as RedirectProps)
+		&& !isSearchRoute(props as BaseSearchRouteProps)
 	)
 }
 
@@ -41,10 +41,10 @@ const getMatchFromProps = (
 ) => {
 	if ( __DEV__ ) {
 		invariant(
-			(props as BaseSearchRouteProps).search ||
-			(props as NavigateProps).to ||
-			!(props as BaseRouteProps).path ||
-			(props as BaseRouteProps).path,
+			(props as BaseSearchRouteProps).search
+			|| (props as NavigateProps).to
+			|| !(props as BaseRouteProps).path
+			|| (props as BaseRouteProps).path,
 			'`useSwitch` can only accept component\'s with `path`, `search`, `from` or `to` attributes'
 		);
 	}

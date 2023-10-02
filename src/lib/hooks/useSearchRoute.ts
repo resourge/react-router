@@ -56,9 +56,9 @@ export const useSearchRoute = (matchSearchProps: UseSearchRouteProps, computedMa
 
 	// This is to make sure only routes that changed are render again
 	if ( 
-		!ref.current || 
-			!_matchResult || 
-			(ref.current.unique !== _matchResult.unique) 
+		!ref.current 
+		|| !_matchResult 
+		|| (ref.current.unique !== _matchResult.unique) 
 	) {
 		ref.current = _matchResult;
 	}

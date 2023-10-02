@@ -5,6 +5,7 @@ import {
 	type ReactNode
 } from 'react'
 
+import { useDefaultFallbackContext } from '../contexts/DefaultFallbackContext';
 import { RouteContext } from '../contexts/RouteContext';
 import { useMatchRoute, type MatchRouteProps } from '../hooks/useMatchRoute';
 import { type MatchResult } from '../utils/matchPath';
@@ -42,13 +43,15 @@ function Route<Params extends Record<string, any> = any>(props: RouteProps<Param
 	if ( __DEV__ ) {
 		validateRouteProps(matchProps);
 	}
+	const defaultFallback = useDefaultFallbackContext()
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch)
 
 	if ( match ) {
 		const Component = (
-			<Suspense fallback={fallback}>
+			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+			<Suspense fallback={fallback || defaultFallback}>
 				{ component ? cloneElement(component, {}, component.props.children, children) : children }
 			</Suspense>
 		)
