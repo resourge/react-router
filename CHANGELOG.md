@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/resourge/react-router/compare/v1.14.1...v1.15.0) (2023-10-04)
+
+
+### Features
+
+* **usenavigate:** reset scroll on navigate ([26cc415](https://github.com/resourge/react-router/commit/26cc4150595b1b2a08e2f22a1bba0fa4254ce533))
+
 ## [1.14.1](https://github.com/resourge/react-router/compare/v1.14.0...v1.14.1) (2023-10-02)
 
 
