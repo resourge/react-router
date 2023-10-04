@@ -11,16 +11,11 @@ export type NavigateProps = {
  *
  * Note: This component mainly uses `useNavigate` hook to navigate to `to`.
  */
-const Navigate: FC<NavigateProps> = ({
-	to, replace = true, ...navigateOptions 
-}: NavigateProps) => {
+const Navigate: FC<NavigateProps> = ({ to, ...navigateOptions }: NavigateProps) => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		navigate(to, {
-			replace,
-			...navigateOptions
-		})
+		navigate(to, navigateOptions)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

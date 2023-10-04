@@ -17,7 +17,7 @@ function isModifiedEvent(event: MouseEvent<any>) {
  * Hook that returns 'href' and onClick method to navigate to link
  */
 export const useLink = ({
-	to, replace, ...aProps 
+	to, replace, preventScrollReset, action, ...aProps 
 }: UseLinkProps) => {
 	const navigate = useNavigate();
 	const normalizeUrl = useNormalizeUrl();
@@ -41,9 +41,14 @@ export const useLink = ({
 			&& !isModifiedEvent(event)
 		) {
 			event.preventDefault();
-			navigate(url, {
-				replace 
-			});
+			navigate(
+				url, 
+				{
+					action,
+					replace,
+					preventScrollReset 
+				}
+			);
 		}
 	}
 
