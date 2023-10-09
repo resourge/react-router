@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/resourge/react-router/compare/v1.15.0...v1.15.1) (2023-10-09)
+
+
+### Bug Fixes
+
+* **generatepath:** fix not replacing params correctly ([d649d0a](https://github.com/resourge/react-router/commit/d649d0ab0386dc593f066fdad59365418ac03cab))
+
 # [1.15.0](https://github.com/resourge/react-router/compare/v1.14.1...v1.15.0) (2023-10-04)
 
 
