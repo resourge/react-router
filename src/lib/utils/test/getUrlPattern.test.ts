@@ -32,6 +32,11 @@ export const RoutePaths = SetupPaths({
 		.param(ProductIdParam)
 		.routes({
 			TEST: path('test'),
+			OPTIONAL_PARAM: path('test1')
+			.param('id', {
+				optional: true
+			})
+			.addPath('secondPart'),
 			MODAL: path('category', {
 				hash: true
 			})
@@ -152,6 +157,16 @@ describe('getUrlPattern', () => {
 		testPathPattern(pathPattern as any)
 
 		testPathPattern(RoutePaths.PRODUCT.CATEGORY.TEST as any)
+	})
+
+	it('optional param', () => {
+		const pathPattern = RoutePaths.PRODUCT.CATEGORY.OPTIONAL_PARAM.get({
+			productId: 10,
+			id: 1
+		});
+
+		expect(pathPattern)
+		.toBe('/product/category/10/test1/1/secondPart')
 	})
 
 	const testHashPattern = (
