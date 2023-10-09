@@ -20,11 +20,7 @@ export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T
 	const navigate = useNavigate()
 
 	const searchParams = useMemo(() => {
-		const url = new URL(
-			`${search ? `?${search}` : ''}`,
-			window.location.origin
-		)
-		const searchParams = url.searchParams;
+		const searchParams = new URLSearchParams(search ? `?${search}` : '')
 
 		return parseSearchParams<T>(searchParams, defaultParams)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
