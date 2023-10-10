@@ -506,8 +506,8 @@ import { useRouteMetadata } from '@resourge/react-router'
 
 useRouteMetadata()
 
-// For custom title
-useRouteMetadata('Custom title page')
+// For custom language
+useRouteMetadata('en')
 ```
 
 ## useSearchRoute

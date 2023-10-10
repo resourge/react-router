@@ -132,7 +132,7 @@ export type PathType<
 )
 
 export type AnyPath<Params extends Record<string, any>> = PathType<
-	any,
+	string,
 	Params,
 	Record<string, any>,
 	Record<string, Path<any, string>>

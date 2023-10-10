@@ -6,33 +6,30 @@ import { useLanguageContext } from '../contexts/LanguageContext';
 /**
  * Hook set page title and description.
  *
- * @param title - Custom page title. For dynamic pages or for custom title.
+ * @param language - Custom language. For dynamic language.
  */
-export const useRouteMetadata = (title?: string) => {
+export const useRouteMetadata = (language?: string) => {
 	const route = useRoute();
-	const base = useLanguageContext();
+	const base = useLanguageContext() ?? language;
 
 	const metadata = route.metadata;
 
 	useEffect(() => {
-		if ( metadata?.title ?? title ) {
+		if ( metadata?.title ) {
 			const previousTitle = document.title;
-			document.title = !title
+			document.title = metadata?.title 
 				? (
-					metadata?.title 
+					typeof metadata.title === 'object' 
 						? (
-							typeof metadata.title === 'object' 
-								? (
-									base ? metadata.title[base] : ''
-								) : metadata.title
-						) : ''
-				) : title
+							base ? metadata.title[base] : ''
+						) : metadata.title
+				) : ''
 
 			return () => {
 				document.title = previousTitle;
 			}
 		}
-	}, [base, metadata?.title, title])
+	}, [base, metadata?.title])
 
 	useEffect(() => {
 		if ( metadata?.description ) {
