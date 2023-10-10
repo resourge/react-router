@@ -91,7 +91,7 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 			unique,
 			path,
 			search,
-			metadata: arguments[3],
+			metadata: arguments[2],
 			getParams: () => {
 				const matchUrl = match.pathname;
 
