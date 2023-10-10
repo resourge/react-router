@@ -1,3 +1,15 @@
+## [1.15.2](https://github.com/resourge/react-router/compare/v1.15.1...v1.15.2) (2023-10-10)
+
+
+### Bug Fixes
+
+* **matchpath:** fix metadata ([5fb4001](https://github.com/resourge/react-router/commit/5fb40010e7acb1e12e8df5ecc4c2a120196aeba0))
+
+
+### Performance Improvements
+
+* **usesearchparams:** change parser from URL to URLSearchParams ([391eadb](https://github.com/resourge/react-router/commit/391eadb499f7e753c2f8415cefc0f37542a0d1b7))
+
 ## [1.15.1](https://github.com/resourge/react-router/compare/v1.15.0...v1.15.1) (2023-10-09)
 
 
