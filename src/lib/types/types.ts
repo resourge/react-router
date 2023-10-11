@@ -45,7 +45,7 @@ type SpreadTwo<L, R> = Id<
   & SpreadProperties<L, R, OptionalPropertyNames<R> & keyof L>
 >;
 
-type Spread<L, R = any> = SpreadTwo<L, R>
+export type Spread<L, R = any> = SpreadTwo<L, R>
 
 export type MergeParamsAndCreate<
 	Params extends Record<string, any>, 

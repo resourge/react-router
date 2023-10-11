@@ -5,7 +5,7 @@ import { type MatchResult } from '../utils/matchPath';
 
 import { type MatchPathProps, useMatchPath } from './useMatchPath';
 
-export type MatchRouteProps<Params extends Record<string, any> = any> = MatchPathProps<Params>
+export type MatchRouteProps = MatchPathProps
 
 /**
  * Hook to match current route.

@@ -1,62 +1,115 @@
-import { useEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { useRoute } from '../contexts'
 import { useLanguageContext } from '../contexts/LanguageContext';
+
+export type RouteMetadataProps = {
+	description?: string
+	title?: string
+}
+
+const elementToObserve = document.querySelector('html') as HTMLHtmlElement;
+
+const useLayoutLanguageEffect = <O>(
+	dep: string | undefined, 
+	originalValueCb: () => O, 
+	cb: (language: string) => ((originalValue: O) => void) | undefined
+) => {
+	const baseLanguage = useLanguageContext();
+	const [originalValue] = useState(originalValueCb)
+
+	useLayoutEffect(() => {
+		const _language = baseLanguage ?? document.documentElement.lang;
+
+		const unmount = cb(_language);
+
+		const observer = new MutationObserver(() => {
+			cb(document.documentElement.lang)
+		});
+
+		if ( !baseLanguage ) {
+			observer.observe(elementToObserve, {
+				attributes: true,
+				attributeFilter: ['lang'] 
+			});
+		}
+
+		return () => {
+			unmount && unmount(originalValue)
+			if ( !baseLanguage ) {
+				observer.disconnect();
+			}
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [baseLanguage, dep])
+}
 
 /**
  * Hook set page title and description.
  *
  * @param language - Custom language. For dynamic language.
  */
-export const useRouteMetadata = (language?: string) => {
+export const useRouteMetadata = (props?: RouteMetadataProps) => {
 	const route = useRoute();
-	const base = useLanguageContext() ?? language;
 
 	const metadata = route.metadata;
 
-	useEffect(() => {
-		if ( metadata?.title ) {
-			const previousTitle = document.title;
-			document.title = metadata?.title 
-				? (
-					typeof metadata.title === 'object' 
-						? (
-							base ? metadata.title[base] : ''
-						) : metadata.title
-				) : ''
+	const _title = props?.title ?? metadata?.title;
+	const _content = props?.description ?? metadata?.description;
 
-			return () => {
-				document.title = previousTitle;
-			}
-		}
-	}, [base, metadata?.title])
-
-	useEffect(() => {
-		if ( metadata?.description ) {
-			let meta = document.querySelector('meta[name="description"]');
-
-			if ( !meta ) {
-				meta = document.createElement('meta');
-
-				meta.setAttribute('name', 'description');
-			}
-			const previousDescription = meta.getAttribute('content') ?? '';
-			
-			meta.setAttribute('content', 
-				typeof metadata.description === 'object' 
+	useLayoutLanguageEffect(
+		_title, 
+		() => document.title,
+		(lang) => {
+			if ( _title ) {
+				document.title = _title
 					? (
-						base ? metadata.description[base] : ''
-					) : metadata.description
-			)
+						typeof _title === 'object' 
+							? (
+								lang ? _title[lang] : ''
+							) : _title
+					) : ''
 
-			return () => {
-				const meta = document.querySelector('meta[name="description"]');
-				if ( meta ) {
-					meta.setAttribute('content', previousDescription);
+				return (previousTitle) => {
+					document.title = previousTitle;
 				}
 			}
 		}
-	}, [base, metadata?.description])
+	)
+
+	useLayoutLanguageEffect(
+		_content, 
+		() => {
+			const meta = document.querySelector('meta[name="description"]');
+			return meta?.getAttribute('content') ?? ''
+		},
+		(lang) => {
+			if ( _content ) {
+				let meta = document.querySelector('meta[name="description"]');
+
+				if ( !meta ) {
+					meta = document.createElement('meta');
+
+					meta.setAttribute('name', 'description');
+				}
+
+				meta.setAttribute(
+					'content', 
+					typeof _content === 'object' 
+						? (
+							lang ? _content[lang] : ''
+						) : _content
+				)
+
+				return (previousDescription) => {
+					const meta = document.querySelector('meta[name="description"]');
+					if ( meta ) {
+						meta.setAttribute('content', previousDescription);
+					}
+				}
+			}
+		}
+	)
 
 	return metadata;
 }

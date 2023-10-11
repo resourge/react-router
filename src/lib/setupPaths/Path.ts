@@ -8,7 +8,12 @@ import { useParams } from '../hooks/useParams';
 import { type AsConst } from '../types/AsConst';
 import { type ObjectToSearchParams } from '../types/ConvertToStringTypes';
 import { type Metadata } from '../types/Metadata';
-import { type ParamString, type IsHashPath, type ResolveSlash } from '../types/StringTypes'
+import {
+	type ParamString,
+	type IsHashPath,
+	type ResolveSlash,
+	type IfIncludesParam
+} from '../types/StringTypes'
 import { type StringifyObjectParams } from '../types/StringifyObjectParams';
 import {
 	type MergeParamsAndCreate,
@@ -92,50 +97,69 @@ export type PathType<
 	Params extends Record<string, any>,
 	ParamsResult extends Record<string, any>,
 	Routes extends Record<string, Path<any, string>>,
-	WithSearchParams extends boolean = true
+	All = IfIncludesParam<Key>
 > = {
-	/**
-	 * Method to obtain the true path.
-	 * Calling it with `params` will replace the params with the params value on the path.
-	 */
-	get: string extends keyof Params
-		? () => Key
-		: IsAllOptional<Params> extends true 
-			? (params?: Params) => Key
-			: (params: Params) => Key
 	/**
 	 * Generated string from chain functions. Includes path with `params`.
 	 */
 	path: Key
+	withSearchParams: <SP extends Record<string, any>>(searchParams: AsConst<SP>) => (
+		All extends false
+			? {
+				/**
+				 * Method to obtain the true path.
+				 * Calling it with `params` will replace the params with the params value on the path.
+				 */
+				get: () => `${Key}?${ObjectToSearchParams<SP>}`
+			} 
+			: {
+				/**
+				 * Method to obtain the true path.
+				 * Calling it with `params` will replace the params with the params value on the path.
+				 */
+				get: IsAllOptional<Params> extends true 
+					? (params?: Params) => `${Key}?${ObjectToSearchParams<SP>}`
+					: (params: Params) => `${Key}?${ObjectToSearchParams<SP>}`
+			}
+	)
 } 
+& InjectParamsIntoPathType<Key, Routes, Params, ParamsResult>
 & (
-	WithSearchParams extends false 
-		? { } 
-		: InjectParamsIntoPathType<Key, Routes, Params, ParamsResult>
-) & (
-	string extends keyof Params 
-		? {} 
+	All extends false
+		? {
+			/**
+			 * Method to obtain the true path.
+			 * Calling it with `params` will replace the params with the params value on the path.
+			 */
+			get: () => Key
+		} 
 		: {
+			/**
+			 * Method to obtain the true path.
+			 * Calling it with `params` will replace the params with the params value on the path.
+			 */
+			get: IsAllOptional<Params> extends true 
+				? (params?: Params) => Key
+				: (params: Params) => Key
 			/**
 			 * Hook to receive the params related to the route.
 			 * Here all the transform method will transform the params to the desired params. 
 			 */
 			useParams: () => ParamsResult
 		}
-) 
-& (
-	WithSearchParams extends true 
-		? { 
-			withSearchParams: <SP extends Record<string, any>>(searchParams: SP) => PathType<`${Key}?${ObjectToSearchParams<SP>}`, Params, ParamsResult, Routes, false> 
-		} 
-		: {}
 )
 
-export type AnyPath<Params extends Record<string, any>> = PathType<
-	string,
-	Params,
-	Record<string, any>,
-	Record<string, Path<any, string>>
+export type AnyPath = PathType<
+	any,
+	any,
+	any,
+	any
+> | PathType<
+	any,
+	any,
+	any,
+	any,
+	true
 >
 
 /**

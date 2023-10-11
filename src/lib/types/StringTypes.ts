@@ -9,6 +9,12 @@ export type IncludeSlash<T extends string> = IsString<T> extends true
 		? T
 		: `/${T}` 
 	: ''
+
+export type IfIncludesParam<T extends string> = IsString<T> extends true 
+	? T extends `${string}:${string}`
+		? true
+		: false
+	: false
 	
 export type ResolveSlash<Args> = Args extends [infer E, ...infer R] 
 	? `${E extends string ? E : ''}${IsString<E> extends true ? IncludeSlash<ResolveSlash<R>> : ResolveSlash<R>}`

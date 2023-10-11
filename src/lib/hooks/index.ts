@@ -16,6 +16,7 @@ import { useParams } from './useParams';
 import { usePreviousUrl } from './usePreviousUrl';
 import { type UsePromptProps } from './usePrompt';
 import { usePrompt } from './usePrompt';
+import { type RouteMetadataProps } from './useRouteMetadata';
 import { useRouteMetadata } from './useRouteMetadata';
 import { useSearchParams } from './useSearchParams';
 import { useSearchRoute } from './useSearchRoute';
@@ -46,8 +47,6 @@ export {
 	usePrompt,
 	type UsePromptProps,
 
-	useRouteMetadata,
-
 	useSearchParams,
 
 	useSearchRoute,
@@ -58,5 +57,8 @@ export {
 	useMatchRoute,
 	type MatchRouteProps,
 
-	usePreviousUrl
+	usePreviousUrl,
+
+	type RouteMetadataProps,
+	useRouteMetadata
 }

@@ -7,12 +7,12 @@ import { type AnyPath } from '../setupPaths/Path';
 import { matchPath, type MatchResult } from '../utils/matchPath';
 import { resolveSlash } from '../utils/resolveLocation';
 
-export type MatchPathProps<Params extends Record<string, any> = Record<string, any>> = {
+export type MatchPathProps = {
 	/**
 	 * Route path(s)
 	 * @default '*'
 	 */
-	path: string | string[] | AnyPath<Params> | Array<AnyPath<Params>>
+	path: string | string[] | AnyPath[] | AnyPath
 	/**
 	 * Makes it so 'URL' needs to be exactly as the path
 	 * @default false

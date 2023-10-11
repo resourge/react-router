@@ -11,11 +11,11 @@ import { useMatchRoute, type MatchRouteProps } from '../hooks/useMatchRoute';
 import { type MatchResult } from '../utils/matchPath';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
-export type BaseRouteProps<Params extends Record<string, any> = any> = Omit<MatchRouteProps, 'path'> & {
-	path?: MatchRouteProps<Params>['path']
+export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
+	path?: MatchRouteProps['path']
 }
 
-export type RouteProps<Params extends Record<string, any> = any> = BaseRouteProps<Params> & { fallback?: ReactNode } & ({
+export type RouteProps = BaseRouteProps & { fallback?: ReactNode } & ({
 	children: ReactNode
 	
 	component?: ReactElement
@@ -33,7 +33,7 @@ export type IRouteProps = RouteProps & {
  *
  * Note: This component mainly uses `useMatchRoute` hook. And Route without `path` will be treated as normal components.
  */
-function Route<Params extends Record<string, any> = any>(props: RouteProps<Params>) {
+function Route(props: RouteProps) {
 	const {
 		children, component,
 		computedMatch,
