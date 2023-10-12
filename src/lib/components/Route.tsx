@@ -47,13 +47,11 @@ function Route(props: RouteProps): JSX.Element {
 	}
 	const defaultFallback = useDefaultFallbackContext()
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch)
 
 	if ( match ) {
 		const Component = (
-			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-			<Suspense fallback={fallback || defaultFallback}>
+			<Suspense fallback={fallback ?? defaultFallback}>
 				{ component ? cloneElement(component, {}, component.props.children, children) : children }
 				{
 					(children as any)?.type?._payload?._result?.default?.routeMetadata 

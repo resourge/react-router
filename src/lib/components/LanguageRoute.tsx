@@ -136,7 +136,7 @@ function getNewPathName(
  */
 function LanguageRoute({
 	children, checkLanguage, languages, fallbackLanguage = languages[0] 
-}: LanguageRouteProps) {
+}: LanguageRouteProps): JSX.Element {
 	const { url } = useRouter();
 	const match = LANGUAGE_PATTERN.exec(url.href);
 
