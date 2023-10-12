@@ -46,7 +46,7 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@resourge/react-search-params": "^1.11.0",
+    "@resourge/react-search-params": "^1.11.1",
     "urlpattern-polyfill": "^9.0.0"
   },
   "devDependencies": {
