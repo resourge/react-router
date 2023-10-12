@@ -11,23 +11,18 @@ const fixTypes = (typePath: string) => {
 
 	let content = fs.readFileSync(typesFilePath, 'utf-8');
 
+	content = content.replace(`
+    [K in keyof Routes]: PathType<ResolveSlash<[IsHashPath<Routes[K]['_key']> extends true ? '' : BaseKey, Routes[K]['_key']]>, IsHashPath<Routes[K]['_key']> extends true ? Routes[K]['_params'] : MergeObj<Params, Routes[K]['_params']>, IsHashPath<Routes[K]['_key']> extends true ? Routes[K]['_paramsResult'] : MergeObj<ParamsResult, Routes[K]['_paramsResult']>, Routes[K]['_routes']>;`, `
+	// @ts-expect-error Want to protect value, but also access it with types
+    [K in keyof Routes]: PathType<ResolveSlash<[IsHashPath<Routes[K]['_key']> extends true ? '' : BaseKey, Routes[K]['_key']]>, IsHashPath<Routes[K]['_key']> extends true ? Routes[K]['_params'] : MergeObj<Params, Routes[K]['_params']>, IsHashPath<Routes[K]['_key']> extends true ? Routes[K]['_paramsResult'] : MergeObj<ParamsResult, Routes[K]['_paramsResult']>, Routes[K]['_routes']>;`)
+
+	content = content.replace(`
+    [K in keyof R]: PathType<IsHashPath<R[K]['_key']> extends true ? R[K]['_key'] : IncludeSlash<R[K]['_key']>, R[K]['_params'], R[K]['_paramsResult'], R[K]['_routes']>;`, `
+	// @ts-expect-error Want to protect value, but also access it with types
+    [K in keyof R]: PathType<IsHashPath<R[K]['_key']> extends true ? R[K]['_key'] : IncludeSlash<R[K]['_key']>, R[K]['_params'], R[K]['_paramsResult'], R[K]['_routes']>;`)
+
 	// Change declare to export
 	content = content.replace(/declare/g, 'export declare');
-
-	content = content.replace(`
-    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params'], R[K]['_useParams']>`, `
-	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof R]: PathType<R[K]['_routes'], R[K]['_params'], R[K]['_useParams']>`)
-
-	content = content.replace(`
-    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams)>`, `
-	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof Paths]: PathType<Paths[K]['_routes'], Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams)>`)
-
-	content = content.replace(`
-    [K in keyof Paths]: Path<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), InjectParamsIntoPath<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), Paths[K]['_routes']>, Paths[K]['_isHash']>;`, `
-	// @ts-expect-error Want to protect value, but also access it with types
-    [K in keyof Paths]: Path<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), InjectParamsIntoPath<Paths[K]['_params'] & (Paths[K]['_isHash'] extends true ? {} : Params), Paths[K]['_useParams'] & (Paths[K]['_isHash'] extends true ? {} : UseParams), Paths[K]['_routes']>, Paths[K]['_isHash']>;`)
 
 	// Remover last export
 	const lastExport = content.lastIndexOf('export {');
@@ -37,8 +32,12 @@ const fixTypes = (typePath: string) => {
 	const lastLine = content.lastIndexOf('\n');
 	content = content.substring(0, lastLine);
 
-	// Remove export form global
-	content = content.replace(/export declare global/g, 'declare global');
+	content += `
+declare module 'react' {
+	export interface FunctionComponent {
+		routeMetadata?: RouteMetadataType<any, any, any>
+	}
+}`;
 
 	// Write File
 	fs.writeFileSync(typesFilePath, content);

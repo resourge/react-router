@@ -1,5 +1,7 @@
 import BrowserRouter from './BrowserRouter';
 import type { BrowserRouterProps } from './BrowserRouter';
+import LanguageRoute, { updateLanguageRoute, getLanguageRoute } from './LanguageRoute';
+import type { LanguageRouteProps } from './LanguageRoute';
 import Link from './Link';
 import type { LinkProps } from './Link';
 import Navigate from './Navigate';
@@ -38,5 +40,10 @@ export {
 	type SearchRouteProps,
 
 	Switch,
-	type SwitchProps
+	type SwitchProps,
+
+	updateLanguageRoute,
+	getLanguageRoute,
+	LanguageRoute,
+	type LanguageRouteProps
 }

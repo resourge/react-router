@@ -1,5 +1,3 @@
-import { type Metadata } from '../types/Metadata';
-
 import { getUrlPattern, type UrlPattern } from './getUrlPattern';
 
 type MatchProps = UrlPattern & {
@@ -45,10 +43,6 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 */
 	hashPath?: string
 	/**
-	 * Route metadata
-	 */
-	metadata?: Metadata
-	/**
 	 * All possible paths for the route
 	 */
 	paths?: string[]
@@ -91,7 +85,6 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 			unique,
 			path,
 			search,
-			metadata: arguments[2],
 			getParams: () => {
 				const matchUrl = match.pathname;
 

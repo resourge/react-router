@@ -2,11 +2,13 @@ import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
+import { readFileSync } from 'fs';
 import dts from 'rollup-plugin-dts';
 import filsesize from 'rollup-plugin-filesize';
 
-import { readFileSync } from "fs";
-const pkg = JSON.parse(readFileSync('package.json', { encoding: 'utf8' }));
+const pkg = JSON.parse(readFileSync('package.json', {
+	encoding: 'utf8' 
+}));
 
 const {
 	name, author, license
@@ -102,7 +104,8 @@ const getPackage = (
 	 */
 	const sourcemap = true;
 	const banner = createBanner(PROJECT_NAME, VERSION, AUTHOR_NAME, LICENSE);
-	const umdName = PROJECT_NAME.split('-').map(capitalizeFirstLetter).join('')
+	const umdName = PROJECT_NAME.split('-').map(capitalizeFirstLetter)
+	.join('')
 
 	// JS modules for bundlers
 	const modules = [
@@ -141,7 +144,13 @@ const getPackage = (
 				banner
 			}],
 			plugins: [
-				dts()
+				dts({
+					compilerOptions: {
+						typeRoots: [
+							'./src/react-extension.d.ts'
+						]
+					}
+				})
 			]
 		}
 	];

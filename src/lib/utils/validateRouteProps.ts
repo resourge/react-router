@@ -6,7 +6,6 @@ export const validateRouteProps = (matchProps: Partial<MatchRouteProps>) => {
 	const path = matchProps.path ? matchProps.path : '';
 
 	const paths = (Array.isArray(path) ? path : [path])
-	.map((p) => typeof p === 'object' ? p.path : p)
 	.filter((p) => p);
 
 	invariant(

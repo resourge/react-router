@@ -11,6 +11,8 @@ import { useMatchRoute, type MatchRouteProps } from '../hooks/useMatchRoute';
 import { type MatchResult } from '../utils/matchPath';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
+import RouteMetadata from './RouteMetadata';
+
 export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
 	path?: MatchRouteProps['path']
 }
@@ -33,7 +35,7 @@ export type IRouteProps = RouteProps & {
  *
  * Note: This component mainly uses `useMatchRoute` hook. And Route without `path` will be treated as normal components.
  */
-function Route(props: RouteProps) {
+function Route(props: RouteProps): JSX.Element {
 	const {
 		children, component,
 		computedMatch,
@@ -53,6 +55,12 @@ function Route(props: RouteProps) {
 			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 			<Suspense fallback={fallback || defaultFallback}>
 				{ component ? cloneElement(component, {}, component.props.children, children) : children }
+				{
+					(children as any)?.type?._payload?._result?.default?.routeMetadata 
+						? (
+							<RouteMetadata metadata={(children as any)?.type?._payload?._result?.default?.routeMetadata} />
+						) : <></>
+				}
 			</Suspense>
 		)
 		
@@ -71,7 +79,7 @@ function Route(props: RouteProps) {
 		)
 	}
 
-	return null;
+	return (<></>);
 };
 
 export default Route;

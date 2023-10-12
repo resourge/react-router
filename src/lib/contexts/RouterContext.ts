@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { type ActionType } from '@resourge/react-search-params';
 import invariant from 'tiny-invariant'
@@ -11,7 +11,7 @@ export type RouterContextType = {
 	previousUrl?: URL
 }
 
-export const RouterContext = createContext<RouterContextType | null>(null);
+export const RouterContext = React.createContext<RouterContextType | null>(null);
 
 /**
  * Hook to access to current URL

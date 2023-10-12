@@ -7,7 +7,6 @@ import { parseParams } from '@resourge/react-search-params';
 import { useParams } from '../hooks/useParams';
 import { type AsConst } from '../types/AsConst';
 import { type ObjectToSearchParams } from '../types/ConvertToStringTypes';
-import { type Metadata } from '../types/Metadata';
 import {
 	type ParamString,
 	type IsHashPath,
@@ -185,7 +184,6 @@ export class Path<
 
 	protected config: PathConfig = {}
 	protected paths: Array<ParamPath<string> | string> = [];
-	protected _metadata?: Metadata<string, string>;
 	private _includeCurrentURL?: boolean;
 
 	constructor(config?: PathConfig) {
@@ -201,7 +199,6 @@ export class Path<
 		} as unknown as Routes;
 		_this._includeCurrentURL = this._includeCurrentURL;
 		_this.config = this.config;
-		_this._metadata = this._metadata;
 
 		return _this;
 	}
@@ -341,14 +338,6 @@ export class Path<
 		return _this;
 	}
 
-	public metadata<Langs extends string, R extends string | Record<Langs, string>>(metadata: Metadata<Langs, R>) {
-		const _this = this.clone() as unknown as Path<Routes, Key, Params, ParamsResult>;
-
-		_this._metadata = metadata as Metadata<string, string>;
-
-		return _this;
-	}
-
 	protected getBasePath(basePath: string = '') {
 		return this.config.hash ? '#' : basePath;
 	}
@@ -402,7 +391,6 @@ export class Path<
 
 		return {
 			path,
-			_metadata: this._metadata,
 			withSearchParams(sp: Record<string, any>) {
 				return Object.assign({}, this, {
 					searchParams: parseParams(sp) 

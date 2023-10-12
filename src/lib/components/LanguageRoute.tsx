@@ -7,8 +7,8 @@ import { resolveSlash } from '../utils/resolveLocation';
 import Navigate from './Navigate';
 
 const LANGUAGE_PARAM = '/:lang'
-const LANGUAGE_PATTERN = new URLPattern(
-	{
+const LANGUAGE_PATTERN = globalThis.window
+	? new URLPattern({
 		baseURL: window.location.origin,
 		hostname: '*',
 		port: '*',
@@ -16,8 +16,12 @@ const LANGUAGE_PATTERN = new URLPattern(
 		pathname: `${LANGUAGE_PARAM}{/*}?`,
 		hash: '*',
 		search: '*'
-	}
-)
+	})
+	: ({
+		exec() {
+			return null 
+		}
+	});
 /**
  * Method to update language in route
  * @returns 
@@ -43,6 +47,26 @@ export const updateLanguageRoute = (newLanguage: string) => {
 	}
 }
 
+/**
+ * Method to get initial route language
+ * @returns 
+ */
+export const getLanguageRoute = globalThis.window
+	? () => {
+		const newUrl = new URL(window.location.href);
+
+		const match = LANGUAGE_PATTERN.exec(newUrl.href);
+
+		if ( match ) {
+			const matchUrl = match.pathname;
+
+			const lang = matchUrl.groups.lang;
+
+			return lang;
+		}
+	}
+	: () => undefined;
+
 function isLangIsSupported(lang: string): string | false {
 	try {
 		const languages = Intl.Collator.supportedLocalesOf(lang);
@@ -57,7 +81,7 @@ function isLangIsSupported(lang: string): string | false {
 	}
 }
 
-type LanguageRouteProps = {
+export type LanguageRouteProps = {
 	children: ReactNode
 
 	/**

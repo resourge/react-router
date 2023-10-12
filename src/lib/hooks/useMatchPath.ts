@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import { useLanguageContext } from '../contexts/LanguageContext';
 import { type RouteContextObject } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
-import { type AnyPath } from '../setupPaths/Path';
 import { matchPath, type MatchResult } from '../utils/matchPath';
 import { resolveSlash } from '../utils/resolveLocation';
 
@@ -12,7 +11,7 @@ export type MatchPathProps = {
 	 * Route path(s)
 	 * @default '*'
 	 */
-	path: string | string[] | AnyPath[] | AnyPath
+	path: string | string[]
 	/**
 	 * Makes it so 'URL' needs to be exactly as the path
 	 * @default false
@@ -47,24 +46,17 @@ export const matchRoute = (
 	const length = paths.length;
 	for (let i = 0; i < length; i++) {
 		const p = paths[i];
-		let routePath: string = p as string;
-		let metadata = parentRoute ? parentRoute.metadata : {};
-		if ( typeof p === 'object' ) {
-			routePath = p.path;
-			metadata = {
-				...metadata,
-				...p._metadata 
-			};
-		}
 
-		let _path = resolveSlash(base, routePath);
+		let _path = resolveSlash(base, p);
 
-		let hashPath = hash ? routePath : undefined;
+		let hashPath = hash ? p : undefined;
 	
 		if ( parentRoute ) {
-			_path = resolveSlash(parentRoute.path, !hash ? _path.replace(parentRoute.path, '') : '');
-			if ( parentRoute.hashPath ) {
-				hashPath = resolveSlash(parentRoute.hashPath, (hashPath ?? '').replace(parentRoute.hashPath, ''));
+			if ( !hash && parentRoute.path ) {
+				_path = resolveSlash(parentRoute.path, _path.replace(parentRoute.path, ''));
+			}
+			if ( parentRoute.hashPath && hashPath) {
+				hashPath = resolveSlash(parentRoute.hashPath, hashPath.replace(parentRoute.hashPath, ''));
 			}
 		}
 	
@@ -76,11 +68,9 @@ export const matchRoute = (
 				hashPath,
 				baseURL,
 				exact,
-				currentPath: routePath,
+				currentPath: p,
 				paths
-			},
-			// @ts-expect-error For developer only
-			metadata
+			}
 		)
 
 		if ( match ) {
