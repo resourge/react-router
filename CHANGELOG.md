@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/resourge/react-router/compare/v1.16.0...v1.16.1) (2023-10-12)
+
+
+### Bug Fixes
+
+* **package.json:** change main from main.js to index.js ([41faf4e](https://github.com/resourge/react-router/commit/41faf4ef10ae3d5176c6063327f6844b36479eec))
+
 # [1.16.0](https://github.com/resourge/react-router/compare/v1.15.2...v1.16.0) (2023-10-12)
 
 
