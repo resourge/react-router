@@ -1,3 +1,21 @@
+# [1.16.0](https://github.com/resourge/react-router/compare/v1.15.2...v1.16.0) (2023-10-12)
+
+
+### Bug Fixes
+
+* **routemetadata and types:** improve useRouteMetadata and fix types errors ([c243cd7](https://github.com/resourge/react-router/commit/c243cd7f99f21e5672047e06950f42d411fdadb0))
+
+
+### Features
+
+* **routemetadata:** add ability to update title, description, etc ([bfef1f0](https://github.com/resourge/react-router/commit/bfef1f0675f55797820ab1a39d02f0d8dd0a0bed))
+* **useroutemetadata:** add language as param ([66d807a](https://github.com/resourge/react-router/commit/66d807a68e593bcb57ca6c3f497f3acca735547c))
+
+
+### Performance Improvements
+
+* **types:** improve MergeParamsAndCreate type ([2555f3e](https://github.com/resourge/react-router/commit/2555f3e1ec5d7dbb139f853168dfe823c6268383))
+
 ## [1.15.2](https://github.com/resourge/react-router/compare/v1.15.1...v1.15.2) (2023-10-10)
 
 
