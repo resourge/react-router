@@ -152,7 +152,7 @@ function LanguageRoute({
 		return (
 			<Navigate
 				replace={true}
-				to={urlThatEndsWithLangWithoutSlash}
+				to={`${urlThatEndsWithLangWithoutSlash}/`}
 			/>
 		);
 	}
