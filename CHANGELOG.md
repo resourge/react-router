@@ -1,3 +1,17 @@
+# [1.17.0](https://github.com/resourge/react-router/compare/v1.16.1...v1.17.0) (2023-10-13)
+
+
+### Bug Fixes
+
+* **languageroute:** not working when url doesn't end with / ([54817f0](https://github.com/resourge/react-router/commit/54817f073af95664561e17833cdb24eea9277b9e))
+* **languageroute:** update url if it end with language without final slash ([02ad737](https://github.com/resourge/react-router/commit/02ad7374d223aacbe01a4c3faee1ce41c2b57912))
+* **metadata:** fix metadata not working sometimes ([53625b3](https://github.com/resourge/react-router/commit/53625b3e4ddebf75ff5e3dc3ab0cc62bd95e7905))
+
+
+### Features
+
+* **setuppaths:** add fitInAllRoutes to make sure a route can be open anywhere ([8c6e3a7](https://github.com/resourge/react-router/commit/8c6e3a74236fd75f0bec5d61230a11a3de3b237f))
+
 ## [1.16.1](https://github.com/resourge/react-router/compare/v1.16.0...v1.16.1) (2023-10-12)
 
 
