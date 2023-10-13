@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/resourge/react-router/compare/v1.17.0...v1.18.0) (2023-10-13)
+
+
+### Features
+
+* **routemetadata:** add more metadatas ([86e0781](https://github.com/resourge/react-router/commit/86e07814776f4c6aa8cf3e87d078d7366a4e2e23))
+
 # [1.17.0](https://github.com/resourge/react-router/compare/v1.16.1...v1.17.0) (2023-10-13)
 
 
