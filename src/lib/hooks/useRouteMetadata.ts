@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { useLanguageContext } from '../contexts/LanguageContext';
 import { type RouteMetadata } from '../types';
@@ -7,14 +7,16 @@ export type RouteMetadataProps = Omit<RouteMetadata, 'route'>
 
 const useLayoutLanguageEffect = <O>(
 	dep: O, 
-	cb: (language: string) => void
+	originalValueCb: () => O, 
+	cb: (language: string) => ((originalValue: O) => void) | undefined
 ) => {
 	const baseLanguage = useLanguageContext();
+	const [originalValue] = useState(originalValueCb)
 
 	useLayoutEffect(() => {
 		const _language = baseLanguage ?? document.documentElement.lang;
 
-		cb(_language);
+		const unmount = cb(_language);
 
 		const observer = new MutationObserver(() => {
 			cb(document.documentElement.lang)
@@ -29,12 +31,34 @@ const useLayoutLanguageEffect = <O>(
 		}
 
 		return () => {
+			unmount && unmount(originalValue)
 			if ( !baseLanguage ) {
 				observer.disconnect();
 			}
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [baseLanguage, dep])
+}
+
+function findOrCreateMeta(metaName: string, value: string, propertyName: string = 'name') {
+	let metaElement = document.querySelector(`meta[${propertyName}="${metaName}"]`);
+
+	if ( !metaElement ) {
+		metaElement = document.createElement('meta');
+
+		metaElement.setAttribute(propertyName, metaName);
+
+		document.head.appendChild(metaElement);
+	}
+
+	metaElement.setAttribute(
+		'content', 
+		value
+	)
+}
+
+function findOrCreateMetaProperty(metaName: string, value: string) {
+	findOrCreateMeta(metaName, value, 'property')
 }
 
 /**
@@ -45,6 +69,21 @@ const useLayoutLanguageEffect = <O>(
 export const useRouteMetadata = (props?: RouteMetadataProps) => {
 	useLayoutLanguageEffect(
 		props, 
+		() => {
+			const title = document.title;
+
+			const metaDescription = document.querySelector('meta[name="description"]');
+			const description = metaDescription?.getAttribute('content') ?? ''
+
+			const metaKeywords = document.querySelector('meta[name="keywords"]');
+			const keywords = metaKeywords ? (metaKeywords.getAttribute('content') ?? '').split(',').map((keyword) => keyword.trim()) : [];
+
+			return {
+				title,
+				description,
+				keywords
+			}
+		},
 		(lang) => {
 			document.title = props?.title
 				? (
@@ -54,39 +93,66 @@ export const useRouteMetadata = (props?: RouteMetadataProps) => {
 						) : props.title
 				) : ''
 
+			// #region ogUrl
+			findOrCreateMetaProperty(
+				'og:url', 
+				window.location.href
+			)
+			// #endregion ogUrl
+
+			// #region twitterUrl
+			findOrCreateMetaProperty(
+				'twitter:url', 
+				window.location.href
+			)
+			// #endregion twitterUrl
+
+			// #region ogTitlew
+			findOrCreateMetaProperty(
+				'og:title', 
+				document.title
+			)
+			// #endregion ogTitle
+
+			// #region twitterTitle
+			findOrCreateMetaProperty(
+				'twitter:title', 
+				document.title
+			)
+			// #endregion twitterTitle
+
+			const description = props?.description
+				? (
+					typeof props.description === 'object' 
+						? (
+							lang ? props.description[lang] : ''
+						) : props.description
+				)
+				: '';
 			// #region Description
-			let metaDescription = document.querySelector('meta[name="description"]');
-
-			if ( !metaDescription ) {
-				metaDescription = document.createElement('meta');
-
-				metaDescription.setAttribute('name', 'description');
-			}
-
-			metaDescription.setAttribute(
-				'content', 
-				props?.description
-					? (
-						typeof props.description === 'object' 
-							? (
-								lang ? props.description[lang] : ''
-							) : props.description
-					)
-					: ''
+			findOrCreateMeta(
+				'description', 
+				description
 			)
 			// #endregion Description
 
-			// #region Description
-			let metaKeywords = document.querySelector('meta[name="keywords"]');
+			// #region ogDescription
+			findOrCreateMetaProperty(
+				'og:description', 
+				description
+			)
+			// #endregion ogDescription
 
-			if ( !metaKeywords ) {
-				metaKeywords = document.createElement('meta');
+			// #region twitterDescription
+			findOrCreateMetaProperty(
+				'twitter:description', 
+				description
+			)
+			// #endregion twitterDescription
 
-				metaKeywords.setAttribute('name', 'keywords');
-			}
-
-			metaKeywords.setAttribute(
-				'content', 
+			// #region keywords
+			findOrCreateMeta(
+				'keywords', 
 				(
 					props?.keywords
 						? (
@@ -99,7 +165,46 @@ export const useRouteMetadata = (props?: RouteMetadataProps) => {
 						: ''
 				)
 			)
-			// #endregion Description
+			// #endregion keywords
+
+			return (previous) => {
+				if ( previous ) {
+					if ( previous.title ) {
+						document.title = previous.title ?? '';
+						findOrCreateMetaProperty(
+							'og:title', 
+							previous.title
+						)
+
+						findOrCreateMetaProperty(
+							'twitter:title', 
+							previous.title
+						)
+					}
+					if ( previous.description ) {
+						findOrCreateMeta(
+							'description', 
+							previous.description
+						)
+
+						findOrCreateMetaProperty(
+							'og:description', 
+							previous.description
+						)
+
+						findOrCreateMetaProperty(
+							'twitter:description', 
+							previous.description
+						)
+					}
+					if ( previous.keywords ) {
+						const metaKeywords = document.querySelector('meta[name="keywords"]');
+						if ( metaKeywords ) {
+							metaKeywords.setAttribute('content', previous.keywords.join(', '));
+						}
+					}
+				}
+			}
 		}
 	)
 }
