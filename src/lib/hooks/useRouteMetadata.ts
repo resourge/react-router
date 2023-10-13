@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 
 import { useLanguageContext } from '../contexts/LanguageContext';
 import { type RouteMetadata } from '../types';
@@ -7,16 +7,14 @@ export type RouteMetadataProps = Omit<RouteMetadata, 'route'>
 
 const useLayoutLanguageEffect = <O>(
 	dep: O, 
-	originalValueCb: () => O, 
-	cb: (language: string) => ((originalValue: O) => void) | undefined
+	cb: (language: string) => void
 ) => {
 	const baseLanguage = useLanguageContext();
-	const [originalValue] = useState(originalValueCb)
 
 	useLayoutEffect(() => {
 		const _language = baseLanguage ?? document.documentElement.lang;
 
-		const unmount = cb(_language);
+		cb(_language);
 
 		const observer = new MutationObserver(() => {
 			cb(document.documentElement.lang)
@@ -31,7 +29,6 @@ const useLayoutLanguageEffect = <O>(
 		}
 
 		return () => {
-			unmount && unmount(originalValue)
 			if ( !baseLanguage ) {
 				observer.disconnect();
 			}
@@ -48,96 +45,61 @@ const useLayoutLanguageEffect = <O>(
 export const useRouteMetadata = (props?: RouteMetadataProps) => {
 	useLayoutLanguageEffect(
 		props, 
-		() => {
-			const title = document.title;
-
-			const metaDescription = document.querySelector('meta[name="description"]');
-			const description = metaDescription?.getAttribute('content') ?? ''
-
-			const metaKeywords = document.querySelector('meta[name="keywords"]');
-			const keywords = metaKeywords ? (metaKeywords.getAttribute('content') ?? '').split(',').map((keyword) => keyword.trim()) : [];
-
-			return {
-				title,
-				description,
-				keywords
-			}
-		},
 		(lang) => {
-			if ( props ) {
-				if ( props.title ) {
-					document.title = props.title
+			document.title = props?.title
+				? (
+					typeof props.title === 'object' 
 						? (
-							typeof props.title === 'object' 
-								? (
-									lang ? props.title[lang] : ''
-								) : props.title
-						) : ''
-				}
+							lang ? props.title[lang] : ''
+						) : props.title
+				) : ''
 
-				// #region Description
-				if ( props.description ) {
-					let metaDescription = document.querySelector('meta[name="description"]');
+			// #region Description
+			let metaDescription = document.querySelector('meta[name="description"]');
 
-					if ( !metaDescription ) {
-						metaDescription = document.createElement('meta');
+			if ( !metaDescription ) {
+				metaDescription = document.createElement('meta');
 
-						metaDescription.setAttribute('name', 'description');
-					}
+				metaDescription.setAttribute('name', 'description');
+			}
 
-					metaDescription.setAttribute(
-						'content', 
+			metaDescription.setAttribute(
+				'content', 
+				props?.description
+					? (
 						typeof props.description === 'object' 
 							? (
 								lang ? props.description[lang] : ''
 							) : props.description
 					)
-				}
-				// #endregion Description
+					: ''
+			)
+			// #endregion Description
 
-				// #region Description
-				if ( props.keywords ) {
-					let metaKeywords = document.querySelector('meta[name="keywords"]');
+			// #region Description
+			let metaKeywords = document.querySelector('meta[name="keywords"]');
 
-					if ( !metaKeywords ) {
-						metaKeywords = document.createElement('meta');
+			if ( !metaKeywords ) {
+				metaKeywords = document.createElement('meta');
 
-						metaKeywords.setAttribute('name', 'keywords');
-					}
+				metaKeywords.setAttribute('name', 'keywords');
+			}
 
-					metaKeywords.setAttribute(
-						'content', 
-						(
+			metaKeywords.setAttribute(
+				'content', 
+				(
+					props?.keywords
+						? (
 							Array.isArray(props.keywords)
 								? props.keywords
 								: (
 									lang ? props.keywords[lang] : []
 								)
 						).join(', ')
-					)
-				}
-				// #endregion Description
-
-				return (previous) => {
-					if ( previous ) {
-						if ( previous.title ) {
-							document.title = previous.title ?? '';
-						}
-						if ( previous.description ) {
-							const metaDescription = document.querySelector('meta[name="description"]');
-							if ( metaDescription ) {
-								metaDescription.setAttribute('content', previous.description);
-							}
-						}
-						if ( previous.keywords ) {
-							const metaKeywords = document.querySelector('meta[name="keywords"]');
-							if ( metaKeywords ) {
-								metaKeywords.setAttribute('content', previous.keywords.join(', '));
-							}
-						}
-					}
-				}
-			}
+						: ''
+				)
+			)
+			// #endregion Description
 		}
 	)
 }

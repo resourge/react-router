@@ -52,13 +52,9 @@ function Route(props: RouteProps): JSX.Element {
 	if ( match ) {
 		const Component = (
 			<Suspense fallback={fallback ?? defaultFallback}>
-				{ component ? cloneElement(component, {}, component.props.children, children) : children }
-				{
-					(children as any)?.type?._payload?._result?.default?.routeMetadata 
-						? (
-							<RouteMetadata metadata={(children as any)?.type?._payload?._result?.default?.routeMetadata} />
-						) : <></>
-				}
+				<RouteMetadata>
+					{ component ? cloneElement(component, {}, component.props.children, children) : children }
+				</RouteMetadata>
 			</Suspense>
 		)
 		
