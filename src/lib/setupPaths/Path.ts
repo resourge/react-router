@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 /* eslint-disable @typescript-eslint/ban-types */
 import { parseParams } from '@resourge/react-search-params';
+import invariant from 'tiny-invariant';
 
 import { useParams } from '../hooks/useParams';
 import { type AsConst } from '../types/AsConst';
@@ -22,6 +23,7 @@ import {
 	type MergeObj
 } from '../types/types'
 import { generatePath } from '../utils/generatePath';
+import { resolveSlash } from '../utils/resolveLocation';
 
 import { Param, ParamPath, type ParamsConfig } from './Param'
 
@@ -166,7 +168,11 @@ export type AnyPath = PathType<
  */
 type PathConfig = {
 	/**
-	 * Turns the path into a hash path
+	 * Makes so path works in all routes
+	 */
+	fitInAllRoutes?: boolean
+	/**
+	 * Turns path into a hash path
 	 */
 	hash?: boolean
 }
@@ -186,8 +192,20 @@ export class Path<
 	protected paths: Array<ParamPath<string> | string> = [];
 	private _includeCurrentURL?: boolean;
 
-	constructor(config?: PathConfig) {
+	constructor(path?: string, config?: PathConfig) {
 		this.config = config ?? {};
+
+		let _path: string | undefined = path;
+		if ( config?.fitInAllRoutes ) {
+			_path = `{*}?${path ?? ''}`
+		}
+		else if ( path ) {
+			_path = `/${path}`
+		}
+
+		if ( _path ) {
+			this.paths.push(_path);
+		}
 	}
 
 	protected clone() { 
@@ -333,6 +351,25 @@ export class Path<
 			);
 		} */
 
+		if ( __DEV__ ) {
+			if ( this.config?.fitInAllRoutes) {
+				function checkFitInAllRoute(routes: Record<string, Path<any, string>>): boolean {
+					return Object.values(routes)
+					.some((value) => (
+						value.config.fitInAllRoutes
+						|| (
+							Object.keys(value._routes)
+							&& checkFitInAllRoute(value._routes)
+						)
+					))
+				}
+				invariant(
+					checkFitInAllRoute(routes),
+					'Path\'s inside a fitInAllRoutes Path cannot have another fitInAllRoutes\'s'
+				);
+			}
+		}
+
 		_this._routes = routes;
 
 		return _this;
@@ -410,6 +447,14 @@ export class Path<
 					_params
 				)
 
+				if ( newPath.includes('{*}?') ) {
+					const url = new URL(window.location.href);
+
+					url.pathname = resolveSlash(url.pathname, newPath.replace(/\{\*\}\?/g, ''));
+
+					newPath = url.href.replace(url.origin, '');
+				}
+
 				if ( _includeCurrentURL ) {
 					newPath = createPathWithCurrentLocationHasHash(newPath);
 				} 
@@ -450,6 +495,12 @@ export function path <
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	Key extends string = string
+>(path: Key, config: PathConfig): Path<Routes, Key, Params, ParamsResult> 
+export function path <
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	Params extends Record<string, any> = Record<string, any>,
+	ParamsResult extends Record<string, any> = Record<string, any>,
+	Key extends string = string
 >(path: Key, config: PathConfig & {
 	hash: true
 }): Path<Routes, ResolveSlash<['#', Key]>, Params, ParamsResult> 
@@ -459,5 +510,5 @@ export function path <
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	Key extends string = string
 >(path?: Key, config?: PathConfig): Path<Routes, Key, Params, ParamsResult> {
-	return new Path(config).addPath(path) as Path<Routes, Key, Params, ParamsResult>;
+	return new Path(path, config);
 }
