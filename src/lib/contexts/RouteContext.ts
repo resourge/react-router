@@ -24,7 +24,6 @@ export const useRoute = <Params extends Record<string, string> = Record<string, 
 		path: '',
 		search: '',
 		unique: '',
-		baseURL: '',
 		exact: true,
 		hashPath: ''
 	}) as RouteContextObject<Params>

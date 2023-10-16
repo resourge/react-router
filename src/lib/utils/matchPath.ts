@@ -1,5 +1,6 @@
 import { FIT_IN_ALL_ROUTES } from './constants';
 import { getUrlPattern, type UrlPattern } from './getUrlPattern';
+import { getHrefWhenHashOrNormal } from './utils';
 
 type MatchProps = UrlPattern & {
 	currentPath?: string
@@ -27,14 +28,6 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 * Unique id for route. (prevents routes from rendering again if nothing changed)
 	 */
 	unique: string
-	/**
-	 * Base url
-	 */
-	baseURL?: string
-	/**
-	 * Current paths
-	 */
-	currentPath?: string
 	/**
 	 * If URL pattern is exact
 	 */
@@ -76,18 +69,11 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 	matchProps: MatchProps
 ): MatchResult<Params> | null {
 	const {
-		hash, path, hashPath, exact, baseURL, paths, currentPath
+		hash, path, hashPath, exact, paths
 	} = matchProps;
 	const urlPattern = getUrlPattern(matchProps);
 
-	let _href = '';
-	if ( matchProps.hash ) {
-		_href = `${url.origin}${url.hash.substring(1)}`
-	}
-	else {
-		const hashIndex = url.href.indexOf('#')
-		_href = url.href.substring(0, hashIndex > -1 ? hashIndex : undefined)
-	}
+	const _href = getHrefWhenHashOrNormal(url, matchProps.hash);
 
 	const match = urlPattern.exec(_href);
 
@@ -99,9 +85,9 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 		return {
 			url,
 			exact, 
-			baseURL,
 			unique,
 			path,
+			paths,
 			search,
 			getParams: () => {
 				const matchUrl = match.pathname;
@@ -115,9 +101,7 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 				}, {}) as Params
 			},
 			hash: hash ?? false,
-			hashPath,
-			currentPath,
-			paths
+			hashPath
 		}
 	}
 

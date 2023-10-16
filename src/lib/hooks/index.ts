@@ -13,7 +13,6 @@ import { type NavigateOptions } from './useNavigate';
 import { type NavigateTo } from './useNormalizeUrl';
 import { useNormalizeUrl } from './useNormalizeUrl';
 import { useParams } from './useParams';
-import { usePreviousUrl } from './usePreviousUrl';
 import { type UsePromptProps } from './usePrompt';
 import { usePrompt } from './usePrompt';
 import { type RouteMetadataProps } from './useRouteMetadata';
@@ -56,8 +55,6 @@ export {
 
 	useMatchRoute,
 	type MatchRouteProps,
-
-	usePreviousUrl,
 
 	type RouteMetadataProps,
 	useRouteMetadata

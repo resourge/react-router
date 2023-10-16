@@ -1,40 +1,38 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
-import { parseParams, parseSearchParams, createNewUrlWithSearch } from '@resourge/react-search-params';
+import { type UrlChangeEvent, parseSearchParams } from '@resourge/react-search-params';
 
 import { useRoute } from '../contexts/RouteContext';
-import { useRouter } from '../contexts/RouterContext';
-
-import { useNavigate } from './useNavigate';
+import { getHrefWhenHashOrNormal } from '../utils/utils';
 
 /**
- * Returns the current search parameters and a method to change
+ * Returns the current search parameters
  * @param defaultParams {T}
  */
 export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T) => {
-	const {
-		hash,
-		search
-	} = useRoute();
-	const { url } = useRouter();
-	const navigate = useNavigate()
+	const { search, hash } = useRoute();
 
-	const searchParams = useMemo(() => {
+	const [searchParams, setSearchParams] = useState(() => {
 		const searchParams = new URLSearchParams(search ? `?${search}` : '')
 
 		return parseSearchParams<T>(searchParams, defaultParams)
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [search]);
+	});
 
-	const setParams = (newParams: Partial<T>) => {
-		const newSearch = parseParams(newParams);
+	useEffect(() => {
+		const onUrlChange = (e: UrlChangeEvent) => {
+			const _href = getHrefWhenHashOrNormal(new URL(e.url), hash);
 
-		if (search !== newSearch) {
-			const newURL = createNewUrlWithSearch(url, newSearch, hash);
+			const searchParams = new URL(_href).searchParams;
 
-			navigate(newURL)
+			setSearchParams(parseSearchParams<T>(searchParams, defaultParams))
 		}
-	};
+		window.addEventListener('URLChange', onUrlChange)
 
-	return [searchParams, setParams] as const;
+		return () => {
+			window.addEventListener('URLChange', onUrlChange)
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	return searchParams;
 }

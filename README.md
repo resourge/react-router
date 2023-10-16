@@ -416,6 +416,8 @@ const match = useMatchPath({
 ## useNavigate
 
 Returns a method for navigation `to`. <br>
+to - Can an string, URL or { searchParams: object }. <br>
+_Note: { searchParams: object } will replace current `URL` URLSearchParams_
 _Note: 'to' also gets [normalize](##normalize)_
 
 ```JSX
@@ -427,6 +429,8 @@ const navigate = useNavigate()
 ## useNormalizeUrl
 
 Returns a method for normalize a url from `to`. <br>
+to - Can an string, URL or { searchParams: object }. <br>
+_Note: { searchParams: object } will replace current `URL` URLSearchParams_
 _Note: 'to' also gets [normalize](##normalize)_
 
 ```JSX
@@ -455,16 +459,6 @@ const params = useParams((params) => {
   }
 })
 ```
-## usePreviousUrl
-
-Hook to return the previous URL.
-_Note: This hook will always return the first previous URL (In first render, saves previousUrl)_
-
-```JSX
-import { usePreviousUrl } from '@resourge/react-router'
-
-const previousURL = usePreviousUrl()
-```
 
 ## usePrompt
 
@@ -489,12 +483,12 @@ const [isBlocking, next] = usePrompt({
 
 ## useSearchParams
 
-Returns the current search parameters and a method to change.
+Returns the current search parameters.
 
 ```JSX
 import { useSearchParams } from '@resourge/react-router'
 
-const [searchParams, setParams] = useSearchParams({} /* default params */)
+const searchParams = useSearchParams({} /* default params */)
 ```
 
 ## useRouteMetadata
