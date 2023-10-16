@@ -1,3 +1,15 @@
+# [1.19.0](https://github.com/resourge/react-router/compare/v1.18.0...v1.19.0) (2023-10-16)
+
+
+### Bug Fixes
+
+* **path:** fix typescript type with hash not working as intended ([e782cd4](https://github.com/resourge/react-router/commit/e782cd45eb92583a2cb2d5cfd02fe067eafc8853))
+
+
+### Features
+
+* **usesearchparams:** improve useSearchParams ([6e27bc6](https://github.com/resourge/react-router/commit/6e27bc6c11be2034a2412b3f248d8a8296436029))
+
 # [1.18.0](https://github.com/resourge/react-router/compare/v1.17.0...v1.18.0) (2023-10-13)
 
 
