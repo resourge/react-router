@@ -1,9 +1,4 @@
-import {
-	cloneElement,
-	Suspense,
-	type ReactElement,
-	type ReactNode
-} from 'react'
+import { Suspense, type ReactNode } from 'react'
 
 import { useDefaultFallbackContext } from '../contexts/DefaultFallbackContext';
 import { RouteContext } from '../contexts/RouteContext';
@@ -17,14 +12,10 @@ export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
 	path?: MatchRouteProps['path']
 }
 
-export type RouteProps = BaseRouteProps & { fallback?: ReactNode } & ({
-	children: ReactNode
-	
-	component?: ReactElement
-} | ({
-	component: ReactElement
+export type RouteProps = BaseRouteProps & { 
 	children?: ReactNode
-}))
+	fallback?: ReactNode
+}
 
 export type IRouteProps = RouteProps & {
 	computedMatch?: MatchResult | null
@@ -37,7 +28,7 @@ export type IRouteProps = RouteProps & {
  */
 function Route(props: RouteProps): JSX.Element {
 	const {
-		children, component,
+		children,
 		computedMatch,
 		fallback,
 		...matchProps
@@ -53,7 +44,7 @@ function Route(props: RouteProps): JSX.Element {
 		const Component = (
 			<Suspense fallback={fallback ?? defaultFallback}>
 				<RouteMetadata>
-					{ component ? cloneElement(component, {}, component.props.children, children) : children }
+					{ children }
 				</RouteMetadata>
 			</Suspense>
 		)

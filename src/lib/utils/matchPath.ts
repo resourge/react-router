@@ -1,3 +1,4 @@
+import { FIT_IN_ALL_ROUTES } from './constants';
 import { getUrlPattern, type UrlPattern } from './getUrlPattern';
 
 type MatchProps = UrlPattern & {
@@ -46,6 +47,23 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 * All possible paths for the route
 	 */
 	paths?: string[]
+	/**
+	 * Route URL
+	 */
+	url?: URL
+}
+
+function getUniqueId(path: string, match: URLPatternResult) {
+	if (match.pathname.groups[0]) {
+		const index = match.pathname.input.indexOf(match.pathname.groups[0])
+		const l = (match.pathname.groups[0].length)
+		if ( path.includes(FIT_IN_ALL_ROUTES) ) {
+			return match.pathname.input.substring(index + l, match.pathname.input.length);
+		}
+		return match.pathname.input.substring(0, index);
+	}
+
+	return match.pathname.input
 }
 
 /**
@@ -54,7 +72,7 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
  * @param matchProps {@link MatchProps} - props to define the route
  */
 export function matchPath<Params extends Record<string, string> = Record<string, string>>(
-	href: string,
+	url: URL,
 	matchProps: MatchProps
 ): MatchResult<Params> | null {
 	const {
@@ -64,12 +82,11 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 
 	let _href = '';
 	if ( matchProps.hash ) {
-		const url = new URL(href);
 		_href = `${url.origin}${url.hash.substring(1)}`
 	}
 	else {
-		const hashIndex = href.indexOf('#')
-		_href = href.substring(0, hashIndex > -1 ? hashIndex : undefined)
+		const hashIndex = url.href.indexOf('#')
+		_href = url.href.substring(0, hashIndex > -1 ? hashIndex : undefined)
 	}
 
 	const match = urlPattern.exec(_href);
@@ -77,9 +94,10 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 	if ( match ) {
 		const search = match.search.input;
 
-		const unique = _href;
+		const unique = getUniqueId(path, match);
 
 		return {
+			url,
 			exact, 
 			baseURL,
 			unique,

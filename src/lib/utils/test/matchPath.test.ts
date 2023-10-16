@@ -5,7 +5,7 @@ import { matchPath } from '../matchPath';
 const baseURL = 'http://localhost:3000';
 
 const createBaseUrl = (path: string) => {
-	return `${baseURL}${path}`
+	return new URL(path, baseURL);
 }
 
 describe('matchPath', () => {

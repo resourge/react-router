@@ -22,6 +22,7 @@ import {
 	type GetValueFromTransform,
 	type MergeObj
 } from '../types/types'
+import { FIT_IN_ALL_ROUTES, FIT_IN_ALL_ROUTES_REG } from '../utils/constants';
 import { generatePath } from '../utils/generatePath';
 import { resolveSlash } from '../utils/resolveLocation';
 
@@ -197,7 +198,7 @@ export class Path<
 
 		let _path: string | undefined = path;
 		if ( config?.fitInAllRoutes ) {
-			_path = `{*}?${path ?? ''}`
+			_path = `${FIT_IN_ALL_ROUTES}${path ?? ''}`
 		}
 		else if ( path ) {
 			_path = `/${path}`
@@ -447,10 +448,10 @@ export class Path<
 					_params
 				)
 
-				if ( newPath.includes('{*}?') ) {
+				if ( newPath.includes(FIT_IN_ALL_ROUTES) ) {
 					const url = new URL(window.location.href);
 
-					url.pathname = resolveSlash(url.pathname, newPath.replace(/\{\*\}\?/g, ''));
+					url.pathname = resolveSlash(url.pathname, newPath.replace(FIT_IN_ALL_ROUTES_REG, ''));
 
 					newPath = url.href.replace(url.origin, '');
 				}

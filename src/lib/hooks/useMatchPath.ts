@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useLanguageContext } from '../contexts/LanguageContext';
 import { type RouteContextObject } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
+import { FIT_IN_ALL_ROUTES } from '../utils/constants';
 import { matchPath, type MatchResult } from '../utils/matchPath';
 import { resolveSlash } from '../utils/resolveLocation';
 
@@ -39,7 +40,6 @@ export const matchRoute = (
 	base?: string
 ): MatchResult<Record<string, string>> | null => {
 	const baseURL = url.origin;
-	const href = url.href;
 	
 	const paths = (Array.isArray(path) ? path : [path]);
 
@@ -47,7 +47,7 @@ export const matchRoute = (
 	for (let i = 0; i < length; i++) {
 		const p = paths[i];
 
-		let _path = resolveSlash(base, p);
+		let _path = p.includes(FIT_IN_ALL_ROUTES) ? p : resolveSlash(base, p);
 
 		let hashPath = hash ? p : undefined;
 	
@@ -61,7 +61,7 @@ export const matchRoute = (
 		}
 	
 		const match = matchPath(
-			href, 
+			url, 
 			{
 				path: _path,
 				hash,
@@ -94,17 +94,18 @@ export const useMatchPath = (
 	const baseContext = useLanguageContext()
 	const ref = useRef<MatchResult | null | undefined>();
 
-	const _matchResult = matchResult ?? matchRoute(
-		url, 
-		matchProps,
-		matchProps.path, 
-		parentRoute,
-		baseContext
-	);
+	if ( !ref.current || (ref.current && !url.href.includes(ref.current.unique)) ) {
+		const _matchResult = matchResult ?? matchRoute(
+			url, 
+			matchProps,
+			matchProps.path, 
+			parentRoute,
+			baseContext
+		);
 
-	// This is to make sure only routes that changed are render again
-	if ( !ref.current || !_matchResult || ref.current.unique !== _matchResult.unique ) {
 		ref.current = _matchResult;
+
+		return _matchResult;
 	}
 
 	return ref.current
