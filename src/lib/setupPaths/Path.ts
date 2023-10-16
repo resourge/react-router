@@ -337,7 +337,7 @@ export class Path<
 	): Path<
 		S, 
 		Key, 
-		Params, 
+		Params,
 		ParamsResult
 	> {
 		const _this = this.clone() as unknown as Path<S, Key, Params, ParamsResult>;
@@ -495,15 +495,15 @@ export function path <
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	Key extends string = string
->(path: Key, config: PathConfig): Path<Routes, Key, Params, ParamsResult> 
+>(path: Key, config: PathConfig & {
+	hash: true
+}): Path<Routes, ResolveSlash<['#', Key]>, Params, ParamsResult> 
 export function path <
 	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	Key extends string = string
->(path: Key, config: PathConfig & {
-	hash: true
-}): Path<Routes, ResolveSlash<['#', Key]>, Params, ParamsResult> 
+>(path: Key, config: PathConfig): Path<Routes, Key, Params, ParamsResult> 
 export function path <
 	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
 	Params extends Record<string, any> = Record<string, any>,
