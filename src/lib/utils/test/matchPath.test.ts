@@ -6,7 +6,7 @@ const baseURL = 'http://localhost:3000';
 
 const createBaseUrl = (path: string) => {
 	return new URL(path, baseURL);
-}
+};
 
 describe('matchPath', () => {
 	describe('path', () => {
@@ -17,10 +17,10 @@ describe('matchPath', () => {
 					baseURL,
 					path: '/'
 				}
-			)
+			);
 
 			expect(matchBase).not.toBeNull();
-		})
+		});
 
 		it('pathname', () => {
 			const match = matchPath(
@@ -29,15 +29,15 @@ describe('matchPath', () => {
 					baseURL,
 					path: '/products/:productId'
 				}
-			)
+			);
 
 			expect(match).not.toBeNull();
 
 			expect(match!.getParams()).toMatchObject({
 				productId: '1460' 
 			});
-		})
-	})
+		});
+	});
 
 	describe('hash', () => {
 		it('without pathname', () => {
@@ -49,14 +49,14 @@ describe('matchPath', () => {
 					path: '',
 					hashPath: '#/products/:productId'
 				}
-			)
+			);
 
 			expect(match).not.toBeNull();
 
 			expect(match!.getParams()).toMatchObject({
 				productId: '1460' 
 			});
-		})
+		});
 
 		it('with pathname', () => {
 			const match = matchPath(
@@ -67,13 +67,13 @@ describe('matchPath', () => {
 					path: '',
 					hashPath: '#/products/:productId'
 				}
-			)
+			);
 
 			expect(match).not.toBeNull();
 
 			expect(match!.getParams()).toMatchObject({
 				productId: '1460' 
 			});
-		})
-	})
-})
+		});
+	});
+});

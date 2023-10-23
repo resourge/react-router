@@ -1,14 +1,14 @@
-import { Param } from 'src/lib/setupPaths/Param'
-import { path, type PathType, type Path } from 'src/lib/setupPaths/Path'
-import { SetupPaths } from 'src/lib/setupPaths/SetupPaths'
+import { Param } from 'src/lib/setupPaths/Param';
+import { path, type PathType, type Path } from 'src/lib/setupPaths/Path';
+import { SetupPaths } from 'src/lib/setupPaths/SetupPaths';
 
-import { getUrlPattern } from '../getUrlPattern'
+import { getUrlPattern } from '../getUrlPattern';
 
 const baseURL = 'http://localhost:3000';
 
 const createBaseUrl = (path: string) => {
-	return `${baseURL}${path}`
-}
+	return `${baseURL}${path}`;
+};
 
 export enum NewFieldPositionEnum {
 	ABOVE = 'above',
@@ -17,11 +17,11 @@ export enum NewFieldPositionEnum {
 
 const DataSourceIdParam = Param('dataSourceId', {
 	transform: (dataSourceId: string) => Number(dataSourceId)
-})
+});
 
 const ProductIdParam = Param('productId', {
 	transform: (productId: string) => Number(productId)
-})
+});
 
 export const RoutePaths = SetupPaths({
 	HOME: path(''),
@@ -77,7 +77,7 @@ export const RoutePaths = SetupPaths({
 			.includeCurrentURL()
 		})
 	})
-})
+});
 
 describe('getUrlPattern', () => {
 	const testPathPattern = (
@@ -91,7 +91,7 @@ describe('getUrlPattern', () => {
 		const url = getUrlPattern({
 			baseURL,
 			path: pathPattern.path
-		})
+		});
 
 		const productId = 'Product_Name';
 
@@ -150,14 +150,14 @@ describe('getUrlPattern', () => {
 				)
 			)
 		).toBeFalsy();
-	}
+	};
 	it('path', () => {
 		const pathPattern = RoutePaths.PRODUCT.CATEGORY;
 
-		testPathPattern(pathPattern as any)
+		testPathPattern(pathPattern as any);
 
-		testPathPattern(RoutePaths.PRODUCT.CATEGORY.TEST as any)
-	})
+		testPathPattern(RoutePaths.PRODUCT.CATEGORY.TEST as any);
+	});
 
 	it('optional param', () => {
 		const pathPattern = RoutePaths.PRODUCT.CATEGORY.OPTIONAL_PARAM.get({
@@ -166,8 +166,8 @@ describe('getUrlPattern', () => {
 		});
 
 		expect(pathPattern)
-		.toBe('/product/category/10/test1/1/secondPart')
-	})
+		.toBe('/product/category/10/test1/1/secondPart');
+	});
 
 	const testHashPattern = (
 		pathPattern: PathType<
@@ -182,7 +182,7 @@ describe('getUrlPattern', () => {
 			path: '',
 			hash: true,
 			hashPath: pathPattern.path
-		})
+		});
 
 		const index = 10;
 
@@ -192,7 +192,7 @@ describe('getUrlPattern', () => {
 			})
 		);
 
-		const basePath = `${baseURL}${_basePath.substring(_basePath.indexOf('#') + 1)}`
+		const basePath = `${baseURL}${_basePath.substring(_basePath.indexOf('#') + 1)}`;
 
 		expect(
 			url.test(basePath)
@@ -235,18 +235,18 @@ describe('getUrlPattern', () => {
 		expect(
 			url.test(`${basePath}#/test`)
 		).toBeTruthy();
-	}
+	};
 
 	it('hash', () => {
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PATH as any);
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PARAM as any);
-	})
+	});
 	
 	it('path', () => {
 		const url = getUrlPattern({
 			baseURL,
 			path: RoutePaths.DATA_SOURCE.FORM.EDIT.path
-		})
+		});
 
 		expect(
 			url.test(
@@ -319,5 +319,5 @@ describe('getUrlPattern', () => {
 				}
 			}
 		});
-	})
-})
+	});
+});

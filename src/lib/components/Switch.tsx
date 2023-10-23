@@ -3,7 +3,7 @@ import {
 	type FC,
 	type ReactElement,
 	type ReactNode
-} from 'react'
+} from 'react';
 
 import { useDefaultFallbackContext } from '../contexts/DefaultFallbackContext';
 import { useSwitch } from '../hooks/useSwitch';
@@ -22,14 +22,14 @@ export type SwitchProps = {
  */
 const Switch: FC<SwitchProps> = ({ children, fallback }: SwitchProps) => {
 	const child = useSwitch(children);
-	const defaultFallback = useDefaultFallbackContext()
+	const defaultFallback = useDefaultFallbackContext();
 
 	return (
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 		<Suspense fallback={fallback || defaultFallback}>
 			{ child }
 		</Suspense>
-	)
+	);
 };
 
 export default Switch;

@@ -17,7 +17,7 @@ export const useMatchRoute = (matchProps: MatchRouteProps, matchResult?: MatchRe
 	if ( 
 		matchProps.path === undefined
 	) {
-		return 'NO_ROUTE'
+		return 'NO_ROUTE';
 	}
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -25,5 +25,5 @@ export const useMatchRoute = (matchProps: MatchRouteProps, matchResult?: MatchRe
 		matchProps,
 		parentRoute,
 		matchResult
-	)
-}
+	);
+};

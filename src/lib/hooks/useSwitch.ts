@@ -1,37 +1,30 @@
 import { Children, type ReactElement, cloneElement } from 'react';
 
-import invariant from 'tiny-invariant'
+import invariant from 'tiny-invariant';
 
 import { type NavigateProps } from '../components/Navigate';
 import { type RedirectProps } from '../components/Redirect';
 import { type BaseRouteProps } from '../components/Route';
-import { type BaseSearchRouteProps } from '../components/SearchRoute';
 import { useLanguageContext } from '../contexts/LanguageContext';
 import { type RouteContextObject, useRoute } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
 import { type MatchPathProps, matchRoute } from './useMatchPath';
-import { matchSearchRoute } from './useSearchRoute';
 
-type Props = BaseRouteProps | BaseSearchRouteProps | RedirectProps | NavigateProps;
+type Props = BaseRouteProps | RedirectProps | NavigateProps;
 
 const isNavigateOrRedirect = (props: RedirectProps | NavigateProps) => {
-	return props.to !== undefined
-}
-
-const isSearchRoute = (props: BaseSearchRouteProps) => {
-	return props.search !== undefined
-}
+	return props.to !== undefined;
+};
 
 const isRoute = (
 	props: Props
 ) => {
 	return (
 		!isNavigateOrRedirect(props as RedirectProps)
-		&& !isSearchRoute(props as BaseSearchRouteProps)
-	)
-}
+	);
+};
 
 const getMatchFromProps = (
 	url: URL, 
@@ -41,8 +34,7 @@ const getMatchFromProps = (
 ) => {
 	if ( __DEV__ ) {
 		invariant(
-			(props as BaseSearchRouteProps).search
-			|| (props as NavigateProps).to
+			(props as NavigateProps).to
 			|| !(props as BaseRouteProps).path
 			|| (props as BaseRouteProps).path,
 			'`useSwitch` can only accept component\'s with `path`, `search`, `from` or `to` attributes'
@@ -54,25 +46,20 @@ const getMatchFromProps = (
 			validateRouteProps({
 				...(props as BaseRouteProps),
 				path
-			})
+			});
 		}
 		
-		return matchRoute(url, props as MatchPathProps, path, parentRoute, base)
+		return matchRoute(url, props as MatchPathProps, path, parentRoute, base);
 	}
 
-	const searchBaseProps = (props as BaseSearchRouteProps)
-	if ( isSearchRoute(searchBaseProps) ) {
-		return matchSearchRoute(url, searchBaseProps, parentRoute)
-	}
-
-	return matchRoute(url, searchBaseProps, '*', parentRoute)
-}
+	return matchRoute(url, props as MatchPathProps, '*', parentRoute);
+};
 
 /**
  * Returns the first children component with props `path`, `search`, `to/from` that matches the current location or without previous props.
  */
 export const useSwitch = (children: Array<ReactElement<Props>> | ReactElement<Props>): ReactElement<BaseRouteProps> | null => {	
-	const { url } = useRouter()
+	const { url } = useRouter();
 	const parentRoute = useRoute();
 	const baseContext = useLanguageContext();
 
@@ -96,4 +83,4 @@ export const useSwitch = (children: Array<ReactElement<Props>> | ReactElement<Pr
 	}
 
 	return null;
-}
+};

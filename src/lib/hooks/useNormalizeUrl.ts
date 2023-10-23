@@ -17,9 +17,9 @@ const normalizeUrl = (
 	// If to is string, resolve to with current url
 	if ( typeof to === 'string' ) {
 		if ( to.startsWith(`/${base}`) ) {
-			return resolveLocation(to, url.href)
+			return resolveLocation(to, url.href);
 		}
-		return resolveLocation(base ? resolveSlash(base, to) : to, url.href)
+		return resolveLocation(base ? resolveSlash(base, to) : to, url.href);
 	}
 
 	if ( to instanceof URL ) {
@@ -31,7 +31,7 @@ const normalizeUrl = (
 	const newSearch = parseParams(to.searchParams);
 
 	return new URL(createNewUrlWithSearch(newUrl, newSearch, hash));
-}
+};
 
 /**
  * Returns a method for making a url from `to`.
@@ -49,6 +49,6 @@ export const useNormalizeUrl = () => {
 			new URL(window.location.href),
 			base,
 			hash
-		)
-	}
-}
+		);
+	};
+};

@@ -20,4 +20,4 @@ export const validateRouteProps = (matchProps: Partial<MatchRouteProps>) => {
 			? `Path '${paths[0]}' ${matchProps.hash === true ? 'doesn\'t start' : 'start'} with # but 'Route' ${matchProps.hash === true ? 'has' : 'doesn\'t have'} prop hash.`
 			: `Paths '${paths.map((p) => p.startsWith('#')).join(', ')}' start with # but 'Route' doesn't have prop hash.`
 	);
-}
+};

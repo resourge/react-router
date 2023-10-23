@@ -13,7 +13,7 @@ import {
 	type IsHashPath,
 	type ResolveSlash,
 	type IfIncludesParam
-} from '../types/StringTypes'
+} from '../types/StringTypes';
 import { type StringifyObjectParams } from '../types/StringifyObjectParams';
 import {
 	type MergeParamsAndCreate,
@@ -21,18 +21,18 @@ import {
 	type GetValueFromBeforePath,
 	type GetValueFromTransform,
 	type MergeObj
-} from '../types/types'
+} from '../types/types';
 import { FIT_IN_ALL_ROUTES, FIT_IN_ALL_ROUTES_REG } from '../utils/constants';
 import { generatePath } from '../utils/generatePath';
 import { resolveSlash } from '../utils/resolveLocation';
 
-import { Param, ParamPath, type ParamsConfig } from './Param'
+import { Param, ParamPath, type ParamsConfig } from './Param';
 
 function createPathWithCurrentLocationHasHash(path: string) {
-	const newPath = new URL(path, window.location.origin)
+	const newPath = new URL(path, window.location.origin);
 
 	const windowURL = new URL(window.location as any);
-	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : ''
+	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
 
 	return newPath.href;
 }
@@ -189,7 +189,7 @@ export class Path<
 	protected _params!: Params;
 	protected _paramsResult!: ParamsResult;
 
-	protected config: PathConfig = {}
+	protected config: PathConfig = {};
 	protected paths: Array<ParamPath<string> | string> = [];
 	private _includeCurrentURL?: boolean;
 
@@ -198,10 +198,10 @@ export class Path<
 
 		let _path: string | undefined = path;
 		if ( config?.fitInAllRoutes ) {
-			_path = `${FIT_IN_ALL_ROUTES}${path ?? ''}`
+			_path = `${FIT_IN_ALL_ROUTES}${path ?? ''}`;
 		}
 		else if ( path ) {
-			_path = `/${path}`
+			_path = `/${path}`;
 		}
 
 		if ( _path ) {
@@ -362,7 +362,7 @@ export class Path<
 							Object.keys(value._routes)
 							&& checkFitInAllRoute(value._routes)
 						)
-					))
+					));
 				}
 				invariant(
 					checkFitInAllRoute(routes),
@@ -405,17 +405,17 @@ export class Path<
 				if ( path.config?.transform ) {
 					_transforms.push((params) => {
 						(params as any)[path.key] = path.config!.transform!(params[path.key]);
-					})
+					});
 				}
 				if ( path.config?.beforePath ) {
 					_beforePaths.push((params) => {
 						(params as any)[path.key] = path.config!.beforePath!(params[path.key]);
-					})
+					});
 				}
 				return path.parseParam((arr.length - 1) !== index );
 			})
 			.join('')
-		) || '/'
+		) || '/';
 
 		// Generates routes
 		const paths = Object.entries(this._routes ?? {})
@@ -423,16 +423,16 @@ export class Path<
 			obj[key] = value.createPath(newPaths, _transforms, _beforePaths);
 			return obj;
 			// Too hard to put a working type that doesn't create a problem in return
-		}, {} as any) 
+		}, {} as any); 
 
-		const _includeCurrentURL = this._includeCurrentURL
+		const _includeCurrentURL = this._includeCurrentURL;
 
 		return {
 			path,
 			withSearchParams(sp: Record<string, any>) {
 				return Object.assign({}, this, {
 					searchParams: parseParams(sp) 
-				})
+				});
 			},
 			get(this: { searchParams?: string }, params: Params) {
 				const _params: Exclude<Params, undefined> = (params ? {
@@ -441,12 +441,12 @@ export class Path<
 
 				_beforePaths.forEach((beforePaths) => {
 					beforePaths(_params);
-				})
+				});
 
 				let newPath = generatePath(
 					path, 
 					_params
-				)
+				);
 
 				if ( newPath.includes(FIT_IN_ALL_ROUTES) ) {
 					const url = new URL(window.location.href);
@@ -466,13 +466,13 @@ export class Path<
 				return useParams<StringifyObjectParams<Exclude<Params, undefined>>>((params) => {
 					_transforms.forEach((transform) => {
 						transform(params);
-					})
+					});
 
 					return params;
-				})
+				});
 			},
 			...paths
-		}
+		};
 	}
 }
 

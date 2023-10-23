@@ -1,4 +1,4 @@
-import { type Entries } from './Entries'
+import { type Entries } from './Entries';
 
 type ArrayToSearchParams<T extends any[]> = T extends any[] 
 	? T extends [infer E, ...infer R]

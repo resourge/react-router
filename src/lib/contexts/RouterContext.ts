@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { type ActionType } from '@resourge/react-search-params';
-import invariant from 'tiny-invariant'
+import invariant from 'tiny-invariant';
 
 export type RouterContextType = {
 	action: ActionType
@@ -20,8 +20,8 @@ export const useRouter = (): RouterContextType => {
 	const context = useContext(RouterContext);
 
 	if ( __DEV__ ) {
-		invariant(context, 'useRouter can only be used in the context of a <RouterContext>.')
+		invariant(context, 'useRouter can only be used in the context of a <RouterContext>.');
 	}
 
-	return useContext(RouterContext) as RouterContextType
-}
+	return useContext(RouterContext) as RouterContextType;
+};

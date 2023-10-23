@@ -1,6 +1,6 @@
-import { type ActionType } from '@resourge/react-search-params'
+import { type ActionType } from '@resourge/react-search-params';
 
-import { useBlocker, type Blocker, type BlockerResult } from './useBlocker'
+import { useBlocker, type Blocker, type BlockerResult } from './useBlocker';
 
 export type UsePromptProps = {
 	/**
@@ -19,17 +19,17 @@ export type UsePromptProps = {
  * @returns promptResult {BlockerResult}
  */
 export const usePrompt = ({ when, message }: UsePromptProps): BlockerResult => {
-	const _blocker = typeof when === 'boolean' ? () => when : (when)
+	const _blocker = typeof when === 'boolean' ? () => when : (when);
 
 	return useBlocker((currentUrl, nextUrl, action) => {
 		const isBlocking = _blocker(currentUrl, nextUrl, action);
 
 		if ( isBlocking && message && action !== 'beforeunload' ) {
-			const _message = typeof message === 'string' ? message : message(currentUrl, nextUrl, action)
+			const _message = typeof message === 'string' ? message : message(currentUrl, nextUrl, action);
 
-			return !window.confirm(_message)
+			return !window.confirm(_message);
 		}
 
 		return isBlocking;
-	})
-}
+	});
+};

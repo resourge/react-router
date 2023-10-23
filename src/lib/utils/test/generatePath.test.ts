@@ -1,14 +1,14 @@
-import { Param } from 'src/lib/setupPaths/Param'
-import { path } from 'src/lib/setupPaths/Path'
-import { SetupPaths } from 'src/lib/setupPaths/SetupPaths'
+import { Param } from 'src/lib/setupPaths/Param';
+import { path } from 'src/lib/setupPaths/Path';
+import { SetupPaths } from 'src/lib/setupPaths/SetupPaths';
 
 const DataSourceIdParam = Param('dataSourceId', {
 	transform: (dataSourceId: string) => Number(dataSourceId)
-})
+});
 
 const ProductIdParam = Param('productId', {
 	transform: (productId: string) => Number(productId)
-})
+});
 
 export const RoutePaths = SetupPaths({
 	HOME: path(''),
@@ -59,7 +59,7 @@ export const RoutePaths = SetupPaths({
 			.includeCurrentURL()
 		})
 	})
-})
+});
 
 describe('generatePath', () => {
 	it('check generatePath', () => {
@@ -70,6 +70,6 @@ describe('generatePath', () => {
 				areaName: 'A_Check_DS_Separators_S02_DIP04_Fix.Hours'
 			})
 		)
-		.toMatch('/datasource/areas_attributes/421/A_Check_DS_Separators_S02_DIP04_Fix.Hours')
-	})
-})
+		.toMatch('/datasource/areas_attributes/421/A_Check_DS_Separators_S02_DIP04_Fix.Hours');
+	});
+});

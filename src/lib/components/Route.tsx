@@ -1,4 +1,4 @@
-import { Suspense, type ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react';
 
 import { useDefaultFallbackContext } from '../contexts/DefaultFallbackContext';
 import { RouteContext } from '../contexts/RouteContext';
@@ -32,13 +32,13 @@ function Route(props: RouteProps): JSX.Element {
 		computedMatch,
 		fallback,
 		...matchProps
-	} = props as IRouteProps
+	} = props as IRouteProps;
 	if ( __DEV__ ) {
 		validateRouteProps(matchProps);
 	}
-	const defaultFallback = useDefaultFallbackContext()
+	const defaultFallback = useDefaultFallbackContext();
 
-	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch)
+	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch);
 
 	if ( match ) {
 		const Component = (
@@ -47,21 +47,21 @@ function Route(props: RouteProps): JSX.Element {
 					{ children }
 				</RouteMetadata>
 			</Suspense>
-		)
+		);
 		
 		if ( match === 'NO_ROUTE' ) {
 			return (
 				<>
 					{ Component }
 				</>
-			)
+			);
 		}
 
 		return (
 			<RouteContext.Provider value={match}>
 				{ Component }
 			</RouteContext.Provider>
-		)
+		);
 	}
 
 	return (<></>);

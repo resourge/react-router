@@ -1,6 +1,6 @@
-import { type IsHashPath, type IncludeSlash } from '../types/StringTypes'
+import { type IsHashPath, type IncludeSlash } from '../types/StringTypes';
 
-import { type PathType, type Path } from './Path'
+import { type PathType, type Path } from './Path';
 
 type PathStructures = Record<string, Path<any, string>>
 
@@ -31,5 +31,5 @@ export const SetupPaths = <R extends PathStructures>(paths: R): SetupPathsResult
 		// @ts-expect-error I want createPath as private for use
 		(obj as any)[key] = value.createPath();
 		return obj;
-	}, {}) as SetupPathsResult<R>
-}
+	}, {}) as SetupPathsResult<R>;
+};

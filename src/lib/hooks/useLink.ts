@@ -1,6 +1,6 @@
 import { type AnchorHTMLAttributes, type MouseEvent } from 'react';
 
-import { type NavigateOptions, useNavigate } from './useNavigate'
+import { type NavigateOptions, useNavigate } from './useNavigate';
 import { type NavigateTo, useNormalizeUrl } from './useNormalizeUrl';
 
 export type UseLinkProps = {
@@ -50,7 +50,7 @@ export const useLink = ({
 				}
 			);
 		}
-	}
+	};
 
-	return [url.href, onClick] as const
-}
+	return [url.href, onClick] as const;
+};

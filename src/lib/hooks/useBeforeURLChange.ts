@@ -15,12 +15,12 @@ export const useBeforeURLChange = (beforeURLChange: (event: BeforeUrlChangeEvent
 	beforeURLChangeRef.current = beforeURLChange;
 
 	useEffect(() => {
-		const _beforeURLChange = (event: BeforeUrlChangeEvent) => beforeURLChangeRef.current(event)
+		const _beforeURLChange = (event: BeforeUrlChangeEvent) => beforeURLChangeRef.current(event);
 		
-		window.addEventListener('beforeURLChange', _beforeURLChange, false)
+		window.addEventListener('beforeURLChange', _beforeURLChange, false);
 
 		return () => {
-			window.removeEventListener('beforeURLChange', _beforeURLChange, false)
-		}
-	}, [])
-}
+			window.removeEventListener('beforeURLChange', _beforeURLChange, false);
+		};
+	}, []);
+};

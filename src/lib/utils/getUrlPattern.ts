@@ -22,7 +22,7 @@ export const getUrlPattern = ({
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	if (cacheCompile.has(`${path}_${String(hashPath)}_${String(exact)}`)) return cacheCompile.get(`${path}_${String(hashPath)}_${String(exact)}`)!;
 
-	const pathname = `${hash ? (hashPath ?? '').substring(1) : path}${_exact ? '' : '{/*}?'}`
+	const pathname = `${hash ? (hashPath ?? '').substring(1) : path}${_exact ? '' : '{/*}?'}`;
 
 	const generator = new URLPattern(
 		{
@@ -34,11 +34,11 @@ export const getUrlPattern = ({
 			hash: '*',
 			search: '*'
 		}
-	)
+	);
 
 	if (cacheCompile.size < cacheLimit) {
-		cacheCompile.set(`${path}_${String(hash)}`, generator)
+		cacheCompile.set(`${path}_${String(hash)}`, generator);
 	}
 
 	return generator;
-}
+};

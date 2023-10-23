@@ -7,12 +7,7 @@ import { FIT_IN_ALL_ROUTES } from '../utils/constants';
 import { matchPath, type MatchResult } from '../utils/matchPath';
 import { resolveSlash } from '../utils/resolveLocation';
 
-export type MatchPathProps = {
-	/**
-	 * Route path(s)
-	 * @default '*'
-	 */
-	path: string | string[]
+export type BaseMatchPathProps = {
 	/**
 	 * Makes it so 'URL' needs to be exactly as the path
 	 * @default false
@@ -25,20 +20,44 @@ export type MatchPathProps = {
 	hash?: boolean
 }
 
+export type MatchPathProps = BaseMatchPathProps & {
+	/**
+	 * Route path(s)
+	 * @default '*'
+	 */
+	path: string | string[]
+	/**
+	 * Route mandatory search params
+	 */
+	searchParams?: string | string[]
+}
+
 /**
  * Method to match `url` to `url`
  * 
  * @param url {URL} - Current url.
- * @param matchPath {MatchPathProps}
+ * @param matchPath {BaseMatchPathProps}
  * @param parentRoute {MatchResult} - Current route parent.
  */
 export const matchRoute = (
 	url: URL,
-	{ hash, exact }: Omit<MatchPathProps, 'path'>, 
+	{
+		hash, exact, searchParams 
+	}: MatchPathProps, 
 	path: MatchPathProps['path'],
 	parentRoute: MatchResult | undefined,
 	base?: string
 ): MatchResult<Record<string, string>> | null => {
+	if ( searchParams ) {
+		const _search = Array.isArray(searchParams) ? searchParams : [searchParams];
+
+		const _url = hash ? new URL(url.hash.replace('#', ''), url.origin) : new URL(url);
+
+		if ( _search.some((search) => !_url.searchParams.has(search)) ) {
+			return null;
+		}
+	}
+
 	const baseURL = url.origin;
 	
 	const paths = (Array.isArray(path) ? path : [path]);
@@ -71,7 +90,7 @@ export const matchRoute = (
 				currentPath: p,
 				paths
 			}
-		)
+		);
 
 		if ( match ) {
 			return match;
@@ -79,7 +98,7 @@ export const matchRoute = (
 	}
 
 	return null;
-}
+};
 
 /**
  * Hook to match path to current `url`.
@@ -90,8 +109,8 @@ export const useMatchPath = (
 	parentRoute?: RouteContextObject<Record<string, any>>,
 	matchResult?: MatchResult | null
 ) => {
-	const { url } = useRouter()
-	const baseContext = useLanguageContext()
+	const { url } = useRouter();
+	const baseContext = useLanguageContext();
 	const ref = useRef<MatchResult | null | undefined>();
 
 	if ( !ref.current || (ref.current && !url.href.includes(ref.current.unique)) ) {
@@ -108,5 +127,5 @@ export const useMatchPath = (
 		return _matchResult;
 	}
 
-	return ref.current
-}
+	return ref.current;
+};

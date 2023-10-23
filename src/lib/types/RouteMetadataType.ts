@@ -13,5 +13,5 @@ export function setRouteMetadata<
 	Langs extends string = string, 
 	R extends string | Record<Langs, string> = string
 >(routeMetadata: RouteMetadataType<Langs, R>) {
-	return routeMetadata
+	return routeMetadata;
 }

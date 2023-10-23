@@ -2,11 +2,11 @@ import React from 'react';
 
 import { useRouter } from '../contexts/RouterContext';
 import { useLink, type UseLinkProps } from '../hooks/useLink';
-import { type MatchPathProps } from '../hooks/useMatchPath';
+import { type BaseMatchPathProps } from '../hooks/useMatchPath';
 
 export type LinkProps = UseLinkProps & {
 	matchClassName?: string
-} & Omit<MatchPathProps, 'path'>
+} & BaseMatchPathProps
 
 /**
  * Component extends element `a` and navigates to `to`.
@@ -28,9 +28,9 @@ const Link = React.forwardRef((
 		matchClassName,
 		children,
 		...aProps 
-	} = props
+	} = props;
 	const { url } = useRouter();
-	const [href, onClick] = useLink(props)
+	const [href, onClick] = useLink(props);
 	const match = href === url.href;
 
 	const _class = [className, match ? matchClassName : ''].filter(cn => cn);
@@ -38,13 +38,18 @@ const Link = React.forwardRef((
 	const _className = _class && _class.length ? _class.join(' ') : undefined;
 
 	return (
-		// eslint-disable-next-line jsx-a11y/anchor-has-content
-		<a {...aProps} ref={ref} className={_className} href={href} onClick={onClick}>
+		<a
+			{...aProps}
+			ref={ref}
+			className={_className}
+			href={href}
+			onClick={onClick}
+		>
 			{ children }
 		</a>
 	);
 });
 
-Link.displayName = 'Link'
+Link.displayName = 'Link';
 
 export default Link;

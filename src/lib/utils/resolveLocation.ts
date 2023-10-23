@@ -8,16 +8,16 @@ export function resolveSlash(...args: Array<string | undefined>) {
 	.map((pathname: string) => {
 		pathname = pathname.trim();
 		if ( pathname.charAt(0) === '/' ) {
-			pathname = pathname.substring(1)
+			pathname = pathname.substring(1);
 		}
 
 		const pathnameLength = pathname.length - 1;
 		if ( pathname.charAt(pathnameLength) === '/' ) {
-			pathname = pathname.substring(0, pathnameLength)
+			pathname = pathname.substring(0, pathnameLength);
 		} 
 
-		return pathname
-	}).join('/')}`
+		return pathname;
+	}).join('/')}`;
 }
 
 /**
@@ -76,5 +76,5 @@ export function resolveLocation(url: string, baseURL?: string): URL {
 	return new URL(
 		pathname + search + hash,
 		window.location.origin
-	)
+	);
 }

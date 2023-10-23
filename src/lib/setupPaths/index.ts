@@ -12,4 +12,4 @@ export {
 	type SetupPathsResult,
 
 	Param
-}
+};

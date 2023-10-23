@@ -12,8 +12,6 @@ import Redirect from './Redirect';
 import type { RedirectProps } from './Redirect';
 import Route from './Route';
 import type { RouteProps } from './Route';
-import SearchRoute from './SearchRoute';
-import type { SearchRouteProps } from './SearchRoute';
 import Switch from './Switch';
 import type { SwitchProps } from './Switch';
 
@@ -36,9 +34,6 @@ export {
 	BrowserRouter,
 	type BrowserRouterProps,
 
-	SearchRoute,
-	type SearchRouteProps,
-
 	Switch,
 	type SwitchProps,
 
@@ -46,4 +41,4 @@ export {
 	getLanguageRoute,
 	LanguageRoute,
 	type LanguageRouteProps
-}
+};

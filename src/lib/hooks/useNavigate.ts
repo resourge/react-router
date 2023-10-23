@@ -44,5 +44,5 @@ export const useNavigate = () => {
 		if ( !preventScrollReset ) {
 			window.scrollTo(0, 0);
 		}
-	}
-}
+	};
+};

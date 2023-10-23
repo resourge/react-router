@@ -1,4 +1,4 @@
-import { type ParamsConfig } from '../setupPaths/Param'
+import { type ParamsConfig } from '../setupPaths/Param';
 
 export type _OptionalKeys<O extends object> = {
 	// eslint-disable-next-line @typescript-eslint/ban-types

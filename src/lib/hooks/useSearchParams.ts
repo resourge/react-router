@@ -13,9 +13,9 @@ export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T
 	const { search, hash } = useRoute();
 
 	const [searchParams, setSearchParams] = useState(() => {
-		const searchParams = new URLSearchParams(search ? `?${search}` : '')
+		const searchParams = new URLSearchParams(search ? `?${search}` : '');
 
-		return parseSearchParams<T>(searchParams, defaultParams)
+		return parseSearchParams<T>(searchParams, defaultParams);
 	});
 
 	useEffect(() => {
@@ -24,15 +24,15 @@ export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T
 
 			const searchParams = new URL(_href).searchParams;
 
-			setSearchParams(parseSearchParams<T>(searchParams, defaultParams))
-		}
-		window.addEventListener('URLChange', onUrlChange)
+			setSearchParams(parseSearchParams<T>(searchParams, defaultParams));
+		};
+		window.addEventListener('URLChange', onUrlChange);
 
 		return () => {
-			window.addEventListener('URLChange', onUrlChange)
-		}
+			window.addEventListener('URLChange', onUrlChange);
+		};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	return searchParams;
-}
+};

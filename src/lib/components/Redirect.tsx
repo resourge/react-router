@@ -17,7 +17,10 @@ const Redirect: FC<RedirectProps> = ({
 	to, replace,
 	...routeProps
 }: RedirectProps) => (
-	<Route path={from} {...routeProps}>
+	<Route
+		path={from}
+		{...routeProps}
+	>
 		<Navigate 
 			replace={replace}
 			to={to}

@@ -26,34 +26,34 @@ export const useBlocker = (
 	const [{ isBlocking, continueNavigation }, setBlocker] = useState<{ continueNavigation: () => void, isBlocking: boolean }>({
 		isBlocking: false,
 		continueNavigation: () => {}
-	})
+	});
 
 	const finishBlocking = () => {
 		setBlocker({
 			isBlocking: false,
 			continueNavigation: () => {}
-		})
-	}
+		});
+	};
 
 	useBeforeURLChange((event) => {
 		const continueNavigation = () => {
 			event.next();
 			finishBlocking();
-		}
+		};
 		const isBlocking = blocker(url, event.url, event.action);
 		
 		if ( isBlocking ) {
 			setBlocker({
 				isBlocking: event.action !== 'beforeunload',
 				continueNavigation
-			})
+			});
 		}
-		return !isBlocking
-	})
+		return !isBlocking;
+	});
 
 	return {
 		isBlocking, 
 		continueNavigation, 
 		finishBlocking
 	};
-}
+};

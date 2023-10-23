@@ -1,6 +1,6 @@
-import invariant from 'tiny-invariant'
+import invariant from 'tiny-invariant';
 
-import { type AsConst } from '../types/AsConst'
+import { type AsConst } from '../types/AsConst';
 
 export type ParamsConfigOptional = { 
 	/**
@@ -37,9 +37,9 @@ export type ParamsConfig = {
 } & (ParamsConfigNotOptional | ParamsConfigOptional)
 
 export class ParamPath<Key, Config extends ParamsConfig = ParamsConfig> {
-	public key: Key = '' as Key
-	public param: string = ''
-	public config?: Config
+	public key: Key = '' as Key;
+	public param: string = '';
+	public config?: Config;
 
 	public parseParam(hasNextPath: boolean) {
 		const doesNotHaveTheSlash = hasNextPath && this.config?.optional;
@@ -68,9 +68,9 @@ export const Param = <
 
 	const instance = new ParamPath<K, Config>();
 
-	instance.param = param
+	instance.param = param;
 	instance.key = param;
-	instance.config = config as any
+	instance.config = config as any;
 
 	return instance;
-}
+};

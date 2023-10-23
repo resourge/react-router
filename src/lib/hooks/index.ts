@@ -5,7 +5,7 @@ import { type Blocker } from './useBlocker';
 import { useLink } from './useLink';
 import { type UseLinkProps } from './useLink';
 import { useMatchPath } from './useMatchPath';
-import { type MatchPathProps } from './useMatchPath';
+import { type BaseMatchPathProps } from './useMatchPath';
 import { useMatchRoute } from './useMatchRoute';
 import { type MatchRouteProps } from './useMatchRoute';
 import { useNavigate } from './useNavigate';
@@ -18,8 +18,6 @@ import { usePrompt } from './usePrompt';
 import { type RouteMetadataProps } from './useRouteMetadata';
 import { useRouteMetadata } from './useRouteMetadata';
 import { useSearchParams } from './useSearchParams';
-import { useSearchRoute } from './useSearchRoute';
-import { type UseSearchRouteProps } from './useSearchRoute';
 import { useSwitch } from './useSwitch';
 
 export { 
@@ -36,7 +34,7 @@ export {
 	type UseLinkProps,
 
 	useMatchPath,
-	type MatchPathProps,
+	type BaseMatchPathProps,
 
 	useNavigate,
 	type NavigateOptions,
@@ -48,9 +46,6 @@ export {
 
 	useSearchParams,
 
-	useSearchRoute,
-	type UseSearchRouteProps,
-
 	useSwitch,
 
 	useMatchRoute,
@@ -58,4 +53,4 @@ export {
 
 	type RouteMetadataProps,
 	useRouteMetadata
-}
+};

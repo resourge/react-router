@@ -6,7 +6,7 @@ import { resolveSlash } from '../utils/resolveLocation';
 
 import Navigate from './Navigate';
 
-const LANGUAGE_PARAM = '/:lang'
+const LANGUAGE_PARAM = '/:lang';
 const LANGUAGE_PATTERN = globalThis.window
 	? new URLPattern({
 		baseURL: window.location.origin,
@@ -19,7 +19,7 @@ const LANGUAGE_PATTERN = globalThis.window
 	})
 	: ({
 		exec() {
-			return null 
+			return null; 
 		}
 	});
 /**
@@ -37,7 +37,7 @@ export const updateLanguageRoute = (newLanguage: string) => {
 		const lang = matchUrl.groups.lang;
 
 		if ( lang && lang !== newLanguage ) {
-			newUrl.pathname = newUrl.pathname.replace(`/${lang}`, `/${newLanguage}`)
+			newUrl.pathname = newUrl.pathname.replace(`/${lang}`, `/${newLanguage}`);
 
 			if ( window.location.href === newUrl.href ) {
 				return;
@@ -45,7 +45,7 @@ export const updateLanguageRoute = (newLanguage: string) => {
 			window.history.replaceState(null, '', newUrl);
 		}
 	}
-}
+};
 
 /**
  * Method to get initial route language
@@ -77,7 +77,7 @@ function isLangIsSupported(lang: string): string | false {
 		return new Intl.Locale(languages[0]).language;
 	}
 	catch {
-		return false
+		return false;
 	}
 }
 
@@ -112,7 +112,7 @@ function getNewPathName(
 	if ( lang ) {
 		if ( checkLanguage && !checkLanguage(lang) ) {
 			const newUrl = new URL(url);
-			return newUrl.pathname.replace(`/${lang}`, `/${fallbackLanguage}`)
+			return newUrl.pathname.replace(`/${lang}`, `/${fallbackLanguage}`);
 		}
 		else {
 			const language = isLangIsSupported(lang);
@@ -123,7 +123,7 @@ function getNewPathName(
 					languages.includes(language)
 						? `/${language}`
 						: `/${fallbackLanguage}`
-				)
+				);
 			}
 		}
 	}
@@ -158,14 +158,14 @@ function LanguageRoute({
 	}
 
 	if ( !lang || !languages.includes(lang) ) {
-		const newPathname = getNewPathName(url, languages, fallbackLanguage, lang, checkLanguage)
+		const newPathname = getNewPathName(url, languages, fallbackLanguage, lang, checkLanguage);
 
 		return (
 			<Navigate
 				replace={true}
 				to={newPathname}
 			/>
-		)
+		);
 	}
 	
 	return (
@@ -177,4 +177,4 @@ function LanguageRoute({
 	);
 };
 
-export default LanguageRoute
+export default LanguageRoute;

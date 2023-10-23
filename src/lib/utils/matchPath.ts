@@ -48,15 +48,15 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 
 function getUniqueId(path: string, match: URLPatternResult) {
 	if (match.pathname.groups[0]) {
-		const index = match.pathname.input.indexOf(match.pathname.groups[0])
-		const l = (match.pathname.groups[0].length)
+		const index = match.pathname.input.indexOf(match.pathname.groups[0]);
+		const l = (match.pathname.groups[0].length);
 		if ( path.includes(FIT_IN_ALL_ROUTES) ) {
 			return match.pathname.input.substring(index + l, match.pathname.input.length);
 		}
 		return match.pathname.input.substring(0, index);
 	}
 
-	return match.pathname.input
+	return match.pathname.input;
 }
 
 /**
@@ -95,15 +95,15 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 				return (Object.entries(matchUrl.groups)
 				.filter(([key, value]) => key !== '0' && value) as Array<[string, string]>)
 				.reduce<Record<string, string>>((obj, [key, value]) => {
-					obj[key] = value
+					obj[key] = value;
 
 					return obj;
-				}, {}) as Params
+				}, {}) as Params;
 			},
 			hash: hash ?? false,
 			hashPath
-		}
+		};
 	}
 
-	return null
+	return null;
 }

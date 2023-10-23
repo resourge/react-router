@@ -9,21 +9,21 @@ import invariant from 'tiny-invariant';
 export function generatePath<T extends Record<string, any>>(path: string, params: T): string {
 	return path
 	.replace(/{{0,1}\/{0,1}:(\w+)(\(.*\)){0,1}}{0,1}\?{0,1}/g, (originalKey, key: string) => {
-		const value: string | undefined = params[key]
+		const value: string | undefined = params[key];
 		if ( __DEV__ ) {
-			invariant(!(!originalKey.includes('?') && value === undefined), `Value of key '${key}' for path '${path}' cannot be undefined.`)
+			invariant(!(!originalKey.includes('?') && value === undefined), `Value of key '${key}' for path '${path}' cannot be undefined.`);
 		}
-		const includesSlash = originalKey.includes('/')
+		const includesSlash = originalKey.includes('/');
 		return `${includesSlash ? '/' : ''}${value ?? ''}`;
 	})
 	.replace(/\/*\*$/, () => params['*'] == null ? '' : params['*'].replace(/^\/*/, '/'));
 }
 
 export function createPathWithCurrentLocationHasHash(path: string) {
-	const newPath = new URL(path, window.location.origin)
+	const newPath = new URL(path, window.location.origin);
 
 	const windowURL = new URL(window.location as any);
-	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : ''
+	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
 
 	return newPath.href;
 }

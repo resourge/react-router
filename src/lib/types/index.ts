@@ -1,3 +1,3 @@
-import { type RouteMetadataType, setRouteMetadata } from './RouteMetadataType'
+import { type RouteMetadataType, setRouteMetadata } from './RouteMetadataType';
 
-export { type RouteMetadataType as RouteMetadata, setRouteMetadata }
+export { type RouteMetadataType as RouteMetadata, setRouteMetadata };
