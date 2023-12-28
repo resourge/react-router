@@ -85,6 +85,7 @@ describe('getUrlPattern', () => {
 			':productId',
 			{ productId: string },
 			Record<string, any>,
+			undefined,
 			Record<string, Path<any, string>>
 		>
 	) => {
@@ -174,6 +175,7 @@ describe('getUrlPattern', () => {
 			':index',
 			{ index: number },
 			Record<string, any>,
+			undefined,
 			Record<string, Path<any, string>>
 		>
 	) => {

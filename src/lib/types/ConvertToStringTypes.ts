@@ -2,8 +2,8 @@ import { type Entries } from './Entries';
 
 type ArrayToSearchParams<T extends any[]> = T extends any[] 
 	? T extends [infer E, ...infer R]
-		? E extends [infer Key, infer Value]
-			? `${Key extends string ? Key : ''}=${Value extends string | number | bigint | boolean ? `${Value}` : ''}${ArrayToSearchParams<R> extends '' ? '' : `&${ArrayToSearchParams<R>}`}`
+		? E extends [infer Key]
+			? `${Key extends string ? Key : ''}=${ArrayToSearchParams<R> extends '' ? '' : `&${ArrayToSearchParams<R>}`}`
 			: ''
 		: ''
 	: ''

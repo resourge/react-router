@@ -5,7 +5,9 @@ import {
 	BrowserRouter,
 	Link,
 	Route,
+	SetupPaths,
 	Switch,
+	path,
 	useNavigate,
 	useSearchParams
 } from './lib';
@@ -26,12 +28,28 @@ const Test: React.FC<{ children: string }> = ({ children }) => {
 	);
 };
 
+const RouteParams = SetupPaths({
+	HOME: path().searchParam('id')
+	.searchParam('name')
+});
+
+console.log(
+	'Home', 
+	RouteParams.HOME.get({
+		searchParams: {
+			id: 10,
+			name: 'Test',
+			moreShit: 10
+		}
+	})
+);
+
 function App() {
 	return (
 		<BrowserRouter>
 			<Switch>
 				<Route
-					path="/"
+					path={RouteParams.HOME.path}
 					searchParams={'id'}
 				>
 					<Test>

@@ -2,20 +2,16 @@ import { type ReactNode } from 'react';
 
 import { useRouter } from '../contexts';
 import { LanguageContext } from '../contexts/LanguageContext';
+import { getUrlPattern } from '../utils/getUrlPattern';
 import { resolveSlash } from '../utils/resolveLocation';
 
 import Navigate from './Navigate';
 
 const LANGUAGE_PARAM = '/:lang';
 const LANGUAGE_PATTERN = globalThis.window
-	? new URLPattern({
+	? getUrlPattern({
 		baseURL: window.location.origin,
-		hostname: '*',
-		port: '*',
-		protocol: '*',
-		pathname: `${LANGUAGE_PARAM}{/*}?`,
-		hash: '*',
-		search: '*'
+		path: `${LANGUAGE_PARAM}{/*}?`
 	})
 	: ({
 		exec() {

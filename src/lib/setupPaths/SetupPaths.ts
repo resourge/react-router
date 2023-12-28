@@ -2,7 +2,16 @@ import { type IsHashPath, type IncludeSlash } from '../types/StringTypes';
 
 import { type PathType, type Path } from './Path';
 
-type PathStructures = Record<string, Path<any, string>>
+type PathStructures = Record<string,
+	Path<any, string> | 
+	Path<
+		Record<string, Path<any, string>>,
+		string,
+		Record<string, any>,
+		Record<string, any>,
+		Record<string, any>
+	>
+>
 
 export type SetupPathsResult<R extends PathStructures> = { 
 	[K in keyof R]: PathType<
@@ -16,6 +25,8 @@ export type SetupPathsResult<R extends PathStructures> = {
 		R[K]['_params'], 
 		// @ts-expect-error Want to protect value, but also access it with types
 		R[K]['_paramsResult'], 
+		// @ts-expect-error Want to protect value, but also access it with types
+		R[K]['_searchParams'], 
 		// @ts-expect-error Want to protect value, but also access it with types
 		R[K]['_routes']
 	> 

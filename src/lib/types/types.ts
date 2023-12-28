@@ -48,13 +48,15 @@ type SpreadTwo<L, R> = Id<
 export type Spread<L, R = any> = SpreadTwo<L, R>
 
 export type MergeParamsAndCreate<
-	Params extends Record<string, any>, 
+	Params extends Record<string, any> | undefined, 
 	Key extends string, 
 	IsOptional extends boolean | undefined,
 	V
-> = string extends keyof Params
+> = Params extends undefined 
 	? CreateObject<Key, V, IsOptional>
-	: Spread<Params, CreateObject<Key, V, IsOptional>>
+	: string extends keyof Params
+		? CreateObject<Key, V, IsOptional>
+		: Spread<Params, CreateObject<Key, V, IsOptional>>
 
 export type MergeObj<
 	T extends Record<string, any>, 
