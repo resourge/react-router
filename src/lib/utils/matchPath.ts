@@ -9,6 +9,10 @@ type MatchProps = UrlPattern & {
 
 export type MatchResult<Params extends Record<string, string> = Record<string, string>> = {
 	/**
+	 * Check if URL for current route was changed
+	 */
+	checkNewVersion: (url: URL) => boolean
+	/**
 	 * Get current route params
 	 */
 	getParams: () => Params
@@ -32,10 +36,6 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 * If URL pattern is exact
 	 */
 	exact?: boolean
-	/**
-	 * Hash path
-	 */
-	hashPath?: string
 	/**
 	 * All possible paths for the route
 	 */
@@ -69,8 +69,9 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 	matchProps: MatchProps
 ): MatchResult<Params> | null {
 	const {
-		hash, path, hashPath, exact, paths
+		hash, path, exact, paths
 	} = matchProps;
+
 	const urlPattern = getUrlPattern(matchProps);
 
 	const _href = getHrefWhenHashOrNormal(url, matchProps.hash);
@@ -89,6 +90,17 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 			path,
 			paths,
 			search,
+			checkNewVersion: (url: URL) => {
+				const _href = getHrefWhenHashOrNormal(url, matchProps.hash);
+
+				const match = urlPattern.exec(_href);
+
+				if ( !match ) {
+					return false;
+				}
+
+				return unique === getUniqueId(path, match);
+			},
 			getParams: () => {
 				const matchUrl = match.pathname;
 
@@ -100,8 +112,7 @@ export function matchPath<Params extends Record<string, string> = Record<string,
 					return obj;
 				}, {}) as Params;
 			},
-			hash: hash ?? false,
-			hashPath
+			hash: hash ?? false
 		};
 	}
 

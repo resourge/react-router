@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
+import { matchRoute } from 'src/lib/hooks/useMatchPath';
+
 import { matchPath } from '../matchPath';
 
 const baseURL = 'http://localhost:3000';
@@ -23,18 +25,25 @@ describe('matchPath', () => {
 		});
 
 		it('pathname', () => {
-			const match = matchPath(
-				createBaseUrl('/products/1460?id=10#/hash'), 
-				{
-					baseURL,
-					path: '/products/:productId'
-				}
+			const a = createBaseUrl('/products/1460/test?id=10#/hash');
+			const matchResult = undefined;
+			const baseContext = undefined;
+			const matchProps = {
+				baseURL,
+				path: '/products/:productId{/:productName}?'
+			};
+			const match = matchResult ?? matchRoute(
+				a, 
+				matchProps,
+				matchProps.path, 
+				baseContext
 			);
 
 			expect(match).not.toBeNull();
 
 			expect(match!.getParams()).toMatchObject({
-				productId: '1460' 
+				productId: '1460',
+				productName: 'test'
 			});
 		});
 	});
@@ -46,8 +55,7 @@ describe('matchPath', () => {
 				{
 					baseURL,
 					hash: true,
-					path: '',
-					hashPath: '#/products/:productId'
+					path: '#/products/:productId'
 				}
 			);
 
@@ -64,8 +72,7 @@ describe('matchPath', () => {
 				{
 					baseURL,
 					hash: true,
-					path: '',
-					hashPath: '#/products/:productId'
+					path: '#/products/:productId'
 				}
 			);
 

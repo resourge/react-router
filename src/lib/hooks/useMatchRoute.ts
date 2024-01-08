@@ -1,6 +1,3 @@
-import { useContext } from 'react';
-
-import { RouteContext } from '../contexts/RouteContext';
 import { type MatchResult } from '../utils/matchPath';
 
 import { type MatchPathProps, useMatchPath } from './useMatchPath';
@@ -12,8 +9,6 @@ export type MatchRouteProps = MatchPathProps
  * @returns null if it is a no match, if returns 'NO_ROUTE' is a route without context, otherwise returns {@link MatchResult}
  */
 export const useMatchRoute = (matchProps: MatchRouteProps, matchResult?: MatchResult | null) => {
-	const parentRoute = useContext(RouteContext);
-
 	if ( 
 		matchProps.path === undefined
 	) {
@@ -23,7 +18,6 @@ export const useMatchRoute = (matchProps: MatchRouteProps, matchResult?: MatchRe
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	return useMatchPath(
 		matchProps,
-		parentRoute,
 		matchResult
 	);
 };

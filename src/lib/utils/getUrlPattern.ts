@@ -12,17 +12,17 @@ export type UrlPattern = {
 	 */
 	exact?: boolean
 	hash?: boolean
-	hashPath?: string
 }
 
 export const getUrlPattern = ({
-	path, baseURL, hash, hashPath, exact
+	path, baseURL, exact, hash
 }: UrlPattern): URLPattern => {
 	const _exact = exact ?? false;
+	const key = `${path}_${String(exact)}_${String(hash)}`;
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	if (cacheCompile.has(`${path}_${String(hashPath)}_${String(exact)}`)) return cacheCompile.get(`${path}_${String(hashPath)}_${String(exact)}`)!;
+	if (cacheCompile.has(key)) return cacheCompile.get(key)!;
 
-	const pathname = `${hash ? (hashPath ?? '').substring(1) : path}${_exact ? '' : '{/*}?'}`;
+	const pathname = `${path.replace('#', '')}${_exact ? '' : '{/*}?'}`;
 
 	const generator = new URLPattern(
 		{
@@ -37,7 +37,7 @@ export const getUrlPattern = ({
 	);
 
 	if (cacheCompile.size < cacheLimit) {
-		cacheCompile.set(`${path}_${String(hash)}`, generator);
+		cacheCompile.set(key, generator);
 	}
 
 	return generator;

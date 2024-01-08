@@ -179,9 +179,8 @@ describe('getUrlPattern', () => {
 	) => {
 		const url = getUrlPattern({
 			baseURL,
-			path: '',
-			hash: true,
-			hashPath: pathPattern.path
+			path: pathPattern.path,
+			hash: true
 		});
 
 		const index = 10;

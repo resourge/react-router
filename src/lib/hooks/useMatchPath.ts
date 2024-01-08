@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 
 import { useLanguageContext } from '../contexts/LanguageContext';
-import { type RouteContextObject } from '../contexts/RouteContext';
 import { useRouter } from '../contexts/RouterContext';
 import { FIT_IN_ALL_ROUTES } from '../utils/constants';
 import { matchPath, type MatchResult } from '../utils/matchPath';
@@ -45,7 +44,6 @@ export const matchRoute = (
 		hash, exact, searchParams 
 	}: MatchPathProps, 
 	path: MatchPathProps['path'],
-	parentRoute: MatchResult | undefined,
 	base?: string
 ): MatchResult<Record<string, string>> | null => {
 	if ( searchParams ) {
@@ -66,25 +64,13 @@ export const matchRoute = (
 	for (let i = 0; i < length; i++) {
 		const p = paths[i];
 
-		let _path = p.includes(FIT_IN_ALL_ROUTES) ? p : resolveSlash(base, p);
+		const _path = p.includes(FIT_IN_ALL_ROUTES) ? p : resolveSlash(base, p);
 
-		let hashPath = hash ? p : undefined;
-	
-		if ( parentRoute ) {
-			if ( !hash && parentRoute.path ) {
-				_path = resolveSlash(parentRoute.path, _path.replace(parentRoute.path, ''));
-			}
-			if ( parentRoute.hashPath && hashPath) {
-				hashPath = resolveSlash(parentRoute.hashPath, hashPath.replace(parentRoute.hashPath, ''));
-			}
-		}
-	
 		const match = matchPath(
 			url, 
 			{
 				path: _path,
 				hash,
-				hashPath,
 				baseURL,
 				exact,
 				currentPath: p,
@@ -106,19 +92,17 @@ export const matchRoute = (
  */
 export const useMatchPath = (
 	matchProps: MatchPathProps, 
-	parentRoute?: RouteContextObject<Record<string, any>>,
 	matchResult?: MatchResult | null
 ) => {
 	const { url } = useRouter();
 	const baseContext = useLanguageContext();
 	const ref = useRef<MatchResult | null | undefined>();
 
-	if ( !ref.current || (ref.current && !url.href.includes(ref.current.unique)) ) {
+	if ( !ref.current || (ref.current && !ref.current.checkNewVersion(url) ) ) {
 		const _matchResult = matchResult ?? matchRoute(
 			url, 
 			matchProps,
 			matchProps.path, 
-			parentRoute,
 			baseContext
 		);
 
