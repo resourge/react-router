@@ -1,3 +1,15 @@
+# [1.20.0](https://github.com/resourge/react-router/compare/v1.19.0...v1.20.0) (2024-01-09)
+
+
+### Bug Fixes
+
+* **usematchroute:** fix not working in some cases with deep routes ([8f7f878](https://github.com/resourge/react-router/commit/8f7f878846d52f659fff48a1dc46c8687360eaf7))
+
+
+### Features
+
+* **searchparams:** simplify searchparams ([eff677e](https://github.com/resourge/react-router/commit/eff677e66047d0d7562520d92780b91fd93a681a))
+
 # [1.19.0](https://github.com/resourge/react-router/compare/v1.18.0...v1.19.0) (2023-10-16)
 
 
