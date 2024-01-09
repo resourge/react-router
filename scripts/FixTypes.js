@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
-const fixTypes = (typePath: string) => {
+const fixTypes = (typePath) => {
 	const typesFilePath = path.resolve(__dirname, typePath);
 
 	let content = fs.readFileSync(typesFilePath, 'utf-8');

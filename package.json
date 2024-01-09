@@ -33,7 +33,7 @@
     "commit": "git pull && git add . && git-cz",
     "lint": "eslint \"./src/**/*.{ts,tsx}\"",
     "lint:prod": "cross-env NODE_ENV=production npm run lint",
-    "fix-types": "ts-node-esm ./scripts/FixTypes.ts",
+    "fix-types": "node ./scripts/FixTypes.js",
     "dev": "vite",
     "build:vite": "tsc && vite build",
     "build": "rollup -c && npm run fix-types",
