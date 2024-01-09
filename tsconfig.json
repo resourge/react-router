@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"useDefineForClassFields": true,
+		"esModuleInterop": true,
 		"lib": [
 			"DOM",
 			"DOM.Iterable",
@@ -10,7 +11,6 @@
 		"experimentalDecorators": true,
 		"allowJs": false,
 		"skipLibCheck": false,
-		"esModuleInterop": false,
 		"allowSyntheticDefaultImports": true,
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,

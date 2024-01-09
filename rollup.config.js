@@ -12,7 +12,7 @@ const pkg = JSON.parse(readFileSync('package.json', {
 
 const {
 	name, author, license
-} = pkg
+} = pkg;
 
 const external = [
 	'react', 
@@ -27,11 +27,11 @@ const globals = {
 	'@resourge/react-search-params': 'reactSearchParams',
 	'tiny-invariant': 'invariant',
 	'react/jsx-runtime': 'ReactJsxRuntime'
-}
+};
 
 const babelPlugins = [
 	'babel-plugin-dev-expression'
-]
+];
 
 const babelPresetEnv = [
 	'@babel/preset-env',
@@ -45,7 +45,7 @@ const babelPresetEnv = [
 		loose: true,
 		bugfixes: true
 	}
-]
+];
 
 const defaultExtPlugin = [
 	filsesize({
@@ -54,7 +54,7 @@ const defaultExtPlugin = [
 	nodeResolve({
 		extensions: ['.tsx', '.ts']
 	})
-]
+];
 
 function createBanner(libraryName, version, authorName, license) {
 	return `/**
@@ -90,8 +90,8 @@ const getPackage = (
 	SOURCE_FOLDER,
 	PACKAGE_NAME
 ) => {
-	const OUTPUT_DIR = `${BASE_OUTPUT_DIR}dist`
-	const SOURCE_INDEX_FILE = `${SOURCE_FOLDER}/index.ts`
+	const OUTPUT_DIR = `${BASE_OUTPUT_DIR}dist`;
+	const SOURCE_INDEX_FILE = `${SOURCE_FOLDER}/index.ts`;
 	const PROJECT_NAME = getName(PACKAGE_NAME);
 
 	/**
@@ -105,7 +105,7 @@ const getPackage = (
 	const sourcemap = true;
 	const banner = createBanner(PROJECT_NAME, VERSION, AUTHOR_NAME, LICENSE);
 	const umdName = PROJECT_NAME.split('-').map(capitalizeFirstLetter)
-	.join('')
+	.join('');
 
 	// JS modules for bundlers
 	const modules = [
@@ -313,7 +313,7 @@ const getPackage = (
 	];
 
 	return [...modules, ...cjsModules, ...umdModules, ...mainModule];
-}
+};
 
 export default function rollup() {
 	return [
