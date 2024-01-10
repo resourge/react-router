@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/resourge/react-router/compare/v1.20.0...v1.20.1) (2024-01-10)
+
+
+### Bug Fixes
+
+* **usematchpath:** fix hash routes not working ([ba77f0b](https://github.com/resourge/react-router/commit/ba77f0b3f3c8d46a7d5aaf8b1614ee2edb03d62c))
+
 # [1.20.0](https://github.com/resourge/react-router/compare/v1.19.0...v1.20.0) (2024-01-09)
 
 
