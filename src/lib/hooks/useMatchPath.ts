@@ -64,7 +64,13 @@ export const matchRoute = (
 	for (let i = 0; i < length; i++) {
 		const p = paths[i];
 
-		const _path = p.includes(FIT_IN_ALL_ROUTES) ? p : resolveSlash(base, p);
+		const _path = p.includes(FIT_IN_ALL_ROUTES) 
+			? p 
+			: (
+				p.startsWith('#')
+					? p
+					: resolveSlash(base, p)
+			);
 
 		const match = matchPath(
 			url, 
