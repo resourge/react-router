@@ -1,3 +1,10 @@
+## [1.20.2](https://github.com/resourge/react-router/compare/v1.20.1...v1.20.2) (2024-01-29)
+
+
+### Bug Fixes
+
+* **routemetadata:** fix title not changing ([9e2649c](https://github.com/resourge/react-router/commit/9e2649c80a43cfb3a14a39faf1f53ce426c60784))
+
 ## [1.20.1](https://github.com/resourge/react-router/compare/v1.20.0...v1.20.1) (2024-01-10)
 
 
