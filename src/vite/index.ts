@@ -81,12 +81,6 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 				fs.mkdirSync(cacheOutDir);
 			}
 		},
-		buildEnd: () => {
-			fs.rmSync(cacheOutDir, {
-				recursive: true,
-				force: true 
-			});
-		},
 		configResolved(c) {
 			rootConfig = c;
 			outputPath = c.build.outDir;
@@ -260,6 +254,11 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 
 			files.forEach((message) => {
 				rootConfig.logger.info(message);
+			});
+
+			fs.rmSync(cacheOutDir, {
+				recursive: true,
+				force: true 
 			});
 		}
 	};
