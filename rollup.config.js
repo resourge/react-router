@@ -19,7 +19,15 @@ const external = [
 	'@resourge/react-search-params', 
 	'urlpattern-polyfill', 
 	'tiny-invariant',
-	'react/jsx-runtime' 
+	'react/jsx-runtime',
+	'ansi-colors',
+	'html-minifier-terser',
+	'node-html-parser',
+	'tsconfig-paths',
+	'typescript',
+	'vite',
+	'@babel/core',
+	'@babel/preset-typescript'
 ];
 
 const globals = {
@@ -312,7 +320,48 @@ const getPackage = (
 		}
 	];
 
-	return [...modules, ...cjsModules, ...umdModules, ...mainModule];
+	const viteIndex = './src/vite/index.ts';
+	console.log('viteIndex', viteIndex);
+
+	// JS modules for bundlers
+	const modules2 = [
+		{
+			input: viteIndex,
+			output: {
+				file: `${OUTPUT_DIR}/vite.js`,
+				format: 'esm',
+				sourcemap,
+				banner
+			},
+			external,
+			plugins: [
+				...defaultExtPlugin,
+				babel({
+					exclude: /node_modules/,
+					babelHelpers: 'bundled',
+					presets: [
+						babelPresetEnv,
+						'@babel/preset-typescript'
+					],
+					plugins: babelPlugins,
+					extensions: ['.ts', '.tsx']
+				})
+			]
+		},
+		{
+			input: viteIndex,
+			output: [{
+				file: `${OUTPUT_DIR}/vite.d.ts`,
+				format: 'esm',
+				banner
+			}],
+			plugins: [
+				dts()
+			]
+		}
+	];
+
+	return [...modules, ...cjsModules, ...umdModules, ...mainModule, ...modules2];
 };
 
 export default function rollup() {
