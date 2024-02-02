@@ -1,3 +1,10 @@
+## [1.21.1](https://github.com/resourge/react-router/compare/v1.21.0...v1.21.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* **vite:** remove cache folder on closeBundle instead of buildEnd ([89f08fb](https://github.com/resourge/react-router/commit/89f08fb36f43e9fa89ec75a0c960ba5730bacdb2))
+
 # [1.21.0](https://github.com/resourge/react-router/compare/v1.20.2...v1.21.0) (2024-02-02)
 
 
