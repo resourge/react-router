@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/resourge/react-router/compare/v1.20.2...v1.21.0) (2024-02-02)
+
+
+### Features
+
+* **vite:** add vite plugin to use routeMetadata to generate pages html ([21943ca](https://github.com/resourge/react-router/commit/21943ca3aeb2446f840e1b4919824fbdd8ae9d88))
+
 ## [1.20.2](https://github.com/resourge/react-router/compare/v1.20.1...v1.20.2) (2024-01-29)
 
 
