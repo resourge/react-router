@@ -1,3 +1,10 @@
+## [1.21.3](https://github.com/resourge/react-router/compare/v1.21.2...v1.21.3) (2024-02-09)
+
+
+### Bug Fixes
+
+* **paths:** fix checkFitInAllRoutes not working as expected ([8040f2d](https://github.com/resourge/react-router/commit/8040f2d4119f2ee949351acb8d397051188b478a))
+
 ## [1.21.2](https://github.com/resourge/react-router/compare/v1.21.1...v1.21.2) (2024-02-09)
 
 
