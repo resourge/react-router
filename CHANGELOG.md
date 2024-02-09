@@ -1,3 +1,10 @@
+## [1.21.2](https://github.com/resourge/react-router/compare/v1.21.1...v1.21.2) (2024-02-09)
+
+
+### Bug Fixes
+
+* **path.ts:** fix routes crashing when there is no routes ([143b673](https://github.com/resourge/react-router/commit/143b673f40c6158097161c84b57ecd201369efb7))
+
 ## [1.21.1](https://github.com/resourge/react-router/compare/v1.21.0...v1.21.1) (2024-02-02)
 
 
