@@ -359,7 +359,8 @@ export class Path<
 					.some((value) => (
 						value.config.fitInAllRoutes
 						|| (
-							Object.keys(value._routes)
+							value._routes
+							&& Object.keys(value._routes)
 							&& checkFitInAllRoute(value._routes)
 						)
 					));
