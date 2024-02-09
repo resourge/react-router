@@ -366,7 +366,7 @@ export class Path<
 					));
 				}
 				invariant(
-					checkFitInAllRoute(routes),
+					!checkFitInAllRoute(routes),
 					'Path\'s inside a fitInAllRoutes Path cannot have another fitInAllRoutes\'s'
 				);
 			}
