@@ -1,3 +1,10 @@
+## [1.21.4](https://github.com/resourge/react-router/compare/v1.21.3...v1.21.4) (2024-02-21)
+
+
+### Bug Fixes
+
+* **useroutemetadata:** in case title is undefined replace with empty string ([8cfada5](https://github.com/resourge/react-router/commit/8cfada51dc8110d353f440eb6ae54a25a7714fe2))
+
 ## [1.21.3](https://github.com/resourge/react-router/compare/v1.21.2...v1.21.3) (2024-02-09)
 
 
