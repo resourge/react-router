@@ -85,15 +85,17 @@ export const useRouteMetadata = (props?: RouteMetadataProps) => {
 			};
 		},
 		(lang) => {
-			document.title = props?.title
-				? (
-					typeof props.title === 'object' 
-						? (
-							lang 
-								? props.title[lang] 
-								: ''
-						) : props.title
-				) : document.title;
+			document.title = (
+				props?.title
+					? (
+						typeof props.title === 'object' 
+							? (
+								lang 
+									? props.title[lang] 
+									: ''
+							) : props.title
+					) : document.title
+			) ?? '';
 
 			// #region ogUrl
 			findOrCreateMetaProperty(
