@@ -85,8 +85,11 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 			rootConfig = c;
 			outputPath = c.build.outDir;
 		},
-		transformIndexHtml(code) {
-			html = code;
+		transformIndexHtml: {
+			order: 'post',
+			handler(code) {
+				html = code;
+			}
 		},
 		transform(code, id) {
 			if ( routeMetadataReg.test(code) ) {
