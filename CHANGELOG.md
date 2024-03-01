@@ -1,3 +1,10 @@
+## [1.21.5](https://github.com/resourge/react-router/compare/v1.21.4...v1.21.5) (2024-03-01)
+
+
+### Bug Fixes
+
+* **vite:** fix vite transformIndexHtml order ([4666485](https://github.com/resourge/react-router/commit/4666485b6a77fbf9989937fdefe1f6e25a99f868))
+
 ## [1.21.4](https://github.com/resourge/react-router/compare/v1.21.3...v1.21.4) (2024-02-21)
 
 
