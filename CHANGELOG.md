@@ -1,3 +1,11 @@
+## [1.22.1](https://github.com/resourge/react-router/compare/v1.22.0...v1.22.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* **languageroute:** fix order ([18a6468](https://github.com/resourge/react-router/commit/18a64682806924ffed4c036642b1673c20a8e98d))
+* **routemetadata:** fix routemetadata file throwing erro on projects build ([0ee0489](https://github.com/resourge/react-router/commit/0ee0489bc1df7077fdf199b4491c757dcb0c6e9d))
+
 # [1.22.0](https://github.com/resourge/react-router/compare/v1.21.5...v1.22.0) (2024-03-08)
 
 
