@@ -2,6 +2,7 @@ import { useAction } from './useAction';
 import { useBeforeURLChange } from './useBeforeURLChange';
 import { useBlocker } from './useBlocker';
 import { type Blocker } from './useBlocker';
+import { useHtmlLanguage } from './useHtmlLanguage';
 import { useLink } from './useLink';
 import { type UseLinkProps } from './useLink';
 import { useMatchPath } from './useMatchPath';
@@ -15,8 +16,6 @@ import { useNormalizeUrl } from './useNormalizeUrl';
 import { useParams } from './useParams';
 import { type UsePromptProps } from './usePrompt';
 import { usePrompt } from './usePrompt';
-import { type RouteMetadataProps } from './useRouteMetadata';
-import { useRouteMetadata } from './useRouteMetadata';
 import { useSearchParams } from './useSearchParams';
 import { useSwitch } from './useSwitch';
 
@@ -51,6 +50,5 @@ export {
 	useMatchRoute,
 	type MatchRouteProps,
 
-	type RouteMetadataProps,
-	useRouteMetadata
+	useHtmlLanguage
 };

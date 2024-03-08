@@ -4,6 +4,7 @@ import LanguageRoute, { updateLanguageRoute, getLanguageRoute } from './Language
 import type { LanguageRouteProps } from './LanguageRoute';
 import Link from './Link';
 import type { LinkProps } from './Link';
+import Meta from './Meta';
 import Navigate from './Navigate';
 import type { NavigateProps } from './Navigate';
 import Prompt from './Prompt';
@@ -14,6 +15,7 @@ import Route from './Route';
 import type { RouteProps } from './Route';
 import Switch from './Switch';
 import type { SwitchProps } from './Switch';
+import Title from './Title';
 
 export {
 	Link,
@@ -40,5 +42,7 @@ export {
 	updateLanguageRoute,
 	getLanguageRoute,
 	LanguageRoute,
-	type LanguageRouteProps
+	type LanguageRouteProps,
+	Meta,
+	Title
 };

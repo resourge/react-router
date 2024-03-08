@@ -1,4 +1,4 @@
-import { type ReactNode, type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, type ReactNode } from 'react';
 
 import { useUrl } from '@resourge/react-search-params';
 

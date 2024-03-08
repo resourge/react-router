@@ -36,6 +36,7 @@ function Route(props: RouteProps): JSX.Element {
 	if ( __DEV__ ) {
 		validateRouteProps(matchProps);
 	}
+
 	const defaultFallback = useDefaultFallbackContext();
 
 	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch);
@@ -46,6 +47,7 @@ function Route(props: RouteProps): JSX.Element {
 				<RouteMetadata>
 					{ children }
 				</RouteMetadata>
+				{ children }
 			</Suspense>
 		);
 		

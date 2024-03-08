@@ -4,12 +4,8 @@ import { type ResolvedConfig } from 'vite';
 
 import { createFile } from './createFile';
 import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
-import {
-	findOrCreateMeta,
-	findOrCreateMetaItemProp,
-	findOrCreateMetaProperty,
-	getOptions
-} from './utils';
+import { setRouteMetadata } from './setRouteMetadata';
+import { getOptions } from './utils';
 
 export type FilesType = { 
 	fileName: string
@@ -40,9 +36,10 @@ export function createHtmlFiles({
 	return Promise.all(
 		pages
 		.map(
-			async ({
-				url, fileName, title = '', description, keywords, translation 
-			}) => {
+			async (page) => {
+				const {
+					fileName, title = '', translation 
+				} = page;
 				const titleComponent = root.querySelector('title');
 
 				const htmlElement = root.querySelector('html');
@@ -57,55 +54,11 @@ export function createHtmlFiles({
 					titleComponent.innerHTML = title ?? '';
 				}
 
-				if ( config && config.url ) {
-					findOrCreateMetaProperty(
-						root,
-						'og:url', 
-						`${config.url}${url}`
-					);
-
-					findOrCreateMetaProperty(
-						root,
-						'twitter:url', 
-						`${config.url}${url}`
-					);
-				}
-
-				findOrCreateMeta(
+				setRouteMetadata(
 					root,
-					'title', 
-					title
+					page,
+					config
 				);
-				findOrCreateMetaProperty(
-					root,
-					'og:title', 
-					title
-				);
-				findOrCreateMetaProperty(
-					root,
-					'twitter:title', 
-					title
-				);
-				findOrCreateMetaItemProp(
-					root,
-					'name', 
-					title
-				);
-
-				if ( description ) {
-					findOrCreateMeta(root, 'description', description);
-					findOrCreateMetaProperty(root, 'og:description', description);
-					findOrCreateMetaProperty(root, 'twitter:description', description);
-					findOrCreateMetaItemProp(
-						root,
-						'description', 
-						description
-					);
-				}
-
-				if ( keywords ) {
-					findOrCreateMeta(root, 'keywords', keywords.join(', '));
-				}
 
 				return await createFile(
 					fileName,
