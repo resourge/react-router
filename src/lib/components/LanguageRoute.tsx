@@ -147,16 +147,6 @@ function LanguageRoute({
 		lang = matchUrl.groups.lang;
 	}
 
-	const urlThatEndsWithLangWithoutSlash = `${url.origin}/${lang}`;
-	if ( url.href === urlThatEndsWithLangWithoutSlash ) {
-		return (
-			<Navigate
-				replace={true}
-				to={`${urlThatEndsWithLangWithoutSlash}/`}
-			/>
-		);
-	}
-
 	if ( !lang || !languages.includes(lang) ) {
 		const newPathname = getNewPathName(url, languages, fallbackLanguage, lang, checkLanguage);
 
@@ -164,6 +154,16 @@ function LanguageRoute({
 			<Navigate
 				replace={true}
 				to={newPathname}
+			/>
+		);
+	}
+
+	const urlThatEndsWithLangWithoutSlash = `${url.origin}/${lang}`;
+	if ( url.href === urlThatEndsWithLangWithoutSlash ) {
+		return (
+			<Navigate
+				replace={true}
+				to={`${urlThatEndsWithLangWithoutSlash}/`}
 			/>
 		);
 	}
