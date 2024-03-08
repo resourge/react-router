@@ -29,8 +29,10 @@ function getDescription(metadata: RouteMetadataType, lang?: string) {
 		: '';
 }
 
-const INITIAL_KEYWORDS = (document.querySelector('meta[name="keywords"]')?.getAttribute('content') ?? '').split(',').map((keyword) => keyword.trim())
-.join(', ');
+const INITIAL_KEYWORDS = globalThis.document 
+	? (document.querySelector('meta[name="keywords"]')?.getAttribute('content') ?? '').split(',').map((keyword) => keyword.trim())
+	.join(', ')
+	: '';
 
 const META_COMPONENTS = {
 	description: {
