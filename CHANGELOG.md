@@ -1,3 +1,11 @@
+# [1.22.0](https://github.com/resourge/react-router/compare/v1.21.5...v1.22.0) (2024-03-08)
+
+
+### Features
+
+* **metadata:** improve metadata generation in build and run time ([6ba3e70](https://github.com/resourge/react-router/commit/6ba3e706d031dfe2dfbedb8719ee700e98a94790))
+* **vite-react-router:** add new functionalities to help grow pages ([b2fe703](https://github.com/resourge/react-router/commit/b2fe7034b439f7b7fbc4de0eb94ea299eba3398c))
+
 ## [1.21.5](https://github.com/resourge/react-router/compare/v1.21.4...v1.21.5) (2024-03-01)
 
 
