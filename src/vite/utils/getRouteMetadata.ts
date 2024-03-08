@@ -2,21 +2,57 @@
 /* eslint-disable @typescript-eslint/prefer-reduce-type-parameter */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import path from 'path';
-import { loadConfig, createMatchPath } from 'tsconfig-paths';
+import { createMatchPath, loadConfig } from 'tsconfig-paths';
 import type { CompilerOptions } from 'typescript';
 import ts from 'typescript';
 
-import { type InMemoryCode, type ViteReactRouterPathsType } from './type';
+import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
+import { type ViteRouteMetadata, type InMemoryCode, type VitePathRouteMetadata } from './type';
 import { replaceExtension } from './utils';
 
 export const tsConfig = loadConfig();
 
+function getDefaultValue<T extends (string | Record<string, string>) | (
+	string[] | Record<string, string[]>
+)>(
+	config: DefaultViteReactRouterConfig, 
+	value: T
+): T extends (string | Record<string, string>) ? Record<string, string> : Record<string, string[]> {
+	return (
+		typeof value === 'string' || Array.isArray(value)
+			? {
+				[config.defaultLanguage]: value
+			}
+			: value
+	) as T extends (string | Record<string, string>) ? Record<string, string> : Record<string, string[]>;
+}
+
+export function convertPathRouteMetadataToRouteMetadata(
+	config: DefaultViteReactRouterConfig,
+	routeMetadata: VitePathRouteMetadata
+): ViteRouteMetadata {
+	const title = getDefaultValue(config, routeMetadata.title);
+	const description = getDefaultValue(config, routeMetadata.description);
+	const keywords = getDefaultValue(config, routeMetadata.keywords);
+	const route = routeMetadata.route;
+	const isPrivate = routeMetadata.isPrivate;
+
+	return {
+		title,
+		description,
+		keywords,
+		route,
+		isPrivate
+	};
+}
+
 export function getRouteMetadata(
 	codes: InMemoryCode,
 	cacheOutDir: string,
-	options: CompilerOptions
+	options: CompilerOptions,
+	config: DefaultViteReactRouterConfig
 ) {
-	return new Promise<ViteReactRouterPathsType[]>((resolve, reject) => {
+	return new Promise<ViteRouteMetadata[]>((resolve, reject) => {
 		const { outDir } = options;
 		if ( tsConfig.resultType === 'failed' ) {
 			reject(new Error());
@@ -43,7 +79,7 @@ export function getRouteMetadata(
 			async (diagnostics) => {
 				if (diagnostics.code !== 6031) {
 					const routeMetadata = await Promise.all(
-						fileNames.map((fileName) => {
+						fileNames.map(async (fileName) => {
 							const newId = fileName.split('src');
 							const newFileName = replaceExtension(
 								path
@@ -55,8 +91,14 @@ export function getRouteMetadata(
 								'.js'
 							);
 
-							return import(`file://${newFileName.replace('.tsx', '.js')}?date=${new Date().toISOString()}`)
-							.then((module) => module.default.routeMetadata);
+							const module = await import(`file://${newFileName.replace('.tsx', '.js')}?date=${new Date().toISOString()}`);
+							
+							const routeMetadata: VitePathRouteMetadata = module.default.routeMetadata;
+
+							return convertPathRouteMetadataToRouteMetadata(
+								config,
+								routeMetadata
+							);
 						})
 					);
 

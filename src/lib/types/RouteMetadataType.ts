@@ -5,6 +5,11 @@ export type RouteMetadataType<
 > = {
 	route: string
 	description?: R
+	/**
+	 * Privates pages will not generate html and they will be excluded from sitemap.xml
+	 * @default false
+	 */
+	isPrivate?: boolean
 	keywords?: Keywords
 	title?: R
 }

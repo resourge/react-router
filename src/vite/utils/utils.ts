@@ -1,4 +1,6 @@
 import * as babel from '@babel/core';
+import { type Options as MinifyOptions } from 'html-minifier-terser';
+import { type HTMLElement } from 'node-html-parser';
 import path from 'path';
 
 export function replaceExtension(filename: string, newExtension: string) {
@@ -87,4 +89,36 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 		}
 	}
 	return fileContent;
+}
+
+export function getOptions(minify: boolean): MinifyOptions {
+	return {
+		collapseWhitespace: minify,
+		keepClosingSlash: minify,
+		removeComments: minify,
+		removeRedundantAttributes: minify,
+		removeScriptTypeAttributes: minify,
+		removeStyleLinkTypeAttributes: minify,
+		useShortDoctype: minify,
+		minifyCSS: minify
+	};
+}
+
+export function findOrCreateMeta(root: HTMLElement, metaName: string, value: string, propertyName: string = 'name') {
+	const head = root.querySelector('head');
+	const querySelectorString = `meta[${propertyName}="${metaName}"]`;
+	let metaDescription = root.querySelector(querySelectorString);
+	if ( !metaDescription ) {
+		head?.insertAdjacentHTML('beforeend', `<meta ${propertyName}="${metaName}" content="">`);
+		metaDescription = root.querySelector(querySelectorString);
+	}
+	metaDescription?.setAttribute('content', value);
+}
+
+export function findOrCreateMetaProperty(root: HTMLElement, metaName: string, value: string) {
+	findOrCreateMeta(root, metaName, value, 'property');
+}
+
+export function findOrCreateMetaItemProp(root: HTMLElement, metaName: string, value: string) {
+	findOrCreateMeta(root, metaName, value, 'itemprop');
 }

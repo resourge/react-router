@@ -1,6 +1,7 @@
 import path from 'path';
 
-import { type ViteReactRouterConfig, type ViteReactRouterPathsType } from './type';
+import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
+import { type ViteRouteMetadata } from './type';
 
 type FilesType = { 
 	fileName: string
@@ -13,79 +14,70 @@ type FilesType = {
 
 export const addFile = (
 	getFolder: (route: string, translation?: string) => string, 
-	{
-		route, title: _title, description: _description, keywords: _keywords 
-	}: ViteReactRouterPathsType,
-	outputPath: string,
-	filesNames: string[],
-	config?: ViteReactRouterConfig
+	routeMetadata: ViteRouteMetadata,
+	config: DefaultViteReactRouterConfig
 ): FilesType[] => {
-	const _route = route === '/' ? '' : route;
-	const title = _title ?? config?.title;
-	const description = _description ?? config?.description;
-	const keywords = _keywords ?? config?.keywords;
+	const _route = routeMetadata.route === config.defaultInitialRoute 
+		? '' 
+		: routeMetadata.route;
 
-	if ( typeof title === 'object' && typeof description === 'object' && typeof keywords === 'object' ) {
-		const translations = Object.keys(title);
+	const title = routeMetadata.title ?? config.title;
+	const description = routeMetadata.description ?? config.description;
+	const keywords = routeMetadata.keywords ?? config.keywords;
 
-		const files = translations.map((translation) => {
-			const folder = getFolder(_route, translation);
-			const url = folder.replace('dist', '');
-						
-			const fileName = path.join(folder, './index.html');
+	const translations = Object.keys(title);
 
-			filesNames.push(
-				fileName
-			);
+	// This is to make sure the actual route also gets an index.html
+	const files = routeMetadata.route === config.defaultInitialRoute 
+		? addFile(
+			getFolder, 
+			routeMetadata, 
+			{
+				...config,
+				defaultInitialRoute: '-1'
+			}
+		) : [];
+	
+	if ( translations.length > 1 ) {
+		files.push(
+			...(
+				translations.map((translation) => {
+					const folder = getFolder(_route, translation);
+					const url = folder.replace('dist', '');
+							
+					const fileName = path.join(folder, './index.html');
 
-			return { 
-				url,
-				translation,
-				fileName, 
-				title: title[translation], 
-				description: description[translation],
-				keywords: (keywords as Record<string, any>)[translation]
-			};
-		});
-
-		const folder = getFolder(_route);
-		const url = folder.replace('dist', '');
-						
-		const fileName = path.join(folder, './index.html');
-
-		filesNames.push(
-			fileName
+					return { 
+						url,
+						translation,
+						fileName, 
+						title: title[translation], 
+						description: description[translation],
+						keywords: keywords[translation]
+					};
+				})
+			)
 		);
-
-		const translation = title.en ? 'en' : translations[0];
-
-		files.unshift({ 
-			url,
-			translation,
-			fileName, 
-			title: title.en ?? title[translations[0]], 
-			description: description.en ?? description[translations[0]],
-			keywords: (keywords as Record<string, any>).en ?? (keywords as Record<string, any>)[translations[0]]
-		});
-
-		return files;
 	}
 
-	const folder = path.join(outputPath, _route);
+	const folder = getFolder(_route);
 	const url = folder.replace('dist', '');
-				
+						
 	const fileName = path.join(folder, './index.html');
 
-	filesNames.push(
-		fileName
-	);
+	const translation = title[config.defaultLanguage] ? config.defaultLanguage : translations[0];
+	const newTitle = title[config.defaultLanguage] ?? title[translations[0]];
+	const newDescription = description[config.defaultLanguage] ?? description[translations[0]];
+	const newKeywords = keywords[config.defaultLanguage] ?? keywords[translations[0]];
 
-	return [{ 
+	files.unshift({ 
 		url,
-		translation: undefined,
+		translation,
 		fileName, 
-		title: title as string, 
-		description: description as string,
-		keywords: keywords as string[]
-	}];
+		title: newTitle,
+		description: newDescription,
+		keywords: newKeywords
+	});
+
+	return files;
 };
