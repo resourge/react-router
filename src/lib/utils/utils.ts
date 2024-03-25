@@ -5,3 +5,12 @@ export function getHrefWhenHashOrNormal(url: URL, hash?: boolean) {
 	const hashIndex = url.href.indexOf('#');
 	return url.href.substring(0, hashIndex > -1 ? hashIndex : undefined);
 }
+
+export function isValidUrl(urlString: string) {
+	try { 
+		return Boolean(new URL(urlString)); 
+	}
+	catch (e) { 
+		return false; 
+	}
+}
