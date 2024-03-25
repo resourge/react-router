@@ -44,21 +44,13 @@ export type InjectParamsIntoPathType<
 	ParamsResult extends Record<string, any>,
 > = {
 	[K in keyof Routes]: PathType<
-		// @ts-expect-error Want to protect value, but also access it with types
 		ResolveSlash<[IsHashPath<Routes[K]['_key']> extends true ? '' : BaseKey, Routes[K]['_key']]>,
-		// @ts-expect-error Want to protect value, but also access it with types
 		IsHashPath<Routes[K]['_key']> extends true 
-			// @ts-expect-error Want to protect value, but also access it with types
 			? Routes[K]['_params'] 
-			// @ts-expect-error Want to protect value, but also access it with types
 			: MergeObj<Params, Routes[K]['_params']>,
-		// @ts-expect-error Want to protect value, but also access it with types
 		IsHashPath<Routes[K]['_key']> extends true 
-			// @ts-expect-error Want to protect value, but also access it with types
 			? Routes[K]['_paramsResult'] 
-			// @ts-expect-error Want to protect value, but also access it with types
 			: MergeObj<ParamsResult, Routes[K]['_paramsResult']>,
-		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_routes']
 	>
 }
@@ -70,26 +62,16 @@ export type AddConfigParamsIntoRoutes<
 > = {
 	[K in keyof Routes]: Path<
 		AddConfigParamsIntoRoutes<
-			// @ts-expect-error Want to protect value, but also access it with types
 			Routes[K]['_routes'],
-			// @ts-expect-error Want to protect value, but also access it with types
 			IsHashPath<Routes[K]['_key']> extends true 
-				// @ts-expect-error Want to protect value, but also access it with types
 				? Routes[K]['_params'] 
-				// @ts-expect-error Want to protect value, but also access it with types
 				: MergeObj<Params, Routes[K]['_params']>,
-			// @ts-expect-error Want to protect value, but also access it with types
 			IsHashPath<Routes[K]['_key']> extends true 
-				// @ts-expect-error Want to protect value, but also access it with types
 				? Routes[K]['_paramsResult'] 
-				// @ts-expect-error Want to protect value, but also access it with types
 				: MergeObj<ParamsResult, Routes[K]['_paramsResult']>
 		>,
-		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_key'],
-		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_params'],
-		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_paramsResult']
 	>
 }
@@ -184,10 +166,10 @@ export class Path<
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>
 > {
-	protected _routes!: Routes;
-	protected _key!: Key;
-	protected _params!: Params;
-	protected _paramsResult!: ParamsResult;
+	public _routes!: Routes;
+	public _key!: Key;
+	public _params!: Params;
+	public _paramsResult!: ParamsResult;
 
 	protected config: PathConfig = {};
 	protected paths: Array<ParamPath<string> | string> = [];
