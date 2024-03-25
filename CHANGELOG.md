@@ -1,3 +1,10 @@
+## [1.22.2](https://github.com/resourge/react-router/compare/v1.22.1...v1.22.2) (2024-03-25)
+
+
+### Bug Fixes
+
+* **usenormalizeurl:** fix navigate with baselanguage and url ([dea4a92](https://github.com/resourge/react-router/commit/dea4a922eef3ac672631dce168a6612c9466c2d4))
+
 ## [1.22.1](https://github.com/resourge/react-router/compare/v1.22.0...v1.22.1) (2024-03-08)
 
 
