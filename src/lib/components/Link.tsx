@@ -1,4 +1,9 @@
-import React from 'react';
+import {
+	forwardRef,
+	type ForwardRefExoticComponent,
+	type PropsWithoutRef,
+	type RefAttributes
+} from 'react';
 
 import { useRouter } from '../contexts/RouterContext';
 import { useLink, type UseLinkProps } from '../hooks/useLink';
@@ -13,9 +18,9 @@ export type LinkProps = UseLinkProps & {
  * 
  * Note: This component mainly uses `useLink` hook to navigate to `to` and `useMatchRoute` to match route.
  */
-const Link = React.forwardRef((
-	props: LinkProps,
-	ref: React.ForwardedRef<HTMLAnchorElement>
+const Link: ForwardRefExoticComponent<PropsWithoutRef<LinkProps> & RefAttributes<HTMLAnchorElement>> = forwardRef((
+	props,
+	ref
 ) => {
 	const { 
 		to, 

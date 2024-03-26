@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 
-type Props = {
+type TitleProps = {
 	children?: string
 }
 
@@ -8,7 +8,7 @@ type Props = {
  * Component to update page title.
  * Route is prepared to set title using routeMetadata on component
  */
-const Title = memo<Props>(({ children }) => {
+const Title = memo<TitleProps>(({ children }) => {
 	if ( children ) {
 		document.title = children;
 	}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 // import invariant from 'tiny-invariant'
 
@@ -6,7 +6,7 @@ import { type MatchResult } from '../utils/matchPath';
 
 export type RouteContextObject<Params extends Record<string, string> = Record<string, string>> = MatchResult<Params>
 
-export const RouteContext = React.createContext<RouteContextObject | undefined>(undefined);
+export const RouteContext = createContext<RouteContextObject | undefined>(undefined);
 
 /**
  * Hook to access first parent 'Route'.

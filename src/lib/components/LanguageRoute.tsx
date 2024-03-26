@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 
-import { useRouter } from '../contexts';
 import { LanguageContext } from '../contexts/LanguageContext';
+import { useRouter } from '../contexts/RouterContext';
 import { resolveSlash } from '../utils/resolveLocation';
 
 import Navigate from './Navigate';

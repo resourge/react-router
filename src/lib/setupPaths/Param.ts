@@ -1,7 +1,5 @@
 import invariant from 'tiny-invariant';
 
-import { type AsConst } from '../types/AsConst';
-
 export type ParamsConfigOptional = { 
 	/**
 	 * Makes param optional
@@ -10,26 +8,26 @@ export type ParamsConfigOptional = {
 	/**
 	 * Transforms param before path creation (get).
 	 */
-	beforePath?: (value: any) => string
+	onGet?: (value: any) => string
 	/**
 	 * Transform's param on useParam.
 	 */
-	transform?: (value?: string) => unknown | undefined 
+	onUseParams?: (value?: string) => unknown | undefined 
 }
 
 export type ParamsConfigNotOptional = { 
 	/**
 	 * Transforms param before path creation (get).
 	 */
-	beforePath?: (value: any) => string
+	onGet?: (value: any) => string
+	/**
+	 * Transform's param on useParam.
+	 */
+	onUseParams?: (value: string) => unknown 
 	/**
 	 * Makes param optional
 	 */
 	optional?: false | undefined 
-	/**
-	 * Transform's param on useParam.
-	 */
-	transform?: (value: string) => unknown 
 }
 
 export type ParamsConfig = {
@@ -54,10 +52,10 @@ export class ParamPath<Key, Config extends ParamsConfig = ParamsConfig> {
 
 export const Param = < 
 	K extends string,
-	Config extends ParamsConfig
+	const Config extends ParamsConfig
 >(
 	param: K, 
-	config?: AsConst<Config>
+	config?: Config
 ): ParamPath<K, Config> => {
 	if ( __DEV__ ) { 
 		invariant(

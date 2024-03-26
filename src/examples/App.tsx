@@ -24,10 +24,10 @@ const a = SetupPaths({
 	LOGIN: path('login'),
 	TEST: path('test')
 	.param('id', {
-		beforePath: (id) => {
+		onGet: (id) => {
 			return (Number(id) * 10).toFixed(0)
 		},
-		transform: (id) => {
+		onUseParams: (id) => {
 			return `Test_${id}`
 		}
 	}),

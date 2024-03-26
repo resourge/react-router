@@ -3,11 +3,12 @@ import { path } from 'src/lib/setupPaths/Path';
 import { SetupPaths } from 'src/lib/setupPaths/SetupPaths';
 
 const DataSourceIdParam = Param('dataSourceId', {
-	transform: (dataSourceId: string) => Number(dataSourceId)
+	optional: false,
+	onUseParams: (dataSourceId: string) => Number(dataSourceId)
 });
 
 const ProductIdParam = Param('productId', {
-	transform: (productId: string) => Number(productId)
+	onUseParams: (productId: string) => Number(productId)
 });
 
 export const RoutePaths = SetupPaths({
@@ -25,13 +26,13 @@ export const RoutePaths = SetupPaths({
 			.routes({
 				ENDS_WITH_PATH: path()
 				.param('index', {
-					transform: (index) => Number(index)
+					onUseParams: (index) => Number(index)
 				})
 				.addPath('edit'),
 
 				ENDS_WITH_PARAM: path()
 				.param('index', {
-					transform: (index) => Number(index)
+					onUseParams: (index) => Number(index)
 				}),
 
 				CREATE: path('create')
@@ -44,7 +45,7 @@ export const RoutePaths = SetupPaths({
 	.routes({
 		FORM: path()
 		.param('dataSourceTab', {
-			transform: (dataSourceTab) => dataSourceTab as any
+			onUseParams: (dataSourceTab) => dataSourceTab
 		})
 		.routes({
 			CREATE: path('')

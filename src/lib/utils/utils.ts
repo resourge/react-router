@@ -1,3 +1,5 @@
+import { parseParams } from '@resourge/react-search-params';
+
 export function getHrefWhenHashOrNormal(url: URL, hash?: boolean) {
 	if ( hash ) {
 		return `${url.origin}${url.hash.substring(1)}`;
@@ -13,4 +15,36 @@ export function isValidUrl(urlString: string) {
 	catch (e) { 
 		return false; 
 	}
+}
+
+export function createPathWithCurrentLocationHasHash(path: string) {
+	const newPath = new URL(path, window.location.origin);
+
+	const windowURL = new URL(window.location as any);
+	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
+
+	return newPath.href;
+}
+
+export function getParams<Params>(params: Params, beforePaths: Array<(params: Params) => void>) {
+	const _params: Exclude<Params, undefined> = (params ? {
+		...params 
+	} : {}) as Exclude<Params, undefined>;
+
+	beforePaths.forEach((beforePaths) => {
+		beforePaths(_params);
+	});
+
+	return _params;
+}
+
+export function getSearchParams<Params extends { searchParams?: any }>(params?: Params) {
+	if ( params && params.searchParams ) {
+		const _params: Exclude<Params, undefined> = {
+			...params.searchParams 
+		};
+		return parseParams(_params);
+	}
+
+	return '';
 }

@@ -1,6 +1,6 @@
-import React, { memo, useState } from 'react';
+import { memo, useState } from 'react';
 
-type Props = Record<string, string>
+type MetaProps = Record<string, string>
 
 const useElement = (props: Record<string, string>) => {
 	const [element] = useState(() => {
@@ -23,7 +23,7 @@ const useElement = (props: Record<string, string>) => {
  * Component to update meta tags.
  * Route is prepared to set meta tags using routeMetadata on component
  */
-const Meta = memo<Props>((props) => {
+const Meta = memo<MetaProps>((props) => {
 	const metaElement = useElement(props);
 
 	Object.keys(props)

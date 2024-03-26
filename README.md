@@ -54,20 +54,8 @@ const ProductForm = React.lazy(() => import('./ProductForm'));
 const RoutePaths = SetupPaths({
   HOME: path(),
   PRODUCT: path('product')
-  .metadata({
-    title: 'Product',
-    description: 'Product description'
-  })
   .routes({
     FORM: path().param('productId')
-	.metadata({
-      title: {
-		en: 'Product'
-	  },
-      description: {
-		en: 'Product description'
-	  }
-    })
   })
 })
 
@@ -142,7 +130,7 @@ SetupPaths serves to simplify navigation between routes, by putting path creatio
 //                    // Makes productId optional
 //                    optional: true, 
 //                    // Transforms productId from string to number
-//                    transform: (productId) => Number(productId) 
+//                    onUseParams: (productId) => Number(productId) 
 //	                })
 //                In this example 'const { productId } = RoutePaths.PRODUCT.FORM.useParams()', productId will be number because of transform
 // }
@@ -150,7 +138,7 @@ import { SetupPaths, path, param } from '@resourge/react-router';
 
 // For multiple instance of the same param
 const deliveryIdParam = param('deliveryId', {
-	transform: (deliveryId) => Number(deliveryId)
+	onUseParams: (deliveryId) => Number(deliveryId)
 })
 
 const RoutePaths = SetupPaths({
@@ -158,9 +146,9 @@ const RoutePaths = SetupPaths({
   PRODUCT: path('product')
   .routes({
     FORM: path().param('productId'),
-    FORMV2: path('v2')
+    FORM_V2: path('v2')
 	.param('productId', {
-		transform: (productId) => Number(productId)
+		onUseParams: (productId) => Number(productId)
 	})
 	.param('productName', {
 		optional: true
@@ -180,9 +168,9 @@ RoutePaths.PRODUCT.FORM.path // '/product/:productId'
 RoutePaths.PRODUCT.FORM.get({ product: '1' }) // '/product/1'
 RoutePaths.PRODUCT.FORM.useParams() // '{ productId: '1' }'
 
-RoutePaths.PRODUCT.FORMV2.path // '/product/v2/:productId/{:productName?}'
-RoutePaths.PRODUCT.FORMV2.get({ product: 1 }) // '/product/v2/1/'
-RoutePaths.PRODUCT.FORMV2.useParams() // '{ productId: 1, productName: undefined }'
+RoutePaths.PRODUCT.FORM_V2.path // '/product/v2/:productId/{:productName?}'
+RoutePaths.PRODUCT.FORM_V2.get({ product: 1 }) // '/product/v2/1/'
+RoutePaths.PRODUCT.FORM_V2.useParams() // '{ productId: 1, productName: undefined }'
 
 RoutePaths.DELIVERY.path // '/delivery/:id/details'
 RoutePaths.DELIVERY.get({ id: 1 }) // '/delivery/1/details'
@@ -321,24 +309,6 @@ import { Redirect } from '@resourge/react-router'
 <Redirect from={'*'} to={'/'} />
 ```
 
-## SearchRoute
-
-Component that only renders at a certain `search`. <br>
-_Note: This component mainly uses `useSearchRoute` hook._
-
-```JSX
-import { SearchRoute } from '@resourge/react-router'
-
-<SearchRoute 
-  search={'name'} // Path SearchParams, can be an array
-  // exact // Makes it so 'URL' path needs to be exactly as the path (default: false)
-  // hash // Turn 'route' into 'hash route' (default: false)
-  // component={<>Home page</>} When defined Route children will be injected into the component
->
-  Component
-</SearchRoute>
-```
-
 ## Switch
 
 Component that makes sure the first matching path renders. <br>
@@ -355,6 +325,30 @@ import { Switch } from '@resourge/react-router'
     ProductPage
   </Route>
 </Switch>
+```
+
+## Title
+
+Title component. <br>
+_Note: This component is not the same as Title from SSR._
+
+```JSX
+import { Title } from '@resourge/react-router'
+
+<Title>
+  Title content
+</Title>
+```
+
+## Meta
+
+Meta component. <br>
+_Note: This component is not the same as Meta from SSR._
+
+```JSX
+import { Meta } from '@resourge/react-router'
+
+<Meta {...metaProps}/>
 ```
 
 ## useBeforeURLChange
@@ -489,19 +483,6 @@ Returns the current search parameters.
 import { useSearchParams } from '@resourge/react-router'
 
 const searchParams = useSearchParams({} /* default params */)
-```
-
-## useRouteMetadata
-
-Hook set page title and description. It requires metadata from SetupPaths.
-
-```JSX
-import { useRouteMetadata } from '@resourge/react-router'
-
-useRouteMetadata()
-
-// For custom language
-useRouteMetadata('en')
 ```
 
 ## useSearchRoute

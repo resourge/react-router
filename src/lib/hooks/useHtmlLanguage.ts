@@ -1,9 +1,9 @@
 import { useLayoutEffect, useState } from 'react';
 
 import { useLanguageContext } from '../contexts/LanguageContext';
-import { type RouteMetadata } from '../types';
+import { type RouteMetadataType } from '../types/RouteMetadataType';
 
-export type RouteMetadataProps = Omit<RouteMetadata, 'route'>
+export type RouteMetadataProps = Omit<RouteMetadataType, 'route'>
 
 export const useHtmlLanguage = () => {
 	const baseLanguage = useLanguageContext();

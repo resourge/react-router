@@ -1,7 +1,7 @@
 import { createNewUrlWithSearch, parseParams } from '@resourge/react-search-params';
 
-import { useRoute } from '../contexts';
 import { useLanguageContext } from '../contexts/LanguageContext';
+import { useRoute } from '../contexts/RouteContext';
 import { resolveLocation, resolveSlash } from '../utils/resolveLocation';
 import { isValidUrl } from '../utils/utils';
 

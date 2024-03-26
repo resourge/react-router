@@ -22,13 +22,13 @@ type CreateObject<
 	IsOptional extends boolean | undefined
 > = IsOptional extends true ? { [Key in I]?: V } : { [Key in I]: V } 
 
-export type GetValueFromBeforePath<Config extends ParamsConfig = ParamsConfig> = Config['beforePath'] extends undefined 
+export type GetValueFromBeforePath<Config extends ParamsConfig = ParamsConfig> = Config['onGet'] extends undefined 
 	? any 
-	: Parameters<Config['beforePath'] extends (...args: any[]) => any ? Config['beforePath'] : (value: any) => any>[0]
+	: Parameters<Config['onGet'] extends (...args: any[]) => any ? Config['onGet'] : (value: any) => any>[0]
 
-export type GetValueFromTransform<Config extends ParamsConfig = ParamsConfig> = Config['transform'] extends undefined 
+export type GetValueFromTransform<Config extends ParamsConfig = ParamsConfig> = Config['onUseParams'] extends undefined 
 	? string 
-	: ReturnType<Config['transform'] extends (...args: any[]) => any ? Config['transform'] : (value: any) => string>
+	: ReturnType<Config['onUseParams'] extends (...args: any[]) => any ? Config['onUseParams'] : (value: any) => string>
 
 type OptionalPropertyNames<T> =
   { [K in keyof T]-?: ({} extends { [P in K]: T[K] } ? K : never) }[keyof T];
