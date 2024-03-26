@@ -55,6 +55,7 @@ const RoutePaths = SetupPaths({
   HOME: path(),
   PRODUCT: path('product')
   .routes({
+    LIST: path('list').searchParams<{ perPage: number, itemsPerPage: number }>('perPage', 'itemsPerPage'),
     FORM: path().param('productId')
   })
 })
@@ -69,7 +70,7 @@ function App() {
         Home
       </button>
       <Link
-        to={RoutePaths.PRODUCT.get()}
+        to={RoutePaths.PRODUCT.LIST.get({ searchParams: { perPage: 0, itemsPerPage: 10 } })}
       >
         Product List
       </Link>
@@ -110,7 +111,7 @@ export default App
 
 ## SetupPaths
 
-SetupPaths serves to simplify navigation between routes, by putting path creation, path transformation and useParams all in one place.
+SetupPaths serves to simplify navigation between routes, by putting path creation, path transformation, useParams and useSearchParams all in one place.
 
 ```Typescript
 // Build Routes
@@ -145,6 +146,7 @@ const RoutePaths = SetupPaths({
   HOME: path(),
   PRODUCT: path('product')
   .routes({
+  	LIST: path('list').searchParams<{ perPage: number, itemsPerPage: number }>('perPage', 'itemsPerPage'),
     FORM: path().param('productId'),
     FORM_V2: path('v2')
 	.param('productId', {
@@ -161,11 +163,17 @@ const RoutePaths = SetupPaths({
 RoutePaths.HOME.path // '/home'
 RoutePaths.HOME.get() // '/home'
 
-RoutePaths.PRODUCT.path // '/product'
-RoutePaths.PRODUCT.get() // '/product'
+RoutePaths.PRODUCT.path // '/product/list'
+RoutePaths.PRODUCT.get({ searchParams: { perPage: 0, itemsPerPage: 10 } }) // '/product/list?perPage=0&itemsPerPage=10'
+RoutePaths.PRODUCT.useSearchParams() // '{ perPage: 0, itemsPerPage: 10 }'
+
+RoutePaths.PRODUCT.LIST.path // '/product'
+RoutePaths.PRODUCT.LIST.get() // '/product'
 
 RoutePaths.PRODUCT.FORM.path // '/product/:productId'
 RoutePaths.PRODUCT.FORM.get({ product: '1' }) // '/product/1'
+// To add searchParams
+RoutePaths.PRODUCT.FORM.get({ product: '1', searchParams: { q: 'Search Query'} }) // '/product/1?q=Search Query'
 RoutePaths.PRODUCT.FORM.useParams() // '{ productId: '1' }'
 
 RoutePaths.PRODUCT.FORM_V2.path // '/product/v2/:productId/{:productName?}'
@@ -485,20 +493,6 @@ import { useSearchParams } from '@resourge/react-router'
 const searchParams = useSearchParams({} /* default params */)
 ```
 
-## useSearchRoute
-
-Hook to match search(s) to current `url`.
-
-Returns null if it is a no match, otherwise returns match result.
-
-```JSX
-import { useSearchRoute } from '@resourge/react-router'
-
-const match = useSearchRoute({
-  search: 'name'
-})
-```
-
 ## useSwitch
 
 Returns the first children component who props `path` or `search` matches the current location.
@@ -607,10 +601,9 @@ Things I dislike about the new react-router version:
   - Removal of multiple "path"'s;
   - Removal of optional params and having to duplicate routes feels uglier;
   - Removal of prompt/blocker;
-  - Not being able to put layout/components inside routes and having to use outlet for routes that most of  the times are specific to a specific page;
+  - Not being able to put layout/components inside routes and having to use outlet for routes that most of the times are specific to a specific page;
   - Having to duplicate a lot of routes;
   - Removal of custom Route's, for example "ProtectedRoute";
-
 
 ## License
 
