@@ -1,3 +1,15 @@
+# [1.23.0](https://github.com/resourge/react-router/compare/v1.22.2...v1.23.0) (2024-04-09)
+
+
+### Bug Fixes
+
+* **path:** improve types ([996216b](https://github.com/resourge/react-router/commit/996216b6de4b439a70abdf2bffb2b72d587eefb1))
+
+
+### Features
+
+* **setuppaths:** add ability to autocomplete and add searchParams to routes ([7ec8c9c](https://github.com/resourge/react-router/commit/7ec8c9c9a64965b8073d52c1fb2f3381c5c9e469))
+
 ## [1.22.2](https://github.com/resourge/react-router/compare/v1.22.1...v1.22.2) (2024-03-25)
 
 
