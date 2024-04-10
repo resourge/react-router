@@ -1,3 +1,10 @@
+## [1.23.1](https://github.com/resourge/react-router/compare/v1.23.0...v1.23.1) (2024-04-10)
+
+
+### Bug Fixes
+
+* **path:** change createPathWithCurrentLocationHasHash from returning full path to current path ([444f6a0](https://github.com/resourge/react-router/commit/444f6a0aa994172a4987ab2093179fbcf92ec29d))
+
 # [1.23.0](https://github.com/resourge/react-router/compare/v1.22.2...v1.23.0) (2024-04-09)
 
 
