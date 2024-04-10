@@ -23,7 +23,7 @@ export function createPathWithCurrentLocationHasHash(path: string) {
 	const windowURL = new URL(window.location as any);
 	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
 
-	return newPath.href;
+	return newPath.href.replace(newPath.origin, '');
 }
 
 export function getParams<Params>(params: Params, beforePaths: Array<(params: Params) => void>) {
