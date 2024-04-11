@@ -1,9 +1,33 @@
-# react-router
+# React Router
 
-`@resourge/react-router` is a client side routing system that allows your app to update the url without making another request for another HTML from the server.
-Built with hooks in mind and components after, giving the developer the opportunity to, if they desire, do "things" differently.
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Visit our website [resourge-react-router.netlify.app](https://resourge-react-router.netlify.app/)
+## Description
+
+`@resourge/react-router` is a client side routing system that allows your app to update the url without making another request for another HTML from the server. Built with hooks in mind and components after, giving the developer the opportunity to, if they desire, do "things" differently.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## Installation
+
+To install use npm:
+
+```sh
+npm install @resourge/react-router --save
+```
+
+or with Yarn:
+
+```sh
+yarn add @resourge/react-router
+```
 
 ## Features
 
@@ -14,22 +38,8 @@ Visit our website [resourge-react-router.netlify.app](https://resourge-react-rou
 - Methods to simplify path's creation with [SetupPaths](##setupPaths).
 - Small (even smaller if you ignore the polyfill(it will be removed in future when all browsers support it))
 
-
-## Installation
-
-Install using [Yarn](https://yarnpkg.com):
-
-```sh
-yarn add @resourge/react-router
-```
-
-or NPM:
-
-```sh
-npm install @resourge/react-router --save
-```
-
 ## Usage
+
 
 ```JSX
 import React from 'react'
@@ -605,6 +615,21 @@ Things I dislike about the new react-router version:
   - Having to duplicate a lot of routes;
   - Removal of custom Route's, for example "ProtectedRoute";
 
+For more detailed usage instructions, refer to the [documentation](#documentation).
+
+## Documentation
+
+For comprehensive documentation and usage examples, visit the [React Router documentation](https://resourge.vercel.app/docs/react-router/intro).
+
+## Contributing
+
+Contributions to React Router are welcome! To contribute, please follow the [contributing guidelines](CONTRIBUTING.md).
+
 ## License
 
-MIT Licensed.
+React Router is licensed under the [MIT License](LICENSE).
+
+## Contact
+
+For questions or support, please contact the maintainers:
+- GitHub: [Resourge](https://github.com/resourge)
