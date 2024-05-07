@@ -9,7 +9,7 @@ export type RouterContextType = {
 
 	previousAction?: ActionType
 	previousUrl?: URL
-}
+};
 
 export const RouterContext = createContext<RouterContextType | null>(null);
 
@@ -23,5 +23,6 @@ export const useRouter = (): RouterContextType => {
 		invariant(context, 'useRouter can only be used in the context of a <RouterContext>.');
 	}
 
-	return useContext(RouterContext) as RouterContextType;
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	return context!;
 };

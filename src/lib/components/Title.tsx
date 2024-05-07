@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 type TitleProps = {
 	children?: string
-}
+};
 
 /**
  * Component to update page title.

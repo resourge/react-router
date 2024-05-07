@@ -18,12 +18,3 @@ export function generatePath<T extends Record<string, any>>(path: string, params
 	})
 	.replace(/\/*\*$/, () => params['*'] == null ? '' : params['*'].replace(/^\/*/, '/'));
 }
-
-export function createPathWithCurrentLocationHasHash(path: string) {
-	const newPath = new URL(path, window.location.origin);
-
-	const windowURL = new URL(window.location as any);
-	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
-
-	return newPath.href;
-}

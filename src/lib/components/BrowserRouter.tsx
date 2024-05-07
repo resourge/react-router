@@ -7,7 +7,7 @@ import { RouterContext } from '../contexts/RouterContext';
 
 export type BrowserRouterProps = PropsWithChildren & {
 	defaultFallback?: ReactNode
-}
+};
 
 /**
  * First component that creates the context for the rest of the children.

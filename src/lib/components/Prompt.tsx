@@ -5,7 +5,7 @@ import { usePrompt, type UsePromptProps } from '../hooks/usePrompt';
 
 export type PromptProps = {
 	children?: ReactNode
-} & UsePromptProps
+} & UsePromptProps;
 
 /**
  * Component for prompting the user before navigating.

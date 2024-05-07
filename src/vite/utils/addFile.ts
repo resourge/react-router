@@ -10,7 +10,7 @@ type FilesType = {
 	keywords?: string[]
 	title?: string
 	translation?: string
-}
+};
 
 export const addFile = (
 	getFolder: (route: string, translation?: string) => string, 

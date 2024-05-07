@@ -1,10 +1,11 @@
 import { memo, useState } from 'react';
 
-type MetaProps = Record<string, string>
+type MetaProps = Record<string, string>;
 
 const useElement = (props: Record<string, string>) => {
 	const [element] = useState(() => {
-		const key = Object.keys(props).filter((key) => key !== 'content')[0];
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const key = Object.keys(props).find((key) => key !== 'content')!;
 
 		const metaElement = document.querySelector(
 			`meta[${key}="${props[key]}"]`

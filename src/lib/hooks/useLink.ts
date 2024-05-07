@@ -7,7 +7,7 @@ export type UseLinkProps = {
 	to: NavigateTo
 } 
 & NavigateOptions
-& Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>
+& Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>;
 
 function isModifiedEvent(event: MouseEvent<any>) {
 	return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);

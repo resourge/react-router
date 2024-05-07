@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react';
 
 import { type MatchResult } from '../utils/matchPath';
 
-export type RouteContextObject<Params extends Record<string, string> = Record<string, string>> = MatchResult<Params>
+export type RouteContextObject<Params extends Record<string, string> = Record<string, string>> = MatchResult<Params>;
 
 export const RouteContext = createContext<RouteContextObject | undefined>(undefined);
 

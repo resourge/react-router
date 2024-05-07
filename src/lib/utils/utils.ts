@@ -20,7 +20,7 @@ export function isValidUrl(urlString: string) {
 export function createPathWithCurrentLocationHasHash(path: string) {
 	const newPath = new URL(path, window.location.origin);
 
-	const windowURL = new URL(window.location as any);
+	const windowURL = new URL(window.location.href);
 	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
 
 	return newPath.href.replace(newPath.origin, '');

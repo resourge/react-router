@@ -5,7 +5,7 @@ import { getHrefWhenHashOrNormal } from './utils';
 type MatchProps = UrlPattern & {
 	currentPath?: string
 	paths?: string[]
-}
+};
 
 export type MatchResult<Params extends Record<string, string> = Record<string, string>> = {
 	/**
@@ -44,7 +44,7 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 * Route URL
 	 */
 	url?: URL
-}
+};
 
 function getUniqueId(path: string, match: URLPatternResult) {
 	if (match.pathname.groups[0]) {

@@ -12,7 +12,7 @@ export type RouteMetadataType<
 	isPrivate?: boolean
 	keywords?: Keywords
 	title?: R
-}
+};
 
 export function setRouteMetadata<
 	Langs extends string = string, 

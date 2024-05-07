@@ -3,7 +3,7 @@ import { useLayoutEffect, useState } from 'react';
 import { useLanguageContext } from '../contexts/LanguageContext';
 import { type RouteMetadataType } from '../types/RouteMetadataType';
 
-export type RouteMetadataProps = Omit<RouteMetadataType, 'route'>
+export type RouteMetadataProps = Omit<RouteMetadataType, 'route'>;
 
 export const useHtmlLanguage = () => {
 	const baseLanguage = useLanguageContext();
@@ -19,7 +19,8 @@ export const useHtmlLanguage = () => {
 		});
 
 		if ( !baseLanguage ) {
-			const elementToObserve = document.querySelector('html') as HTMLHtmlElement;
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			const elementToObserve = document.querySelector('html')!;
 			observer.observe(elementToObserve, {
 				attributes: true,
 				attributeFilter: ['lang'] 

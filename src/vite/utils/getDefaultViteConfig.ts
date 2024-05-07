@@ -26,17 +26,17 @@ export type ViteReactRouterConfig = {
 	 * Url for Twitter metadata
 	 */
 	url?: string
-}
+};
 
 type RequiredRouterConfig = Required<
 	Pick<
 		ViteReactRouterConfig, 
 		'defaultLanguage' | 'defaultInitialRoute'
 	>
->
+>;
 
 export type DefaultViteReactRouterConfig = RequiredRouterConfig
-& Omit<ViteReactRouterConfig, 'defaultLanguage'>
+	& Omit<ViteReactRouterConfig, 'defaultLanguage'>;
 
 const DEFAULT_CONFIG: DefaultViteReactRouterConfig = {
 	defaultLanguage: 'en',

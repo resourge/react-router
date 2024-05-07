@@ -8,7 +8,7 @@ export type UsePromptProps = {
 	 */
 	when: boolean | Blocker
 	message?: string | ((currentUrl: URL, nextUrl: URL, action: ActionType) => string)
-}
+};
 
 /**
  * @param when When `true` it will prompt the user 

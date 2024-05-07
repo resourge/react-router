@@ -10,16 +10,16 @@ import RouteMetadata from './RouteMetadata';
 
 export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
 	path?: MatchRouteProps['path']
-}
+};
 
 export type RouteProps = BaseRouteProps & { 
 	children?: ReactNode
 	fallback?: ReactNode
-}
+};
 
 export type IRouteProps = RouteProps & {
 	computedMatch?: MatchResult | null
-}
+};
 
 /**
  * Component that only renders at a certain path.

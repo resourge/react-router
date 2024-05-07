@@ -9,7 +9,7 @@ export type CreateSiteMapConfig = {
 	maxFileNameLength: number
 	outputPath: string
 	pages: FilesType[]
-}
+};
 
 export function createSiteMap({
 	pages, 

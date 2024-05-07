@@ -13,7 +13,7 @@ export type ParamsConfigOptional = {
 	 * Transform's param on useParam.
 	 */
 	onUseParams?: (value?: string) => unknown | undefined 
-}
+};
 
 export type ParamsConfigNotOptional = { 
 	/**
@@ -28,11 +28,11 @@ export type ParamsConfigNotOptional = {
 	 * Makes param optional
 	 */
 	optional?: false | undefined 
-}
+};
 
 export type ParamsConfig = {
 	options?: string[]
-} & (ParamsConfigNotOptional | ParamsConfigOptional)
+} & (ParamsConfigNotOptional | ParamsConfigOptional);
 
 export class ParamPath<Key, Config extends ParamsConfig = ParamsConfig> {
 	public key: Key = '' as Key;

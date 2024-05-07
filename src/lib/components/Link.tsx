@@ -11,7 +11,7 @@ import { type BaseMatchPathProps } from '../hooks/useMatchPath';
 
 export type LinkProps = UseLinkProps & {
 	matchClassName?: string
-} & BaseMatchPathProps
+} & BaseMatchPathProps;
 
 /**
  * Component extends element `a` and navigates to `to`.
@@ -38,7 +38,7 @@ const Link: ForwardRefExoticComponent<PropsWithoutRef<LinkProps> & RefAttributes
 	const [href, onClick] = useLink(props);
 	const match = href === url.href;
 
-	const _class = [className, match ? matchClassName : ''].filter(cn => cn);
+	const _class = [className, match ? matchClassName : ''].filter((cn) => cn);
 
 	const _className = _class && _class.length ? _class.join(' ') : undefined;
 

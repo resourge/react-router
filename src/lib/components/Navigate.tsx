@@ -5,7 +5,7 @@ import { type NavigateTo } from '../hooks/useNormalizeUrl';
 
 export type NavigateProps = {
 	to: NavigateTo
-} & NavigateOptions
+} & NavigateOptions;
 /**
  * Navigates to `to`.
  *

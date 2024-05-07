@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useRoute } from '../contexts/RouteContext';
 import { type StringifyObjectParams } from '../types/StringifyObjectParams';
 
-export type TransformParams<Params extends Record<string, string> = Record<string, string>> = (params: StringifyObjectParams<Params>) => Params
+export type TransformParams<Params extends Record<string, string> = Record<string, string>> = (params: StringifyObjectParams<Params>) => Params;
 
 /**
  * Returns the current route params

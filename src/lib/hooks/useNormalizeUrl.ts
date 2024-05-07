@@ -7,7 +7,7 @@ import { isValidUrl } from '../utils/utils';
 
 export type NavigateTo = string | URL | {
 	searchParams: Record<string, any>
-}
+};
 
 const normalizeUrl = (
 	to: NavigateTo, 

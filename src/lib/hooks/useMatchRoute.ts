@@ -2,7 +2,7 @@ import { type MatchResult } from '../utils/matchPath';
 
 import { type MatchPathProps, useMatchPath } from './useMatchPath';
 
-export type MatchRouteProps = MatchPathProps
+export type MatchRouteProps = MatchPathProps;
 
 /**
  * Hook to match current route.

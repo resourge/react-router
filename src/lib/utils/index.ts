@@ -1,11 +1,3 @@
-import { generatePath } from './generatePath';
-import { matchPath } from './matchPath';
-import { resolveLocation } from './resolveLocation';
-
-export {
-	generatePath,
-
-	matchPath,
-
-	resolveLocation
-};
+export { generatePath } from './generatePath';
+export { matchPath } from './matchPath';
+export { resolveLocation } from './resolveLocation';

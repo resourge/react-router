@@ -5,7 +5,7 @@ import Route, { type RouteProps } from './Route';
 
 export type RedirectProps = {
 	from: RouteProps['path']
-} & NavigateProps & Omit<RouteProps, 'path'>
+} & NavigateProps & Omit<RouteProps, 'path'>;
 
 /**
  * Navigates from `path` to `to`.

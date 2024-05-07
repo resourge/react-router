@@ -5,7 +5,6 @@ import invariant from 'tiny-invariant';
 
 import { useParams } from '../hooks/useParams';
 import { useSearchParams } from '../hooks/useSearchParams';
-import { type SearchParamsPathType, type SearchParamsType } from '../types/SearchParams';
 import {
 	type IfIncludesParam,
 	type IsHashPath,
@@ -18,7 +17,10 @@ import {
 	type GetValueFromBeforePath,
 	type GetValueFromTransform,
 	type IsAllOptional,
-	type MergeObj
+	type MergeObj,
+	type IsOptional,
+	type MakeObjectOptional,
+	type MakeUndefinedOptional
 } from '../types/types';
 import { FIT_IN_ALL_ROUTES, FIT_IN_ALL_ROUTES_REG } from '../utils/constants';
 import { generatePath } from '../utils/generatePath';
@@ -26,12 +28,13 @@ import { resolveSlash } from '../utils/resolveLocation';
 import { createPathWithCurrentLocationHasHash, getParams, getSearchParams } from '../utils/utils';
 
 import { Param, ParamPath, type ParamsConfig } from './Param';
+import { type SearchParamsPathType, type SearchParamsType } from './SearchParam';
 
 export type InjectParamsIntoPathType<
 	BaseKey extends string,
 	Routes extends Record<string, Path<any, string>>,
 	Params extends Record<string, any>,
-	ParamsResult extends Record<string, any>,
+	ParamsResult extends Record<string, any>
 > = {
 	[K in keyof Routes]: PathType<
 	// @ts-expect-error Want to protect value, but also access it with types
@@ -42,23 +45,23 @@ export type InjectParamsIntoPathType<
 			? Routes[K]['_params'] 
 			// @ts-expect-error Want to protect value, but also access it with types
 			: MergeObj<Params, Routes[K]['_params']>,
-			// @ts-expect-error Want to protect value, but also access it with types
+		// @ts-expect-error Want to protect value, but also access it with types
 		IsHashPath<Routes[K]['_key']> extends true 
 		// @ts-expect-error Want to protect value, but also access it with types
 			? Routes[K]['_paramsResult'] 
 			// @ts-expect-error Want to protect value, but also access it with types
 			: MergeObj<ParamsResult, Routes[K]['_paramsResult']>,
-			// @ts-expect-error Want to protect value, but also access it with types
+		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_searchParams'],
 		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_routes']
 	>
-}
+};
 
 export type AddConfigParamsIntoRoutes<
 	Routes extends Record<string, Path<any, string>>,
 	Params extends Record<string, any>,
-	ParamsResult extends Record<string, any>,
+	ParamsResult extends Record<string, any>
 > = {
 	[K in keyof Routes]: Path<
 		AddConfigParamsIntoRoutes<
@@ -70,7 +73,7 @@ export type AddConfigParamsIntoRoutes<
 				? Routes[K]['_params'] 
 				// @ts-expect-error Want to protect value, but also access it with types
 				: MergeObj<Params, Routes[K]['_params']>,
-				// @ts-expect-error Want to protect value, but also access it with types
+			// @ts-expect-error Want to protect value, but also access it with types
 			IsHashPath<Routes[K]['_key']> extends true 
 			// @ts-expect-error Want to protect value, but also access it with types
 				? Routes[K]['_paramsResult'] 
@@ -86,7 +89,7 @@ export type AddConfigParamsIntoRoutes<
 		// @ts-expect-error Want to protect value, but also access it with types
 		Routes[K]['_searchParams']
 	>
-}
+};
 
 export type PathType<
 	Key extends string,
@@ -94,38 +97,32 @@ export type PathType<
 	ParamsResult extends Record<string, any>,
 	SearchParams extends SearchParamsType | undefined,
 	Routes extends Record<string, Path<any, string>>,
-	All = IfIncludesParam<Key>,
+	All = IfIncludesParam<Key>
 > = {
 	/**
 	 * Generated string from chain functions. Includes path with `params`.
 	 */
 	path: Key
 } 
+& InjectParamsIntoPathType<Key, Routes, Params, ParamsResult>
 & (
-	string[] extends SearchParams
-		? {} : {
+	IsOptional<SearchParams> extends true
+		? {} 
+		: {
+			searchParams: string[]
 			useSearchParams: () => SearchParams
 		}
 )
-& InjectParamsIntoPathType<Key, Routes, Params, ParamsResult>
 & (
 	All extends false
 		? (
-			string[] extends SearchParams 
-				? {
-					/**
-					 * Method to obtain the true path.
-					 * Calling it with `params` will replace the params with the params value on the path.
-					 */
-					get: (params?: { searchParams?: SearchParams }) => Key
-				} 
-				: {
-					/**
-					 * Method to obtain the true path.
-					 * Calling it with `params` will replace the params with the params value on the path.
-					 */
-					get: (params: SearchParamsPathType<SearchParams>) => Key
-				} 
+			{
+				/**
+				 * Method to obtain the true path.
+				 * Calling it with `params` will replace the params with the params value on the path.
+				 */
+				get: (params?: SearchParamsPathType<SearchParams>) => Key
+			} 
 		)
 		: {
 			/**
@@ -141,7 +138,7 @@ export type PathType<
 			 */
 			useParams: () => ParamsResult
 		}
-)
+);
 
 /**
  * @important This config is not used in children paths
@@ -155,7 +152,7 @@ type PathConfig = {
 	 * Turns path into a hash path
 	 */
 	hash?: boolean
-}
+};
 
 export class Path<
 	Routes extends Record<string, Path<any, string>>, 
@@ -172,7 +169,7 @@ export class Path<
 
 	protected config: PathConfig = {};
 	protected paths: Array<ParamPath<string> | string> = [];
-	protected searchParams: Array<keyof SearchParams> = [];
+	protected searchParamsList: string[] = [];
 	private _includeCurrentURL?: boolean;
 
 	constructor(path?: string, config?: PathConfig) {
@@ -240,7 +237,7 @@ export class Path<
 		MergeParamsAndCreate<Params, K, false, any>,
 		MergeParamsAndCreate<ParamsResult, K, false, string>, 
 		SearchParams
-	>
+	>;
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
 	 * @param value {string} - param name
@@ -256,7 +253,7 @@ export class Path<
 		MergeParamsAndCreate<Params, K, Config['optional'], GetValueFromBeforePath<Config>>,
 		MergeParamsAndCreate<ParamsResult, K, Config['optional'], GetValueFromTransform<Config>>,
 		SearchParams
-	>
+	>;
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
 	 * @param value {string} - param name
@@ -287,12 +284,12 @@ export class Path<
 		value: K | ParamPath<K, Config>, 
 		config?: Config
 	): Path<
-		Routes,
-		ResolveSlash<[Key, ParamString<K>]>,
-		MergeParamsAndCreate<Params, K, Config['optional'], GetValueFromBeforePath<Config>>,
-		MergeParamsAndCreate<ParamsResult, K, Config['optional'], GetValueFromTransform<Config>>,
-		SearchParams
-	> {
+			Routes,
+			ResolveSlash<[Key, ParamString<K>]>,
+			MergeParamsAndCreate<Params, K, Config['optional'], GetValueFromBeforePath<Config>>,
+			MergeParamsAndCreate<ParamsResult, K, Config['optional'], GetValueFromTransform<Config>>,
+			SearchParams
+		> {
 		const _this = this.clone();
 
 		if ( value instanceof ParamPath ) {
@@ -317,20 +314,38 @@ export class Path<
 	 * @param value {string} - param name
 	 * @param config {ParamsConfig<ParamsValue>} - param configuration.
 	 */
-	public searchParam<
+	public searchParams<
 		SP extends SearchParamsType
 	>(
-		...searchParams: Array<keyof SP>
+		searchParams: SP
 	): Path<
-		Routes,
-		Key,
-		Params,
-		ParamsResult,
-		SP
-	> {
+			Routes,
+			Key,
+			Params,
+			ParamsResult,
+			MakeObjectOptional<MakeUndefinedOptional<SP>>
+		> {
 		const _this = this.clone();
 
-		_this.searchParams = searchParams as any;
+		function g(searchParams: SP, baseKey: string = '', index: number = -1): string[] {
+			return (
+				Object.keys(searchParams)
+				.map<Array<string | undefined> | (string | undefined)>((key) => {
+					const value = searchParams[key];
+					if ( value ) {
+						if ( typeof value === 'object' && !Object.keys(value as Record<string, any>).includes('optional') ) {
+							return g(value as SP, key).flat();
+						}
+					}
+
+					return value && value.optional ? undefined : `${baseKey ? `${baseKey}${index === -1 ? '.' : `[${index}]`}` : ''}${key}`;
+				})
+				.filter((key) => key) as string[]
+			)
+			.flat();
+		}
+
+		_this.searchParamsList = g(searchParams).flat();
 
 		return _this as any;
 	}
@@ -345,12 +360,12 @@ export class Path<
 	>(
 		routes: S
 	): Path<
-		S, 
-		Key, 
-		Params,
-		ParamsResult,
-		SearchParams
-	> {
+			S, 
+			Key, 
+			Params,
+			ParamsResult,
+			SearchParams
+		> {
 		const _this = this.clone() as unknown as Path<S, Key, Params, ParamsResult, SearchParams>;
 
 		/* if ( __DEV__ ) {
@@ -370,7 +385,9 @@ export class Path<
 						value.config.fitInAllRoutes
 						|| (
 							value._routes
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 							&& Object.keys(value._routes)
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 							&& checkFitInAllRoute(value._routes)
 						)
 					));
@@ -438,6 +455,7 @@ export class Path<
 
 		return {
 			path,
+			searchParams: this.searchParamsList,
 			get(params: Params) {
 				const _params = getParams(params, beforePaths);
 
@@ -483,20 +501,20 @@ export class Path<
  * Creates a new path
  * @param path {string} - path base/start
  */
-export function path <
+export function path<
 	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	SearchParams extends SearchParamsType = SearchParamsType
->(): Path<Routes, '', Params, ParamsResult, SearchParams> 
-export function path <
+>(): Path<Routes, '', Params, ParamsResult, SearchParams>; 
+export function path<
 	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	SearchParams extends SearchParamsType = SearchParamsType,
 	Key extends string = string
->(path: Key): Path<Routes, Key, Params, ParamsResult, SearchParams> 
-export function path <
+>(path: Key): Path<Routes, Key, Params, ParamsResult, SearchParams>; 
+export function path<
 	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,
@@ -504,15 +522,15 @@ export function path <
 	Key extends string = string
 >(path: Key, config: PathConfig & {
 	hash: true
-}): Path<Routes, ResolveSlash<['#', Key]>, Params, ParamsResult, SearchParams> 
-export function path <
+}): Path<Routes, ResolveSlash<['#', Key]>, Params, ParamsResult, SearchParams>; 
+export function path<
 	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	SearchParams extends SearchParamsType = SearchParamsType,
 	Key extends string = string
->(path: Key, config: PathConfig): Path<Routes, Key, Params, ParamsResult, SearchParams> 
-export function path <
+>(path: Key, config: PathConfig): Path<Routes, Key, Params, ParamsResult, SearchParams>; 
+export function path<
 	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
 	Params extends Record<string, any> = Record<string, any>,
 	ParamsResult extends Record<string, any> = Record<string, any>,

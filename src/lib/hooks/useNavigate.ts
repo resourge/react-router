@@ -18,7 +18,7 @@ export type NavigateOptions = {
 	 * @default false
 	 */
 	replace?: boolean
-}
+};
 
 /**
  * Returns a method for navigation `to`.

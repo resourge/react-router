@@ -6,13 +6,13 @@ import { useRouter } from '../contexts/RouterContext';
 
 import { useBeforeURLChange } from './useBeforeURLChange';
 
-export type Blocker = (currentUrl: URL, nextUrl: URL, action: ActionType) => boolean
+export type Blocker = (currentUrl: URL, nextUrl: URL, action: ActionType) => boolean;
 
 export type BlockerResult = {
 	continueNavigation: () => void
 	finishBlocking: () => void
 	isBlocking: boolean
-}
+};
 
 /**
  * Fires before the route change, and serves to block or not the current route.

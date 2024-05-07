@@ -100,7 +100,7 @@ export type LanguageRouteProps = {
 	 * @default first from languages
 	 */
 	fallbackLanguage?: string
-}
+};
 
 function getNewPathName(
 	url: URL,

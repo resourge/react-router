@@ -13,7 +13,7 @@ import { type BaseRouteProps } from './Route';
 export type SwitchProps = {
 	children: Array<ReactElement<BaseRouteProps>> | ReactElement<BaseRouteProps>
 	fallback?: ReactNode
-}
+};
 
 /**
  * Component that makes sure the first matching path renders.

@@ -14,7 +14,7 @@ export type FilesType = {
 	keywords?: string[]
 	title?: string
 	translation?: string
-}
+};
 
 export type CreateHtmlFilesConfig = {
 	config: DefaultViteReactRouterConfig
@@ -22,7 +22,7 @@ export type CreateHtmlFilesConfig = {
 	maxFileNameLength: number
 	pages: FilesType[]
 	rootConfig: ResolvedConfig
-}
+};
 
 export function createHtmlFiles({
 	pages, 

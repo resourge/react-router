@@ -17,7 +17,7 @@ export type BaseMatchPathProps = {
 	 * @default false
 	 */
 	hash?: boolean
-}
+};
 
 export type MatchPathProps = BaseMatchPathProps & {
 	/**
@@ -29,7 +29,7 @@ export type MatchPathProps = BaseMatchPathProps & {
 	 * Route mandatory search params
 	 */
 	searchParams?: string | string[]
-}
+};
 
 /**
  * Method to match `url` to `url`
@@ -51,7 +51,8 @@ export const matchRoute = (
 
 		const _url = hash ? new URL(url.hash.replace('#', ''), url.origin) : new URL(url);
 
-		if ( _search.some((search) => !_url.searchParams.has(search)) ) {
+		const keys = Array.from(_url.searchParams.keys());
+		if ( _search.some((search) => !keys.some((key) => key === search || search.replace(/\[\d\]/, '') === key)) ) {
 			return null;
 		}
 	}

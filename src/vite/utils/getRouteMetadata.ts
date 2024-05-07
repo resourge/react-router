@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/prefer-reduce-type-parameter */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
@@ -86,7 +87,7 @@ export function getRouteMetadata(
 								.join(
 									cacheOutDir, 
 									'src', 
-									newId[newId.length - 1]
+									newId.at(-1) ?? ''
 								),
 								'.js'
 							);
@@ -119,7 +120,7 @@ export function getRouteMetadata(
 		host.readFile = (fileName) => {
 			return codes[fileName] ? codes[fileName] : originalReadFile(fileName);
 		};
-		host.afterProgramCreate = builderProgram => {
+		host.afterProgramCreate = (builderProgram) => {
 			const originalEmit = builderProgram.emit;
 			builderProgram.emit = (targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, customTransformers): ts.EmitResult => {
 				const transformers = customTransformers ?? {

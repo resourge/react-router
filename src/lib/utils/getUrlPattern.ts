@@ -12,7 +12,7 @@ export type UrlPattern = {
 	 */
 	exact?: boolean
 	hash?: boolean
-}
+};
 
 export const getUrlPattern = ({
 	path, baseURL, exact, hash

@@ -1,15 +1,7 @@
-import { Param } from './Param';
-import { path } from './Path';
-import type { PathType } from './Path';
-import { SetupPaths } from './SetupPaths';
-import type { SetupPathsResult } from './SetupPaths';
-
-export {
-	path,
-	type PathType,
-
-	SetupPaths, 
-	type SetupPathsResult,
-
-	Param
-};
+export { Param } from './Param';
+export { path } from './Path';
+export type { PathType } from './Path';
+export { SetupPaths } from './SetupPaths';
+export type { SetupPathsResult } from './SetupPaths';
+export { searchParam } from './SearchParam';
+export type { SearchParamConfig } from './SearchParam';

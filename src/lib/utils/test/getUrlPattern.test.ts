@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Param } from 'src/lib/setupPaths/Param';
 import { path, type PathType, type Path } from 'src/lib/setupPaths/Path';
 import { SetupPaths } from 'src/lib/setupPaths/SetupPaths';

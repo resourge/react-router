@@ -6,7 +6,7 @@ export type VitePathRouteMetadata = {
 	route: string
 	title: string | Record<string, string>
 	isPrivate?: boolean
-}
+};
 
 export type ViteRouteMetadata = { 
 	description: Record<string, string>
@@ -18,4 +18,4 @@ export type ViteRouteMetadata = {
 	 * @default false
 	 */
 	isPrivate?: boolean
-}
+};
