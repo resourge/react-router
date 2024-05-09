@@ -6,6 +6,7 @@ import path from 'path';
 import { createMatchPath, loadConfig } from 'tsconfig-paths';
 import type { CompilerOptions } from 'typescript';
 import ts from 'typescript';
+import { pathToFileURL } from 'url';
 
 import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
 import { type ViteRouteMetadata, type InMemoryCode, type VitePathRouteMetadata } from './type';
@@ -92,7 +93,7 @@ export function getRouteMetadata(
 								'.js'
 							);
 
-							const module = await import(`file://${newFileName.replace('.tsx', '.js')}?date=${new Date().toISOString()}`);
+							const module = await import(pathToFileURL(`file://${newFileName.replace('.tsx', '.js')}?date=${new Date().toISOString()}`).toString());
 							
 							const routeMetadata: VitePathRouteMetadata = module.default.routeMetadata;
 
