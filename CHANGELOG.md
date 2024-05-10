@@ -1,3 +1,10 @@
+## [1.24.1](https://github.com/resourge/react-router/compare/v1.24.0...v1.24.1) (2024-05-10)
+
+
+### Bug Fixes
+
+* **usesearchparams:** fix event listener URLChange not working as intended ([1e2e779](https://github.com/resourge/react-router/commit/1e2e779b93cd3bb701fed76965a4a8cffedb2fa3))
+
 # [1.24.0](https://github.com/resourge/react-router/compare/v1.23.1...v1.24.0) (2024-05-10)
 
 
