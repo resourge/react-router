@@ -15,7 +15,7 @@ export type UsePromptProps = {
  * 	before navigating away from a screen. 
  *  (accepts method that return's boolean).
  * @param message When set, will prompt the user with native `confirm` and message.
- * 	When `undefined` will wait `[1]` method to be called
+ * 	When `undefined` will wait for `continueNavigation or finishBlocking` method to be called
  * @returns promptResult {BlockerResult}
  */
 export const usePrompt = ({ when, message }: UsePromptProps): BlockerResult => {

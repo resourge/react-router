@@ -17,14 +17,6 @@ const isNavigateOrRedirect = (props: RedirectProps | NavigateProps) => {
 	return props.to !== undefined;
 };
 
-const isRoute = (
-	props: Props
-) => {
-	return (
-		!isNavigateOrRedirect(props as RedirectProps)
-	);
-};
-
 const getMatchFromProps = (
 	url: URL, 
 	props: Props,
@@ -65,7 +57,7 @@ export const useSwitch = (children: Array<ReactElement<Props>> | ReactElement<Pr
 	for (let i = 0; i < childArray.length; i++) {
 		const child = childArray[i];
 
-		if ( isRoute(child.props) && (child.props as BaseRouteProps).path === undefined ) {
+		if ( !isNavigateOrRedirect(child.props as RedirectProps) && (child.props as BaseRouteProps).path === undefined ) {
 			return child as unknown as ReactElement<BaseRouteProps>;
 		}
 	

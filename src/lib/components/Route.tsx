@@ -2,14 +2,15 @@ import { Suspense, type ReactNode } from 'react';
 
 import { useDefaultFallbackContext } from '../contexts/DefaultFallbackContext';
 import { RouteContext } from '../contexts/RouteContext';
-import { useMatchRoute, type MatchRouteProps } from '../hooks/useMatchRoute';
+import { useMatchPath } from '../hooks';
+import { type MatchPathProps } from '../hooks/useMatchPath';
 import { type MatchResult } from '../utils/matchPath';
 import { validateRouteProps } from '../utils/validateRouteProps';
 
 import RouteMetadata from './RouteMetadata';
 
-export type BaseRouteProps = Omit<MatchRouteProps, 'path'> & {
-	path?: MatchRouteProps['path']
+export type BaseRouteProps = Omit<MatchPathProps, 'path'> & {
+	path?: MatchPathProps['path']
 };
 
 export type RouteProps = BaseRouteProps & { 
@@ -39,7 +40,8 @@ function Route(props: RouteProps): JSX.Element {
 
 	const defaultFallback = useDefaultFallbackContext();
 
-	const match = useMatchRoute(matchProps as MatchRouteProps, computedMatch);
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const match = matchProps.path === undefined ? 'NO_ROUTE' : useMatchPath(matchProps as MatchPathProps, computedMatch);
 
 	if ( match ) {
 		const Component = (

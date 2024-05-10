@@ -1,580 +1,562 @@
-## [1.23.1](https://github.com/resourge/react-router/compare/v1.23.0...v1.23.1) (2024-04-10)
+## [1.24.7](https://github.com/resourge/react-form/compare/v1.24.6...v1.24.7) (2024-01-03)
 
 
 ### Bug Fixes
 
-* **path:** change createPathWithCurrentLocationHasHash from returning full path to current path ([444f6a0](https://github.com/resourge/react-router/commit/444f6a0aa994172a4987ab2093179fbcf92ec29d))
+* **on-change:** fix Date sometimes giving an error ([c24f9f0](https://github.com/resourge/react-form/commit/c24f9f0374eeca481f09007be2ba7dd6bbc5e480))
 
-# [1.23.0](https://github.com/resourge/react-router/compare/v1.22.2...v1.23.0) (2024-04-09)
+## [1.24.6](https://github.com/resourge/react-form/compare/v1.24.5...v1.24.6) (2024-01-02)
 
 
 ### Bug Fixes
 
-* **path:** improve types ([996216b](https://github.com/resourge/react-router/commit/996216b6de4b439a70abdf2bffb2b72d587eefb1))
+* **package.json:** use npx on postinstall to fix patch-package not working in repositories ([3c5ad42](https://github.com/resourge/react-form/commit/3c5ad42e6a2b59bd1fd0780fe2d2e92c0b9625cd))
+
+## [1.24.5](https://github.com/resourge/react-form/compare/v1.24.4...v1.24.5) (2024-01-02)
+
+
+### Bug Fixes
+
+* **package.json:** fix postinstall ([51203a0](https://github.com/resourge/react-form/commit/51203a0e64e218b6d3bf6d3aa3160804fc7697ea))
+
+## [1.24.4](https://github.com/resourge/react-form/compare/v1.24.3...v1.24.4) (2024-01-02)
+
+
+### Bug Fixes
+
+* **package.json:** change postinstall to local ([c08034a](https://github.com/resourge/react-form/commit/c08034ab916936d34fe21633f9162a11a0c755e9))
+
+## [1.24.3](https://github.com/resourge/react-form/compare/v1.24.2...v1.24.3) (2023-10-18)
+
+
+### Bug Fixes
+
+* **__dev__:** replace __DEV__ with env ([2302645](https://github.com/resourge/react-form/commit/23026457168048c24c9ad92a1cdefa21a62f9958))
+* **formkey:** prevent circular dependency ([13ff9b3](https://github.com/resourge/react-form/commit/13ff9b31758ebce617edde85a05b282e381a706b))
+
+## [1.24.2](https://github.com/resourge/react-form/compare/v1.24.1...v1.24.2) (2023-09-05)
+
+
+### Bug Fixes
+
+* **formkeys:** fix RecursiveKey on file, date, etc ([0ef8538](https://github.com/resourge/react-form/commit/0ef853881bff6572d3de3d1f415b52363f325d62))
+
+## [1.24.1](https://github.com/resourge/react-form/compare/v1.24.0...v1.24.1) (2023-08-25)
+
+
+### Bug Fixes
+
+* **useform:** fix a bug where elements Date in form where not working on watch ([d8c6a67](https://github.com/resourge/react-form/commit/d8c6a6790add1f13afe8899c34635bd6f14bd478))
+
+# [1.24.0](https://github.com/resourge/react-form/compare/v1.23.0...v1.24.0) (2023-07-18)
 
 
 ### Features
 
-* **setuppaths:** add ability to autocomplete and add searchParams to routes ([7ec8c9c](https://github.com/resourge/react-router/commit/7ec8c9c9a64965b8073d52c1fb2f3381c5c9e469))
+* **useform:** add validateOnlyAfterFirstSubmit to useForm ([74e79d2](https://github.com/resourge/react-form/commit/74e79d257e8c816ac568520404e0169c8a3cf9bb))
 
-## [1.22.2](https://github.com/resourge/react-router/compare/v1.22.1...v1.22.2) (2024-03-25)
-
-
-### Bug Fixes
-
-* **usenormalizeurl:** fix navigate with baselanguage and url ([dea4a92](https://github.com/resourge/react-router/commit/dea4a922eef3ac672631dce168a6612c9466c2d4))
-
-## [1.22.1](https://github.com/resourge/react-router/compare/v1.22.0...v1.22.1) (2024-03-08)
-
-
-### Bug Fixes
-
-* **languageroute:** fix order ([18a6468](https://github.com/resourge/react-router/commit/18a64682806924ffed4c036642b1673c20a8e98d))
-* **routemetadata:** fix routemetadata file throwing erro on projects build ([0ee0489](https://github.com/resourge/react-router/commit/0ee0489bc1df7077fdf199b4491c757dcb0c6e9d))
-
-# [1.22.0](https://github.com/resourge/react-router/compare/v1.21.5...v1.22.0) (2024-03-08)
+# [1.23.0](https://github.com/resourge/react-form/compare/v1.22.2...v1.23.0) (2023-07-10)
 
 
 ### Features
 
-* **metadata:** improve metadata generation in build and run time ([6ba3e70](https://github.com/resourge/react-router/commit/6ba3e706d031dfe2dfbedb8719ee700e98a94790))
-* **vite-react-router:** add new functionalities to help grow pages ([b2fe703](https://github.com/resourge/react-router/commit/b2fe7034b439f7b7fbc4de0eb94ea299eba3398c))
+* **types:** redo documentation and update types to better match ([d1a5a45](https://github.com/resourge/react-form/commit/d1a5a451add3639a98356c9b9b8b352affbe61ec))
 
-## [1.21.5](https://github.com/resourge/react-router/compare/v1.21.4...v1.21.5) (2024-03-01)
-
-
-### Bug Fixes
-
-* **vite:** fix vite transformIndexHtml order ([4666485](https://github.com/resourge/react-router/commit/4666485b6a77fbf9989937fdefe1f6e25a99f868))
-
-## [1.21.4](https://github.com/resourge/react-router/compare/v1.21.3...v1.21.4) (2024-02-21)
+## [1.22.2](https://github.com/resourge/react-form/compare/v1.22.1...v1.22.2) (2023-06-14)
 
 
 ### Bug Fixes
 
-* **useroutemetadata:** in case title is undefined replace with empty string ([8cfada5](https://github.com/resourge/react-router/commit/8cfada51dc8110d353f440eb6ae54a25a7714fe2))
+* **deserialize:** fix invalid validation for undefined value on deserializeMeta ([e6604cb](https://github.com/resourge/react-form/commit/e6604cb10fe66879ae1c8e31ea5f101fb0e2512f))
 
-## [1.21.3](https://github.com/resourge/react-router/compare/v1.21.2...v1.21.3) (2024-02-09)
-
-
-### Bug Fixes
-
-* **paths:** fix checkFitInAllRoutes not working as expected ([8040f2d](https://github.com/resourge/react-router/commit/8040f2d4119f2ee949351acb8d397051188b478a))
-
-## [1.21.2](https://github.com/resourge/react-router/compare/v1.21.1...v1.21.2) (2024-02-09)
+## [1.22.1](https://github.com/resourge/react-form/compare/v1.22.0...v1.22.1) (2023-04-27)
 
 
 ### Bug Fixes
 
-* **path.ts:** fix routes crashing when there is no routes ([143b673](https://github.com/resourge/react-router/commit/143b673f40c6158097161c84b57ecd201369efb7))
+* **deserialize:** add className param to registerClass for custom naming ([baf5a57](https://github.com/resourge/react-form/commit/baf5a5741b64133e5b9b0b4ebdb0d2dd67ce237f))
 
-## [1.21.1](https://github.com/resourge/react-router/compare/v1.21.0...v1.21.1) (2024-02-02)
-
-
-### Bug Fixes
-
-* **vite:** remove cache folder on closeBundle instead of buildEnd ([89f08fb](https://github.com/resourge/react-router/commit/89f08fb36f43e9fa89ec75a0c960ba5730bacdb2))
-
-# [1.21.0](https://github.com/resourge/react-router/compare/v1.20.2...v1.21.0) (2024-02-02)
+# [1.22.0](https://github.com/resourge/react-form/compare/v1.21.0...v1.22.0) (2023-04-14)
 
 
 ### Features
 
-* **vite:** add vite plugin to use routeMetadata to generate pages html ([21943ca](https://github.com/resourge/react-router/commit/21943ca3aeb2446f840e1b4919824fbdd8ae9d88))
+* **serialize:** change from serialise package to intern version ([98f8db9](https://github.com/resourge/react-form/commit/98f8db9bbc9dc27fd566c983e299f04fa93a8179))
+* **serializejson:** export the parse and stringify function to serialize ([2d1caf6](https://github.com/resourge/react-form/commit/2d1caf6d82be25683d6cf01dbddfcd8e142787e3))
 
-## [1.20.2](https://github.com/resourge/react-router/compare/v1.20.1...v1.20.2) (2024-01-29)
-
-
-### Bug Fixes
-
-* **routemetadata:** fix title not changing ([9e2649c](https://github.com/resourge/react-router/commit/9e2649c80a43cfb3a14a39faf1f53ce426c60784))
-
-## [1.20.1](https://github.com/resourge/react-router/compare/v1.20.0...v1.20.1) (2024-01-10)
+# [1.21.0](https://github.com/resourge/react-form/compare/v1.20.0...v1.21.0) (2023-04-03)
 
 
 ### Bug Fixes
 
-* **usematchpath:** fix hash routes not working ([ba77f0b](https://github.com/resourge/react-router/commit/ba77f0b3f3c8d46a7d5aaf8b1614ee2edb03d62c))
-
-# [1.20.0](https://github.com/resourge/react-router/compare/v1.19.0...v1.20.0) (2024-01-09)
-
-
-### Bug Fixes
-
-* **usematchroute:** fix not working in some cases with deep routes ([8f7f878](https://github.com/resourge/react-router/commit/8f7f878846d52f659fff48a1dc46c8687360eaf7))
+* **useerrors:** fix errors not showing inside controllers ([17ebed7](https://github.com/resourge/react-form/commit/17ebed7a65cc0de1c7e19f4301eca9d021849670))
+* **useform:** fix not importing form options in useErrors ([9e1ace0](https://github.com/resourge/react-form/commit/9e1ace0ea551b919c745dfebbf7740ae3741f924))
+* **useform:** remove unnecessary code ([f916f68](https://github.com/resourge/react-form/commit/f916f688f5d2f59fb39c4d5d31b095a7599763de))
+* **useformsplitter:** fix not updating controller when values change ([f6e014e](https://github.com/resourge/react-form/commit/f6e014ee51056b6f27473754cf195319c03992e3))
 
 
 ### Features
 
-* **searchparams:** simplify searchparams ([eff677e](https://github.com/resourge/react-router/commit/eff677e66047d0d7562520d92780b91fd93a681a))
+* **useerrors:** change from object to Map ([91cae52](https://github.com/resourge/react-form/commit/91cae52a83c97304ccb0f41c59504f51f2a8dd5e))
 
-# [1.19.0](https://github.com/resourge/react-router/compare/v1.18.0...v1.19.0) (2023-10-16)
-
-
-### Bug Fixes
-
-* **path:** fix typescript type with hash not working as intended ([e782cd4](https://github.com/resourge/react-router/commit/e782cd45eb92583a2cb2d5cfd02fe067eafc8853))
-
-
-### Features
-
-* **usesearchparams:** improve useSearchParams ([6e27bc6](https://github.com/resourge/react-router/commit/6e27bc6c11be2034a2412b3f248d8a8296436029))
-
-# [1.18.0](https://github.com/resourge/react-router/compare/v1.17.0...v1.18.0) (2023-10-13)
-
-
-### Features
-
-* **routemetadata:** add more metadatas ([86e0781](https://github.com/resourge/react-router/commit/86e07814776f4c6aa8cf3e87d078d7366a4e2e23))
-
-# [1.17.0](https://github.com/resourge/react-router/compare/v1.16.1...v1.17.0) (2023-10-13)
+# [1.20.0](https://github.com/resourge/react-form/compare/v1.19.0...v1.20.0) (2023-03-28)
 
 
 ### Bug Fixes
 
-* **languageroute:** not working when url doesn't end with / ([54817f0](https://github.com/resourge/react-router/commit/54817f073af95664561e17833cdb24eea9277b9e))
-* **languageroute:** update url if it end with language without final slash ([02ad737](https://github.com/resourge/react-router/commit/02ad7374d223aacbe01a4c3faee1ce41c2b57912))
-* **metadata:** fix metadata not working sometimes ([53625b3](https://github.com/resourge/react-router/commit/53625b3e4ddebf75ff5e3dc3ab0cc62bd95e7905))
+* **useformfilter:** fix errors not being displayed when needed ([c5b7bd2](https://github.com/resourge/react-form/commit/c5b7bd236f95860cb71070e2372179e22481778b))
 
 
 ### Features
 
-* **setuppaths:** add fitInAllRoutes to make sure a route can be open anywhere ([8c6e3a7](https://github.com/resourge/react-router/commit/8c6e3a74236fd75f0bec5d61230a11a3de3b237f))
+* **useformstorage:** add ability to use external storage ([13cb424](https://github.com/resourge/react-form/commit/13cb4246a7d5dfd82090e2a71618a0d2f8a95633))
 
-## [1.16.1](https://github.com/resourge/react-router/compare/v1.16.0...v1.16.1) (2023-10-12)
-
-
-### Bug Fixes
-
-* **package.json:** change main from main.js to index.js ([41faf4e](https://github.com/resourge/react-router/commit/41faf4ef10ae3d5176c6063327f6844b36479eec))
-
-# [1.16.0](https://github.com/resourge/react-router/compare/v1.15.2...v1.16.0) (2023-10-12)
+# [1.19.0](https://github.com/resourge/react-form/compare/v1.18.5...v1.19.0) (2023-03-28)
 
 
 ### Bug Fixes
 
-* **routemetadata and types:** improve useRouteMetadata and fix types errors ([c243cd7](https://github.com/resourge/react-router/commit/c243cd7f99f21e5672047e06950f42d411fdadb0))
+* **useform:** fix onchange in input not working correctly with accentuation ([20e2199](https://github.com/resourge/react-form/commit/20e2199df3a207fc735b5c6c32b23be55c32bbf9))
 
 
 ### Features
 
-* **routemetadata:** add ability to update title, description, etc ([bfef1f0](https://github.com/resourge/react-router/commit/bfef1f0675f55797820ab1a39d02f0d8dd0a0bed))
-* **useroutemetadata:** add language as param ([66d807a](https://github.com/resourge/react-router/commit/66d807a68e593bcb57ca6c3f497f3acca735547c))
+* **useform:** separate state into 3 useStates ([77a0631](https://github.com/resourge/react-form/commit/77a063159016ebbdf9f973c9b4652fcffeb015d7))
+
+## [1.18.5](https://github.com/resourge/react-form/compare/v1.18.4...v1.18.5) (2023-02-03)
+
+
+### Bug Fixes
+
+* **package:** fix patch-package ([7280a8c](https://github.com/resourge/react-form/commit/7280a8c7dd9cffb9e4956bad87298f493a10171a))
+* **usefixcursorjumpingtoend:** isBrowser not working in react-native ([782b505](https://github.com/resourge/react-form/commit/782b505d61499c767f7f59f6544ba6bacd06c606))
+
+## [1.18.4](https://github.com/resourge/react-form/compare/v1.18.3...v1.18.4) (2023-02-02)
+
+
+### Bug Fixes
+
+* **package.json:** fix serialijse patch-package ([9f3b441](https://github.com/resourge/react-form/commit/9f3b441331525e3429faad7f091dc8928413bb74))
+
+## [1.18.3](https://github.com/resourge/react-form/compare/v1.18.2...v1.18.3) (2023-02-02)
+
+
+### Bug Fixes
+
+* **useformstorage:** fix converting json to class ([cb612a9](https://github.com/resourge/react-form/commit/cb612a98e9357eb3b54e1f3c660d5d22c9f1c7e6))
+
+## [1.18.2](https://github.com/resourge/react-form/compare/v1.18.1...v1.18.2) (2023-02-02)
+
+
+### Bug Fixes
+
+* **useform:** fix onSubmit being in validation instead of onsubmit ([be324b7](https://github.com/resourge/react-form/commit/be324b74c19064abb2d8e56ce17bd2fd4b70504a))
+
+## [1.18.1](https://github.com/resourge/react-form/compare/v1.18.0...v1.18.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* **classdecorators:** fix type not working in every class ([1133f44](https://github.com/resourge/react-form/commit/1133f44f23c6e20a33dd91bbb0f2762401a17837))
+
+# [1.18.0](https://github.com/resourge/react-form/compare/v1.17.0...v1.18.0) (2023-02-02)
+
+
+### Bug Fixes
+
+* **useformsplitter:** fix return type not working in nested keys ([83208a4](https://github.com/resourge/react-form/commit/83208a42758e6983b2b1a161b14557342b2fdf15))
+
+
+### Features
+
+* **useformsplitter:** improve useformsplitter to work together with Controller component ([bd251ec](https://github.com/resourge/react-form/commit/bd251ec5883d722cadfdac47508b38f5cdbbf2c4))
+* **useformstorage:** add useformstorage to create form that are saved in local storage ([428f6ea](https://github.com/resourge/react-form/commit/428f6eabfa92474a3d8561aa695bab3c28f13f79))
+
+# [1.17.0](https://github.com/resourge/react-form/compare/v1.16.0...v1.17.0) (2023-01-30)
+
+
+### Features
+
+* **useformsplitter:** remove unnecessary functionalities and add useFromSplitter ([89086ad](https://github.com/resourge/react-form/commit/89086ada22e587b7c7bf2274c5e4e365065d709a))
+
+# [1.16.0](https://github.com/resourge/react-form/compare/v1.15.0...v1.16.0) (2023-01-25)
+
+
+### Features
+
+* **controller:** upgrade controller to take name array and a deps props to improve performance ([88e0bfa](https://github.com/resourge/react-form/commit/88e0bfa86d81aee45e3964597904200afa04673c))
+
+# [1.15.0](https://github.com/resourge/react-form/compare/v1.14.0...v1.15.0) (2023-01-23)
+
+
+### Features
+
+* **useform:** make triggerChange callback to possible be a promise ([55f0d5c](https://github.com/resourge/react-form/commit/55f0d5c8721cc5d7606492c9651c876073ad1a8d))
+
+# [1.14.0](https://github.com/resourge/react-form/compare/v1.13.0...v1.14.0) (2023-01-19)
+
+
+### Bug Fixes
+
+* **types/index:** export all types included in previou commit ([525e03e](https://github.com/resourge/react-form/commit/525e03e798ec533a1a47a8317e1ecba30042806a))
+
+
+### Features
+
+* **types/types:** add resetMethod type ([f883040](https://github.com/resourge/react-form/commit/f883040bceee8c30cb7095611ffe07b5e07c87dc))
+
+# [1.13.0](https://github.com/resourge/react-form/compare/v1.12.1...v1.13.0) (2023-01-02)
+
+
+### Features
+
+* **useform:** make so defaultValue can be set using a method ([a142a17](https://github.com/resourge/react-form/commit/a142a1705324106430a91beb380cf758f8641ea1))
+
+## [1.12.1](https://github.com/resourge/react-form/compare/v1.12.0...v1.12.1) (2023-01-02)
+
+
+### Bug Fixes
+
+* **useform:** fix a bug where using class directly instead of a class value would not work ([ebe128a](https://github.com/resourge/react-form/commit/ebe128aac38e12921dd3c4c6beb59fca11afa1a1))
+
+# [1.12.0](https://github.com/resourge/react-form/compare/v1.11.1...v1.12.0) (2022-11-21)
+
+
+### Features
+
+* **useform:** simplift useForm creation by being able to directly use a class ([9766264](https://github.com/resourge/react-form/commit/9766264bd91ba03dbddba873d3bb1830db0d5738))
+
+## [1.11.1](https://github.com/resourge/react-form/compare/v1.11.0...v1.11.1) (2022-10-27)
+
+
+### Bug Fixes
+
+* **createformerrors:** fix  (intermediate value) when error was an empty string ([8197b9f](https://github.com/resourge/react-form/commit/8197b9f69d65320752161c92e82f1ae469fb0071))
+
+# [1.11.0](https://github.com/resourge/react-form/compare/v1.10.6...v1.11.0) (2022-10-27)
+
+
+### Bug Fixes
+
+* **useerrors:** update checkfIfcanCheckError to not need mandatory onlyOnTouch ([c7de0a4](https://github.com/resourge/react-form/commit/c7de0a4e3977e23b4c223dcaab02a6e464a160f6))
+
+
+### Features
+
+* **useerrors:** add onlyontouchdefault, onlyontouch defaults to true ([da47694](https://github.com/resourge/react-form/commit/da47694394dcb1b2e64a621438ac97ff5dad29b0))
+
+## [1.10.6](https://github.com/resourge/react-form/compare/v1.10.5...v1.10.6) (2022-10-26)
+
+
+### Bug Fixes
+
+* **createformerrors:** fix only saving last error when for the same camp where provided ([9e4e7b2](https://github.com/resourge/react-form/commit/9e4e7b2f6d3e89ac21c48d8f433bb603b160c81b))
+
+## [1.10.5](https://github.com/resourge/react-form/compare/v1.10.4...v1.10.5) (2022-08-29)
+
+
+### Bug Fixes
+
+* **usefixcursorjumpingtoend:** fix bug when copy past text ([58804ae](https://github.com/resourge/react-form/commit/58804ae4e1e71840a4d69739a712a34942f7214a))
+
+## [1.10.4](https://github.com/resourge/react-form/compare/v1.10.3...v1.10.4) (2022-08-26)
+
+
+### Bug Fixes
+
+* **useform:** fix onchange when tagName was undefined ([d9e749e](https://github.com/resourge/react-form/commit/d9e749ed35a7e3eba720a6e3693df609179d1372))
+
+## [1.10.3](https://github.com/resourge/react-form/compare/v1.10.2...v1.10.3) (2022-08-25)
+
+
+### Bug Fixes
+
+* **usefixcursorjumpingtoend:** fix delete wrong position ([01fbf07](https://github.com/resourge/react-form/commit/01fbf070ad41bad29f546913f55d86ebe4681727))
+
+## [1.10.2](https://github.com/resourge/react-form/compare/v1.10.1...v1.10.2) (2022-07-20)
+
+
+### Bug Fixes
+
+* **userfixcursorjumpingtoend:** whitelist for input types when supported cursor ([88d5a3e](https://github.com/resourge/react-form/commit/88d5a3eb73fa043ce20d98afb70ba82a0cad24f1))
+
+## [1.10.1](https://github.com/resourge/react-form/compare/v1.10.0...v1.10.1) (2022-07-19)
+
+
+### Bug Fixes
+
+* **usefixcursorjumpoingtoend:** fix input number position cursor ([64e132c](https://github.com/resourge/react-form/commit/64e132c1222391d101842c4fc213cebf93579916))
+
+# [1.10.0](https://github.com/resourge/react-form/compare/v1.9.0...v1.10.0) (2022-06-29)
+
+
+### Features
+
+* **useform:** add blur option for field ([a599e32](https://github.com/resourge/react-form/commit/a599e3279cbb403df88ea788f80ff8fec5b379f9))
+
+# [1.9.0](https://github.com/resourge/react-form/compare/v1.8.6...v1.9.0) (2022-06-29)
+
+
+### Features
+
+* **useform:** by default validateDefault is true now ([4a7d70a](https://github.com/resourge/react-form/commit/4a7d70aca6086df8f34984233450236913a40bfb))
+
+## [1.8.6](https://github.com/resourge/react-form/compare/v1.8.5...v1.8.6) (2022-06-28)
+
+
+### Bug Fixes
+
+* **useform:** forceValidation will no longer clear errors on reset ([23538af](https://github.com/resourge/react-form/commit/23538af7e706668dffe91caa23b2f017ffcb545e))
+
+
+### Reverts
+
+* **useform:** revert previous change ([3634123](https://github.com/resourge/react-form/commit/36341230ad9eb2905f91ab5dd4c33c84fe1e38a2))
+
+## [1.8.5](https://github.com/resourge/react-form/compare/v1.8.4...v1.8.5) (2022-06-27)
+
+
+### Bug Fixes
+
+* **usefixcursorjumpingtoend:** fix a bug where enter and backspace didn't fix the cursor ([1a8f24c](https://github.com/resourge/react-form/commit/1a8f24c8218986153089e014097aadcbef5ac920))
+
+## [1.8.4](https://github.com/resourge/react-form/compare/v1.8.3...v1.8.4) (2022-06-23)
+
+
+### Bug Fixes
+
+* **useform:** fix on submit errors not showing ([39a1af5](https://github.com/resourge/react-form/commit/39a1af55563c774c137f6b71cee213f5c58df8c9))
+
+## [1.8.3](https://github.com/resourge/react-form/compare/v1.8.2...v1.8.3) (2022-06-22)
 
 
 ### Performance Improvements
 
-* **types:** improve MergeParamsAndCreate type ([2555f3e](https://github.com/resourge/react-router/commit/2555f3e1ec5d7dbb139f853168dfe823c6268383))
+* **useform:** remove unecessary initial form validation ([1395c1c](https://github.com/resourge/react-form/commit/1395c1c2ac32b5ea962bca1e8615c365f63fb448))
 
-## [1.15.2](https://github.com/resourge/react-router/compare/v1.15.1...v1.15.2) (2023-10-10)
+## [1.8.2](https://github.com/resourge/react-form/compare/v1.8.1...v1.8.2) (2022-06-20)
 
 
 ### Bug Fixes
 
-* **matchpath:** fix metadata ([5fb4001](https://github.com/resourge/react-router/commit/5fb40010e7acb1e12e8df5ecc4c2a120196aeba0))
+* **usefrom:** remove mandatory onErrors ([3c7962a](https://github.com/resourge/react-form/commit/3c7962a87475d282703307d256788555a7cbf835))
+
+## [1.8.1](https://github.com/resourge/react-form/compare/v1.8.0...v1.8.1) (2022-06-09)
+
+
+### Bug Fixes
+
+* **useform:** fix Cannot read properties of null (reading 'currentTarget') ([cbefc9a](https://github.com/resourge/react-form/commit/cbefc9a4450eac9d8e41575bd15dcb6a14f32dd0))
+
+# [1.8.0](https://github.com/resourge/react-form/compare/v1.7.4...v1.8.0) (2022-06-08)
+
+
+### Bug Fixes
+
+* **useform:** fix cursor jumping automatically ([9099581](https://github.com/resourge/react-form/commit/9099581f04ac373cc5e0b19a23370cce9a2d444f))
+
+
+### Features
+
+* **redo and undo:** add redo and undo to help the user to backtrack changes ([91c255e](https://github.com/resourge/react-form/commit/91c255e6acac6014a10377521fc3d7107c02b5c9))
+
+## [1.7.4](https://github.com/resourge/react-form/compare/v1.7.3...v1.7.4) (2022-06-07)
 
 
 ### Performance Improvements
 
-* **usesearchparams:** change parser from URL to URLSearchParams ([391eadb](https://github.com/resourge/react-router/commit/391eadb499f7e753c2f8415cefc0f37542a0d1b7))
+* **useform:** instead of having to use isNativeEvent, useForm will do it automatically ([584f3fe](https://github.com/resourge/react-form/commit/584f3fe4f11ec3385ced8edc48da6c183762854a))
 
-## [1.15.1](https://github.com/resourge/react-router/compare/v1.15.0...v1.15.1) (2023-10-09)
-
-
-### Bug Fixes
-
-* **generatepath:** fix not replacing params correctly ([d649d0a](https://github.com/resourge/react-router/commit/d649d0ab0386dc593f066fdad59365418ac03cab))
-
-# [1.15.0](https://github.com/resourge/react-router/compare/v1.14.1...v1.15.0) (2023-10-04)
-
-
-### Features
-
-* **usenavigate:** reset scroll on navigate ([26cc415](https://github.com/resourge/react-router/commit/26cc4150595b1b2a08e2f22a1bba0fa4254ce533))
-
-## [1.14.1](https://github.com/resourge/react-router/compare/v1.14.0...v1.14.1) (2023-10-02)
+## [1.7.3](https://github.com/resourge/react-form/compare/v1.7.2...v1.7.3) (2022-06-07)
 
 
 ### Bug Fixes
 
-* **setuppaths:** fix paths not being correctly created in rare cases ([8a59941](https://github.com/resourge/react-router/commit/8a599410d671d800a1fea871f1bb19f7c1e53324))
+* **types.ts:** change from LegacyRef to Ref ([a317d1d](https://github.com/resourge/react-form/commit/a317d1d64355c5380a88c54c623f098b9c43f6ab))
 
-# [1.14.0](https://github.com/resourge/react-router/compare/v1.13.2...v1.14.0) (2023-10-02)
-
-
-### Features
-
-* **browserrouter:** add defaultfallback for all routes and ([cf7ca5b](https://github.com/resourge/react-router/commit/cf7ca5b09f477c37c7fd722d0b7d14edab2436d8))
-* **usematchpath:** add currentPath and all paths ([cc4b273](https://github.com/resourge/react-router/commit/cc4b27306a7c2d0ac83a2d2c0d1888f2880950fa))
-
-## [1.13.2](https://github.com/resourge/react-router/compare/v1.13.1...v1.13.2) (2023-09-27)
+## [1.7.2](https://github.com/resourge/react-form/compare/v1.7.1...v1.7.2) (2022-06-07)
 
 
 ### Bug Fixes
 
-* **validaterouteprops:** fix changing path from undefined to empty string ([bb2fa3b](https://github.com/resourge/react-router/commit/bb2fa3bb415f6dd3a18c50b806dfcbb485948848))
+* **useform field:** add way to prevent input cursor jumping to end ([a396c69](https://github.com/resourge/react-form/commit/a396c6987fb4f4c5b13fa804a5ba363f3c5a6015))
 
-## [1.13.1](https://github.com/resourge/react-router/compare/v1.13.0...v1.13.1) (2023-09-27)
-
-
-### Bug Fixes
-
-* **types:** fix path not sharing it's owns param with routes ([37985d6](https://github.com/resourge/react-router/commit/37985d65376f176a7e4dc70463dbf3547049f0d0))
-
-# [1.13.0](https://github.com/resourge/react-router/compare/v1.12.5...v1.13.0) (2023-09-26)
-
-
-### Features
-
-* **languageroute and page ata:** add Languageroute for language in routes and add useroutemetadata ([3f2a658](https://github.com/resourge/react-router/commit/3f2a658af8d1fd236e87bc03dba7cf7a0a1cb3a7))
-
-## [1.12.5](https://github.com/resourge/react-router/compare/v1.12.4...v1.12.5) (2023-09-21)
-
-
-### Bug Fixes
-
-* **path:** improve previous fix ([eec7a0e](https://github.com/resourge/react-router/commit/eec7a0e4c55c9010e5caabab280b9d666a4d863f))
-
-## [1.12.4](https://github.com/resourge/react-router/compare/v1.12.3...v1.12.4) (2023-09-20)
-
-
-### Bug Fixes
-
-* **path:** fix withSearchparams not clearing params ([22ea3fe](https://github.com/resourge/react-router/commit/22ea3fe2fe1411e69be17ee68ebf1d021ef1e12c))
-
-## [1.12.3](https://github.com/resourge/react-router/compare/v1.12.2...v1.12.3) (2023-09-18)
-
-
-### Bug Fixes
-
-* **entries:** possible performance improve on generic type entries ([c1405cc](https://github.com/resourge/react-router/commit/c1405cc5d8993676b547068da145afba510298d7))
-
-## [1.12.2](https://github.com/resourge/react-router/compare/v1.12.1...v1.12.2) (2023-09-14)
-
-
-### Bug Fixes
-
-* **path:** fix useParams ([f1ad709](https://github.com/resourge/react-router/commit/f1ad7095f464879f4d101e4def7135155f246325))
-
-## [1.12.1](https://github.com/resourge/react-router/compare/v1.12.0...v1.12.1) (2023-09-01)
-
-
-### Bug Fixes
-
-* **useparams:** fix useparams always return string even when a param has a transformation ([0c35230](https://github.com/resourge/react-router/commit/0c35230419cc3ffcdd4e5d53b0a2da814895cc9b))
-
-# [1.12.0](https://github.com/resourge/react-router/compare/v1.11.1...v1.12.0) (2023-08-11)
-
-
-### Features
-
-* **usepreviousurl:** add usePreviousUrl hook, and previouUrl and previousAction to useRouter ([7a4636a](https://github.com/resourge/react-router/commit/7a4636a6c2c591dd998cfebbb703daa126c343e3))
-
-## [1.11.1](https://github.com/resourge/react-router/compare/v1.11.0...v1.11.1) (2023-08-11)
-
-
-### Bug Fixes
-
-* **setuppaths:** fix withSearchParams type also return path even tho it does nothing with it ([50dd7dd](https://github.com/resourge/react-router/commit/50dd7dd4edceaa1e266a6ed4928faaee1fe9042b))
-
-# [1.11.0](https://github.com/resourge/react-router/compare/v1.10.0...v1.11.0) (2023-08-11)
-
-
-### Features
-
-* **setuppaths:** add withSeaarchParams to automatically add searchParams to route ([15973ba](https://github.com/resourge/react-router/commit/15973ba8ee386493a4252b410bf99f79d3dc3dad))
-
-# [1.10.0](https://github.com/resourge/react-router/compare/v1.9.1...v1.10.0) (2023-08-10)
-
-
-### Features
-
-* **baseroute:** add baseroute component to replace base prop from browserrouter ([9091d18](https://github.com/resourge/react-router/commit/9091d18e376243bce6ff44f98993987ac88069f9))
-* **path:** add path result to typescript info ([ab5d09a](https://github.com/resourge/react-router/commit/ab5d09ac1ddbdb2dd7c479808476d28e388065ce))
-* **setuppaths types:** improve types to be more easy to use and see what is happening ([469fdb3](https://github.com/resourge/react-router/commit/469fdb3213460b902f48faddf4fbea389ad9b2d5))
-
-## [1.9.1](https://github.com/resourge/react-router/compare/v1.9.0...v1.9.1) (2023-08-07)
+## [1.7.1](https://github.com/resourge/react-form/compare/v1.7.0...v1.7.1) (2022-06-06)
 
 
 ### Performance Improvements
 
-* **browserroute:** remove unecessary Route inside browserRoute ([a1d507d](https://github.com/resourge/react-router/commit/a1d507d7d907df85fc2d9beb2ddd14b7e1625cdf))
-* **matchpath:** small improve, putting new URL inside if ([138055f](https://github.com/resourge/react-router/commit/138055f778bde9900beb278c67cc26d7188f4aa6))
-* **switch:** change order and remove spreads ([bba8dc8](https://github.com/resourge/react-router/commit/bba8dc8ebabdd5f00f9e8027dd238f6a98ac120a))
+* **useform:** add isTouched in isValid method ([2e57507](https://github.com/resourge/react-form/commit/2e5750722103c99c3319531d2a45548ec7011121))
 
-# [1.9.0](https://github.com/resourge/react-router/compare/v1.8.2...v1.9.0) (2023-08-07)
-
-
-### Bug Fixes
-
-* **routercontext:** fix userouter error message ([26c2af0](https://github.com/resourge/react-router/commit/26c2af0c4d72d8d11eacb90530a96348e807de4a))
+# [1.7.0](https://github.com/resourge/react-form/compare/v1.6.1...v1.7.0) (2022-06-06)
 
 
 ### Features
 
-* **route/switc:** add suspense and fallback prop ([f2971de](https://github.com/resourge/react-router/commit/f2971decea8cd85dd0b8b2f9a94a918958351df2))
+* **useform:** add direct compatibility with @resourge/schema ([1f693ab](https://github.com/resourge/react-form/commit/1f693ab9c7f33d83e6c914a4f4689f58d74f88d0))
 
-## [1.8.2](https://github.com/resourge/react-router/compare/v1.8.1...v1.8.2) (2023-03-23)
-
-
-### Bug Fixes
-
-* **matchpath:** improve matchPath unitary tests ([6a1b730](https://github.com/resourge/react-router/commit/6a1b730293dc3b8c66e07bcb6753c42efcc82432))
-
-## [1.8.1](https://github.com/resourge/react-router/compare/v1.8.0...v1.8.1) (2023-03-23)
+## [1.6.1](https://github.com/resourge/react-form/compare/v1.6.0...v1.6.1) (2022-05-31)
 
 
 ### Bug Fixes
 
-* **matchpath:** not working as intended on hash routes ([3821103](https://github.com/resourge/react-router/commit/382110357b16df1fa76d5635eef8789f429439d9))
+* **package.json:** remove preinstall from scripts ([0dd65bc](https://github.com/resourge/react-form/commit/0dd65bce45bb1ce2d863f0af61d824fda4567b6c))
 
-# [1.8.0](https://github.com/resourge/react-router/compare/v1.7.13...v1.8.0) (2023-03-20)
+# [1.6.0](https://github.com/resourge/react-form/compare/v1.5.1...v1.6.0) (2022-05-31)
 
 
 ### Features
 
-* **usematchpath:** add usematchpath ([24d5bc7](https://github.com/resourge/react-router/commit/24d5bc735540fe22a8bf764c12a0cd7f25a0d593))
+* **useform:** add updateController method ([09691ac](https://github.com/resourge/react-form/commit/09691ac42e5aeec192893f2f371255a4c54fae73))
 
-## [1.7.13](https://github.com/resourge/react-router/compare/v1.7.12...v1.7.13) (2023-03-15)
-
-
-### Bug Fixes
-
-* **geturlpattern:** rever previous commits to add atual fix ([ccf0eb5](https://github.com/resourge/react-router/commit/ccf0eb53df34daefaa6da951bd9f92d5800ef5a3))
-
-## [1.7.12](https://github.com/resourge/react-router/compare/v1.7.11...v1.7.12) (2023-03-15)
+## [1.5.1](https://github.com/resourge/react-form/compare/v1.5.0...v1.5.1) (2022-05-30)
 
 
 ### Bug Fixes
 
-* **geturlpattern:** fix previous commit making other urls not working as intended ([225ca64](https://github.com/resourge/react-router/commit/225ca640210c9f0fc410e9bd4f381467b606dac7))
+* **package:** remove shallow-clone from peerDependecies ([cff839a](https://github.com/resourge/react-form/commit/cff839a009dd30f49919c7aa6b47f48ddf1bda66))
 
-## [1.7.11](https://github.com/resourge/react-router/compare/v1.7.10...v1.7.11) (2023-03-15)
-
-
-### Bug Fixes
-
-* **geturlpattern:** fix param inside hash not working as intended ([79c3c8d](https://github.com/resourge/react-router/commit/79c3c8ddcc1daec69b990c56c646b5c92aa8ef3c))
-
-## [1.7.10](https://github.com/resourge/react-router/compare/v1.7.9...v1.7.10) (2023-03-15)
-
-
-### Bug Fixes
-
-* **geturlpattern:** add unitary testing to prevent url's not working ([ee46029](https://github.com/resourge/react-router/commit/ee46029b20712bf45fe45360112c208367245a90))
-
-## [1.7.9](https://github.com/resourge/react-router/compare/v1.7.8...v1.7.9) (2023-03-15)
-
-
-### Bug Fixes
-
-* **geturlpattern:** fix pattern not working without a final / ([4d3734c](https://github.com/resourge/react-router/commit/4d3734ca0109bf5fc05e3e2a1edb4c0751b2dbf4))
-
-## [1.7.8](https://github.com/resourge/react-router/compare/v1.7.7...v1.7.8) (2023-03-02)
-
-
-### Bug Fixes
-
-* **geturlpattern:** fix pattern not working as intended with hash ([0143fee](https://github.com/resourge/react-router/commit/0143fee233d1081a475735f9e1125d30acf24c17))
-
-## [1.7.7](https://github.com/resourge/react-router/compare/v1.7.6...v1.7.7) (2023-03-01)
-
-
-### Bug Fixes
-
-* **params:** fix params not working as intended when using multiple paths ([c5682a3](https://github.com/resourge/react-router/commit/c5682a3b6187bc0f23e03fda554f84b1fce9b042))
-
-## [1.7.6](https://github.com/resourge/react-router/compare/v1.7.5...v1.7.6) (2023-02-28)
-
-
-### Bug Fixes
-
-* **generatepath:** fix path not working with optional values ([76e515b](https://github.com/resourge/react-router/commit/76e515b89436337b943ac320a428baa49813f58d))
-
-## [1.7.5](https://github.com/resourge/react-router/compare/v1.7.4...v1.7.5) (2023-02-28)
-
-
-### Bug Fixes
-
-* **resourge/react-search-params:** update resourge/react-search-params to fix some bugs ([1f2690d](https://github.com/resourge/react-router/commit/1f2690d01bd6d93a4eeba3b559392dc8e51df168))
-
-## [1.7.4](https://github.com/resourge/react-router/compare/v1.7.3...v1.7.4) (2023-02-28)
-
-
-### Bug Fixes
-
-* **navigate:** fix Navigate component pushing instead of replacing url's ([ee7657c](https://github.com/resourge/react-router/commit/ee7657cb8b61ed8bb0d6732fee3b27ab162745a4))
-* **useblocker:** change from routeUrl to actual url ([11c772b](https://github.com/resourge/react-router/commit/11c772b842528ee6c7e7bcc69614c33a1afdfb5d))
-
-## [1.7.3](https://github.com/resourge/react-router/compare/v1.7.2...v1.7.3) (2023-02-24)
-
-
-### Bug Fixes
-
-* **usematchroute:** fix parentRoute error when RouteContext is null ([39aaa2f](https://github.com/resourge/react-router/commit/39aaa2f36bff4b3a2fb96e7fe2b7cac8874e3c7d))
-
-## [1.7.2](https://github.com/resourge/react-router/compare/v1.7.1...v1.7.2) (2023-02-24)
-
-
-### Bug Fixes
-
-* **useprompt:** trigger new versino ([a72759c](https://github.com/resourge/react-router/commit/a72759c7a1d1d6d2f03cfaca4b2dd45f2469af69))
-
-## [1.7.1](https://github.com/resourge/react-router/compare/v1.7.0...v1.7.1) (2023-02-22)
-
-
-### Bug Fixes
-
-* **path:** fix includeCurrentURL not being true by default ([b72359d](https://github.com/resourge/react-router/commit/b72359d44a0795f1b99d91f5b7a4faf21289689f))
-
-# [1.7.0](https://github.com/resourge/react-router/compare/v1.6.1...v1.7.0) (2023-02-21)
-
-
-### Bug Fixes
-
-* **path:** fix hash type not working as intended ([b1ae0ea](https://github.com/resourge/react-router/commit/b1ae0ea1d289cdfe9216289cec5f3b5113936177))
-* **route/switch:** fix undefined path not work as intended ([60ac20b](https://github.com/resourge/react-router/commit/60ac20b2a0eab77e232ae523ad2d47766f96cfa1))
-* **setuppaths:** fix types ([cfefe28](https://github.com/resourge/react-router/commit/cfefe282b408146791cb0541ce02ba4b3c6b2ac9))
+# [1.5.0](https://github.com/resourge/react-form/compare/v1.4.8...v1.5.0) (2022-05-30)
 
 
 ### Features
 
-* **switch:** add ability to also use components without path inside ([52e93d5](https://github.com/resourge/react-router/commit/52e93d545859a0acff282ec749c35673d08d553e))
+* **usewatch:** make each "watch" run synchronous ([5e12c54](https://github.com/resourge/react-form/commit/5e12c543d53c13aeea10e8e63d83e3ef9db28fab))
+* **usewatch:** watch: method to update values when key is touched ([f8e4971](https://github.com/resourge/react-form/commit/f8e4971e144d1eb12d761cf67208669af8d6753e))
 
-## [1.6.1](https://github.com/resourge/react-router/compare/v1.6.0...v1.6.1) (2023-02-17)
+## [1.4.8](https://github.com/resourge/react-form/compare/v1.4.7...v1.4.8) (2022-05-25)
 
 
 ### Bug Fixes
 
-* **route:** fix a bug where cloneElement was not including the component children ([d2a78c0](https://github.com/resourge/react-router/commit/d2a78c0e23d6a8d7f9277b7e737c8179bceac4d4))
+* **useerrors:** when includeChildsIntoArray is true strick will automatically be false ([f6d2c47](https://github.com/resourge/react-form/commit/f6d2c473a7c39cd462756ce9481f76d55c599392))
 
-# [1.6.0](https://github.com/resourge/react-router/compare/v1.5.1...v1.6.0) (2023-02-17)
+## [1.4.7](https://github.com/resourge/react-form/compare/v1.4.6...v1.4.7) (2022-05-25)
+
+
+### Bug Fixes
+
+* **controller:** fix controller not updating in specific situations ([876a050](https://github.com/resourge/react-form/commit/876a0505f16fe405318fcc58c2009f259989f334))
+
+## [1.4.6](https://github.com/resourge/react-form/compare/v1.4.5...v1.4.6) (2022-05-23)
+
+
+### Bug Fixes
+
+* **controller:** update conditions to Controller update ([afa4d23](https://github.com/resourge/react-form/commit/afa4d23a58a2f866f3c64f7994a82047f6db9e1d))
+
+## [1.4.5](https://github.com/resourge/react-form/compare/v1.4.4...v1.4.5) (2022-05-20)
+
+
+### Bug Fixes
+
+* **rollup.config.js:** rever fix on-change to fix bug with jest not understanding the file ([63da7ed](https://github.com/resourge/react-form/commit/63da7ed6569db7491f12db4956d34aa443e026db))
+
+## [1.4.4](https://github.com/resourge/react-form/compare/v1.4.3...v1.4.4) (2022-05-20)
+
+
+### Bug Fixes
+
+* **controller.tsx:** fix a bug on controller not updating all of the array items ([5265429](https://github.com/resourge/react-form/commit/5265429a689878d046f632d3f55b06557fd95e2b))
+* **rollup.config.js:** fix config not considerating on-change as peerDependency ([d0f99c1](https://github.com/resourge/react-form/commit/d0f99c1e59184159ab1ca6ec58fd084b19c2367f))
+
+## [1.4.3](https://github.com/resourge/react-form/compare/v1.4.2...v1.4.3) (2022-05-09)
+
+
+### Bug Fixes
+
+* **useform:** onSubmit onlyOnTouch errors are not showing ([7509691](https://github.com/resourge/react-form/commit/7509691aab85c47252ffec92653bd5776555ab2a))
+
+## [1.4.2](https://github.com/resourge/react-form/compare/v1.4.1...v1.4.2) (2022-05-06)
+
+
+### Bug Fixes
+
+* **createproxy:** fix when creating path on formState, keys maintained references ([67f1ac7](https://github.com/resourge/react-form/commit/67f1ac7195692d63d4f66be4b0998bd0668b6be5))
+
+## [1.4.1](https://github.com/resourge/react-form/compare/v1.4.0...v1.4.1) (2022-05-06)
+
+
+### Bug Fixes
+
+* **controllercontext:** fix type giving error ([b8824b4](https://github.com/resourge/react-form/commit/b8824b4d145d8ef4e83a3c8185f27ad21ed260c2))
+
+# [1.4.0](https://github.com/resourge/react-form/compare/v1.3.3...v1.4.0) (2022-05-06)
 
 
 ### Features
 
-* **setuptypes:** remove folder separation ([a43b411](https://github.com/resourge/react-router/commit/a43b4117e6c8f49965d09414c6b4da4a6b48d4a2))
+* **useform:** create formState to have information on the form data ([ac60b92](https://github.com/resourge/react-form/commit/ac60b92dfac76f38826faea10a2ae24f13a76d29))
 
-## [1.5.1](https://github.com/resourge/react-router/compare/v1.5.0...v1.5.1) (2023-02-17)
+## [1.3.3](https://github.com/resourge/react-form/compare/v1.3.2...v1.3.3) (2022-05-05)
 
 
 ### Bug Fixes
 
-* **useswitch:** fix bug where not having path was giving an error ([9615e35](https://github.com/resourge/react-router/commit/9615e35d75056901b55ca6a233dd52aaaa11919e))
+* **types:** fix types ([b8cbbd3](https://github.com/resourge/react-form/commit/b8cbbd3045495f8cb0d530a4eea9399d617e8b58))
 
-# [1.5.0](https://github.com/resourge/react-router/compare/v1.4.1...v1.5.0) (2023-02-17)
+## [1.3.2](https://github.com/resourge/react-form/compare/v1.3.1...v1.3.2) (2022-05-05)
+
+
+### Bug Fixes
+
+* **formcontext:** fix type not matching ([7020bcf](https://github.com/resourge/react-form/commit/7020bcfcdf2847615d2bbbf243a1b2b85d38e63c))
+* **useerrors:** fix hasError cache key and fix FormNestedErrors to show optionals ([ba6858e](https://github.com/resourge/react-form/commit/ba6858e1a4bb9ddac6c11b18a3e30961045456b7))
+
+## [1.3.1](https://github.com/resourge/react-form/compare/v1.3.0...v1.3.1) (2022-05-04)
+
+
+### Bug Fixes
+
+* **useform:** fix reset not updating Controller ([321328b](https://github.com/resourge/react-form/commit/321328b29a1015134257fd03fc77d781f05cc043))
+
+# [1.3.0](https://github.com/resourge/react-form/compare/v1.2.0...v1.3.0) (2022-05-04)
+
+
+### Bug Fixes
+
+* **controller.tsx:** fix bug on controller not updating if validation found error on it's key ([bb5007e](https://github.com/resourge/react-form/commit/bb5007eacb1366c255952064572ab2ed0d730275))
+* fix missing alert if doens't have any setDefaultOnError defined ([f184858](https://github.com/resourge/react-form/commit/f1848582ef42bb86f77894519f2cdb739294e034))
+* **useform:** fix bug where useCancelableState was calling initialState twice ([a7e4e1b](https://github.com/resourge/react-form/commit/a7e4e1b8220f9d13f4821b39bea5c3c35a788aa1))
 
 
 ### Features
 
-* **route:** make path not mandatory ([6c32a61](https://github.com/resourge/react-router/commit/6c32a614a3d5bced24e7508d5921a539c35b8b24))
+* **useform:** add validateDefault ([28a3709](https://github.com/resourge/react-form/commit/28a37097bff380a21a1b47e640593bb2d0d3297c))
+* **useform:** improve error system ([a7a2db2](https://github.com/resourge/react-form/commit/a7a2db27d98df0b1bdb61fc528d52a2d052d959b))
+* **useform:** improve errors with hasError and simplift getErrors ([8e31f1f](https://github.com/resourge/react-form/commit/8e31f1f43938f969c6d7cd0d89f3612c32db395a))
 
-## [1.4.1](https://github.com/resourge/react-router/compare/v1.4.0...v1.4.1) (2023-01-17)
-
-
-### Bug Fixes
-
-* **setuppaths:** fix param not injected into routes params and update variables names ([eae5ccf](https://github.com/resourge/react-router/commit/eae5ccf38aa1a140daef76cdb2f8d3d42fdb35db))
-
-# [1.4.0](https://github.com/resourge/react-router/compare/v1.3.1...v1.4.0) (2023-01-13)
+# [1.2.0](https://github.com/resourge/react-form/compare/v1.1.0...v1.2.0) (2022-04-26)
 
 
 ### Features
 
-* **useblocker and useprompt:** update to also include a ways to finishBlocking ([0a3bc4d](https://github.com/resourge/react-router/commit/0a3bc4da240fe74b966464e9f617bf9b675d817e))
+* **controller:** add useController ([fd4bfa0](https://github.com/resourge/react-form/commit/fd4bfa009f47a344d448ce12ff13b2996bcf46c0))
 
-## [1.3.1](https://github.com/resourge/react-router/compare/v1.3.0...v1.3.1) (2023-01-03)
-
-
-### Bug Fixes
-
-* **useswitch:** fix useswich not working as intended ([609b6e3](https://github.com/resourge/react-router/commit/609b6e3f0c2f3ca6f7fff406654eae9db43cdc00))
-
-# [1.3.0](https://github.com/resourge/react-router/compare/v1.2.1...v1.3.0) (2022-12-20)
+# [1.1.0](https://github.com/resourge/react-form/compare/v1.0.2...v1.1.0) (2022-04-22)
 
 
 ### Features
 
-* **package.json:** update package versions ([1155766](https://github.com/resourge/react-router/commit/1155766cdd0b16b661749b6670cc411bf9342a10))
+* **controller.tsx:** add Controller component ([f24ff64](https://github.com/resourge/react-form/commit/f24ff6437659c10e17a7596879f2ef4ac7f68405))
 
-## [1.2.1](https://github.com/resourge/react-router/compare/v1.2.0...v1.2.1) (2022-12-19)
-
-
-### Bug Fixes
-
-* **switch:** fix Switch not working with 'no exact' route paths ([a946787](https://github.com/resourge/react-router/commit/a9467879a99d9996c805ee1a3540633cc9587966))
-
-# [1.2.0](https://github.com/resourge/react-router/compare/v1.1.4...v1.2.0) (2022-10-11)
+## [1.0.2](https://github.com/resourge/react-form/compare/v1.0.1...v1.0.2) (2022-04-21)
 
 
 ### Bug Fixes
 
-* **validaterouteprops:** fix message showing the wrong error ([084b6e1](https://github.com/resourge/react-router/commit/084b6e1ed5ad54a1ce33587d90fc4d892c57523e))
+* **rollup.config.js:** update rollup config to not transform async/await ([760c060](https://github.com/resourge/react-form/commit/760c060a0bf7b0e138767332e62de94974d53963))
+
+## [1.0.1](https://github.com/resourge/react-form/compare/v1.0.0...v1.0.1) (2022-04-20)
+
+
+### Bug Fixes
+
+* **rollup.config.js:** change rollup config to also include ?. and ?? transforms ([3316883](https://github.com/resourge/react-form/commit/331688399a02fcbf2c50738b3bef6b4354ea8261))
+
+# 1.0.0 (2022-04-20)
 
 
 ### Features
 
-* **package.json:** update @resourge/react-search-params to latest version ([936361a](https://github.com/resourge/react-router/commit/936361ae1b86ca0327a193cb07ca5f3f322faa6e))
-
-## [1.1.4](https://github.com/resourge/react-router/compare/v1.1.3...v1.1.4) (2022-10-10)
-
-
-### Bug Fixes
-
-* **param:** fix param not working ([e21515e](https://github.com/resourge/react-router/commit/e21515eff0a1ba3626e012f368b75a00ff9e50ed))
-
-## [1.1.3](https://github.com/resourge/react-router/compare/v1.1.2...v1.1.3) (2022-10-06)
-
-
-### Bug Fixes
-
-* **generatepath:** update generatePath regex with new optional param pattern ([d471fb8](https://github.com/resourge/react-router/commit/d471fb8be2bc200e8617bf16fef9b4741d095579))
-
-## [1.1.2](https://github.com/resourge/react-router/compare/v1.1.1...v1.1.2) (2022-10-06)
-
-
-### Bug Fixes
-
-* **params.ts:** change the way optional params are defined to match URLPattern optional params ([3397fde](https://github.com/resourge/react-router/commit/3397fdebcd99a393c291a6cf96304f617d355276))
-
-## [1.1.1](https://github.com/resourge/react-router/compare/v1.1.0...v1.1.1) (2022-10-03)
-
-
-### Bug Fixes
-
-* **hooks/index.ts:** add useAction to export ([0917166](https://github.com/resourge/react-router/commit/09171660319f90fc2c15bb1e910ac1d25fe6e21e))
-
-# [1.1.0](https://github.com/resourge/react-router/compare/v1.0.3...v1.1.0) (2022-10-03)
-
-
-### Features
-
-* **package.json:** update @resourge/react-search-params to latest version ([1816fea](https://github.com/resourge/react-router/commit/1816fea8fa840db40438bbfd058e6bf9756bf9e8))
-
-## [1.0.3](https://github.com/resourge/react-router/compare/v1.0.2...v1.0.3) (2022-09-29)
-
-
-### Bug Fixes
-
-* **setuppaths:** fix setuppaths on subpaths without parent path having label ([152a930](https://github.com/resourge/react-router/commit/152a930ac81e2167751a581db3664b032f915af6))
-
-## [1.0.2](https://github.com/resourge/react-router/compare/v1.0.1...v1.0.2) (2022-09-29)
-
-
-### Bug Fixes
-
-* **index.d.ts:** fix types using wrong files ([b0c4816](https://github.com/resourge/react-router/commit/b0c481615721163f944b0d504298be0f9955b493))
-
-## [1.0.1](https://github.com/resourge/react-router/compare/v1.0.0...v1.0.1) (2022-09-26)
-
-
-### Bug Fixes
-
-* **rollup.config.js:** change to jsx-runtime ([2cefadb](https://github.com/resourge/react-router/commit/2cefadb89d71b71aeec420205bb36f6ff180ceae))
-
-# 1.0.0 (2022-09-26)
-
-
-### Features
-
-* **project:** first release ([8a7b3f8](https://github.com/resourge/react-router/commit/8a7b3f87e5509093d0184e0f0831e862625edfa4))
+* **project:** First release ([3b8a57d](https://github.com/resourge/react-form/commit/3b8a57d5044b9940a705782784f0c6a26787431a))

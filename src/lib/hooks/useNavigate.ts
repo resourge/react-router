@@ -5,7 +5,6 @@ import { type NavigateTo, useNormalizeUrl } from './useNormalizeUrl';
 export type NavigateOptions = {
 	/**
 	 * A way to specify the action
-	 * @default false
 	 */
 	action?: Exclude<ActionType, 'initial'>
 	/**
