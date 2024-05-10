@@ -1,3 +1,15 @@
+# [1.24.0](https://github.com/resourge/react-router/compare/v1.23.1...v1.24.0) (2024-05-10)
+
+
+### Bug Fixes
+
+* **vite:** possible import fix for window ([4c2f7e1](https://github.com/resourge/react-router/commit/4c2f7e10e00fbe2602c6cd44f1a0b6dcd35b791c))
+
+
+### Features
+
+* **setuppaths:** update searchParams for better use ([7dadc00](https://github.com/resourge/react-router/commit/7dadc00496e32e3d692dee63cfe4da1048c9933e))
+
 ## [1.24.7](https://github.com/resourge/react-form/compare/v1.24.6...v1.24.7) (2024-01-03)
 
 
