@@ -29,7 +29,7 @@ export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T
 		window.addEventListener('URLChange', onUrlChange);
 
 		return () => {
-			window.addEventListener('URLChange', onUrlChange);
+			window.removeEventListener('URLChange', onUrlChange);
 		};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
