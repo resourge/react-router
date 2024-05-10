@@ -45,6 +45,7 @@
 - [matchPath](#matchpath)
 - [generatePath](#generatepath)
 - [resolveLocation](#resolvelocation)
+- [viteReactRouter](#vitereactrouter)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [License](#license)
@@ -863,6 +864,47 @@ console.log(resolvedUrl8.href); // Output: 'https://example.com/products'
 
 - `url` (string): The URL string to be resolved and normalized.
 - `baseURL` (string) (optional): The base URL string used for resolving relative URLs. If provided, relative URLs are resolved relative to this base URL.
+
+# viteReactRouter
+
+`viteReactRouter` is a Vite plugin designed to simplify routing in React applications built with Vite. It automates the process of generating HTML files and sitemap for routes, making it easier to add SSO in your projects.
+
+## Features
+
+- Automatic extraction of route metadata from files using TypeScript compiler API.
+- Generation of HTML files for each route based on metadata.
+- Creation of sitemap.xml file containing URLs for all routes with metadata.
+- Default configuration options for easy setup.
+
+## Usage
+
+```typescript
+import { viteReactRouter } from '@resourge/react-router/vite';
+
+export default {
+    plugins: [
+        viteReactRouter({
+            defaultInitialRoute: '/home',
+            defaultLanguage: 'en',
+            description: 'My awesome React app',
+            keywords: ['React', 'Vite', 'Routing'],
+            onDynamicRoutes: undefined, // Define your custom dynamic routes function here
+            title: 'My React App',
+            url: 'https://example.com'
+        })
+    ]
+}
+```
+
+## Parameters
+
+- `defaultInitialRoute` (string)(optional): Default initial route for the application. Defaults to '/'.
+- `defaultLanguage` (string)(optional): Default language for the application. Defaults to 'en'.
+- `description` (string | Record<string, string>)(optional): Description metadata for the application. Defaults to an empty string.
+- `keywords` (string[] | Record<string, string[]>)(optional): Keywords metadata for the application. Defaults to an empty array.
+- `onDynamicRoutes` ((routeMetadata: ViteRouteMetadata) => Array<Partial<ViteRouteMetadata>> | undefined | Promise<Array<Partial<ViteRouteMetadata>> | undefined>)(optional): Function to generate dynamic routes based on route metadata. Defaults to undefined.
+- `title` (string | Record<string, string>)(optional): Title metadata for the application. Defaults to an empty string.
+- `url` (string)(optional): Origin URL for the site. Defaults to ''.
 
 ## Documentation
 
