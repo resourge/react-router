@@ -23,7 +23,7 @@ export function createSiteMap({
 	const pagesXml = pages.map(({ url }) => {
 		return [
 			'<url>',
-			`<loc>${path.join(config.url ?? '', url)}</loc>`,
+			`<loc>${new URL(url, config.url ?? '').href}</loc>`,
 			`<lastmod>${date}</lastmod>`,
 			'<changefreq>daily</changefreq>',
 			'<priority>1.0</priority>',
