@@ -1,3 +1,10 @@
+## [1.24.3](https://github.com/resourge/react-router/compare/v1.24.2...v1.24.3) (2024-05-24)
+
+
+### Bug Fixes
+
+* **vite:** make so sitemap will only be created if url is set ([84d2b21](https://github.com/resourge/react-router/commit/84d2b21db6c91dc9c32c3a6305f96151e08c953a))
+
 ## [1.24.2](https://github.com/resourge/react-router/compare/v1.24.1...v1.24.2) (2024-05-24)
 
 
