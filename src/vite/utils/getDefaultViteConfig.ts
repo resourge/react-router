@@ -23,7 +23,8 @@ export type ViteReactRouterConfig = {
 	title?: string | Record<string, string>
 
 	/**
-	 * Url for Twitter metadata
+	 * Url for sitemap and twitter
+	 * * Note: Without url sitemap will not be generated
 	 */
 	url?: string
 };

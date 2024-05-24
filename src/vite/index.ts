@@ -167,14 +167,16 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 				maxFileNameLength
 			});
 
-			files.push(
-				await createSiteMap({
-					pages, 
-					maxFileNameLength,
-					outputPath,
-					config: _config
-				})
-			);
+			if ( _config.url ) {
+				files.push(
+					await createSiteMap({
+						pages, 
+						maxFileNameLength,
+						outputPath,
+						config: _config
+					})
+				);
+			}
 
 			files.forEach((message) => {
 				rootConfig.logger.info(message);

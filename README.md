@@ -904,7 +904,7 @@ export default {
 - `keywords` (string[] | Record<string, string[]>)(optional): Keywords metadata for the application. Defaults to an empty array.
 - `onDynamicRoutes` ((routeMetadata: ViteRouteMetadata) => Array<Partial<ViteRouteMetadata>> | undefined | Promise<Array<Partial<ViteRouteMetadata>> | undefined>)(optional): Function to generate dynamic routes based on route metadata. Defaults to undefined.
 - `title` (string | Record<string, string>)(optional): Title metadata for the application. Defaults to an empty string.
-- `url` (string)(optional): Origin URL for the site. Defaults to ''.
+- `url` (string)(optional): Origin URL for the site. If not set, sitemap will not be generated.
 
 ## Documentation
 
