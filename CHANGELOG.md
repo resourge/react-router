@@ -1,3 +1,10 @@
+## [1.24.2](https://github.com/resourge/react-router/compare/v1.24.1...v1.24.2) (2024-05-24)
+
+
+### Bug Fixes
+
+* **vite:** fix sitemap url ([5bb8e62](https://github.com/resourge/react-router/commit/5bb8e622ac9c5b4b95ffcc4cd176a21974f71ba1))
+
 ## [1.24.1](https://github.com/resourge/react-router/compare/v1.24.0...v1.24.1) (2024-05-10)
 
 
