@@ -1,3 +1,10 @@
+## [1.24.4](https://github.com/resourge/react-router/compare/v1.24.3...v1.24.4) (2024-05-27)
+
+
+### Bug Fixes
+
+* **package.json:** fix dev package in wrong dependencies ([c4a4306](https://github.com/resourge/react-router/commit/c4a4306920d6d807935352e8f108069268c0fade))
+
 ## [1.24.3](https://github.com/resourge/react-router/compare/v1.24.2...v1.24.3) (2024-05-24)
 
 
