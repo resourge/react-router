@@ -1,3 +1,10 @@
+## [1.24.5](https://github.com/resourge/react-router/compare/v1.24.4...v1.24.5) (2024-05-27)
+
+
+### Bug Fixes
+
+* **getroutemetadata:** fix file import ([70b1a3e](https://github.com/resourge/react-router/commit/70b1a3e95da18d8c170e42f371c4f3778dd6d0bf))
+
 ## [1.24.4](https://github.com/resourge/react-router/compare/v1.24.3...v1.24.4) (2024-05-27)
 
 
