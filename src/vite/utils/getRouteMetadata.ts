@@ -83,18 +83,21 @@ export function getRouteMetadata(
 					const routeMetadata = await Promise.all(
 						fileNames.map(async (fileName) => {
 							const newId = fileName.split('src');
-							const newFileName = replaceExtension(
-								path
-								.join(
-									cacheOutDir, 
-									'src', 
-									newId.at(-1) ?? ''
-								),
-								'.js'
-							);
+							const newFileName = pathToFileURL(
+								replaceExtension(
+									path
+									.join(
+										cacheOutDir, 
+										'src', 
+										newId.at(-1) ?? ''
+									),
+									'.js'
+								)
+							).toString()
+							.replace('.tsx', '.js');
 
-							const module = await import(pathToFileURL(`file://${newFileName.replace('.tsx', '.js')}?date=${new Date().toISOString()}`).toString());
-							
+							const module = await import(`${newFileName}?date=${new Date().toISOString()}`);
+
 							const routeMetadata: VitePathRouteMetadata = module.default.routeMetadata;
 
 							return convertPathRouteMetadataToRouteMetadata(
