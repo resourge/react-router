@@ -113,9 +113,9 @@ export function getRouteMetadata(
 
 		const originalAfterProgramCreate = host.afterProgramCreate;
 		const originalReadFile = host.readFile;
-
-		host.readFile = (fileName) => {
-			return code || originalReadFile(fileName);
+		
+		host.readFile = (fileNameHost) => {
+			return fileNameHost === fileName ? code : originalReadFile(fileNameHost);
 		};
 		host.afterProgramCreate = (builderProgram) => {
 			const originalEmit = builderProgram.emit;

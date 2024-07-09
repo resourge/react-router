@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 
 import { ORIGIN } from 'src/lib/utils/constants';
+import { WINDOWS } from 'src/lib/utils/window/window';
 
 import { LanguageContext } from '../../contexts/LanguageContext';
 import { useRouter } from '../../contexts/RouterContext';
@@ -49,7 +50,7 @@ export const updateLanguageRoute = (newLanguage: string) => {
  * @returns 
  */
 export const getLanguageRoute = () => {
-	const newUrl = new URL(window.location.href);
+	const newUrl = new URL(WINDOWS.location.href);
 
 	const match = LANGUAGE_PATTERN.exec(newUrl.href);
 

@@ -134,7 +134,7 @@ function indexBundle() {
 							+ content
 							+ (
 								path.includes('dist/index.d.ts') 
-									? 'declare module \'react\' {\n\texport interface FunctionComponent {\n\t\trouteMetadata?: RouteMetadataType<any, any, any>\n\t}\n}' 
+									? 'import { type RouteMetadataType } from "./types/index.js";\ndeclare module \'react\' {\n\texport interface FunctionComponent {\n\t\trouteMetadata?: RouteMetadataType<any, any, any>\n\t}\n}' 
 									: ''
 							);
 						}
