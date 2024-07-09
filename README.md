@@ -98,6 +98,7 @@ import { BrowserRouter } from '@resourge/react-router';
 
 ### Mobile
 
+_NOTE: For react-native app's it's necessary to [enabling-package-exports-beta](https://reactnative.dev/blog/2023/06/21/package-exports-support#enabling-package-exports-beta)_<br />
 For mobile applications (iOS and Android), use the following import:
 
 ```typescript
