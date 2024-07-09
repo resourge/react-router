@@ -1,4 +1,10 @@
-import { Suspense, forwardRef, useRef } from 'react';
+import {
+	Fragment,
+	type ReactNode,
+	Suspense,
+	forwardRef,
+	useRef
+} from 'react';
 import { type View } from 'react-native';
 
 import { Screen, type ScreenProps } from 'react-native-screens';
@@ -22,21 +28,24 @@ const Route = forwardRef<Screen | View, RouteProps>((props, ref) => {
 
 	const defaultFallback = useDefaultFallbackContext();
 
-	// @ts-expect-error isInsideSwitch does exist but I want it so be exclusive to switch
-	if ( !props.isInsideSwitch ) {
+	// @ts-expect-error _isInsideSwitch does exist but I want it so be exclusive to switch
+	if ( !props._isInsideSwitch ) {
 		if ( !match ) {
 			return (<></>);
 		}
 	}
-	// @ts-expect-error isInsideSwitch does exist but I want it so be exclusive to switch
-	else if ( props.isInsideSwitch ) {
+	// @ts-expect-error _isInsideSwitch does exist but I want it so be exclusive to switch
+	else if ( props._isInsideSwitch ) {
 		if ( !match && !isFirstRenderRef.current ) {
 			return (<></>);
 		}
 		isFirstRenderRef.current = true;
 	}
 
-	return (
+	// @ts-expect-error _isInsideSwitch does exist but I want it so be exclusive to switch
+	const hideScreen = props._hideScreen;
+
+	const Component = (children: ReactNode) => hideScreen ? <>{ children }</> : (
 		<Screen
 			{...props}
 			ref={ref as any}
@@ -45,12 +54,16 @@ const Route = forwardRef<Screen | View, RouteProps>((props, ref) => {
 				props.style
 			]}
 		>
-			<RouteContext.Provider value={typeof match === 'string' ? undefined : (match ?? undefined)}>
-				<Suspense fallback={props.fallback ?? defaultFallback}>
-					{ props.children }
-				</Suspense>
-			</RouteContext.Provider>
+			{ children }
 		</Screen>
+	);
+
+	return Component(
+		<RouteContext.Provider value={typeof match === 'string' ? undefined : (match ?? undefined)}>
+			<Suspense fallback={props.fallback ?? defaultFallback}>
+				{ props.children }
+			</Suspense>
+		</RouteContext.Provider>
 	);
 });
 

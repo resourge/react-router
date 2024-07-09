@@ -1,5 +1,6 @@
 import {
 	Children,
+	cloneElement,
 	useEffect,
 	useMemo,
 	useRef,
@@ -122,9 +123,7 @@ export const useSwitch = (
 		};
 	}), [childs.length]);
 
-	const nextIndex = childs.findIndex(({ props }, index) => {
-		return getMatchRef(props, index);
-	});
+	const nextIndex = childs.findIndex(({ props }, index) => getMatchRef(props, index));
 
 	useEffect(() => {
 		matchRef.current = null;
@@ -159,7 +158,7 @@ export const useSwitch = (
 				.flat()
 			).start();
 		}
-	}, [duration, nextIndex, animated]);
+	}, [duration, nextIndex, animated, childs.length]);
 
 	return (
 		<ScreenContainer
@@ -167,7 +166,8 @@ export const useSwitch = (
 		>
 			{ 
 				childs
-				.map(({ props, key }, index) => {
+				.map((child, index) => {
+					const { props, key } = child;
 					if ( !matchRef.current ) {
 						getMatchRef(props, index);
 					}
@@ -187,6 +187,8 @@ export const useSwitch = (
 						<Route
 							{...props}
 							key={childKeysRef.current[index]} 
+							// @ts-expect-error computedMatch does exist but I want it so be exclusive to switch
+							_isInsideSwitch={true}
 							activityState={
 								animated 
 									? animationRef[index].activityState.interpolate({
@@ -201,9 +203,7 @@ export const useSwitch = (
 										isFocused ? 1 : 0
 									)
 							}
-							// @ts-expect-error computedMatch does exist but I want it so be exclusive to switch
 							computedMatch={match}
-							isInsideSwitch={true}
 							style={[
 								props.style, 
 								isFocused 
@@ -215,7 +215,12 @@ export const useSwitch = (
 							]}
 						>
 							<IsFocusedContext.Provider value={isFocused}>
-								{ props.children }
+								{
+									cloneElement(child, {
+										// @ts-expect-error _hideScreen does exist but I want it so be exclusive to switch
+										_hideScreen: true 
+									})
+								}
 							</IsFocusedContext.Provider>
 						</Route>
 					);
