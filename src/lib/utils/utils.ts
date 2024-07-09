@@ -1,5 +1,8 @@
 import { parseParams } from '@resourge/react-search-params';
 
+import { ORIGIN } from './constants';
+import { WINDOWS } from './window/window';
+
 export function getHrefWhenHashOrNormal(url: URL, hash?: boolean) {
 	if ( hash ) {
 		return `${url.origin}${url.hash.substring(1)}`;
@@ -18,10 +21,10 @@ export function isValidUrl(urlString: string) {
 }
 
 export function createPathWithCurrentLocationHasHash(path: string) {
-	const newPath = new URL(path, window.location.origin);
+	const newPath = new URL(path, ORIGIN);
 
-	const windowURL = new URL(window.location.href);
-	newPath.hash = window.location.pathname && window.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
+	const windowURL = new URL(WINDOWS.location.href);
+	newPath.hash = WINDOWS.location.pathname && WINDOWS.location.pathname !== '/' ? windowURL.href.replace(windowURL.origin, '') : '';
 
 	return newPath.href.replace(newPath.origin, '');
 }

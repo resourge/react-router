@@ -1,5 +1,3 @@
-import invariant from 'tiny-invariant';
-
 export type ParamsConfigOptional = { 
 	/**
 	 * Makes param optional
@@ -57,11 +55,10 @@ export const Param = <
 	param: K, 
 	config?: Config
 ): ParamPath<K, Config> => {
-	if ( __DEV__ ) { 
-		invariant(
-			!param.includes(':'),
-			'Don\'t use \':\' inside `param`.'
-		);
+	if ( process.env.NODE_ENV === 'development' ) { 
+		if ( param.includes(':') ) {
+			throw new Error('Don\'t use \':\' inside `param`.');
+		}
 	}
 
 	const instance = new ParamPath<K, Config>();

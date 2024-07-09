@@ -2,12 +2,13 @@
 
 import { matchRoute } from 'src/lib/hooks/useMatchPath';
 
+import { ORIGIN } from '../constants';
 import { matchPath } from '../matchPath';
 
-const baseURL = 'http://localhost:3000';
+import 'urlpattern-polyfill';
 
 const createBaseUrl = (path: string) => {
-	return new URL(path, baseURL);
+	return new URL(path, ORIGIN);
 };
 
 describe('matchPath', () => {
@@ -16,7 +17,7 @@ describe('matchPath', () => {
 			const matchBase = matchPath(
 				createBaseUrl('/'), 
 				{
-					baseURL,
+					baseURL: ORIGIN,
 					path: '/'
 				}
 			);
@@ -29,7 +30,7 @@ describe('matchPath', () => {
 			const matchResult = undefined;
 			const baseContext = undefined;
 			const matchProps = {
-				baseURL,
+				baseURL: ORIGIN,
 				path: '/products/:productId{/:productName}?'
 			};
 			const match = matchResult ?? matchRoute(
@@ -53,7 +54,7 @@ describe('matchPath', () => {
 			const match = matchPath(
 				createBaseUrl('#/products/1460?id=10#/hash'), 
 				{
-					baseURL,
+					baseURL: ORIGIN,
 					hash: true,
 					path: '#/products/:productId'
 				}
@@ -70,7 +71,7 @@ describe('matchPath', () => {
 			const match = matchPath(
 				createBaseUrl('/products/1470#/products/1460?id=10#/hash'), 
 				{
-					baseURL,
+					baseURL: ORIGIN,
 					hash: true,
 					path: '#/products/:productId'
 				}

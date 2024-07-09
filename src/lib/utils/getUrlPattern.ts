@@ -1,6 +1,3 @@
-// To remove when URLPattern becomes native
-import 'urlpattern-polyfill';
-
 const cacheCompile = new Map<string, URLPattern>();
 const cacheLimit = 10000;
 

@@ -1,5 +1,7 @@
 /* eslint-disable no-useless-escape */
 
+import { ORIGIN } from './constants';
+
 /**
  * Resolves slash
  */
@@ -75,6 +77,6 @@ export function resolveLocation(url: string, baseURL?: string): URL {
 
 	return new URL(
 		pathname + search + hash,
-		window.location.origin
+		ORIGIN
 	);
 }

@@ -1,0 +1,11 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"declaration": true,
+		"declarationDir": "dist",
+	},
+	"include": [
+		"./src/lib/global.d.ts",
+		"./node_modules/urlpattern-polyfill"
+	]
+}

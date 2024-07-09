@@ -10,7 +10,7 @@ import { createHtmlFiles, type FilesType } from './utils/createHtmlFiles';
 import { createSiteMap } from './utils/createSiteMap';
 import { getDefaultViteConfig, type ViteReactRouterConfig } from './utils/getDefaultViteConfig';
 import { getRouteMetadata, tsConfig, convertPathRouteMetadataToRouteMetadata } from './utils/getRouteMetadata';
-import { type ViteRouteMetadata, type InMemoryCode } from './utils/type';
+import { type ViteRouteMetadata } from './utils/type';
 import { stripCodeOfUnnecessaryCode } from './utils/utils';
 
 const {
@@ -32,7 +32,7 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 	let rootConfig: ResolvedConfig;
 	let html: string;
 
-	const routesFileCode: InMemoryCode = {};
+	const routeMetadata: ViteRouteMetadata[] = [];
 
 	return {
 		name: 'vite-react-router',
@@ -53,38 +53,53 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 				html = code;
 			}
 		},
-		transform(code, id) {
+		async transform(code, id) {
 			if ( routeMetadataReg.test(code) ) {
 				const match = /([a-zA-Z0-9]+)\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\);/g.exec(code);
 				if ( match ) {
 					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					const [_code, page] = match;
+					const [routeMetadataString, page] = match;
 
-					routesFileCode[id] = stripCodeOfUnnecessaryCode(code, page);
+					const routeMetadataCode = await getRouteMetadata(
+						id,
+						stripCodeOfUnnecessaryCode(code, page), 
+						cacheOutDir,
+						{
+							noEmitOnError: false,
+							noImplicitAny: true,
+							target: ScriptTarget.ES2016,
+							module: ModuleKind.ES2020,
+							moduleResolution: ModuleResolutionKind.NodeJs,
+							outDir: cacheOutDir,
+							baseUrl: path.resolve(projectPath, './'),
+							rootDir: path.resolve(projectPath, './'),
+							types: ['vite/client'],
+							paths: (tsConfig as ConfigLoaderSuccessResult).paths,
+							allowSyntheticDefaultImports: true,
+							allowJs: true
+						},
+						_config
+					);
+
+					routeMetadata.push(routeMetadataCode);
+
+					const rMetadata = {
+						...routeMetadataCode 
+					};
+
+					// @ts-expect-error expected
+					delete rMetadata.route;
+
+					code = code.replace(
+						routeMetadataString, 
+						`${page}.routeMetadata = ${JSON.stringify(rMetadata)}`
+					);
+
+					return code;
 				}
 			}
 		},
-		async closeBundle() {		
-			const routeMetadata = await getRouteMetadata(
-				routesFileCode, 
-				cacheOutDir,
-				{
-					noEmitOnError: false,
-					noImplicitAny: true,
-					target: ScriptTarget.ES2016,
-					module: ModuleKind.ES2020,
-					moduleResolution: ModuleResolutionKind.NodeJs,
-					outDir: cacheOutDir,
-					baseUrl: path.resolve(projectPath, './'),
-					rootDir: path.resolve(projectPath, './'),
-					types: ['vite/client'],
-					paths: (tsConfig as ConfigLoaderSuccessResult).paths,
-					allowSyntheticDefaultImports: true,
-					allowJs: true
-				},
-				_config
-			);
-
+		async closeBundle() {
 			const fitInAllRoutes = routeMetadata
 			.filter(({ route }) => route.includes('{*}?'))
 			.map(({ route, ...rest }) => ({

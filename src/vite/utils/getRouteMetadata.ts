@@ -2,14 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/prefer-reduce-type-parameter */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+import importSync from 'import-sync';
 import path from 'path';
 import { createMatchPath, loadConfig } from 'tsconfig-paths';
-import type { CompilerOptions } from 'typescript';
-import ts from 'typescript';
+import ts, { type CompilerOptions } from 'typescript';
 import { pathToFileURL } from 'url';
 
 import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
-import { type ViteRouteMetadata, type InMemoryCode, type VitePathRouteMetadata } from './type';
+import { type ViteRouteMetadata, type VitePathRouteMetadata } from './type';
 import { replaceExtension } from './utils';
 
 export const tsConfig = loadConfig();
@@ -49,12 +49,13 @@ export function convertPathRouteMetadataToRouteMetadata(
 }
 
 export function getRouteMetadata(
-	codes: InMemoryCode,
+	fileName: string,
+	code: string,
 	cacheOutDir: string,
 	options: CompilerOptions,
 	config: DefaultViteReactRouterConfig
 ) {
-	return new Promise<ViteRouteMetadata[]>((resolve, reject) => {
+	return new Promise<ViteRouteMetadata>((resolve, reject) => {
 		const { outDir } = options;
 		if ( tsConfig.resultType === 'failed' ) {
 			reject(new Error());
@@ -69,10 +70,8 @@ export function getRouteMetadata(
 			tsConfig.addMatchAll
 		);
 
-		const fileNames = Object.keys(codes);
-
 		const host = ts.createWatchCompilerHost(
-			fileNames,
+			[fileName],
 			options,
 			ts.sys,
 			ts.createSemanticDiagnosticsBuilderProgram,
@@ -80,31 +79,25 @@ export function getRouteMetadata(
 			// eslint-disable-next-line @typescript-eslint/no-misused-promises
 			async (diagnostics) => {
 				if (diagnostics.code !== 6031) {
-					const routeMetadata = await Promise.all(
-						fileNames.map(async (fileName) => {
-							const newId = fileName.split('src');
-							const newFileName = pathToFileURL(
-								replaceExtension(
-									path
-									.join(
-										cacheOutDir, 
-										'src', 
-										newId.at(-1) ?? ''
-									),
-									'.js'
-								)
-							).toString()
-							.replace('.tsx', '.js');
+					const newId = fileName.split('src');
+					const newFileName = pathToFileURL(
+						replaceExtension(
+							path
+							.join(
+								cacheOutDir, 
+								'src', 
+								newId.at(-1) ?? ''
+							),
+							'.js'
+						)
+					).toString()
+					.replace('.tsx', '.js');
 
-							const module = await import(`${newFileName}?date=${new Date().toISOString()}`);
+					const module = await importSync(`${newFileName}?date=${new Date().toISOString()}`);
 
-							const routeMetadata: VitePathRouteMetadata = module.default.routeMetadata;
-
-							return convertPathRouteMetadataToRouteMetadata(
-								config,
-								routeMetadata
-							);
-						})
+					const routeMetadata = convertPathRouteMetadataToRouteMetadata(
+						config,
+						module.default.routeMetadata
 					);
 
 					close();
@@ -122,7 +115,7 @@ export function getRouteMetadata(
 		const originalReadFile = host.readFile;
 
 		host.readFile = (fileName) => {
-			return codes[fileName] ? codes[fileName] : originalReadFile(fileName);
+			return code || originalReadFile(fileName);
 		};
 		host.afterProgramCreate = (builderProgram) => {
 			const originalEmit = builderProgram.emit;

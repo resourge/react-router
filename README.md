@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-`@resourge/react-router` package provides a set of reusable components, hooks and utils for managing routing and URL parameters in react applications. Components facilitate navigation between different views or pages, allowing developers to create dynamic and interactive user interfaces. Offers a flexible and intuitive way to define routes, handle dynamic parameters, and manage search parameters, all while ensuring type safety and scalability.
+`@resourge/react-router` package provides a set of reusable components, hooks and utils for managing routing and URL parameters in react applications. Components facilitate navigation between different screens or pages, allowing developers to create dynamic and interactive user interfaces. Offers a flexible and intuitive way to define routes, handle dynamic parameters, and manage search parameters, all while ensuring type safety and scalability.
 
 ## Features
 
@@ -12,24 +12,31 @@
 - `URL Utilities`: Provide utility functions for resolving and formatting URLs, handling search parameters, and maintaining URL consistency.
 - `Route Setup with SetupPaths`: Define routes using the SetupPaths utility, specifying paths and their corresponding components. This allows for centralized route management and easy navigation.
 - `Type Safety and Scalability`: Ensure type safety throughout the routing process by leveraging TypeScript's static type checking. The package's architecture allows for seamless scalability, making it suitable for projects of any size.
-- `Easy Integration with React`: Integrate the router-utils package effortlessly into React applications. Its intuitive API and React-friendly design make it easy to use and understand, even for beginners.
+- `Easy Integration with react`: Integrate the router-utils effortlessly into react applications. Its intuitive API and react-friendly design make it easy to use and understand, even for beginners.
 - `Customizable and Extensible`: Customize and extend the package's functionality to suit your specific project requirements. The modular design allows for easy customization without sacrificing performance or reliability.
 - `Support for Hash and Normal Paths`: Choose between hash-based or normal paths for your routes, depending on your application's requirements. The package provides support for both types of paths, ensuring compatibility with various hosting environments.
-- `Built on Native Browser Navigation`: Leveraging native browser navigation capabilities, the package seamlessly integrates with the browser's history API, providing smooth and efficient navigation transitions.
-- `Utilizes Native URLPattern`: The package utilizes the native URLPattern for route matching, ensuring compatibility with modern browsers. For unsupported browsers, a polyfill is included, which will be removed in future versions to optimize performance.
+- `Built on native Browser Navigation`: Leveraging native browser navigation capabilities, the package seamlessly integrates with the browser's history API, providing smooth and efficient navigation transitions.
+- `Utilizes native URLPattern`: The package utilizes the native URLPattern for route matching, ensuring compatibility with modern browsers. For unsupported browsers, a polyfill is included, which will be removed in future versions to optimize performance.
 - `Similar to 'react-router v5'`: With a familiar API inspired by 'react-router v5', the package offers a user-friendly experience for developers already familiar with the popular routing library. This familiarity reduces the learning curve and facilitates easier adoption for existing projects.
+- `Supports react native`: Includes support for react native, allowing you to manage navigation and routing in your mobile applications with the same ease and flexibility as in web applications.
 
 ## Table of Contents
 
 - [Installation](#installation)
-- [BrowserRouter](#browserrouter)
+- [Platform-Specific Usage](#platform-specific-usage)
+- [BrowserRouter](#browserrouter-web-online)
+- [MobileRouter](#mobilerouter-mobile-only)
 - [Route](#route)
 - [Switch](#switch)
-- [LanguageRoute](#languageroute)
+- [SetupPaths](#setuppathspathparamsearchparam)
+- [TabsRoute](#tabsroute-mobile-only)
+- [BottomTabsRoute](#bottomtabsroutes-mobile-only)
+- [TopTabsRoute](#toptabsroutes-mobile-only)
+- [LanguageRoute](#languageroute-web-only)
 - [Navigate](#navigate)
 - [Redirect](#redirect)
-- [Title](#title)
-- [Meta](#meta)
+- [Title](#title-web-only)
+- [Meta](#meta-web-only)
 - [Prompt](#prompt)
 - [useNavigate](#usenavigate)
 - [useParams](#useparams)
@@ -55,6 +62,8 @@
 
 Install using [Yarn](https://yarnpkg.com):
 
+### Browser
+
 ```sh
 yarn add @resourge/react-router
 ```
@@ -65,21 +74,74 @@ or NPM:
 npm install @resourge/react-router --save
 ```
 
-# BrowserRouter
+### react-native
 
-`BrowserRouter` component serves as the foundational element for managing routing contexts within react applications. By integrating this component into your project, you can establish a robust routing infrastructure while maintaining flexibility and scalability.
+```sh
+yarn add @resourge/react-router react-native-safe-area-context react-native-screens react-native-url-polyfill
+```
+
+or NPM:
+
+```sh
+npm install @resourge/react-router react-native-safe-area-context react-native-screens react-native-url-polyfill --save
+```
+
+## Platform-Specific Usage
+
+### Web
+
+For web applications, use the following import:
+
+```typescript
+import { BrowserRouter } from '@resourge/react-router';
+```
+
+### Mobile
+
+For mobile applications (iOS and Android), use the following import:
+
+```typescript
+import { MobileRouter } from '@resourge/react-router/mobile';
+```
+
+# BrowserRouter (web online)
+
+`BrowserRouter` component serves as the foundational element for managing routing contexts within web applications. By integrating this component into your project, you can establish a robust routing infrastructure while maintaining flexibility and scalability.
 
 ## Usage
 
 ```tsx
-import React from 'react';
+import react from 'react';
 import { BrowserRouter } from '@resourge/react-router';
 
 const App = () => {
   return (
     <BrowserRouter defaultFallback={<FallbackComponent />}>
       <AppRoutes />
-    </BrowserRouter>
+    </Router>
+  );
+};
+```
+
+## Props
+
+- `defaultFallback`(optional): Specifies a default fallback component or element to render when route is loading.
+
+# MobileRouter (mobile only)
+
+`MobileRouter` component serves as the foundational element for managing routing contexts within mobile applications. By integrating this component into your project, you can establish a robust routing infrastructure while maintaining flexibility and scalability.
+
+## Usage
+
+```tsx
+import react from 'react';
+import { MobileRouter } from '@resourge/react-router/mobile';
+
+const App = () => {
+  return (
+    <MobileRouter defaultFallback={<FallbackComponent />} linking={handleDeepLinking}>
+      <AppRoutes />
+    </Router>
   );
 };
 ```
@@ -87,6 +149,7 @@ const App = () => {
 ## Props
 
 - `defaultFallback` (optional): Specifies a default fallback component or element to render when route is loading.
+- `linking` (optional): Allows custom handling of navigation events triggered by external sources like deep links or notifications. It provides a callback mechanism to update the application's navigation state based on incoming URLs or navigation instructions, enhancing flexibility and user experience in navigating within the app.
 
 # Route
 
@@ -95,11 +158,11 @@ const App = () => {
 ## Usage
 
 ```tsx
-import { BrowserRouter, Route } from '@resourge/react-router';
+import { Router, Route } from '@resourge/react-router';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Route path="/home">
         <HomePage />
       </Route>
@@ -109,7 +172,7 @@ const App = () => {
       <Route>
         <NotFoundPage />
       </Route>
-    </BrowserRouter>
+    </Router>
   );
 };
 ```
@@ -118,7 +181,7 @@ const App = () => {
 
 - `path` (string or string[]): Defines the route path(s) to match against the current URL.
 - `children` (ReactNode): Content to render when the route matches the current URL.
-- `fallback` (ReactNode) (optional): Fallback content to render while waiting for the main content to load (if undefined it will use BrowserRouter defaultFallback).
+- `fallback` (ReactNode)(optional): Fallback content to render while waiting for the main content to load (if undefined it will use Router defaultFallback).
 - `exact` (boolean, default: false)(optional): Specifies whether the URL must exactly match the route path.
 - `hash` (boolean, default: false)(optional): Indicates whether to treat the route path as a hash route.
 - `searchParams` (string or string[])(optional): Specifies mandatory search parameters required for route matching.
@@ -130,12 +193,12 @@ const App = () => {
 ## Usage
 
 ```tsx
-import React from 'react';
-import { BrowserRouter, Switch, Route } from '@resourge/react-router';
+import react from 'react';
+import { Router, Switch, Route } from '@resourge/react-router';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Switch>
         <Route path="/home">
           <HomePage />
@@ -147,7 +210,7 @@ const App = () => {
           <NotFoundPage />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 };
 ```
@@ -155,7 +218,22 @@ const App = () => {
 ## Props
 
 - `children` (Array<ReactElement<BaseRouteProps>> | ReactElement<BaseRouteProps>): Children components representing different routes to be rendered.
-- `fallback` (ReactNode) (optional): Content to render while waiting for the matched route component to load. (if undefined it will use BrowserRouter defaultFallback).
+- `fallback` (ReactNode)(optional): Content to render while waiting for the matched route component to load. (if undefined it will use Router defaultFallback).
+- `animated` (ReactNode)(optional)(mobile only): Enables screen transition animations.
+- `animation` (ReactNode)(optional)(mobile only): Specifies a custom animation style for screen transitions. Default animation:
+	```tsx
+	(animation, { width }) => ({
+	  transform: [
+	  	{
+	  	translateX: animation.interpolate({
+	  		inputRange: [-1, 0, 1],
+	  		outputRange: [-width, 0, width]
+	  	})
+	  	}
+	  ]
+	})
+	```
+- `duration` (ReactNode)(optional)(mobile only): Sets the duration of the screen transition animations.
 
 # SetupPaths/path/param/searchParam
 
@@ -165,7 +243,7 @@ const App = () => {
 
 ## path
 
-`path` is a fundamental building block in defining routes and URLs within a React application. It provides a flexible mechanism for constructing paths with dynamic segments and parameters. Developers can create a path to represent different routes in their application. The `path` offers methods for adding path segments, parameters, and search parameters, as well as generating paths based on the configured settings.
+`path` is a fundamental building block in defining routes and URLs within a react application. It provides a flexible mechanism for constructing paths with dynamic segments and parameters. Developers can create a path to represent different routes in their application. The `path` offers methods for adding path segments, parameters, and search parameters, as well as generating paths based on the configured settings.
 
 ## param
 
@@ -200,7 +278,285 @@ const searchRouteSearchParams = RoutePaths.user.searchParams() // ['query']
 const searchSearchParams = RoutePaths.user.useSearchParams() // { query: 'example', page: 1 };
 ```
 
-# LanguageRoute
+# TabsRoute (mobile only)
+
+`TabsRoute` provides a customizable tab navigation component for react-native applications. It includes functionalities to render tabs and switch between different views seamlessly. Supports customizable tab bars and can accommodate various configurations based on user requirements.
+
+## Usage
+
+```tsx
+import react from 'react';
+import { SafeAreaView, Text } from 'react-native';
+import { TabsRoute } from '@resourge/react-router/mobile';
+
+const App = () => {
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <TabsRoute placement="BOTTOM">
+        <TabsRoute.Tab path="/home" label="Home">
+          <Text>Home Screen</Text>
+        </TabsRoute.Tab>
+        <TabsRoute.Tab path="/settings" label="Settings">
+          <Text>Settings Screen</Text>
+        </TabsRoute.Tab>
+      </TabsRoute>
+    </SafeAreaView>
+  );
+};
+
+export default App;
+```
+
+## Props
+
+- `children`: The child components to be rendered as tabs.
+- `placement` (TOP or BOTTOM): The position of the tab bar.
+- `renderTabBar` (optional): A function to render the custom tab bar.
+	```tsx
+	<TabsRoute
+	  placement="BOTTOM"
+	  renderTabBar={({ placement, children }) => (
+	    <CustomTabBar placement={placement}>
+	      {children}
+	    </CustomTabBar>
+	  )}
+	>
+	  {/* Tab definitions */}
+	</TabsRoute>
+	```
+- `historyMode` (optional): Mode for handling history.
+- `onPress` (optional): Function to handle press events.
+- `renderLabel` (optional): Render the label of each tab.
+- `renderTabBarItem` (optional): Function to render each tab item.
+	```tsx
+	<TabsRoute
+	  placement="BOTTOM"
+	  renderTabBarItem={(props) => (
+	    <CustomTabBarItem {...props} />
+	  )}
+	>
+	  {/* Tab definitions */}
+	</TabsRoute>
+	```
+- `animated` (optional): Boolean to enable animations.
+- `duration` (optional): Duration of animations.
+
+## TabRoute
+
+Component for defining individual tabs within `TabsRoute`.
+
+### Usage
+
+```tsx
+import { Text } from 'react-native';
+import { TabBar } from '@resourge/react-router/mobile';
+
+const App = () => {
+  return (
+    <TabsRoute placement="BOTTOM">
+      <TabsRoute.Tab path="/home" label="Home">
+        <Text>Home Screen</Text>
+      </TabsRoute.Tab>
+      <TabsRoute.Tab path="/settings" label="Settings">
+        <Text>Settings Screen</Text>
+      </TabsRoute.Tab>
+    </TabsRoute>
+  );
+};
+
+export default App;
+```
+
+### Props
+
+- `label`: Label for the tab.
+- `path`: Path for the tab.
+- `children`: Content to be rendered within the tab.
+
+## TabBar
+
+Component to render the tab bar.
+
+### Usage
+
+```tsx
+import { Text } from 'react-native';
+import { TabBar } from '@resourge/react-router/mobile';
+
+const App = () => {
+  return (
+    <TabBar placement="BOTTOM">
+      <Text>Home</Text>
+      <Text>Settings</Text>
+    </TabBar>
+  );
+};
+
+export default App;
+```
+
+### Props
+
+- `children`: Child components to be rendered within the tab bar.
+- `placement` (TOP or BOTTOM): Position of the tab bar.
+
+## TabBarItem
+
+Component to render individual items within the tab bar.
+
+### Usage
+
+```tsx
+import { Text } from 'react-native';
+import TabBar, { TabBarItem } from '@resourge/react-router/mobile';
+
+const App = () => {
+  return (
+    <TabBar placement="BOTTOM">
+      <TabBarItem>
+        <Text>Home</Text>
+      </TabBarItem>
+      <TabBarItem>
+        <Text>Settings</Text>
+      </TabBarItem>
+    </TabBar>
+  );
+};
+
+export default App;
+```
+
+### Props
+
+- `children`: Content to be rendered within the tab bar item.
+- `pressColor` (optional): Press color effect.
+- `pressOpacity` (optional): Opacity of the press effect.
+- `style` (optional): Style of the tab bar item.
+
+# BottomTabsRoutes (mobile only)
+
+Wrapper component for `TabsRoute` that automatically sets the tab placement to `BOTTOM`.
+
+## Usage
+
+```tsx
+import react from 'react';
+import { SafeAreaView, Text } from 'react-native';
+import { BottomTabRoute } from '@resourge/react-router/mobile';
+
+const App = () => {
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <BottomTabsRoute>
+                <BottomTabsRoute.Tab path="/home" label="Home">
+                    <Text>Home Screen</Text>
+                </BottomTabsRoute.Tab>
+                <BottomTabsRoute.Tab path="/settings" label="Settings">
+                    <Text>Settings Screen</Text>
+                </BottomTabsRoute.Tab>
+            </BottomTabsRoute>
+        </SafeAreaView>
+    );
+};
+
+export default App;
+```
+
+## Props
+
+- `children`: The child components to be rendered as tabs.
+- `renderTabBar` (optional): A function to render the custom tab bar.
+	```tsx
+	<TabsRoute
+	  placement="BOTTOM"
+	  renderTabBar={({ placement, children }) => (
+	    <CustomTabBar placement={placement}>
+	      {children}
+	    </CustomTabBar>
+	  )}
+	>
+	  {/* Tab definitions */}
+	</TabsRoute>
+	```
+- `historyMode` (optional): Mode for handling history.
+- `onPress` (optional): Function to handle press events.
+- `renderLabel` (optional): Render the label of each tab.
+- `renderTabBarItem` (optional): Function to render each tab item.
+	```tsx
+	<TabsRoute
+	  placement="BOTTOM"
+	  renderTabBarItem={(props) => (
+	    <CustomTabBarItem {...props} />
+	  )}
+	>
+	  {/* Tab definitions */}
+	</TabsRoute>
+	```
+- `animated` (optional): Boolean to enable animations.
+- `duration` (optional): Duration of animations.
+
+# TopTabsRoutes (mobile only)
+
+Wrapper component for `TabsRoute` that automatically sets the tab placement to `TOP`.
+
+## Usage
+
+```tsx
+import react from 'react';
+import { SafeAreaView, Text } from 'react-native';
+import { TopTabsRoutes } from '@resourge/react-router/mobile';
+
+const App = () => {
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <TopTabsRoutes>
+                <TopTabsRoutes.Tab path="/home" label="Home">
+                    <Text>Home Screen</Text>
+                </TopTabsRoutes.Tab>
+                <TopTabsRoutes.Tab path="/settings" label="Settings">
+                    <Text>Settings Screen</Text>
+                </TopTabsRoutes.Tab>
+            </TopTabsRoutes>
+        </SafeAreaView>
+    );
+};
+export default App;
+```
+
+## Props
+
+- `children`: The child components to be rendered as tabs.
+- `renderTabBar` (optional): A function to render the custom tab bar.
+	```tsx
+	<TabsRoute
+	  placement="BOTTOM"
+	  renderTabBar={({ placement, children }) => (
+	    <CustomTabBar placement={placement}>
+	      {children}
+	    </CustomTabBar>
+	  )}
+	>
+	  {/* Tab definitions */}
+	</TabsRoute>
+	```
+- `historyMode` (optional): Mode for handling history.
+- `onPress` (optional): Function to handle press events.
+- `renderLabel` (optional): Render the label of each tab.
+- `renderTabBarItem` (optional): Function to render each tab item.
+	```tsx
+	<TabsRoute
+	  placement="BOTTOM"
+	  renderTabBarItem={(props) => (
+	    <CustomTabBarItem {...props} />
+	  )}
+	>
+	  {/* Tab definitions */}
+	</TabsRoute>
+	```
+- `animated` (optional): Boolean to enable animations.
+- `duration` (optional): Duration of animations.
+
+# LanguageRoute (web only)
 
 `LanguageRoute` component ensures that the language is present at the beginning of the route path within a react application. By analyzing the URL and enforcing language-specific routing rules, developers can create multilingual web applications that seamlessly adapt to user language preferences, enhancing accessibility and user experience.
 
@@ -212,12 +568,12 @@ Functionality:
 ## Usage
 
 ```tsx
-import React from 'react';
-import { BrowserRouter, LanguageRoute, Route } from '@resourge/react-router';
+import react from 'react';
+import { Router, LanguageRoute, Route } from '@resourge/react-router';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <LanguageRoute languages={['en', 'fr', 'es']} fallbackLanguage="en">
         <Route path="/home">
           <HomePage />
@@ -229,7 +585,7 @@ const App = () => {
           <NotFoundPage />
         </Route>
       </LanguageRoute>
-    </BrowserRouter>
+    </Router>
   );
 };
 ```
@@ -238,8 +594,8 @@ const App = () => {
 
 - `children` (ReactNode): The children components representing different routes to be rendered within the language-aware context.
 - `languages` (string[]): An array of supported languages for the application.
-- `checkLanguage` ((lang?: string) => boolean) (optional): Optional custom function to validate the language parameter.
-- `fallbackLanguage` (string) (optional): Fallback language to use when the language is missing or unsupported.
+- `checkLanguage` ((lang?: string) => boolean)(optional): Optional custom function to validate the language parameter.
+- `fallbackLanguage` (string)(optional): Fallback language to use when the language is missing or unsupported.
 
 # Navigate
 
@@ -248,29 +604,29 @@ const App = () => {
 ## Usage
 
 ```tsx
-import { BrowserRouter, Navigate } from '@resourge/react-router';
+import { Router, Navigate } from '@resourge/react-router';
 
 const MyComponent = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <h1>Welcome to My Component</h1>
       <Navigate to="/new-page" replace preventScrollReset />
-    </BrowserRouter>
+    </Router>
   );
 };
 ```
 
 ## Props
 
-- `to` (string | URL | { searchParams: Record<string, any> }): The destination to navigate to, which can be a string, URL object, or an object with search parameters.
+- `to` (string | URL | { searchParams: Record<string, any> }): Specifies the destination URL or object containing search parameters for navigation.
 - `action` (ActionType): Specifies the type of action to be performed during navigation. This option allows for fine-grained control over how navigation actions are handled. Possible values include:
 	- 'push': Pushes a new entry onto the browser history stack.
 	- 'replace': Replaces the current entry in the browser history stack.
 	- 'pop': Navigates back to the previous entry in the browser history stack.
 	- 'initial': Indicates that the navigation action is the initial page load.
-- `preventScrollReset` (boolean): Determines whether the scroll position should be preserved during navigation. When set to true, the browser will not reset the scroll position to the top of the page after navigation. This option is particularly useful for maintaining the user's scroll position when navigating within long pages or scrollable containers.
+- `preventScrollReset` (boolean)(web only): Determines whether the scroll position should be preserved during navigation. When set to true, the browser will not reset the scroll position to the top of the page after navigation. This option is particularly useful for maintaining the user's scroll position when navigating within long pages or scrollable containers.
 - `replace` (boolean): Specifies whether the navigation action should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL, effectively modifying the browser history without creating a new entry. 
-
+- `stack` (boolean)(mobile only): Determines whether to clear the history stack after the current URL before adding a new entry. Setting this option to true ensures that all history entries after the current URL are removed before the navigation creates a new history entry.
 
 # Redirect
 
@@ -279,14 +635,14 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { BrowserRouter, Redirect } from '@resourge/react-router';
+import { Router, Redirect } from '@resourge/react-router';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       {/* Redirect from /old-path to /new-path */}
       <Redirect from="/old-path" to="/new-path" replace />
-    </BrowserRouter>
+    </Router>
   );
 };
 ```
@@ -295,13 +651,13 @@ const App = () => {
 
 - `from` (string): Specifies the path from which the redirection should occur. When the current route matches the from path, the redirection defined by the to prop will be triggered.
 - `to` (string | URL | { searchParams: Record<string, any> }): Specifies the destination path or URL to which the redirection should occur. This can be a string representing the path, a URL object, or an object containing search parameters for the destination URL.
-- `replace` (boolean) (optional): Determines whether the redirection should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL.
+- `replace` (boolean)(optional): Determines whether the redirection should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL.
 
 # Link
 
-`Link` component extends the functionality of an `<a>` element in a react application, providing seamless navigation to the specified destination (`to`). It integrates with the `useLink` hook to manage navigation logic and utilizes the `url` hook to match the current route and apply styling based on the match status.
+`Link` component enhances navigation functionality within react applications, providing seamless navigation to a specified destination (`to`). It integrates with the `useLink` hook to manage navigation logic and utilizes the `url` hook to match the current route and apply styling based on the match status.
 
-## Usage
+## Usage (web only)
 
 ```tsx
 import { Link } from '@resourge/react-router';
@@ -321,21 +677,42 @@ const MyComponent = () => {
 };
 ```
 
+## Usage (mobile only)
+
+```tsx
+import { Link } from '@resourge/react-router/mobile';
+
+const MyComponent = () => {
+  return (
+    <Link 
+      to="/about" 
+      matchStyle={styles.activeLink}
+      onPress={handleClick}
+    >
+      About Us
+    </Link>
+  );
+};
+```
+
 ## Props
 
 - `to` (string | URL | { searchParams: Record<string, any> }): Specifies the destination URL to navigate to when the link is clicked.
 - `action` (ActionType)(optional): Specifies the action to be taken when navigating. Defaults to false.
 - `preventScrollReset` (boolean)(optional): Prevents the scroll position from being reset after navigation. Defaults to false.
 - `replace` (boolean)(optional): Determines whether to replace the current entry in the history stack instead of adding a new one. Defaults to false.
-- `className` (string)(optional): Specifies the CSS class(es) to be applied to the link element.
-- `matchClassName` (string)(optional): Specifies the CSS class to be applied to the link element when the destination URL matches the current route. This allows developers to apply custom styling to active links.
+- `className` (string)(optional)(web only): Specifies the CSS class(es) to be applied to the link element.
+- `matchClassName` (string)(optional)(web only): Specifies the CSS class to be applied to the link element when the destination URL matches the current route. This allows developers to apply custom styling to active links.
+- `matchStyle` (string)(optional)(mobile only): Specifies the style to be applied to the link element when the destination URL matches the current route. This allows developers to apply custom styling to active links.
 - `exact` (boolean)(optional): Determines whether the link should match the URL exactly. Defaults to false.
 - `hash` (boolean)(optional): Specifies whether to include the hash part of the URL when matching. Defaults to false.
 - `children` (ReactNode)(optional): Content to be rendered inside the link element.
-- `onClick` ((event: MouseEvent<HTMLAnchorElement>) => void)(optional): Callback function to be executed when the link is clicked.
-- `...otherAnchorHTMLAttributes` (AnchorHTMLAttributes<HTMLAnchorElement>)(optional): Additional attributes supported by the `<a>` element, such as `target`, `rel`, etc.
+- `onClick` ((event: MouseEvent<HTMLAnchorElement>) => void)(optional)(web only): Callback function to be executed when the link is clicked.
+- `onPress` ((event: GestureResponderEvent) => void)(optional)(mobile only): Callback function to be executed when the link is clicked.
+- `...otherAnchorHTMLAttributes` (AnchorHTMLAttributes<HTMLAnchorElement>)(optional)(web only): Additional attributes supported by the `<a>` element, such as `target`, `rel`, etc.
+- `...viewProps` (ViewProps)(optional)(mobile only): Additional attributes supported by the `<Pressable>` element.
 
-# Title
+# Title (web only)
 
 `Title` component is a simple utility component designed to update the title of a web page dynamically. It accepts a `children` prop, which should contain the desired title text.
 
@@ -357,7 +734,7 @@ const MyComponent = () => {
 
 - `children` (string)(optional): Text to be set as the page title.
 
-# Meta
+# Meta (web only)
 
 `Meta` component is a utility component designed to dynamically update meta tags in the `<head>` of a web page. It accepts a set of key-value pairs representing the attributes and content of the meta tags to be updated.
 
@@ -408,9 +785,9 @@ const MyComponent = () => {
 
 ## Props
 
-- `children` (ReactNode) (optional): The content to be wrapped by the Prompt component.
+- `children` (ReactNode)(optional): The content to be wrapped by the Prompt component.
 - `when` (boolean | Blocker): When true, it will prompt the user before navigating away from a screen. It also accepts a function that returns a boolean value.
-- `message` (string | ((currentUrl: URL, nextUrl: URL, action: ActionType) => string)) (optional): When set, it will prompt the user with a native confirm dialog and the specified message.
+- `message` (string | ((currentUrl: URL, nextUrl: URL, action: ActionType) => string))(optional)(web only): When set, it will prompt the user with a native confirm dialog and the specified message.
 
 ### usePromptNext
 
@@ -452,7 +829,7 @@ const MyComponent = () => {
 
 # useNavigate
 
-`useNavigate` hook provides a method for navigation by generating and manipulating URLs based on the provided destination and options. It offers a convenient way to handle navigation actions within a React application while allowing for customization through various options.
+`useNavigate` hook provides a method for navigation by generating and manipulating URLs based on the provided destination and options. It offers a convenient way to handle navigation actions within a react application while allowing for customization through various options.
 
 ## Usage
 
@@ -475,11 +852,41 @@ const MyComponent = () => {
 
 ## Parameters
 
-- `to` (string | URL | { searchParams: Record<string, any> }): The destination to navigate to, which can be a string, URL object, or an object with search parameters.
-- `options` (NavigateOptions) (optional): Options for navigation customization, such as the action type, scroll reset prevention, and path replacement.
-	- `action` (ActionType): Specifies the action type for the navigation. Possible values include 'push' and 'replace' or 'pop'. This option allows you to control how the navigation affects the browser history stack.
-	- `preventScrollReset` (boolean): Determines whether the navigation should prevent resetting the scroll position. By default, it is set to false, allowing the browser to reset the scroll position when navigating to a new page. Setting this option to true maintains the current scroll position during navigation.
-	- `replace` (boolean): Indicates whether the navigation should replace the current URL in the browser history instead of adding a new entry. By default, it is set to false, meaning navigation adds a new entry to the history stack. Setting this option to true replaces the current URL without creating a new history entry.
+- `to` (string | URL | { searchParams: Record<string, any> }): Specifies the destination URL or object containing search parameters for navigation.
+- `action` (ActionType): Specifies the type of action to be performed during navigation. This option allows for fine-grained control over how navigation actions are handled. Possible values include:
+	- 'push': Pushes a new entry onto the browser history stack.
+	- 'replace': Replaces the current entry in the browser history stack.
+	- 'pop': Navigates back to the previous entry in the browser history stack.
+	- 'initial': Indicates that the navigation action is the initial page load.
+- `preventScrollReset` (boolean)(web only): Determines whether the scroll position should be preserved during navigation. When set to true, the browser will not reset the scroll position to the top of the page after navigation. This option is particularly useful for maintaining the user's scroll position when navigating within long pages or scrollable containers.
+- `replace` (boolean): Specifies whether the navigation action should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL, effectively modifying the browser history without creating a new entry. 
+- `stack` (boolean)(mobile only): Determines whether to clear the history stack after the current URL before adding a new entry. Setting this option to true ensures that all history entries after the current URL are removed before the navigation creates a new history entry.
+
+# useBackNavigate
+
+`useBackNavigate` hook provides a method for navigation backwards or forwards based on the provided delta number. By default without delta, it will go back.
+
+## Usage
+
+```tsx
+import { useBackNavigate } from '@resourge/react-router';
+
+const MyComponent = () => {
+  const goBack = useBackNavigate();
+
+  const handleClick = () => {
+    goBack();
+  };
+
+  return (
+    <button onClick={handleClick}>Navigate to Previous Page</button>
+  );
+};
+```
+
+## Parameters
+
+- `delta` (number)(optional): The position in the history to which you want to move, relative to the current page. A negative value moves backwards, a positive value moves forwards. So, for example, backNavigate(2) moves forward two pages and backNavigate(-2) moves back two pages. When undefined it will go back.
 
 # useParams
 
@@ -508,7 +915,7 @@ const MyComponent = () => {
 
 # useSearchParams
 
-`useSearchParams` hook is a utility hook designed to retrieve and manage the current search parameters from the URL. It parses the search parameters and provides a reactive way to access and update them within a React component.
+`useSearchParams` hook is a utility hook designed to retrieve and manage the current search parameters from the URL. It parses the search parameters and provides a reactive way to access and update them within a react component.
 
 ## Usage
 
@@ -576,9 +983,9 @@ const ProductPage = () => {
 ## Parameters
 
 - `path` (string or string[]): Defines the route path(s) to match against the current URL.
-- `searchParams` (string or string[]) (optional): Specifies mandatory search parameters required for route matching.
-- `exact` (boolean, default: false) (optional): Specifies whether the URL must exactly match the route path.
-- `hash` (boolean, default: false) (optional): Indicates whether to treat the route path as a hash route.
+- `searchParams` (string or string[])(optional): Specifies mandatory search parameters required for route matching.
+- `exact` (boolean, default: false)(optional): Specifies whether the URL must exactly match the route path.
+- `hash` (boolean, default: false)(optional): Indicates whether to treat the route path as a hash route.
 
 # useSwitch
 
@@ -587,12 +994,12 @@ const ProductPage = () => {
 ## Usage
 
 ```tsx
-import React from 'react';
-import { BrowserRouter, useSwitch, Route, Navigate, Redirect } from '@resourge/react-router';
+import react from 'react';
+import { Router, useSwitch, Route, Navigate, Redirect } from '@resourge/react-router';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       {useSwitch(
         [
 		  <Route path="/home">
@@ -605,16 +1012,23 @@ const App = () => {
           <Navigate to="/default" />
 		]
       )}
-    </BrowserRouter>
+    </Router>
   );
 };
 ```
 
+## Parameters
+
+- `children` (Array<ReactElement<BaseRouteProps>> | ReactElement<BaseRouteProps>): Children components representing different routes to be rendered.
+- `animated` (ReactNode)(optional)(mobile only): Enables screen transition animations.
+- `animation` (ReactNode)(optional)(mobile only): Specifies a custom animation style for screen transitions.
+- `duration` (ReactNode)(optional)(mobile only): Sets the duration of the screen transition animations.
+
 # useLink
 
-`useLink` hook provides functionality to generate an `href` value and an `onClick` method for a link element (<a> tag) in a react application. It leverages the `useNavigate` and `useNormalizeUrl` hooks internally to facilitate seamless navigation to the specified destination.
+`useLink` hook provides functionality to generate an `href` value and a method for navigation within react application. It leverages the `useNavigate` and `useNormalizeUrl` hooks internally to facilitate seamless navigation to the specified destination.
 
-## Usage
+## Usage (web only)
 
 ```tsx
 import { useLink } from '@resourge/react-router';
@@ -626,6 +1040,22 @@ const MyComponent = () => {
     <a href={href} onClick={onClick}>
       Click me to navigate to the new page
     </a>
+  );
+};
+```
+
+## Usage (mobile only)
+
+```tsx
+import { useLink } from '@resourge/react-router/mobile';
+
+const MyComponent = () => {
+  const [href, onPress] = useLink({ to: '/new-page', replace: true });
+
+  return (
+    <Pressable onPress={onPress}>
+      Click me to navigate to the new page
+    </Pressable>
   );
 };
 ```
@@ -761,7 +1191,7 @@ const MyComponent = () => {
 ## Props
 
 - `when` (boolean | Blocker): When true, it will prompt the user before navigating away from a screen. It also accepts a function that returns a boolean value.
-- `message` (string | ((currentUrl: URL, nextUrl: URL, action: ActionType) => string)) (optional): When set, it will prompt the user with a native `confirm` dialog and the specified message. If not set, it will wait for the `continueNavigation` or `finishBlocking` method to be called.
+- `message` (string | ((currentUrl: URL, nextUrl: URL, action: ActionType) => string))(optional)(web only): When set, it will prompt the user with a native `confirm` dialog and the specified message. If not set, it will wait for the `continueNavigation` or `finishBlocking` method to be called.
 
 ## useLanguageContext
 
@@ -863,11 +1293,11 @@ console.log(resolvedUrl8.href); // Output: 'https://example.com/products'
 ## Parameters
 
 - `url` (string): The URL string to be resolved and normalized.
-- `baseURL` (string) (optional): The base URL string used for resolving relative URLs. If provided, relative URLs are resolved relative to this base URL.
+- `baseURL` (string)(optional): The base URL string used for resolving relative URLs. If provided, relative URLs are resolved relative to this base URL.
 
 # viteReactRouter
 
-`viteReactRouter` is a Vite plugin designed to simplify routing in React applications built with Vite. It automates the process of generating HTML files and sitemap for routes, making it easier to add SSO in your projects.
+`viteReactRouter` is a Vite plugin designed to simplify routing in react applications built with Vite. It automates the process of generating HTML files and sitemap for routes, making it easier to add SSO in your projects.
 
 ## Features
 
@@ -886,10 +1316,10 @@ export default {
         viteReactRouter({
             defaultInitialRoute: '/home',
             defaultLanguage: 'en',
-            description: 'My awesome React app',
-            keywords: ['React', 'Vite', 'Routing'],
+            description: 'My awesome react app',
+            keywords: ['react', 'Vite', 'Routing'],
             onDynamicRoutes: undefined, // Define your custom dynamic routes function here
-            title: 'My React App',
+            title: 'My react App',
             url: 'https://example.com'
         })
     ]

@@ -1,5 +1,3 @@
-export type InMemoryCode = Record<string, string>;
-
 export type VitePathRouteMetadata = { 
 	description: string | Record<string, string>
 	keywords: string[] | Record<string, string[]>

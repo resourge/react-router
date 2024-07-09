@@ -1,13 +1,14 @@
 import { createContext, useContext } from 'react';
 
 import { type ActionType } from '@resourge/react-search-params';
-import invariant from 'tiny-invariant';
+
+import { type NavigationActionType } from '../utils/createHistory/HistoryType';
 
 export type RouterContextType = {
-	action: ActionType
+	action: ActionType | NavigationActionType
 	url: URL
 
-	previousAction?: ActionType
+	previousAction?: ActionType | NavigationActionType
 	previousUrl?: URL
 };
 
@@ -19,8 +20,10 @@ export const RouterContext = createContext<RouterContextType | null>(null);
 export const useRouter = (): RouterContextType => {
 	const context = useContext(RouterContext);
 
-	if ( __DEV__ ) {
-		invariant(context, 'useRouter can only be used in the context of a <RouterContext>.');
+	if ( process.env.NODE_ENV === 'development' ) {
+		if ( !context ) {
+			throw new Error('useRouter can only be used in the context of a <RouterContext>.');
+		}
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion

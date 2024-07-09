@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Param } from 'src/lib/setupPaths/Param';
-import { path, type PathType, type Path } from 'src/lib/setupPaths/Path';
-import { SetupPaths } from 'src/lib/setupPaths/SetupPaths';
+import { path, type PathType, type Path } from 'src/lib/setupPaths/path/Path';
+import { SetupPaths } from 'src/lib/setupPaths/setupPaths/SetupPaths';
 
+import { ORIGIN } from '../constants';
 import { getUrlPattern } from '../getUrlPattern';
 
-const baseURL = 'http://localhost:3000';
+import 'urlpattern-polyfill';
 
 const createBaseUrl = (path: string) => {
-	return `${baseURL}${path}`;
+	return `${ORIGIN}${path}`;
 };
 
 export enum NewFieldPositionEnum {
@@ -91,7 +92,7 @@ describe('getUrlPattern', () => {
 		>
 	) => {
 		const url = getUrlPattern({
-			baseURL,
+			baseURL: ORIGIN,
 			path: pathPattern.path
 		});
 
@@ -181,7 +182,7 @@ describe('getUrlPattern', () => {
 		>
 	) => {
 		const url = getUrlPattern({
-			baseURL,
+			baseURL: ORIGIN,
 			path: pathPattern.path,
 			hash: true
 		});
@@ -194,7 +195,7 @@ describe('getUrlPattern', () => {
 			})
 		);
 
-		const basePath = `${baseURL}${_basePath.substring(_basePath.indexOf('#') + 1)}`;
+		const basePath = `${ORIGIN}${_basePath.substring(_basePath.indexOf('#') + 1)}`;
 
 		expect(
 			url.test(basePath)
@@ -246,7 +247,7 @@ describe('getUrlPattern', () => {
 	
 	it('path', () => {
 		const url = getUrlPattern({
-			baseURL,
+			baseURL: ORIGIN,
 			path: RoutePaths.DATA_SOURCE.FORM.EDIT.path
 		});
 

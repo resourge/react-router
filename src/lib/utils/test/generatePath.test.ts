@@ -1,6 +1,8 @@
 import { Param } from 'src/lib/setupPaths/Param';
-import { path } from 'src/lib/setupPaths/Path';
-import { SetupPaths } from 'src/lib/setupPaths/SetupPaths';
+import { path } from 'src/lib/setupPaths/path/Path';
+import { SetupPaths } from 'src/lib/setupPaths/setupPaths/SetupPaths';
+
+import 'urlpattern-polyfill';
 
 const DataSourceIdParam = Param('dataSourceId', {
 	optional: false,

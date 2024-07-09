@@ -49,7 +49,7 @@ export const matchRoute = (
 	if ( searchParams ) {
 		const _search = Array.isArray(searchParams) ? searchParams : [searchParams];
 
-		const _url = hash ? new URL(url.hash.replace('#', ''), url.origin) : new URL(url);
+		const _url = hash ? new URL(url.hash.replace('#', ''), url.origin) : new URL(url as unknown as string);
 
 		const keys = Array.from(_url.searchParams.keys());
 		if ( _search.some((search) => !keys.some((key) => key === search || search.replace(/\[\d\]/, '') === key)) ) {

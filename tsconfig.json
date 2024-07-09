@@ -10,7 +10,7 @@
 		],
 		"experimentalDecorators": true,
 		"allowJs": false,
-		"skipLibCheck": false,
+		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
@@ -31,11 +31,18 @@
 	"include": [
 		"./**/src/**/*",
 		".eslintrc.cjs",
-		"rollup.config.js",
+		"rollup.config.mjs",
+		"dist/components",
+		"dist/hooks",
+		"dist/utils",
+		"dist/index.d.ts"
 	],
 	"exclude": [
+		"dist",
+		"**/dist",
 		"_dist",
 		"src/examples/**/*",
+		"src/todo/**/*",
 		"./main.js",
 		"./src/lib_old"
 	],

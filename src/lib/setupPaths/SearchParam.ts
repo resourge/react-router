@@ -15,14 +15,21 @@ export type SearchParamConfig = {
 	optional?: boolean
 };
 
+export function searchParam(): string;
 export function searchParam<
 	Type = string
 >(): Type;
+export function searchParam(
+	config: SearchParamConfig & { optional: true }
+): string | undefined;
 export function searchParam<
 	Type = string
 >(
 	config: SearchParamConfig & { optional: true }
 ): Type | undefined;
+export function searchParam(
+	config: SearchParamConfig
+): string;
 export function searchParam<
 	Type = string
 >(
