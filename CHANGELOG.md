@@ -1,3 +1,10 @@
+## [1.25.1](https://github.com/resourge/react-router/compare/v1.25.0...v1.25.1) (2024-07-09)
+
+
+### Bug Fixes
+
+* **vite:** fix vite build on exporting route index.html ([1307183](https://github.com/resourge/react-router/commit/1307183d37051448dbcac3f6f03737d789243b4a))
+
 # [1.25.0](https://github.com/resourge/react-router/compare/v1.24.5...v1.25.0) (2024-07-09)
 
 
