@@ -120,7 +120,7 @@ export const useSwitch = (
 			activityState: new Animated.Value(match ? 0 : 1),
 			animation: new Animated.Value(match ? 0 : 1)
 		};
-	}), []);
+	}), [childs.length]);
 
 	const nextIndex = childs.findIndex(({ props }, index) => {
 		return getMatchRef(props, index);
