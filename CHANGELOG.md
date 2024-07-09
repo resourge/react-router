@@ -1,3 +1,10 @@
+## [1.25.4](https://github.com/resourge/react-router/compare/v1.25.3...v1.25.4) (2024-07-09)
+
+
+### Bug Fixes
+
+* **useswitch.native route.native:** fix useSwitch not working correctly when used inside conditions ([def8808](https://github.com/resourge/react-router/commit/def88082de9e62dc5dfbfdf4fa928c091bb7945f))
+
 ## [1.25.3](https://github.com/resourge/react-router/compare/v1.25.2...v1.25.3) (2024-07-09)
 
 
