@@ -1,3 +1,10 @@
+## [1.25.2](https://github.com/resourge/react-router/compare/v1.25.1...v1.25.2) (2024-07-09)
+
+
+### Bug Fixes
+
+* **@resourge/react-search-params:** update @resourge/react-search-params ([9cfcae6](https://github.com/resourge/react-router/commit/9cfcae6c7aa46b695be18aa0118e32ad82b60111))
+
 ## [1.25.1](https://github.com/resourge/react-router/compare/v1.25.0...v1.25.1) (2024-07-09)
 
 
