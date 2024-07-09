@@ -1,3 +1,10 @@
+## [1.25.3](https://github.com/resourge/react-router/compare/v1.25.2...v1.25.3) (2024-07-09)
+
+
+### Bug Fixes
+
+* **useswitch.native:** useSwitch fix animationRef not updating when more childs appear ([343977b](https://github.com/resourge/react-router/commit/343977b6466b7dee9a3b88003c8dd94f75e6bd73))
+
 ## [1.25.2](https://github.com/resourge/react-router/compare/v1.25.1...v1.25.2) (2024-07-09)
 
 
