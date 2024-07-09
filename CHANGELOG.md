@@ -1,3 +1,10 @@
+# [1.25.0](https://github.com/resourge/react-router/compare/v1.24.5...v1.25.0) (2024-07-09)
+
+
+### Features
+
+* **react-native:** add support for react-native apps ([2c1b349](https://github.com/resourge/react-router/commit/2c1b349bab57eb02a50c732c7be27539480fabf1))
+
 ## [1.24.5](https://github.com/resourge/react-router/compare/v1.24.4...v1.24.5) (2024-05-27)
 
 
