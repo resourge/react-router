@@ -1,3 +1,10 @@
+## [1.25.6](https://github.com/resourge/react-router/compare/v1.25.5...v1.25.6) (2024-08-22)
+
+
+### Bug Fixes
+
+* **vite:** fix JsxEmit import ([5f0c2d2](https://github.com/resourge/react-router/commit/5f0c2d29d6441c9aedc5239581fd2c9101d8dbda))
+
 ## [1.25.5](https://github.com/resourge/react-router/compare/v1.25.4...v1.25.5) (2024-08-22)
 
 
