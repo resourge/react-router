@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { type ConfigLoaderSuccessResult } from 'tsconfig-paths';
-import ts from 'typescript';
+import ts, { JsxEmit } from 'typescript';
 import { type PluginOption, type ResolvedConfig } from 'vite';
 
 import { addFile } from './utils/addFile';
@@ -19,7 +19,7 @@ const {
 	ScriptTarget
 } = ts;
 
-const routeMetadataReg = new RegExp('\\.routeMetadata\\s{0,}=\\s{0,}(setRouteMetadata)\\(([\\s\\S]*?)\\)', 'g');
+const routeMetadataReg = /\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\)/g;
 
 export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption => {
 	const _config = getDefaultViteConfig(config);
@@ -74,6 +74,7 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 							baseUrl: path.resolve(projectPath, './'),
 							rootDir: path.resolve(projectPath, './'),
 							types: ['vite/client'],
+							jsx: JsxEmit.ReactJSX,
 							paths: (tsConfig as ConfigLoaderSuccessResult).paths,
 							allowSyntheticDefaultImports: true,
 							allowJs: true

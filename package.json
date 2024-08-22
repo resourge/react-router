@@ -25,7 +25,7 @@
 				"./dist/index.d.ts"
 			],
 			"vite": [
-				"./dist/vite.d.ts"
+				"./dist/vite.d.mts"
 			],
 			"mobile": [
 				"./dist/index.native.d.ts"
