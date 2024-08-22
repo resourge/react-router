@@ -1,3 +1,10 @@
+## [1.25.5](https://github.com/resourge/react-router/compare/v1.25.4...v1.25.5) (2024-08-22)
+
+
+### Bug Fixes
+
+* **vite:** fix vite not generating all the pages ([af9b65f](https://github.com/resourge/react-router/commit/af9b65f6602cff28e2265b02c4043f8ea6a07113))
+
 ## [1.25.4](https://github.com/resourge/react-router/compare/v1.25.3...v1.25.4) (2024-07-09)
 
 
