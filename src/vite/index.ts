@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { type ConfigLoaderSuccessResult } from 'tsconfig-paths';
-import ts, { JsxEmit } from 'typescript';
+import ts from 'typescript';
 import { type PluginOption, type ResolvedConfig } from 'vite';
 
 import { addFile } from './utils/addFile';
@@ -16,7 +16,8 @@ import { stripCodeOfUnnecessaryCode } from './utils/utils';
 const {
 	ModuleKind,
 	ModuleResolutionKind,
-	ScriptTarget
+	ScriptTarget,
+	JsxEmit
 } = ts;
 
 const routeMetadataReg = /\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\)/g;
