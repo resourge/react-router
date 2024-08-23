@@ -20,8 +20,6 @@ const {
 	JsxEmit
 } = ts;
 
-const routeMetadataReg = /\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\)/g;
-
 export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption => {
 	const _config = getDefaultViteConfig(config);
 
@@ -55,7 +53,7 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 			}
 		},
 		async transform(code, id) {
-			if ( routeMetadataReg.test(code) ) {
+			if ( /\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\)/g.test(code) ) {
 				const match = /([a-zA-Z0-9]+)\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\);/g.exec(code);
 				if ( match ) {
 					// eslint-disable-next-line @typescript-eslint/no-unused-vars

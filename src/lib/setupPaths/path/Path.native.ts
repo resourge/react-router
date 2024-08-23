@@ -11,16 +11,16 @@ import {
 } from '../../types/StringTypes';
 import { type StringifyObjectParams } from '../../types/StringifyObjectParams';
 import {
-	type MergeParamsAndCreate,
 	type GetValueFromBeforePath,
 	type GetValueFromTransform,
 	type IsAllOptional,
-	type MergeObj,
 	type IsOptional,
 	type MakeObjectOptional,
-	type MakeUndefinedOptional
+	type MakeUndefinedOptional,
+	type MergeObj,
+	type MergeParamsAndCreate
 } from '../../types/types';
-import { FIT_IN_ALL_ROUTES, FIT_IN_ALL_ROUTES_REG } from '../../utils/constants';
+import { FIT_IN_ALL_ROUTES, getFitInAllRoutesReg } from '../../utils/constants';
 import { generatePath } from '../../utils/generatePath';
 import { resolveSlash } from '../../utils/resolveLocation';
 import { createPathWithCurrentLocationHasHash, getParams, getSearchParams } from '../../utils/utils';
@@ -456,7 +456,7 @@ export class Path<
 				if ( newPath.includes(FIT_IN_ALL_ROUTES) ) {
 					const url = new URL(WINDOWS.location.href);
 
-					url.pathname = resolveSlash(url.pathname, newPath.replace(FIT_IN_ALL_ROUTES_REG, ''));
+					url.pathname = resolveSlash(url.pathname, newPath.replace(getFitInAllRoutesReg(), ''));
 
 					newPath = url.href.replace(url.origin, '');
 				}
