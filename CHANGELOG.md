@@ -1,3 +1,10 @@
+## [1.25.7](https://github.com/resourge/react-router/compare/v1.25.6...v1.25.7) (2024-08-23)
+
+
+### Bug Fixes
+
+* **regex:** change regex from constant to function to prevent global tag error ([8b917c1](https://github.com/resourge/react-router/commit/8b917c1d29a0b3f662a3a5cbead803b2db8fea0d))
+
 ## [1.25.6](https://github.com/resourge/react-router/compare/v1.25.5...v1.25.6) (2024-08-22)
 
 
