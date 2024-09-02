@@ -116,7 +116,7 @@
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint-config-resourge": "^1.4.3",
 		"glob": "^11.0.0",
-		"jsdom": "^24.1.0",
+		"jsdom": "^25.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-native": "^0.74.3",
@@ -131,8 +131,8 @@
 		"typescript": "^5.4.5",
 		"vite": "^5.3.3",
 		"vite-plugin-checker": "^0.7.1",
-		"vite-tsconfig-paths": "^4.3.2",
-		"vitest": "^2.0.1"
+		"vite-tsconfig-paths": "^5.0.1",
+		"vitest": "^2.0.5"
 	},
 	"config": {
 		"commitizen": {
