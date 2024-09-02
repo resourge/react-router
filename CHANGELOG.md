@@ -1,3 +1,15 @@
+# [1.26.0](https://github.com/resourge/react-router/compare/v1.25.7...v1.26.0) (2024-09-02)
+
+
+### Bug Fixes
+
+* **vitest:** fix vitest tests not working with @resourge/history-store ([f8b38c3](https://github.com/resourge/react-router/commit/f8b38c3091494137150f4b7e81872404199432c2))
+
+
+### Features
+
+* **react-search-params:** change react-search-params to history-store to better work with others ([2897d80](https://github.com/resourge/react-router/commit/2897d80e4e78529f8348716049992721051ecba7))
+
 ## [1.25.7](https://github.com/resourge/react-router/compare/v1.25.6...v1.25.7) (2024-08-23)
 
 
