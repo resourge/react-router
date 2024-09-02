@@ -1,4 +1,4 @@
-import { createNewUrlWithSearch, parseParams } from '@resourge/react-search-params';
+import { createNewUrlWithSearch, parseParams } from '@resourge/history-store/utils';
 
 import { resolveLocation, resolveSlash } from '../../utils/resolveLocation';
 import { isValidUrl } from '../../utils/utils';

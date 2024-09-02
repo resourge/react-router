@@ -1,4 +1,4 @@
-import { type ActionType } from '@resourge/react-search-params';
+import { type NavigationActionType } from '@resourge/history-store';
 
 import { useBlocker } from '../useBlocker/useBlocker';
 import { type Blocker, type BlockerResult } from '../useBlocker/useBlockerTypes';
@@ -7,8 +7,8 @@ export type UsePromptProps = {
 	/**
 	 * When true blocks url change
 	 */
-	when: boolean | Blocker
-	message?: string | ((currentUrl: URL, nextUrl: URL, action: ActionType) => string)
+	when: boolean | Blocker<NavigationActionType>
+	message?: string | ((currentUrl: URL, nextUrl: URL, action: NavigationActionType) => string)
 };
 
 /**

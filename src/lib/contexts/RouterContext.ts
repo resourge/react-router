@@ -1,14 +1,13 @@
 import { createContext, useContext } from 'react';
 
-import { type ActionType } from '@resourge/react-search-params';
-
-import { type NavigationActionType } from '../utils/createHistory/HistoryType';
+import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
+import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
 
 export type RouterContextType = {
-	action: ActionType | NavigationActionType
+	action: RNavigationActionType | RNNavigationActionType
 	url: URL
 
-	previousAction?: ActionType | NavigationActionType
+	previousAction?: RNavigationActionType | RNNavigationActionType
 	previousUrl?: URL
 };
 

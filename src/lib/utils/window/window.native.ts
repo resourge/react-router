@@ -1,4 +1,4 @@
-import { History } from '../createHistory/createHistory.native';
+import { History } from '@resourge/history-store/mobile';
 
 export const WINDOWS = {
 	get location() {

@@ -1,6 +1,9 @@
-import { type ActionType } from '@resourge/react-search-params';
+import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
+import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
 
-export type Blocker = (currentUrl: URL, nextUrl: URL, action: ActionType) => boolean;
+type NavigationActionType = RNavigationActionType | RNNavigationActionType;
+
+export type Blocker<T extends NavigationActionType> = (currentUrl: URL, nextUrl: URL, action: T) => boolean;
 
 export type BlockerResult = {
 	continueNavigation: () => void

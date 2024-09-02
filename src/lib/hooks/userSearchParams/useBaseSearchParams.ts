@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { parseSearchParams } from '@resourge/react-search-params';
+import { parseSearchParams } from '@resourge/history-store/utils';
 
 import { useRoute } from '../../contexts/RouteContext';
 

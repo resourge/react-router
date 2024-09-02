@@ -1,10 +1,4 @@
-import {
-	Fragment,
-	type ReactNode,
-	Suspense,
-	forwardRef,
-	useRef
-} from 'react';
+import { Suspense, forwardRef, useRef } from 'react';
 import { type View } from 'react-native';
 
 import { Screen, type ScreenProps } from 'react-native-screens';
@@ -22,7 +16,7 @@ export type RouteProps = BasicRouteProps & ScreenProps;
  *
  * Note: This component mainly uses `useMatchRoute` hook. And Route without `path` will be treated as normal components.
  */
-const Route = forwardRef<Screen | View, RouteProps>((props, ref) => {
+const Route = forwardRef<View, RouteProps>((props, ref) => {
 	const match = useRouteMatch(props);
 	const isFirstRenderRef = useRef(false);
 
@@ -42,28 +36,21 @@ const Route = forwardRef<Screen | View, RouteProps>((props, ref) => {
 		isFirstRenderRef.current = true;
 	}
 
-	// @ts-expect-error _isInsideSwitch does exist but I want it so be exclusive to switch
-	const hideScreen = props._hideScreen;
-
-	const Component = (children: ReactNode) => hideScreen ? <>{ children }</> : (
+	return (
 		<Screen
 			{...props}
-			ref={ref as any}
+			ref={ref}
 			style={[
 				Styles.screen, 
 				props.style
 			]}
 		>
-			{ children }
+			<RouteContext.Provider value={typeof match === 'string' ? undefined : (match ?? undefined)}>
+				<Suspense fallback={props.fallback ?? defaultFallback}>
+					{ props.children }
+				</Suspense>
+			</RouteContext.Provider>
 		</Screen>
-	);
-
-	return Component(
-		<RouteContext.Provider value={typeof match === 'string' ? undefined : (match ?? undefined)}>
-			<Suspense fallback={props.fallback ?? defaultFallback}>
-				{ props.children }
-			</Suspense>
-		</RouteContext.Provider>
 	);
 });
 

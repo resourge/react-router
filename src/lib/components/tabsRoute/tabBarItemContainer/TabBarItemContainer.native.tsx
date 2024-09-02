@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, type ReactNode } from 'react';
 import { Animated, Easing, View } from 'react-native';
 
-import { useNavigate, type NavigateOptions } from 'src/lib/hooks/useNavigate/useNavigate.native';
+import { type NavigateOptions } from '@resourge/history-store/mobile';
+
+import { useNavigate } from 'src/lib/hooks/useNavigate/useNavigate.native';
 import { type NavigateMethod } from 'src/lib/hooks/useNavigate/useNavigateType';
 
 import { useMatchPath } from '../../../hooks/useMatchPath';
@@ -95,7 +97,7 @@ const TabBarItemContainer: React.FC<TabBarItemContainerProps> = ({
 			navigate(
 				_path, 
 				{
-					stack: true 
+					action: 'stack' 
 				}
 			);
 		};

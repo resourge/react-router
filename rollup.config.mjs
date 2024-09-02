@@ -62,7 +62,8 @@ const EXTERNAL = Array.from(
 		...Object.keys(dependencies),
 		...Object.keys(devDependencies),
 		'react/jsx-runtime',
-		'@resourge/react-search-params/dist/utils/parseSearch'
+		'@resourge/history-store/mobile',
+		'@resourge/history-store/utils'
 	]).values()
 );
 

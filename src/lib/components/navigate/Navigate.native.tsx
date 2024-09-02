@@ -1,6 +1,8 @@
 import { useEffect, type FC } from 'react';
 
-import { useNavigate, type NavigateOptions } from '../../hooks/useNavigate/useNavigate.native';
+import { type NavigateOptions } from '@resourge/history-store/mobile';
+
+import { useNavigate } from '../../hooks/useNavigate/useNavigate.native';
 import { type NavigateTo } from '../../hooks/useNormalizeUrl/useNormalizeUrlUtils';
 
 export type NavigateProps = {

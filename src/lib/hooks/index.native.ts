@@ -1,3 +1,4 @@
+export { type NavigateOptions } from '@resourge/history-store/mobile';
 export { useBeforeURLChange } from './useBeforeURLChange/useBeforeURLChange.native';
 export { useBackNavigate } from './useBackNavigate/useBackNavigate.native';
 export type { BackNavigateMethod } from './useBackNavigate/useBackNavigateType';
@@ -8,7 +9,6 @@ export { type UseLinkProps } from './useLink/useLink.native';
 export { useMatchPath } from './useMatchPath';
 export { type BaseMatchPathProps } from './useMatchPath';
 export { useNavigate } from './useNavigate/useNavigate.native';
-export type { NavigateOptions } from './useNavigate/useNavigate.native';
 export { type NavigateTo } from './useNormalizeUrl/useNormalizeUrlUtils';
 export { useNormalizeUrl } from './useNormalizeUrl/useNormalizeUrl.native';
 export { type UsePromptProps } from './usePrompt/usePrompt';

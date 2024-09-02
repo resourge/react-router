@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { type ActionType, BeforeUrlChangeEvent } from '@resourge/react-search-params';
-
-import { History } from 'src/lib/utils/createHistory/createHistory.native';
+import { History, type NavigationActionType } from '@resourge/history-store/mobile';
 
 /**
  * Fires before the route changes.
@@ -11,16 +9,14 @@ import { History } from 'src/lib/utils/createHistory/createHistory.native';
  * 		`true` routing will occur normally
  *  	`false` will prevent route from changing
  */
-export const useBeforeURLChange = (beforeURLChange: (event: BeforeUrlChangeEvent) => boolean) => {
+export const useBeforeURLChange = (beforeURLChange: (url: URL, action: NavigationActionType, next: () => void) => boolean) => {
 	const beforeURLChangeRef = useRef(beforeURLChange);
 
 	beforeURLChangeRef.current = beforeURLChange;
 
 	useEffect(() => {
-		const _beforeURLChange = (event: BeforeUrlChangeEvent) => beforeURLChangeRef.current(event);
-
-		const { remove } = History.addEventListener('beforeURLChange', (current, _, next) => {
-			return _beforeURLChange(new BeforeUrlChangeEvent(current.action as ActionType, current.url, next));
+		const remove = History.addEventListener('beforeURLChange', (current, next) => {
+			return beforeURLChangeRef.current(current.url, current.action, next);
 		});
 
 		return remove;

@@ -1,4 +1,4 @@
-import { History } from 'src/lib/utils/createHistory/createHistory.native';
+import { History } from '@resourge/history-store/mobile';
 
 import { useLanguageContext } from '../../contexts/LanguageContext';
 import { useRoute } from '../../contexts/RouteContext';

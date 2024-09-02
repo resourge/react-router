@@ -1,11 +1,57 @@
-import { type ReactNode, Suspense, type FC } from 'react';
+import {
+	type ReactNode,
+	Suspense,
+	type FC,
+	Children,
+	type ReactElement
+} from 'react';
+import {
+	type Animated,
+	type ScaledSize,
+	type StyleProp,
+	type ViewStyle
+} from 'react-native';
 
+import { ScreenContainer } from 'react-native-screens';
+
+import { type TabProps } from 'src/lib/contexts/TabConfigContext';
 import { type UseSwitchProps } from 'src/lib/hooks/useSwitch/useSwitch.native';
+import { Styles } from 'src/lib/utils/Styles.native';
 
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { useSwitch } from '../../hooks/useSwitch/useSwitch.native';
+import AnimatedRoute from '../animatedRoute/AnimatedRoute';
+import { type RouteProps } from '../index.native';
 
 export type SwitchProps = UseSwitchProps & {
+	/**
+	 * Show animation when switching Screens
+	 * @default true
+	 * @platform mobile
+	 */
+	animated?: boolean
+
+	/**
+	 * Animation when switching screens
+	 * @default (animation, { width }) => ({
+			transform: [
+				{
+					translateX: animation.interpolate({
+						inputRange: [-1, 0, 1],
+						outputRange: [-width, 0, width]
+					})
+				}
+			]
+		})
+	 * @platform mobile
+	 */
+	animation?: (animation: Animated.Value, windowDimensions: ScaledSize) => StyleProp<ViewStyle>
+	/**
+	 * Animation duration
+	 * @default 500
+	 * @platform mobile
+	 */
+	duration?: number
 	fallback?: ReactNode
 };
 
@@ -14,14 +60,49 @@ export type SwitchProps = UseSwitchProps & {
  *
  * Note: This component mainly uses `useSwitch` hook.
  */
-const Switch: FC<SwitchProps> = (props: SwitchProps) => {
-	const child = useSwitch(props);
+const Switch: FC<SwitchProps> = ({
+	children,
+	animated,
+	animation,
+	duration,
+	fallback
+}: SwitchProps) => {
+	const {
+		matchRef, match, side 
+	} = useSwitch({
+		children 
+	});
 	const defaultFallback = useDefaultFallbackContext();
 
 	return (
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-		<Suspense fallback={props.fallback || defaultFallback}>
-			{ child }
+		<Suspense fallback={fallback || defaultFallback}>
+			<ScreenContainer
+				style={Styles.screen}
+			>
+				{
+					(Children.toArray(children) as Array<ReactElement<RouteProps & TabProps>>)
+					.map((child, index) => {
+						const { props } = child;
+						const isFocused = Boolean(matchRef.current === index);
+				
+						return (
+							<AnimatedRoute
+								key={index}
+								animated={animated}
+								animation={animation}
+								duration={duration}
+								isFocused={isFocused}
+								match={isFocused ? match : null}
+								side={side}
+								{...props}
+							>
+								{ child }
+							</AnimatedRoute>
+						);
+					})
+				}
+			</ScreenContainer>
 		</Suspense>
 	);
 };

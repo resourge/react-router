@@ -6,9 +6,11 @@ import {
 	type PressableProps
 } from 'react-native';
 
+import { type NavigateOptions } from '@resourge/history-store/mobile';
+
 import { ORIGIN } from 'src/lib/utils/constants';
 
-import { useNavigate, type NavigateOptions } from '../useNavigate/useNavigate.native';
+import { useNavigate } from '../useNavigate/useNavigate.native';
 import { useNormalizeUrl } from '../useNormalizeUrl/useNormalizeUrl.native';
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';
 
@@ -23,7 +25,7 @@ export type UseLinkProps = {
  * Hook that returns 'href' and onClick method to navigate to link
  */
 export const useLink = ({
-	to, replace, action, onPress, target, stack
+	to, replace, action, onPress, target
 }: UseLinkProps) => {
 	const navigate = useNavigate();
 	const normalizeUrl = useNormalizeUrl();
@@ -65,8 +67,7 @@ export const useLink = ({
 				url, 
 				{
 					action,
-					replace,
-					stack
+					replace
 				}
 			);
 		}

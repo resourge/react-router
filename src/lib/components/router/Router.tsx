@@ -1,6 +1,6 @@
-import { useMemo, type FC } from 'react';
+import { type FC } from 'react';
 
-import { useUrl } from '@resourge/react-search-params';
+import { useUrl } from 'src/lib/hooks/useUrl/useUrl';
 
 import { DefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { RouterContext } from '../../contexts/RouterContext';
@@ -12,24 +12,14 @@ export type RouterProps = BaseRouterProps;
 /**
  * First component that creates the context for the rest of the children.
  *
- * Note: This component mainly uses `useUrl` hook from '@resourge/react-search-params'.
+ * Note: This component mainly uses `useUrl` hook.
  */
 const Router: FC<RouterProps> = ({ children, defaultFallback }) => {
-	const [url, action, previousValue] = useUrl();
+	const value = useUrl();
 
 	return (
 		<RouterContext.Provider 
-			value={
-				useMemo(
-					() => ({
-						url,
-						action,
-						previousUrl: previousValue ? previousValue[0] : undefined,
-						previousAction: previousValue ? previousValue[1] : undefined
-					}), 
-					[url, action, previousValue]
-				)
-			}
+			value={value}
 		>
 			<DefaultFallbackContext.Provider 
 				value={defaultFallback}

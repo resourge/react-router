@@ -1,3 +1,5 @@
+import { type NavigationActionType } from '@resourge/history-store/mobile';
+
 import { type Blocker } from '../index.native';
 import { useBlocker } from '../useBlocker/useBlocker.native';
 import { type BlockerResult } from '../useBlocker/useBlockerTypes';
@@ -6,7 +8,7 @@ export type UsePromptProps = {
 	/**
 	 * When true blocks url change
 	 */
-	when: boolean | Blocker
+	when: boolean | Blocker<NavigationActionType>
 };
 
 /**

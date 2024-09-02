@@ -1,4 +1,4 @@
-import { parseParams } from '@resourge/react-search-params';
+import { parseParams } from '@resourge/history-store/utils';
 
 import { ORIGIN } from './constants';
 import { WINDOWS } from './window/window';

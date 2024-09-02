@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
-import { parseSearchParams, type UrlChangeEvent } from '@resourge/react-search-params';
+import { type UrlChangeEvent } from '@resourge/history-store';
+import { parseSearchParams } from '@resourge/history-store/utils';
 
 import { getHrefWhenHashOrNormal } from '../../utils/utils';
 

@@ -1,11 +1,13 @@
-import { type ActionType } from '@resourge/react-search-params';
+import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
+import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
 
 import { useRouter } from '../contexts/RouterContext';
-import { type NavigationActionType } from '../utils/createHistory/HistoryType';
+
+type NavigationActionType = RNavigationActionType | RNNavigationActionType;
 
 /**
  * Hook to access action that lead to the current `URL`.
  */
-export const useAction = (): ActionType | NavigationActionType => {
+export const useAction = (): NavigationActionType => {
 	return useRouter().action;
 };

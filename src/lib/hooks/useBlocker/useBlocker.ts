@@ -1,3 +1,5 @@
+import { type NavigationActionType } from '@resourge/history-store';
+
 import { useBeforeURLChange } from '../useBeforeURLChange/useBeforeURLChange';
 
 import { makeBlocker } from './makeBlocker';
@@ -7,4 +9,4 @@ import { makeBlocker } from './makeBlocker';
  * @param blocker {Blocker}
  * @returns blockerResult {BlockerResult}
  */
-export const useBlocker = makeBlocker(useBeforeURLChange);
+export const useBlocker = makeBlocker<NavigationActionType>(useBeforeURLChange);

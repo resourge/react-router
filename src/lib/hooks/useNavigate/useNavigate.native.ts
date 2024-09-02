@@ -1,11 +1,9 @@
-import { History, type NavigateConfig } from 'src/lib/utils/createHistory/createHistory.native';
+import { HistoryStore, type NavigateOptions } from '@resourge/history-store/mobile';
 
 import { useNormalizeUrl } from '../useNormalizeUrl/useNormalizeUrl.native';
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';
 
-import { type NavigateMethod, type BaseNavigateOptions } from './useNavigateType';
-
-export type NavigateOptions = Omit<BaseNavigateOptions, 'preventScrollReset'> & Omit<NavigateConfig, 'replace'>;
+import { type NavigateMethod } from './useNavigateType';
 
 /**
  * Returns a method for navigation `to`.
@@ -14,20 +12,17 @@ export const useNavigate = (): NavigateMethod<NavigateOptions> => {
 	const generateUrl = useNormalizeUrl();
 
 	return (to: NavigateTo, options: NavigateOptions = {}) => {
-		const {
-			replace = false, action, stack
-		} = options;
+		const { replace = false, action } = options;
 
 		const url = generateUrl(to);
 
-		if ( History.state.url.href === url.href ) {
+		if ( HistoryStore.getValue()[0].href === url.href ) {
 			return;
 		}
 
-		History.navigate(url, {
+		HistoryStore.navigate(url, {
 			replace,
-			action,
-			stack 
+			action
 		});
 	};
 };

@@ -11,7 +11,7 @@ import { View } from 'react-native';
 import { TabConfigContext, type TabProps } from 'src/lib/contexts/TabConfigContext';
 import { Styles } from 'src/lib/utils/Styles.native';
 
-import { type RouteProps } from '../route/Route.native';
+import Route, { type RouteProps } from '../route/Route.native';
 import Switch from '../switch/Switch.native';
 
 import TabBar, { type TabBarPropsPlacement } from './tabBar/TabBar.native';
@@ -117,12 +117,6 @@ function TabsRoute(
 	);
 }
 
-function TabRoute({ children }: TabRouteTabProps) {
-	return (
-		<>{ children }</>
-	);
-}
-
-TabsRoute.Tab = TabRoute;
+TabsRoute.Tab = Route as (props: TabRouteTabProps) => JSX.Element;
 
 export default TabsRoute;

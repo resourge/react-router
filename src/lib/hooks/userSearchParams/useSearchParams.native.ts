@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 
-import { parseSearchParams } from '@resourge/react-search-params/dist/utils/parseSearch';
-
-import { type NavigationState } from 'src/lib/utils/createHistory/HistoryType';
-import { History } from 'src/lib/utils/createHistory/createHistory.native';
+import { History, type NavigationState } from '@resourge/history-store/mobile';
+import { parseSearchParams } from '@resourge/history-store/utils';
 
 import { getHrefWhenHashOrNormal } from '../../utils/utils';
 
@@ -27,7 +25,7 @@ export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T
 			setSearchParams(parseSearchParams<T>(searchParams, defaultParams));
 		};
 
-		const { remove } = History.addEventListener('URLChange', onUrlChange);
+		const remove = History.addEventListener('URLChange', onUrlChange);
 
 		return () => remove();
 	// eslint-disable-next-line react-hooks/exhaustive-deps

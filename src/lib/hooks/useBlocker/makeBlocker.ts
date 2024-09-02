@@ -1,19 +1,22 @@
 import { useState } from 'react';
 
-import { type BeforeUrlChangeEvent } from '@resourge/react-search-params';
+import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
+import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
 
 import { useRouter } from '../../contexts/RouterContext';
 
 import { type Blocker, type BlockerResult } from './useBlockerTypes';
+
+type NavigationActionType = RNavigationActionType | RNNavigationActionType;
 
 /**
  * Fires before the route change, and serves to block or not the current route.
  * @param blocker {Blocker}
  * @returns blockerResult {BlockerResult}
  */
-export function makeBlocker(useBeforeURLChange: (beforeURLChange: (event: BeforeUrlChangeEvent) => boolean) => void) {
+export function makeBlocker<T extends NavigationActionType>(useBeforeURLChange: (beforeURLChange: (url: URL, action: T, next: () => void) => boolean) => void) {
 	const useBlocker = (
-		blocker: Blocker
+		blocker: Blocker<T>
 	): BlockerResult => {
 		const { url } = useRouter();
 		const [{ isBlocking, continueNavigation }, setBlocker] = useState<{ continueNavigation: () => void, isBlocking: boolean }>({
@@ -28,16 +31,16 @@ export function makeBlocker(useBeforeURLChange: (beforeURLChange: (event: Before
 			});
 		};
 
-		useBeforeURLChange((event) => {
+		useBeforeURLChange((nextUrl, action, next) => {
 			const continueNavigation = () => {
-				event.next();
+				next();
 				finishBlocking();
 			};
-			const isBlocking = blocker(url, event.url, event.action);
+			const isBlocking = blocker(url, nextUrl, action);
 		
 			if ( isBlocking ) {
 				setBlocker({
-					isBlocking: event.action !== 'beforeunload',
+					isBlocking: action !== 'beforeunload',
 					continueNavigation
 				});
 			}

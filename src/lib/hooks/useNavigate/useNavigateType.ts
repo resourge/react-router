@@ -1,12 +1,15 @@
-import { type ActionType } from '@resourge/react-search-params';
+import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
+import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
 
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';
+
+type NavigationActionType = RNavigationActionType | RNNavigationActionType;
 
 export type BaseNavigateOptions = {
 	/**
 	 * A way to specify the action
 	 */
-	action?: Exclude<ActionType, 'initial'>
+	action?: Exclude<NavigationActionType, 'initial'>
 	/**
 	 * Prevents scroll reset
 	 * @default false

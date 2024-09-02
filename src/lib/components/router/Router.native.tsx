@@ -1,15 +1,11 @@
-import {
-	useEffect,
-	useMemo,
-	useState,
-	type FC
-} from 'react';
+import { useMemo, type FC } from 'react';
 import { View } from 'react-native';
 
+import { History } from '@resourge/history-store/mobile';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { useUrl } from 'src/lib/hooks/useUrl/useUrl.native';
 import { Styles } from 'src/lib/utils/Styles.native';
-import { History } from 'src/lib/utils/createHistory/createHistory.native';
 
 import { DefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { RouterContext } from '../../contexts/RouterContext';
@@ -28,45 +24,17 @@ export type RouterProps = BaseRouterProps & {
 
 /**
  * First component that creates the context for the rest of the children.
- *
- * Note: This component mainly uses `useUrl` hook from '@resourge/react-search-params'.
  */
 const Router: FC<RouterProps> = ({
 	children, defaultFallback, linking 
 }) => {
-	const [{ url, action }, setState] = useState(() => {
+	useMemo(() => {
 		if ( linking ) {
 			History.initial(linking((url) => History.navigate(url)));
 		}
-		
-		return History.state;
-	});
-
-	useEffect(() => {
-		const { remove } = History.addEventListener('URLChange', (current, previous) => {
-			if ( current.action !== previous.action || current.url !== previous.url ) {
-				setState(Object.assign({}, current));
-			}
-		});
-
-		return () => {
-			remove();
-		};
 	}, []);
-
-	const value = useMemo(
-		() => {
-			const history = History.getPreviousHistory();
-
-			return {
-				url,
-				action,
-				previousUrl: history ? history.url : undefined,
-				previousAction: history ? history.action : undefined
-			};
-		}, 
-		[url, action]
-	);
+	
+	const value = useUrl();
 
 	return (
 		<SafeAreaProvider>
