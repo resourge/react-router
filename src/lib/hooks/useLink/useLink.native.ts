@@ -8,8 +8,7 @@ import {
 
 import { type NavigateOptions } from '@resourge/history-store/mobile';
 
-import { ORIGIN } from 'src/lib/utils/constants';
-
+import { ORIGIN } from '../../utils/constants';
 import { useNavigate } from '../useNavigate/useNavigate.native';
 import { useNormalizeUrl } from '../useNormalizeUrl/useNormalizeUrl.native';
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';

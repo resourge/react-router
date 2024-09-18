@@ -3,10 +3,9 @@ import { Animated, Easing, View } from 'react-native';
 
 import { type NavigateOptions } from '@resourge/history-store/mobile';
 
-import { useNavigate } from 'src/lib/hooks/useNavigate/useNavigate.native';
-import { type NavigateMethod } from 'src/lib/hooks/useNavigate/useNavigateType';
-
 import { useMatchPath } from '../../../hooks/useMatchPath';
+import { useNavigate } from '../../hooks/useNavigate/useNavigate.native';
+import { type NavigateMethod } from '../../hooks/useNavigate/useNavigateType';
 import TabBarItem from '../tabBarItem/TabBarItem.native';
 
 /**

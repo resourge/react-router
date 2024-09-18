@@ -1,8 +1,7 @@
 import { Children, cloneElement, type ReactElement } from 'react';
 
-import { type BaseRouteProps } from 'src/lib/components/route/RouteUtils';
-
 import { type RedirectProps } from '../../components/redirect/Redirect';
+import { type BaseRouteProps } from '../../components/route/RouteUtils';
 import { useLanguageContext } from '../../contexts/LanguageContext';
 import { useRouter } from '../../contexts/RouterContext';
 

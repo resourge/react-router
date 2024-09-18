@@ -1,11 +1,10 @@
 import { type ReactNode } from 'react';
 
-import { ORIGIN } from 'src/lib/utils/constants';
-import { WINDOWS } from 'src/lib/utils/window/window';
-
 import { LanguageContext } from '../../contexts/LanguageContext';
 import { useRouter } from '../../contexts/RouterContext';
+import { ORIGIN } from '../../utils/constants';
 import { resolveSlash } from '../../utils/resolveLocation';
+import { WINDOWS } from '../../utils/window/window';
 import Navigate from '../navigate/Navigate';
 
 const LANGUAGE_PARAM = '/:lang';

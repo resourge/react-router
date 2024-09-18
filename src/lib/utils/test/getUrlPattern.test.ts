@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Param } from 'src/lib/setupPaths/Param';
-import { path, type PathType, type Path } from 'src/lib/setupPaths/path/Path';
-import { SetupPaths } from 'src/lib/setupPaths/setupPaths/SetupPaths';
-
+import { Param } from '../../setupPaths/Param';
+import { path, type PathType, type Path } from '../../setupPaths/path/Path';
+import { SetupPaths } from '../../setupPaths/setupPaths/SetupPaths';
 import { ORIGIN } from '../constants';
 import { getUrlPattern } from '../getUrlPattern';
 

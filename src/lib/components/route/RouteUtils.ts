@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react';
 
-import { useMatchPath, type MatchPathProps } from 'src/lib/hooks/useMatchPath';
-import { type MatchResult } from 'src/lib/utils/matchPath';
-import { validateRouteProps } from 'src/lib/utils/validateRouteProps';
+import { useMatchPath, type MatchPathProps } from '../../hooks/useMatchPath';
+import { type MatchResult } from '../../utils/matchPath';
+import { validateRouteProps } from '../../utils/validateRouteProps';
 
 export type BaseRouteProps = Omit<MatchPathProps, 'path'> & {
 	path?: MatchPathProps['path']

@@ -8,9 +8,8 @@ import {
 } from 'react';
 import { View } from 'react-native';
 
-import { TabConfigContext, type TabProps } from 'src/lib/contexts/TabConfigContext';
-import { Styles } from 'src/lib/utils/Styles.native';
-
+import { TabConfigContext, type TabProps } from '../../contexts/TabConfigContext';
+import { Styles } from '../../utils/Styles.native';
 import Route, { type RouteProps } from '../route/Route.native';
 import Switch from '../switch/Switch.native';
 

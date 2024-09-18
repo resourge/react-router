@@ -14,12 +14,11 @@ import {
 
 import { ScreenContainer } from 'react-native-screens';
 
-import { type TabProps } from 'src/lib/contexts/TabConfigContext';
-import { type UseSwitchProps } from 'src/lib/hooks/useSwitch/useSwitch.native';
-import { Styles } from 'src/lib/utils/Styles.native';
-
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
+import { type TabProps } from '../../contexts/TabConfigContext';
+import { type UseSwitchProps } from '../../hooks/useSwitch/useSwitch.native';
 import { useSwitch } from '../../hooks/useSwitch/useSwitch.native';
+import { Styles } from '../../utils/Styles.native';
 import AnimatedRoute from '../animatedRoute/AnimatedRoute';
 import { type RouteProps } from '../index.native';
 

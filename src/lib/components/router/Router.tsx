@@ -1,9 +1,8 @@
 import { type FC } from 'react';
 
-import { useUrl } from 'src/lib/hooks/useUrl/useUrl';
-
 import { DefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { RouterContext } from '../../contexts/RouterContext';
+import { useUrl } from '../../hooks/useUrl/useUrl';
 
 import { type BaseRouterProps } from './RouterPropsType';
 

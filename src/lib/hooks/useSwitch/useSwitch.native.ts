@@ -5,12 +5,11 @@ import {
 	useRef
 } from 'react';
 
-import { type BaseRouteProps } from 'src/lib/components/route/RouteUtils';
-import { type TabProps } from 'src/lib/contexts/TabConfigContext';
-
 import { type RouteProps } from '../../components/route/Route.native';
+import { type BaseRouteProps } from '../../components/route/RouteUtils';
 import { useLanguageContext } from '../../contexts/LanguageContext';
 import { useRouter } from '../../contexts/RouterContext';
+import { type TabProps } from '../../contexts/TabConfigContext';
 
 import { type SwitchRouteProps, getMatchFromProps, isNavigateOrRedirect } from './useSwitchUtils';
 

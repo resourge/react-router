@@ -14,9 +14,9 @@ import {
 	type ViewStyle
 } from 'react-native';
 
-import { IsFocusedContext } from 'src/lib/contexts/IsFocusedContext';
-import { useAction } from 'src/lib/hooks/useAction';
-import { type MatchResult } from 'src/lib/utils/matchPath';
+import { IsFocusedContext } from '../../contexts/IsFocusedContext';
+import { useAction } from '../../hooks/useAction';
+import { type MatchResult } from '../../utils/matchPath';
 
 type Props = {
 	children: ReactElement
@@ -46,7 +46,7 @@ type Props = {
 	animation?: (animation: Animated.Value, windowDimensions: ScaledSize) => StyleProp<ViewStyle> 
 	/**
 	 * Animation duration
-	 * @default 500
+	 * @default 200
 	 * @platform mobile
 	 */
 	duration?: number
@@ -54,7 +54,7 @@ type Props = {
 
 const AnimatedRoute: React.FC<Props> = ({
 	children,
-	duration = 500,
+	duration = 200,
 	animated = true,
 	/* animation = (animation, { width }) => ({
 		opacity: animation.interpolate({

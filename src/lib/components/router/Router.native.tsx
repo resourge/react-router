@@ -4,11 +4,10 @@ import { View } from 'react-native';
 import { History } from '@resourge/history-store/mobile';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { useUrl } from 'src/lib/hooks/useUrl/useUrl.native';
-import { Styles } from 'src/lib/utils/Styles.native';
-
 import { DefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { RouterContext } from '../../contexts/RouterContext';
+import { useUrl } from '../../hooks/useUrl/useUrl.native';
+import { Styles } from '../../utils/Styles.native';
 import HeaderConfig from '../headerConfig/HeaderConfig.native';
 
 import { type BaseRouterProps } from './RouterPropsType';

@@ -1,6 +1,6 @@
-import { Param } from 'src/lib/setupPaths/Param';
-import { path } from 'src/lib/setupPaths/path/Path';
-import { SetupPaths } from 'src/lib/setupPaths/setupPaths/SetupPaths';
+import { Param } from '../../setupPaths/Param';
+import { path } from '../../setupPaths/path/Path';
+import { SetupPaths } from '../../setupPaths/setupPaths/SetupPaths';
 
 import 'urlpattern-polyfill';
 

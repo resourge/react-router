@@ -1,7 +1,6 @@
-import { type RedirectProps } from 'src/lib/components';
-import { type NavigateProps } from 'src/lib/components/navigate/Navigate';
-import { type BaseRouteProps } from 'src/lib/components/route/RouteUtils';
-
+import { type RedirectProps } from '../../components';
+import { type NavigateProps } from '../../components/navigate/Navigate';
+import { type BaseRouteProps } from '../../components/route/RouteUtils';
 import { validateRouteProps } from '../../utils/validateRouteProps';
 import { matchRoute, type MatchPathProps } from '../useMatchPath';
 

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { matchRoute } from 'src/lib/hooks/useMatchPath';
-
+import { matchRoute } from '../../hooks/useMatchPath';
 import { ORIGIN } from '../constants';
 import { matchPath } from '../matchPath';
 
