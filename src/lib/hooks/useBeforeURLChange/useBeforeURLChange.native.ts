@@ -15,10 +15,6 @@ export const useBeforeURLChange = (beforeURLChange: (url: URL, action: Navigatio
 	beforeURLChangeRef.current = beforeURLChange;
 
 	useEffect(() => {
-		const remove = History.addEventListener('beforeURLChange', (current, next) => {
-			return beforeURLChangeRef.current(current.url, current.action, next);
-		});
-
-		return remove;
+		return History.addEventListener('beforeURLChange', (current, next) => beforeURLChangeRef.current(current.url, current.action, next));
 	}, []);
 };

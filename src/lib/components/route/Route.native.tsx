@@ -19,22 +19,17 @@ export type RouteProps = BasicRouteProps & ScreenProps;
 const Route = forwardRef<View, RouteProps>((props, ref) => {
 	const match = useRouteMatch(props);
 	const isFirstRenderRef = useRef(false);
-
 	const defaultFallback = useDefaultFallbackContext();
 
 	// @ts-expect-error _isInsideSwitch does exist but I want it so be exclusive to switch
-	if ( !props._isInsideSwitch ) {
-		if ( !match ) {
-			return (<></>);
-		}
+	if ( !props._isInsideSwitch && !match) {
+		return (<></>);
 	}
 	// @ts-expect-error _isInsideSwitch does exist but I want it so be exclusive to switch
-	else if ( props._isInsideSwitch ) {
-		if ( !match && !isFirstRenderRef.current ) {
-			return (<></>);
-		}
-		isFirstRenderRef.current = true;
+	if ( props._isInsideSwitch && !match && !isFirstRenderRef.current ) {
+		return (<></>);
 	}
+	isFirstRenderRef.current = true;
 
 	return (
 		<Screen
@@ -42,6 +37,9 @@ const Route = forwardRef<View, RouteProps>((props, ref) => {
 			ref={ref}
 			style={[
 				Styles.screen, 
+				{
+					position: props.activityState === 0 ? 'absolute' : undefined
+				},
 				props.style
 			]}
 		>

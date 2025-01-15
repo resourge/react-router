@@ -18,32 +18,28 @@ function Route(props: RouteProps): JSX.Element {
 
 	const defaultFallback = useDefaultFallbackContext();
 
-	if ( match ) {
-		const Component = (
-			<Suspense fallback={props.fallback ?? defaultFallback}>
-				<RouteMetadata>
-					{ props.children }
-				</RouteMetadata>
-				{ props.children }
-			</Suspense>
-		);
-		
-		if ( match === 'NO_ROUTE' ) {
-			return (
-				<>
-					{ Component }
-				</>
-			);
-		}
-
-		return (
-			<RouteContext.Provider value={match}>
-				{ Component }
-			</RouteContext.Provider>
-		);
+	if ( !match ) {
+		return (<></>);
 	}
 
-	return (<></>);
+	const Component = (
+		<Suspense fallback={props.fallback ?? defaultFallback}>
+			<RouteMetadata>
+				{ props.children }
+			</RouteMetadata>
+			{ props.children }
+		</Suspense>
+	);
+
+	return match === 'NO_ROUTE' ? (
+		<>
+			{ Component }
+		</>
+	) : (
+		<RouteContext.Provider value={match}>
+			{ Component }
+		</RouteContext.Provider>
+	);
 };
 
 export default Route;

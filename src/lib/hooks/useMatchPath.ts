@@ -4,7 +4,7 @@ import { useLanguageContext } from '../contexts/LanguageContext';
 import { useRouter } from '../contexts/RouterContext';
 import { FIT_IN_ALL_ROUTES } from '../utils/constants';
 import { matchPath, type MatchResult } from '../utils/matchPath';
-import { resolveSlash } from '../utils/resolveLocation';
+import { resolveSlash } from '../utils/resolveSlash';
 
 export type BaseMatchPathProps = {
 	/**
@@ -56,11 +56,8 @@ export const matchRoute = (
 			return null;
 		}
 	}
-
-	const baseURL = url.origin;
 	
-	const paths = (Array.isArray(path) ? path : [path]);
-
+	const paths = Array.isArray(path) ? path : [path];
 	const length = paths.length;
 	for (let i = 0; i < length; i++) {
 		const p = paths[i];
@@ -78,7 +75,7 @@ export const matchRoute = (
 			{
 				path: _path,
 				hash,
-				baseURL,
+				baseURL: url.origin,
 				exact,
 				currentPath: p,
 				paths
@@ -105,7 +102,7 @@ export const useMatchPath = (
 	const baseContext = useLanguageContext();
 	const ref = useRef<MatchResult | null | undefined>();
 
-	if ( !ref.current || (ref.current && !ref.current.checkNewVersion(url) ) ) {
+	if ( !ref.current || !ref.current.checkNewVersion(url) ) {
 		const _matchResult = matchResult ?? matchRoute(
 			url, 
 			matchProps,
@@ -114,8 +111,6 @@ export const useMatchPath = (
 		);
 
 		ref.current = _matchResult;
-
-		return _matchResult;
 	}
 
 	return ref.current;

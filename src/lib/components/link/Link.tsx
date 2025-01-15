@@ -16,38 +16,35 @@ export type LinkProps = UseLinkProps & {
  * Note: This component mainly uses `useLink` hook to navigate to `to` and `useMatchRoute` to match route.
  */
 const Link = forwardRef<HTMLAnchorElement, LinkProps>((
-	props,
-	ref
-) => {
-	const { 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	{ 
 		to, 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		replace,
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		exact,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		hash,
-
 		className,
 		matchClassName,
 		children,
-		...aProps 
-	} = props;
+		preventScrollReset,
+		action,
+		onClick: _onClick,
+		target,
+		...props 
+	},
+	ref
+) => {
 	const { url } = useRouter();
-	const [href, onClick] = useLink(props);
-	const match = href === url.href;
+	const [href, onClick] = useLink({
+		to, replace, preventScrollReset, action, onClick: _onClick, target
+	});
+	const isActive = href === url.href;
 
-	const _class = [className, match ? matchClassName : ''].filter((cn) => cn) as string[];
-
-	const _className = _class && _class.length ? _class.join(' ') : undefined;
+	const combinedClassName = [className, isActive ? matchClassName : '']
+	.filter(Boolean)
+	.join(' ');
 
 	return (
 		<a
-			{...aProps}
+			{...props}
 			ref={ref}
-			className={_className}
+			className={combinedClassName || undefined}
 			href={href}
 			onClick={onClick}
 		>

@@ -5,28 +5,20 @@ import { type RouteMetadataType } from '../../types/RouteMetadataType';
 import Meta from '../meta/Meta';
 import Title from '../title/Title';
 
-function getTitle(metadata: RouteMetadataType, lang?: string) {
-	return metadata.title
+function getLocalizedContent(metadata?: string | Record<string, string>, lang?: string) {
+	if ( !metadata ) {
+		return '';
+	}
+	return typeof metadata === 'object' 
 		? (
-			typeof metadata.title === 'object' 
-				? (
-					lang 
-						? metadata.title[lang] 
-						: ''
-				) : metadata.title
-		) : '';
+			lang 
+				? metadata[lang] 
+				: ''
+		) : metadata;
 }
 
-function getDescription(metadata: RouteMetadataType, lang?: string) {
-	return metadata.description
-		? (
-			typeof metadata.description === 'object' 
-				? (
-					lang ? metadata.description[lang] : ''
-				) : metadata.description
-		)
-		: '';
-}
+const getTitle = (metadata: RouteMetadataType, lang?: string) => getLocalizedContent(metadata.title, lang);
+const getDescription = (metadata: RouteMetadataType, lang?: string) => getLocalizedContent(metadata.description, lang);
 
 const INITIAL_KEYWORDS = globalThis.document 
 	? (document.querySelector('meta[name="keywords"]')?.getAttribute('content') ?? '').split(',').map((keyword) => keyword.trim())

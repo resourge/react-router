@@ -28,9 +28,7 @@ export {
 	type BaseMatchPathProps, type Blocker, type NavigateOptions, type NavigateTo, type UseLinkProps, type UsePromptProps, useAction, useBeforeURLChange, useBlocker, useLink, useMatchPath, useNavigate, useNormalizeUrl, useParams, usePrompt, useSearchParams, useSwitch,
 	type BackNavigateMethod, useBackNavigate
 } from './hooks/index.native';
-export {
-	generatePath, matchPath, resolveLocation 
-} from './utils';
+export { generatePath, matchPath } from './utils';
 export { type RouteMetadataType, setRouteMetadata } from './types';
 export {
 	Param, type PathType, SetupPaths, type SetupPathsResult, path, type SearchParamConfig, searchParam 

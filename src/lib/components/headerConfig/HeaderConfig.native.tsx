@@ -13,16 +13,13 @@ import { type HeaderProps, type HeaderTitlePlacement } from '../header/Header.na
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export let HeaderConfigEvent = (_props: HeaderProps) => {};
 
-function getTitlePlacement(placement?: HeaderTitlePlacement): FlexStyle['justifyContent'] {
-	switch ( placement ) {
-		case 'left':
-			return 'flex-start';
-		case 'right':
-			return 'flex-end';
-		default:
-			return 'center';
-	}
-}
+const PLACEMENTS: { [key in HeaderTitlePlacement]: FlexStyle['justifyContent'] } = {
+	left: 'flex-start',
+	right: 'flex-end',
+	center: 'center'
+};
+
+const getTitlePlacement = (placement?: HeaderTitlePlacement) => PLACEMENTS[placement ?? 'center'];
 
 const HeaderConfig = () => {
 	const { top } = useSafeAreaInsets();
@@ -40,12 +37,13 @@ const HeaderConfig = () => {
 
 	return (
 		<View
-			style={{
-				marginTop: top,
-				flexDirection: 'row',
-				alignItems: 'center',
-				justifyContent: getTitlePlacement(props.titlePlacement)
-			}}
+			style={[
+				Styles.container,
+				{
+					marginTop: top, 
+					justifyContent: getTitlePlacement(props.titlePlacement) 
+				}
+			]}
 		>
 			{
 				props.title
@@ -64,6 +62,10 @@ const HeaderConfig = () => {
 };
 
 const Styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
 	text: {
 		fontSize: 17,
 		fontWeight: 'bold',

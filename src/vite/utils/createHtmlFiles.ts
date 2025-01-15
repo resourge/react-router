@@ -40,9 +40,10 @@ export function createHtmlFiles({
 				const {
 					fileName, title = '', translation 
 				} = page;
+				
 				const titleComponent = root.querySelector('title');
-
 				const htmlElement = root.querySelector('html');
+
 				if ( !translation ) {
 					htmlElement?.removeAttribute('lang');
 				}

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { useParams } from '../../hooks/useParams';
-import { useSearchParams } from '../../hooks/userSearchParams/useSearchParams.native';
+import { useSearchParams } from '../../hooks/useSearchParams/useSearchParams.native';
 import {
 	type IfIncludesParam,
 	type IsHashPath,
@@ -22,7 +22,7 @@ import {
 } from '../../types/types';
 import { FIT_IN_ALL_ROUTES, getFitInAllRoutesReg } from '../../utils/constants';
 import { generatePath } from '../../utils/generatePath';
-import { resolveSlash } from '../../utils/resolveLocation';
+import { resolveSlash } from '../../utils/resolveSlash';
 import { createPathWithCurrentLocationHasHash, getParams, getSearchParams } from '../../utils/utils';
 import { WINDOWS } from '../../utils/window/window';
 import { Param, ParamPath, type ParamsConfig } from '../Param';
@@ -267,7 +267,7 @@ export class Path<
 		Routes,
 		ResolveSlash<[Key, ParamString<Config['optional'] extends true ? `${K}?` : K>]>,
 		MergeParamsAndCreate<Params, K, Config['optional'], GetValueFromBeforePath<Config>>,
-		MergeParamsAndCreate<ParamsResult, K, (Config['onUseParams'] extends undefined ? Config['optional'] : (ReturnType<NonNullable<Config['onUseParams']>> extends undefined ? true : false)), GetValueFromTransform<Config>>,
+		MergeParamsAndCreate<ParamsResult, K, Config['optional'], GetValueFromTransform<Config>>,
 		SearchParams
 	>;
 	/**
@@ -290,18 +290,13 @@ export class Path<
 		> {
 		const _this = this.clone();
 
-		if ( value instanceof ParamPath ) {
-			_this.paths.push(
-				value
-			);
-			return _this as any;
-		}
-
 		_this.paths.push(
-			Param<K, Config>(
-				value,
-				config
-			)
+			value instanceof ParamPath
+				? value
+				: Param<K, Config>(
+					value,
+					config
+				)
 		);
 
 		return _this as any;
@@ -325,27 +320,21 @@ export class Path<
 		> {
 		const _this = this.clone();
 
-		function g(searchParams: SP, baseKey: string = '', index: number = -1): string[] {
-			return (
-				Object.keys(searchParams)
-				.map<Array<string | undefined> | (string | undefined)>((key) => {
-					const value = searchParams[key];
-					if ( value ) {
-						if ( typeof value === 'object' && !Object.keys(value as Record<string, any>).includes('optional') ) {
-							return g(value as SP, key).flat();
-						}
-					}
-
-					return value && value.optional ? undefined : `${baseKey ? `${baseKey}${index === -1 ? '.' : `[${index}]`}` : ''}${key}`;
-				})
-				.filter((key) => key) as string[]
-			)
-			.flat();
-		}
-
-		_this.searchParamsList = g(searchParams).flat();
+		_this.searchParamsList = this.extractSearchParams(searchParams);
 
 		return _this as any;
+	}
+
+	private extractSearchParams<SP extends SearchParamsType>(searchParams: SP, baseKey: string = '', index: number = -1): string[] {
+		return Object.keys(searchParams)
+		.flatMap<string>((key) => {
+			const value = searchParams[key];
+			if ( typeof value === 'object' && !('optional' in value) ) {
+				return this.extractSearchParams(value as SP, key);
+			}
+
+			return value && value.optional ? [] : [`${baseKey ? `${baseKey}${index === -1 ? '.' : `[${index}]`}` : ''}${key}`];
+		});
 	}
 
 	/**
@@ -375,8 +364,6 @@ export class Path<
 						|| (
 							value._routes
 							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-							&& Object.keys(value._routes)
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 							&& checkFitInAllRoute(value._routes)
 						)
 					));
@@ -391,10 +378,6 @@ export class Path<
 		_this._routes = routes;
 
 		return _this;
-	}
-
-	protected getBasePath(basePath: string = '') {
-		return this.config.hash ? '#' : basePath;
 	}
 
 	protected createPath(
@@ -434,11 +417,10 @@ export class Path<
 
 		// Generates routes
 		const paths = Object.entries(this._routes ?? {})
-		.reduce((obj, [key, value]) => {
+		.reduce<Record<string, any>>((obj, [key, value]) => {
 			obj[key] = value.createPath(newPaths);
 			return obj;
-			// Too hard to put a working type that doesn't create a problem in return
-		}, {} as any); 
+		}, {}); 
 
 		const _includeCurrentURL = this._includeCurrentURL;
 

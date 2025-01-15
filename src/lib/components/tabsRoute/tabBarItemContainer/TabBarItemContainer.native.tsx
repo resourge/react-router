@@ -4,8 +4,8 @@ import { Animated, Easing, View } from 'react-native';
 import { type NavigateOptions } from '@resourge/history-store/mobile';
 
 import { useMatchPath } from '../../../hooks/useMatchPath';
-import { useNavigate } from '../../hooks/useNavigate/useNavigate.native';
-import { type NavigateMethod } from '../../hooks/useNavigate/useNavigateType';
+import { useNavigate } from '../../../hooks/useNavigate/useNavigate.native';
+import { type NavigateMethod } from '../../../hooks/useNavigate/useNavigateType';
 import TabBarItem from '../tabBarItem/TabBarItem.native';
 
 /**
@@ -69,7 +69,7 @@ const TabBarItemContainer: React.FC<TabBarItemContainerProps> = ({
 			}
 			<Animated.Text
 				style={{
-					fontWeight: isFocused ? 'bold' : undefined
+					fontWeight: isFocused ? 'bold' : 'normal'
 				}}
 			>
 				{ label }
@@ -85,7 +85,6 @@ const TabBarItemContainer: React.FC<TabBarItemContainerProps> = ({
 	)
 }) => {
 	const animationRef = useRef(new Animated.Value(0));
-
 	const navigate = useNavigate();
 	const match = useMatchPath({
 		path

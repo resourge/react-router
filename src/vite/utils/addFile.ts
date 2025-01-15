@@ -12,6 +12,14 @@ type FilesType = {
 	translation?: string
 };
 
+/**
+ * Generates a list of file metadata based on route metadata and configuration.
+ * 
+ * @param getFolder - Function to get the folder path based on route and translation.
+ * @param routeMetadata - Metadata for the route.
+ * @param config - Configuration object.
+ * @returns Array of file metadata.
+ */
 export const addFile = (
 	getFolder: (route: string, translation?: string) => string, 
 	routeMetadata: ViteRouteMetadata,

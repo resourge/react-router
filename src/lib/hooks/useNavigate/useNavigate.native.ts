@@ -11,6 +11,11 @@ import { type NavigateMethod } from './useNavigateType';
 export const useNavigate = (): NavigateMethod<NavigateOptions> => {
 	const generateUrl = useNormalizeUrl();
 
+	/**
+	 * Navigates to the specified URL.
+	 * @param to - The target URL or path to navigate to.
+	 * @param options - Navigation options, such as whether to replace the current entry or perform a specific action.
+	 */
 	return (to: NavigateTo, options: NavigateOptions = {}) => {
 		const { replace = false, action } = options;
 

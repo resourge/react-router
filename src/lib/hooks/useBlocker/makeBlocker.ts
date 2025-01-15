@@ -10,14 +10,14 @@ import { type Blocker, type BlockerResult } from './useBlockerTypes';
 type NavigationActionType = RNavigationActionType | RNNavigationActionType;
 
 /**
- * Fires before the route change, and serves to block or not the current route.
- * @param blocker {Blocker}
- * @returns blockerResult {BlockerResult}
+ * Creates a custom hook to block or allow route changes based on a blocker function.
+ * @param useBeforeURLChange - Hook to handle the before URL change event.
+ * @returns A custom hook that provides blocking state and functions to control navigation.
  */
-export function makeBlocker<T extends NavigationActionType>(useBeforeURLChange: (beforeURLChange: (url: URL, action: T, next: () => void) => boolean) => void) {
-	const useBlocker = (
-		blocker: Blocker<T>
-	): BlockerResult => {
+export function makeBlocker<T extends NavigationActionType>(
+	useBeforeURLChange: (beforeURLChange: (url: URL, action: T, next: () => void) => boolean) => void
+) {
+	const useBlocker = (blocker: Blocker<T>): BlockerResult => {
 		const { url } = useRouter();
 		const [{ isBlocking, continueNavigation }, setBlocker] = useState<{ continueNavigation: () => void, isBlocking: boolean }>({
 			isBlocking: false,

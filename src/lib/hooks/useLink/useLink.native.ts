@@ -33,7 +33,8 @@ export const useLink = ({
 
 	const onNewClick = (event: GestureResponderEvent) => {
 		try {
-			if (onPress) onPress(event);
+			// Call custom onPress handler if provided
+			onPress?.(event);
 		}
 		catch (ex) {
 			event.preventDefault();

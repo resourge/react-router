@@ -14,24 +14,21 @@ export type UrlPattern = {
 export const getUrlPattern = ({
 	path, baseURL, exact, hash
 }: UrlPattern): URLPattern => {
-	const _exact = exact ?? false;
 	const key = `${path}_${String(exact)}_${String(hash)}`;
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	if (cacheCompile.has(key)) return cacheCompile.get(key)!;
 
-	const pathname = `${path.replace('#', '')}${_exact ? '' : '{/*}?'}`;
+	const pathname = `${path.replace('#', '')}${exact ? '' : '{/*}?'}`;
 
-	const generator = new URLPattern(
-		{
-			baseURL,
-			hostname: '*',
-			port: '*',
-			protocol: '*',
-			pathname,
-			hash: '*',
-			search: '*'
-		}
-	);
+	const generator = new URLPattern({
+		baseURL,
+		hostname: '*',
+		port: '*',
+		protocol: '*',
+		pathname,
+		hash: '*',
+		search: '*'
+	});
 
 	if (cacheCompile.size < cacheLimit) {
 		cacheCompile.set(key, generator);

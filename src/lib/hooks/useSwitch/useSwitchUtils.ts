@@ -5,27 +5,26 @@ import { validateRouteProps } from '../../utils/validateRouteProps';
 import { matchRoute, type MatchPathProps } from '../useMatchPath';
 
 export type SwitchRouteProps = BaseRouteProps | RedirectProps | NavigateProps;
+/**
+ * Checks if the given props are related to navigation or redirection.
+ * @param props - The props to check.
+ * @returns `true` if the props contain a `to` attribute indicating navigation or redirection.
+ */
+export const isNavigateOrRedirect = (props: RedirectProps | NavigateProps) => props.to !== undefined;
 
-export const isNavigateOrRedirect = (props: RedirectProps | NavigateProps) => {
-	return props.to !== undefined;
-};
-
+/**
+ * Matches the current URL against the given route props to determine if it should render the component.
+ * @param url - The current URL.
+ * @param props - The route props to match.
+ * @param base - The base path for the route.
+ * @returns The match result if the route matches, otherwise `null`.
+ * @throws Error if the props are invalid in development mode.
+ */
 export const getMatchFromProps = (
 	url: URL, 
 	props: SwitchRouteProps,
 	base: string | undefined
 ) => {
-	if ( process.env.NODE_ENV === 'development' ) {
-		if ( 
-			!(
-				(props as RedirectProps).to
-				|| !(props as BaseRouteProps).path
-				|| (props as BaseRouteProps).path
-			) 
-		) {
-			throw new Error('`useSwitch` can only accept component\'s with `path`, `search`, `from` or `to` attributes');
-		}
-	}
 	const path: string | string[] | undefined = (props as BaseRouteProps).path ?? (props as RedirectProps).from;
 	if ( path ) {
 		if ( process.env.NODE_ENV === 'development' ) {

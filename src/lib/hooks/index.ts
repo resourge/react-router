@@ -16,4 +16,4 @@ export { usePrompt } from './usePrompt/usePrompt';
 export { useSwitch } from './useSwitch/useSwitch';
 export { useAction } from './useAction';
 export { useParams } from './useParams';
-export { useSearchParams } from './userSearchParams/useSearchParams';
+export { useSearchParams } from './useSearchParams/useSearchParams';

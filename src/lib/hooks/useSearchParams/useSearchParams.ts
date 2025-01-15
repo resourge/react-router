@@ -18,7 +18,7 @@ export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T
 
 	useEffect(() => {
 		const onUrlChange = ({ url }: UrlChangeEvent) => {
-			const _href = getHrefWhenHashOrNormal(new URL(url as unknown as string), hash);
+			const _href = getHrefWhenHashOrNormal(url, hash);
 
 			const searchParams = new URL(_href).searchParams;
 

@@ -28,7 +28,7 @@ export const useLink = ({
 
 	const onNewClick = (event: MouseEvent<HTMLAnchorElement>) => {
 		try {
-			if (onClick) onClick(event);
+			onClick?.(event);
 		}
 		catch (ex) {
 			event.preventDefault();
@@ -38,7 +38,8 @@ export const useLink = ({
 
 		if (
 			!event.defaultPrevented 
-			&& event.button === 0 && (
+			&& event.button === 0 
+			&& (
 				!target || target === '_self'
 			)
 			&& !isModifiedEvent(event)

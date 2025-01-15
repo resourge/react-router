@@ -1,6 +1,8 @@
 import { createNewUrlWithSearch, parseParams } from '@resourge/history-store/utils';
 
-import { resolveLocation, resolveSlash } from '../../utils/resolveLocation';
+import { ORIGIN } from 'src/lib/utils/constants';
+
+import { resolveSlash } from '../../utils/resolveSlash';
 import { isValidUrl } from '../../utils/utils';
 
 export type NavigateTo = string | URL | {
@@ -15,22 +17,19 @@ export const normalizeUrl = (
 ): URL => {
 	// If to is string, resolve to with current url
 	if ( typeof to === 'string' ) {
-		if ( to.startsWith(`/${base}`) ) {
-			return resolveLocation(to, url.href);
-		}
-		if ( isValidUrl(to) ) {
-			return new URL(to);
-		}
-		return resolveLocation(base ? resolveSlash(base, to) : to, url.href);
+		return new URL(
+			base ? resolveSlash(base, to) : to, 
+			isValidUrl(to) ? undefined : ORIGIN
+		);
 	}
 
+	// If 'to' is an instance of URL
 	if ( to instanceof URL ) {
 		return to;
 	}
 
-	const newUrl = new URL(url as unknown as string);
-
+	const newUrl = new URL(url.href);
 	const newSearch = parseParams(to.searchParams);
 
-	return new URL(createNewUrlWithSearch(newUrl, newSearch, hash) as unknown as string);
+	return createNewUrlWithSearch(newUrl, newSearch, hash);
 };

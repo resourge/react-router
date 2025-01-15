@@ -18,39 +18,35 @@ export type LinkProps = UseLinkProps & {
 & ViewProps;
 
 /**
- * Component extends element `a` and navigates to `to`.
+ * A component that navigates to a specified URL using the `to` prop.
  * 
- * Note: This component mainly uses `useLink` hook to navigate to `to` and `useMatchRoute` to match route.
+ * Note: Utilizes the `useLink` hook for navigation and `useMatchRoute` to match the current route.
  */
 const Link = forwardRef<View, LinkProps>((
-	props,
-	ref
-) => {
-	const { 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	{ 
 		to, 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		replace,
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		exact,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		hash,
-		
 		style,
 		matchStyle,
 		children,
-		...aProps 
-	} = props;
+		action,
+		onPress,
+		target,
+		...props 
+	},
+	ref
+) => {
 	const { url } = useRouter();
-	const [href, onClick] = useLink(props);
-	const match = href === url.href;
+	const [href, onClick] = useLink({
+		to, replace, action, onPress, target
+	});
+	const isActive = href === url.href;
 
 	return (
 		<Pressable
-			{...aProps}
+			{...props}
 			ref={ref}
-			style={[style, match ? matchStyle : undefined]}
+			style={[style, isActive ? matchStyle : undefined]}
 			onPress={onClick}
 		>
 			{ 

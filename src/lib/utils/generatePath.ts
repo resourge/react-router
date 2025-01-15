@@ -13,7 +13,8 @@ export function generatePath<T extends Record<string, any>>(path: string, params
 				throw new Error(`Value of key '${key}' for path '${path}' cannot be undefined.`);
 			}
 		}
-		const includesSlash = originalKey.includes('/');
+		// Determine if a leading slash should be included
+		const includesSlash = originalKey.startsWith('/');
 		return `${includesSlash ? '/' : ''}${value ?? ''}`;
 	})
 	.replace(/\/*\*$/, () => params['*'] == null ? '' : params['*'].replace(/^\/*/, '/'));

@@ -30,7 +30,7 @@ export const SetupPaths = <const R extends PathStructures>(paths: R): SetupPaths
 	return Object.entries(paths)
 	.reduce((obj, [key, value]) => {
 		// @ts-expect-error I want createPath as private for use
-		(obj as any)[key] = value.createPath();
+		obj[key] = value.createPath();
 		return obj;
 	}, {}) as SetupPathsResult<R>;
 };

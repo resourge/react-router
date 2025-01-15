@@ -8,6 +8,4 @@ type NavigationActionType = RNavigationActionType | RNNavigationActionType;
 /**
  * Hook to access action that lead to the current `URL`.
  */
-export const useAction = (): NavigationActionType => {
-	return useRouter().action;
-};
+export const useAction = (): NavigationActionType => useRouter().action;

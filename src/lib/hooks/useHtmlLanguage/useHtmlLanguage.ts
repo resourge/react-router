@@ -22,11 +22,11 @@ export const useHtmlLanguage = () => {
 				attributes: true,
 				attributeFilter: ['lang'] 
 			});
-			return () => {
-				observer.disconnect();
-			};
 		}
 
+		return () => {
+			observer.disconnect();
+		};
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [baseLanguage]);
 

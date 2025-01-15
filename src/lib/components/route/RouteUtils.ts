@@ -26,6 +26,8 @@ export function useRouteMatch(props: BasicRouteProps) {
 		validateRouteProps(matchProps);
 	}
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	return matchProps.path === undefined ? 'NO_ROUTE' : useMatchPath(matchProps as MatchPathProps, computedMatch);
+	return matchProps.path === undefined 
+		? 'NO_ROUTE' 
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		: useMatchPath(matchProps as MatchPathProps, computedMatch);
 }

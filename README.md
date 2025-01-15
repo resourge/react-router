@@ -51,7 +51,6 @@
 - [usePrompt](#usePrompt)
 - [matchPath](#matchpath)
 - [generatePath](#generatepath)
-- [resolveLocation](#resolvelocation)
 - [viteReactRouter](#vitereactrouter)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
@@ -1247,54 +1246,6 @@ const params = { id: '123', postId: '456' };
 const result = generatePath(path, params);
 console.log('Generated path:', result); // Output: '/user/123/posts/456'
 ```
-
-
-# resolveLocation
-
-`resolveLocation` function provides a utility for resolving and normalizing URLs. By parsing and manipulating URL components, developers can ensure consistent URL formatting and resolve relative paths relative to a specified base URL, enhancing application robustness and URL handling capabilities.
-
-## Usage
-
-```typescript
-import { resolveLocation } from '@resourge/react-router';
-
-// 1. Resolving a relative URL with an absolute path:
-const resolvedUrl1 = resolveLocation('/home', 'https://example.com/home/dashboard');
-console.log(resolvedUrl1.href); // Output: 'https://example.com/home'
-
-// 2. Resolving a relative URL with an absolute path:
-const resolvedUrl2 = resolveLocation('home', 'https://example.com/home/dashboard');
-console.log(resolvedUrl2.href); // Output: 'https://example.com/home/dashboard/home'
-
-// 3. Resolving a relative URL with an absolute path:
-const resolvedUrl3 = resolveLocation('about', 'https://example.com/home/dashboard');
-console.log(resolvedUrl3.href); // Output: 'https://example.com/home/dashboard/about'
-
-// 4. Resolving a relative URL with a relative path:
-const resolvedUrl4 = resolveLocation('./about', 'https://example.com/home/dashboard');
-console.log(resolvedUrl4.href); // Output: 'https://example.com/home/about'
-
-// 5. Resolving a relative URL with an absolute path:
-const resolvedUrl5 = resolveLocation('/about', 'https://example.com/home/dashboard');
-console.log(resolvedUrl5.href); // Output: 'https://example.com/about'
-
-// 6. Resolving a relative URL with a relative path:
-const resolvedUrl6 = resolveLocation('../contact', 'https://example.com/home/dashboard');
-console.log(resolvedUrl6.href); // Output: 'https://example.com/contact'
-
-// 7. Resolving a relative URL with a relative path:
-const resolvedUrl7 = resolveLocation('../../products', 'https://example.com/home/dashboard');
-console.log(resolvedUrl7.href); // Output: 'https://example.com/products'
-
-// 8. Resolving a relative URL with a relative path:
-const resolvedUrl8 = resolveLocation('../../../products', 'https://example.com/home/dashboard');
-console.log(resolvedUrl8.href); // Output: 'https://example.com/products'
-```
-
-## Parameters
-
-- `url` (string): The URL string to be resolved and normalized.
-- `baseURL` (string)(optional): The base URL string used for resolving relative URLs. If provided, relative URLs are resolved relative to this base URL.
 
 # viteReactRouter
 

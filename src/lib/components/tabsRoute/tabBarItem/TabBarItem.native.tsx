@@ -23,8 +23,7 @@ const SPACING = 5;
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const ANDROID_VERSION_LOLLIPOP = 21;
-const ANDROID_SUPPORTS_RIPPLE = Platform.OS === 'android' && Platform.Version >= ANDROID_VERSION_LOLLIPOP;
+const ANDROID_SUPPORTS_RIPPLE = Platform.OS === 'android' && Platform.Version >= 21; // 21 ANDROID_VERSION_LOLLIPOP;
 
 const TabBarItem: React.FC<TabBarItemProps> = ({
 	disabled,
@@ -40,8 +39,8 @@ const TabBarItem: React.FC<TabBarItemProps> = ({
 	style,
 	...rest
 }) => {
-	const color = useColorScheme();
-	const isDark = color === 'dark';
+	const isDark = useColorScheme() === 'dark';
+	const defaultPressColor = isDark ? 'rgba(255, 255, 255, .32)' : 'rgba(0, 0, 0, .32)';
 
 	const [opacity] = React.useState(() => new Animated.Value(1));
 
@@ -75,11 +74,7 @@ const TabBarItem: React.FC<TabBarItemProps> = ({
 			android_ripple={
 				ANDROID_SUPPORTS_RIPPLE
 					? {
-						color: pressColor ?? (
-							isDark
-								? 'rgba(255, 255, 255, .32)'
-								: 'rgba(0, 0, 0, .32)'
-						),
+						color: pressColor ?? defaultPressColor,
 						...android_ripple
 					}
 					: undefined
@@ -87,7 +82,7 @@ const TabBarItem: React.FC<TabBarItemProps> = ({
 			style={[
 				styles.item,
 				{
-					opacity: !ANDROID_SUPPORTS_RIPPLE ? opacity : 1 
+					opacity: ANDROID_SUPPORTS_RIPPLE ? 1 : opacity
 				}, 
 				style
 			]}

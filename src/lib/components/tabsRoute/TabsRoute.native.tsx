@@ -78,30 +78,26 @@ function TabsRoute(
 				style={Styles.screen}
 			>
 				{
-					!isTop ? Screens : (<></>)
+					isTop ? (<></>) : Screens
 				}
 				{
 					renderTabBar({
 						placement,
 						get children() {
 							return childs
-							.map(({ props }) => {
-								const path = props.path;
-
-								return (
-									<TabBarItemContainer
-										key={path}
-										animated={props.animated ?? animated}
-										duration={props.duration ?? duration}
-										icon={props.icon}
-										label={props.label}
-										path={path}
-										renderLabel={(props.renderLabel ?? renderLabel)}
-										renderTabBarItem={props.renderTabBarItem ?? renderTabBarItem}
-										onPress={props.onPress ?? onPress}
-									/>
-								);
-							});
+							.map(({ props }) => (
+								<TabBarItemContainer
+									key={props.path}
+									animated={props.animated ?? animated}
+									duration={props.duration ?? duration}
+									icon={props.icon}
+									label={props.label}
+									path={props.path}
+									renderLabel={(props.renderLabel ?? renderLabel)}
+									renderTabBarItem={props.renderTabBarItem ?? renderTabBarItem}
+									onPress={props.onPress ?? onPress}
+								/>
+							));
 						},
 						get tabs() {
 							return childs.map(({ props }) => props);
