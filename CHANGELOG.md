@@ -1,3 +1,13 @@
+## [1.26.1](https://github.com/resourge/react-router/compare/v1.26.0...v1.26.1) (2025-01-15)
+
+
+### Bug Fixes
+
+* **generatepath:** not including / if last param was optional ([8eb3199](https://github.com/resourge/react-router/commit/8eb3199eecabcb18444b1c31716b64e8c1147056))
+* **path:** make possible to override params ([bed5033](https://github.com/resourge/react-router/commit/bed5033118c74f4eda40cd50308e4ad00d11ad08))
+* **react-native:** fix react-native ([f189f1b](https://github.com/resourge/react-router/commit/f189f1b2f89e6b2dca9bf1ebf741bf15ae9101d2))
+* **types:** drowngrade react types ([6cb7b42](https://github.com/resourge/react-router/commit/6cb7b42db32b54d0ed155814ab4616331b3c8647))
+
 # [1.26.0](https://github.com/resourge/react-router/compare/v1.25.7...v1.26.0) (2024-09-02)
 
 
