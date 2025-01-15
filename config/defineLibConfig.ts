@@ -92,7 +92,10 @@ export const defineLibConfig = (
 		test: {
 			globals: true,
 			environment: 'jsdom',
-			setupFiles: './src/setupTests.ts'
+			setupFiles: './src/setupTests.ts',
+			deps: {
+				inline: ['@resourge/history-store'],
+			}
 		},
 		build: {
 			minify: false,

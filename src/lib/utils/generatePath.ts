@@ -14,7 +14,8 @@ export function generatePath<T extends Record<string, any>>(path: string, params
 			}
 		}
 		// Determine if a leading slash should be included
-		const includesSlash = originalKey.startsWith('/');
+		// Needs to be include because of optional param in the end
+		const includesSlash = originalKey.includes('/');
 		return `${includesSlash ? '/' : ''}${value ?? ''}`;
 	})
 	.replace(/\/*\*$/, () => params['*'] == null ? '' : params['*'].replace(/^\/*/, '/'));

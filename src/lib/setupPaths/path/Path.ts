@@ -421,17 +421,20 @@ export class Path<
 				if ( typeof path === 'string' ) {
 					return path;
 				}
-				if ( path.config?.onUseParams ) {
+
+				if (path.config?.onUseParams) {
 					transforms.push((params) => {
 						(params as any)[path.key] = path.config!.onUseParams!(params[path.key]);
 					});
 				}
-				if ( path.config?.onGet ) {
+
+				if (path.config?.onGet) {
 					beforePaths.push((params) => {
 						(params as any)[path.key] = path.config!.onGet!(params[path.key]);
 					});
 				}
-				return path.parseParam((arr.length - 1) !== index );
+	
+				return path.parseParam(index !== arr.length - 1);
 			})
 			.join('')
 		) || '/';

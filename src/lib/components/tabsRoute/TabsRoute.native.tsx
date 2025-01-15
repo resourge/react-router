@@ -1,10 +1,11 @@
 import {
 	Children,
+	type JSX,
 	useMemo,
-	type LegacyRef,
 	type PropsWithChildren,
 	type ReactElement,
-	type ReactNode
+	type ReactNode,
+	type Ref
 } from 'react';
 import { View } from 'react-native';
 
@@ -58,7 +59,7 @@ function TabsRoute(
 		duration
 	}: TabsRouteProps
 ) {
-	const childs = Children.toArray(children) as Array<ReactElement<TabBarItemContainerProps> & { ref?: LegacyRef<any> }>;
+	const childs = Children.toArray(children) as Array<ReactElement<TabBarItemContainerProps> & { ref?: Ref<any> }>;
 
 	const Screens = (
 		<Switch>

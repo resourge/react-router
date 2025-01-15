@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type JSX, type ReactNode } from 'react';
 
 import { LanguageContext } from '../../contexts/LanguageContext';
 import { useRouter } from '../../contexts/RouterContext';

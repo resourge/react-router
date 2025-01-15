@@ -100,7 +100,7 @@ export const useMatchPath = (
 ) => {
 	const { url } = useRouter();
 	const baseContext = useLanguageContext();
-	const ref = useRef<MatchResult | null | undefined>();
+	const ref = useRef<MatchResult | null | undefined>(undefined);
 
 	if ( !ref.current || !ref.current.checkNewVersion(url) ) {
 		const _matchResult = matchResult ?? matchRoute(

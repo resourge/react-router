@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { type JSX, Suspense } from 'react';
 
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { RouteContext } from '../../contexts/RouteContext';

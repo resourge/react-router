@@ -1,4 +1,9 @@
-import React, { useEffect, useRef, type ReactNode } from 'react';
+import React, {
+	type JSX,
+	useEffect,
+	useRef,
+	type ReactNode
+} from 'react';
 import { Animated, Easing, View } from 'react-native';
 
 import { type NavigateOptions } from '@resourge/history-store/mobile';
