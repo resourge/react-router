@@ -396,6 +396,22 @@ export class Path<
 		// Creates path for current route
 		const path = (
 			newPaths
+			.map((path) => (
+				// Multiple same params will always take the config from the last param
+				// This is so we can override the first param with last
+				newPaths
+				.findLast((arrPath) => (
+					typeof arrPath === 'object' && typeof path === 'object'
+					&& arrPath.param === path.param
+				)) ?? path
+			))
+			.filter((path, index, arr) => 
+				typeof path === 'string'
+				|| arr.findIndex((arrPath) => (
+					typeof arrPath === 'object' && typeof path === 'object'
+					&& arrPath.param === path.param
+				)) === index
+			)
 			.map((path, index, arr) => {
 				if ( typeof path === 'string' ) {
 					return path;
