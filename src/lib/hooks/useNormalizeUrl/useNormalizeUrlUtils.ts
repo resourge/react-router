@@ -1,7 +1,6 @@
 import { createNewUrlWithSearch, parseParams } from '@resourge/history-store/utils';
 
-import { ORIGIN } from 'src/lib/utils/constants';
-
+import { ORIGIN } from '../../utils/constants';
 import { resolveSlash } from '../../utils/resolveSlash';
 import { isValidUrl } from '../../utils/utils';
 

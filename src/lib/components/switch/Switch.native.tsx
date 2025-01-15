@@ -9,9 +9,8 @@ import {
 
 import { ScreenContainer } from 'react-native-screens';
 
-import { IsFocusedContext } from 'src/lib/contexts/IsFocusedContext';
-
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
+import { IsFocusedContext } from '../../contexts/IsFocusedContext';
 import { type TabProps } from '../../contexts/TabConfigContext';
 import { useSwitch, type UseSwitchProps } from '../../hooks/useSwitch/useSwitch.native';
 import { Styles } from '../../utils/Styles.native';
