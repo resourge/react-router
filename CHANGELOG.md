@@ -1,3 +1,10 @@
+# [1.27.0](https://github.com/resourge/react-router/compare/v1.26.1...v1.27.0) (2025-02-04)
+
+
+### Features
+
+* **path:** includeCurrentURL ability to customize the currentURL ([0ee46de](https://github.com/resourge/react-router/commit/0ee46deb4a87ea34782984da8b1cbc86f4c1ac35))
+
 ## [1.26.1](https://github.com/resourge/react-router/compare/v1.26.0...v1.26.1) (2025-01-15)
 
 
