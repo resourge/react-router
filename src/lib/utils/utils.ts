@@ -34,18 +34,32 @@ export function isValidUrl(urlString: string) {
 }
 
 /**
+ * Get current the current location's hash if applicable.
+ * 
+ * @returns The current location.
+ */
+export function getCurrentLocationHasHash() {
+	const windowURL = new URL(WINDOWS.location.href);
+	
+	return WINDOWS.location.pathname && WINDOWS.location.pathname !== '/' 
+		? windowURL.href.replace(windowURL.origin, '') 
+		: '';
+}
+
+/**
  * Creates a path by appending the current location's hash if applicable.
  * 
  * @param path - The base path to which the current location's hash is appended.
  * @returns The resulting path with the hash from the current location if applicable.
  */
-export function createPathWithCurrentLocationHasHash(path: string) {
+export function createPathWithCurrentLocationHasHash(
+	path: string, 
+	currentUrl?: string
+) {
 	const newPath = new URL(path, ORIGIN);
 
-	const windowURL = new URL(WINDOWS.location.href);
-	newPath.hash = WINDOWS.location.pathname && WINDOWS.location.pathname !== '/' 
-		? windowURL.href.replace(windowURL.origin, '') 
-		: '';
+	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+	newPath.hash = currentUrl || getCurrentLocationHasHash();
 
 	return newPath.href.replace(newPath.origin, '');
 }

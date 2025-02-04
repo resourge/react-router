@@ -168,7 +168,7 @@ export class Path<
 	protected config: PathConfig = {};
 	protected paths: Array<ParamPath<string> | string> = [];
 	protected searchParamsList: string[] = [];
-	private _includeCurrentURL?: boolean;
+	private _includeCurrentURL?: boolean | ((currentURL: URL) => string | undefined);
 
 	constructor(path?: string, config?: PathConfig) {
 		this.config = config ?? {};
@@ -201,9 +201,9 @@ export class Path<
 
 	/**
 	 * Makes method `get` to return the current path as hash.
-	 * @param includeCurrentURL {boolean} @default true
+	 * @param includeCurrentURL {boolean | ((currentURL: URL) => string | undefined)} @default true
 	 */
-	public includeCurrentURL(includeCurrentURL: boolean = true) {
+	public includeCurrentURL(includeCurrentURL: boolean | ((currentURL: URL) => string | undefined) = true) {
 		const _this = this.clone();
 		_this._includeCurrentURL = includeCurrentURL;
 		return _this;
@@ -470,8 +470,13 @@ export class Path<
 				newPath = `${newPath}${getSearchParams(params)}`;
 
 				if ( _includeCurrentURL ) {
-					newPath = createPathWithCurrentLocationHasHash(newPath);
-				} 
+					newPath = createPathWithCurrentLocationHasHash(
+						newPath, 
+						typeof _includeCurrentURL === 'function' 
+							? _includeCurrentURL(WINDOWS.location)
+							: undefined
+					);
+				}
 
 				return newPath;
 			},
