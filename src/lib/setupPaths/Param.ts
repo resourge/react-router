@@ -1,36 +1,36 @@
-export type ParamsConfigOptional = { 
+export type ParamsConfigOptional<UseValue = unknown, GetValue = UseValue> = {
 	/**
-	 * Makes param optional
-	 */
+     * Makes param optional
+     */
 	optional: true
 	/**
-	 * Transforms param before path creation (get).
-	 */
-	onGet?: (value: any) => string
+     * Transforms param before path creation (get).
+     */
+	onGet?: (value: GetValue) => string
 	/**
-	 * Transform's param on useParam.
-	 */
-	onUseParams?: (value?: string) => unknown | undefined 
+     * Transform's param on useParam.
+     */
+	onUseParams?: (value?: string) => UseValue | undefined
 };
 
-export type ParamsConfigNotOptional = { 
+export type ParamsConfigNotOptional<UseValue = unknown, GetValue = UseValue> = {
 	/**
-	 * Transforms param before path creation (get).
-	 */
-	onGet?: (value: any) => string
+     * Transforms param before path creation (get).
+     */
+	onGet?: (value: GetValue) => string
 	/**
-	 * Transform's param on useParam.
-	 */
-	onUseParams?: (value: string) => unknown 
+     * Transform's param on useParam.
+     */
+	onUseParams?: (value: string) => UseValue
 	/**
-	 * Makes param optional
-	 */
-	optional?: false | undefined 
+     * Makes param optional
+     */
+	optional?: false | undefined
 };
 
-export type ParamsConfig = {
+export type ParamsConfig<UseValue = unknown, GetValue = UseValue> = {
 	options?: string[]
-} & (ParamsConfigNotOptional | ParamsConfigOptional);
+} & (ParamsConfigNotOptional<UseValue, GetValue> | ParamsConfigOptional<UseValue, GetValue>);
 
 export class ParamPath<Key, Config extends ParamsConfig = ParamsConfig> {
 	public key: Key = '' as Key;
@@ -49,8 +49,9 @@ export class ParamPath<Key, Config extends ParamsConfig = ParamsConfig> {
 }
 
 export const Param = < 
+	Value,
 	K extends string,
-	const Config extends ParamsConfig
+	const Config extends ParamsConfig<Value, any>
 >(
 	param: K, 
 	config?: Config

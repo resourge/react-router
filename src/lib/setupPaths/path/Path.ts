@@ -226,14 +226,32 @@ export class Path<
 	 * @param value {string} - param name
 	 */
 	public param<
-		K extends string = string
+		UseValue,
+		K extends string
 	>(
 		value: K
 	): Path<
 		Routes,
 		ResolveSlash<[Key, ParamString<K>]>,
-		MergeParamsAndCreate<Params, K, false, any>,
-		MergeParamsAndCreate<ParamsResult, K, false, string>, 
+		MergeParamsAndCreate<Params, K, false, UseValue>,
+		MergeParamsAndCreate<ParamsResult, K, false, UseValue>, 
+		SearchParams
+	>;
+	/**
+	 * Add's param to the path. (Add's the param into the path in the calling other).
+	 * @param value {string} - param name
+	 */
+	public param<
+		UseValue,
+		GetValue,
+		K extends string
+	>(
+		value: K
+	): Path<
+		Routes,
+		ResolveSlash<[Key, ParamString<K>]>,
+		MergeParamsAndCreate<Params, K, false, GetValue>,
+		MergeParamsAndCreate<ParamsResult, K, false, UseValue>, 
 		SearchParams
 	>;
 	/**
@@ -242,7 +260,7 @@ export class Path<
 	 */
 	public param<
 		K extends string = string,
-		Config extends ParamsConfig = ParamsConfig
+		Config extends ParamsConfig<any, any> = ParamsConfig<any, any>
 	>(
 		value: ParamPath<K, Config>
 	): Path<
@@ -259,7 +277,7 @@ export class Path<
 	 */
 	public param<
 		K extends string = string,
-		Config extends ParamsConfig = ParamsConfig
+		Config extends ParamsConfig<any, any> = ParamsConfig<any, any>
 	>(
 		value: K, 
 		config: Config
@@ -281,8 +299,9 @@ export class Path<
 	 * @param config {ParamsConfig<ParamsValue>} - param configuration.
 	 */
 	public param<
+		Value = unknown,
 		K extends string = string,
-		Config extends ParamsConfig = ParamsConfig
+		Config extends ParamsConfig<Value, any> = ParamsConfig<Value, any>
 	>(
 		value: K | ParamPath<K, Config>, 
 		config?: Config
@@ -298,7 +317,7 @@ export class Path<
 		_this.paths.push(
 			value instanceof ParamPath
 				? value
-				: Param<K, Config>(
+				: Param<Value, K, Config>(
 					value,
 					config
 				)

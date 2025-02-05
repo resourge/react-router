@@ -168,7 +168,7 @@ export class Path<
 	protected config: PathConfig = {};
 	protected paths: Array<ParamPath<string> | string> = [];
 	protected searchParamsList: string[] = [];
-	private _currentURL?: boolean | ((currentHash: URL) => string | undefined);
+	private _includeCurrentURL?: boolean | ((currentHash: URL) => string | undefined);
 
 	constructor(path?: string, config?: PathConfig) {
 		this.config = config ?? {};
@@ -193,7 +193,7 @@ export class Path<
 		_this._routes = {
 			...this._routes
 		} as unknown as Routes;
-		_this._currentURL = this._currentURL;
+		_this._includeCurrentURL = this._includeCurrentURL;
 		_this.config = this.config;
 
 		return _this;
@@ -205,7 +205,7 @@ export class Path<
 	 */
 	public currentURL(currentURL: boolean | ((currentHash: URL) => string | undefined) = true) {
 		const _this = this.clone();
-		_this._currentURL = currentURL;
+		_this._includeCurrentURL = currentURL;
 		return _this;
 	}
 
@@ -226,14 +226,32 @@ export class Path<
 	 * @param value {string} - param name
 	 */
 	public param<
-		K extends string = string
+		UseValue,
+		K extends string
 	>(
 		value: K
 	): Path<
 		Routes,
 		ResolveSlash<[Key, ParamString<K>]>,
-		MergeParamsAndCreate<Params, K, false, any>,
-		MergeParamsAndCreate<ParamsResult, K, false, string>, 
+		MergeParamsAndCreate<Params, K, false, UseValue>,
+		MergeParamsAndCreate<ParamsResult, K, false, UseValue>, 
+		SearchParams
+	>;
+	/**
+	 * Add's param to the path. (Add's the param into the path in the calling other).
+	 * @param value {string} - param name
+	 */
+	public param<
+		UseValue,
+		GetValue,
+		K extends string
+	>(
+		value: K
+	): Path<
+		Routes,
+		ResolveSlash<[Key, ParamString<K>]>,
+		MergeParamsAndCreate<Params, K, false, GetValue>,
+		MergeParamsAndCreate<ParamsResult, K, false, UseValue>, 
 		SearchParams
 	>;
 	/**
@@ -242,14 +260,14 @@ export class Path<
 	 */
 	public param<
 		K extends string = string,
-		Config extends ParamsConfig = ParamsConfig
+		Config extends ParamsConfig<any, any> = ParamsConfig<any, any>
 	>(
 		value: ParamPath<K, Config>
 	): Path<
 		Routes,
 		ResolveSlash<[Key, ParamString<K>]>, 
 		MergeParamsAndCreate<Params, K, Config['optional'], GetValueFromBeforePath<Config>>,
-		MergeParamsAndCreate<ParamsResult, K, Config['optional'], GetValueFromTransform<Config>>,
+		MergeParamsAndCreate<ParamsResult, K, undefined extends ReturnType<NonNullable<Config['onUseParams']>> ? Config['optional'] : false, GetValueFromTransform<Config>>,
 		SearchParams
 	>;
 	/**
@@ -259,7 +277,7 @@ export class Path<
 	 */
 	public param<
 		K extends string = string,
-		Config extends ParamsConfig = ParamsConfig
+		Config extends ParamsConfig<any, any> = ParamsConfig<any, any>
 	>(
 		value: K, 
 		config: Config
@@ -267,7 +285,12 @@ export class Path<
 		Routes,
 		ResolveSlash<[Key, ParamString<Config['optional'] extends true ? `${K}?` : K>]>,
 		MergeParamsAndCreate<Params, K, Config['optional'], GetValueFromBeforePath<Config>>,
-		MergeParamsAndCreate<ParamsResult, K, Config['optional'], GetValueFromTransform<Config>>,
+		MergeParamsAndCreate<
+			ParamsResult, 
+			K, 
+			undefined extends ReturnType<NonNullable<Config['onUseParams']>> ? Config['optional'] : false, 
+			GetValueFromTransform<Config>
+		>,
 		SearchParams
 	>;
 	/**
@@ -276,8 +299,9 @@ export class Path<
 	 * @param config {ParamsConfig<ParamsValue>} - param configuration.
 	 */
 	public param<
+		Value = unknown,
 		K extends string = string,
-		Config extends ParamsConfig = ParamsConfig
+		Config extends ParamsConfig<Value, any> = ParamsConfig<Value, any>
 	>(
 		value: K | ParamPath<K, Config>, 
 		config?: Config
@@ -293,7 +317,7 @@ export class Path<
 		_this.paths.push(
 			value instanceof ParamPath
 				? value
-				: Param<K, Config>(
+				: Param<Value, K, Config>(
 					value,
 					config
 				)
@@ -441,7 +465,7 @@ export class Path<
 			return obj;
 		}, {}); 
 
-		const _currentURL = this._currentURL;
+		const _includeCurrentURL = this._includeCurrentURL;
 
 		return {
 			path,
@@ -464,11 +488,11 @@ export class Path<
 
 				newPath = `${newPath}${getSearchParams(params)}`;
 
-				if ( _currentURL ) {
+				if ( _includeCurrentURL ) {
 					newPath = createPathWithCurrentLocationHasHash(
 						newPath, 
-						typeof _currentURL === 'function' 
-							? _currentURL(WINDOWS.location)
+						typeof _includeCurrentURL === 'function' 
+							? _includeCurrentURL(WINDOWS.location)
 							: undefined
 					);
 				} 
