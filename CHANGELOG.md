@@ -1,3 +1,10 @@
+# [1.28.0](https://github.com/resourge/react-router/compare/v1.27.0...v1.28.0) (2025-02-05)
+
+
+### Features
+
+* **path:** improve param generic types to accept return or get values ([5b9bbd2](https://github.com/resourge/react-router/commit/5b9bbd22c247871ad311a4e39f5d3b8e6b89ad4e))
+
 # [1.27.0](https://github.com/resourge/react-router/compare/v1.26.1...v1.27.0) (2025-02-04)
 
 
