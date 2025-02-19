@@ -29,7 +29,7 @@ export {
 	type BackNavigateMethod, useBackNavigate
 } from './hooks/index.native';
 export { generatePath, matchPath } from './utils';
-export { type RouteMetadataType, setRouteMetadata } from './types';
+export { type RouteMetadataType } from './types';
 export {
 	Param, type PathType, SetupPaths, type SetupPathsResult, path, type SearchParamConfig, searchParam 
 } from './setupPaths/index.native';

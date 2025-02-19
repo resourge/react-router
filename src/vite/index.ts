@@ -53,50 +53,53 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 			}
 		},
 		async transform(code, id) {
-			if ( /\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\)/g.test(code) ) {
-				const match = /([a-zA-Z0-9]+)\.routeMetadata\s{0,}=\s{0,}(setRouteMetadata)\(([\s\S]*?)\);/g.exec(code);
-				if ( match ) {
-					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					const [routeMetadataString, page] = match;
+			const match = /\.routeMetadata\s{0,}=\s{0,}/g.exec(code);
+			if (match) {
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				const [_, page] = match;
 
-					const routeMetadataCode = await getRouteMetadata(
-						id,
-						stripCodeOfUnnecessaryCode(code, page), 
-						cacheOutDir,
-						{
-							noEmitOnError: false,
-							noImplicitAny: true,
-							target: ScriptTarget.ES2016,
-							module: ModuleKind.ES2020,
-							moduleResolution: ModuleResolutionKind.NodeJs,
-							outDir: cacheOutDir,
-							baseUrl: path.resolve(projectPath, './'),
-							rootDir: path.resolve(projectPath, './'),
-							types: ['vite/client'],
-							jsx: JsxEmit.ReactJSX,
-							paths: (tsConfig as ConfigLoaderSuccessResult).paths,
-							allowSyntheticDefaultImports: true,
-							allowJs: true
-						},
-						_config
-					);
+				const {
+					fileContent, objectEndIndex, objectStartIndex 
+				} = stripCodeOfUnnecessaryCode(code, page);
 
+				const routeMetadataCode = await getRouteMetadata(
+					id,
+					fileContent, 
+					cacheOutDir,
+					{
+						noEmitOnError: false,
+						noImplicitAny: true,
+						target: ScriptTarget.ES2016,
+						module: ModuleKind.ES2020,
+						moduleResolution: ModuleResolutionKind.NodeJs,
+						outDir: cacheOutDir,
+						baseUrl: path.resolve(projectPath, './'),
+						rootDir: path.resolve(projectPath, './'),
+						types: ['vite/client'],
+						jsx: JsxEmit.ReactJSX,
+						paths: (tsConfig as ConfigLoaderSuccessResult).paths,
+						allowSyntheticDefaultImports: true,
+						allowJs: true
+					},
+					_config
+				);
+
+				if ( routeMetadataCode ) {
 					routeMetadata.push(routeMetadataCode);
 
 					const rMetadata = {
 						...routeMetadataCode 
 					};
-
+	
 					// @ts-expect-error expected
 					delete rMetadata.route;
 
-					code = code.replace(
-						routeMetadataString, 
-						`${page}.routeMetadata = ${JSON.stringify(rMetadata)}`
-					);
-
-					return code;
+					if ( objectEndIndex !== null && objectStartIndex !== null ) {
+						return `${code.slice(0, objectStartIndex)}${JSON.stringify(rMetadata)}${code.slice(objectEndIndex)}`;
+					}
 				}
+
+				return code;
 			}
 		},
 		async closeBundle() {

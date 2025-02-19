@@ -1,1 +1,1 @@
-export { type RouteMetadataType, setRouteMetadata } from './RouteMetadataType';
+export { type RouteMetadataType } from './RouteMetadataType';

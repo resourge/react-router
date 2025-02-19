@@ -30,6 +30,9 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 		ast: true
 	});
 
+	let objectStartIndex = null;
+	let objectEndIndex = null;
+
 	if ( transpiledCode ) {
 		const ast = transpiledCode.ast;
 
@@ -37,6 +40,22 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 			const usedImports = new Set();
 
 			babel.traverse(ast, {
+				AssignmentExpression(path) {
+					const left = path.node.left;
+			
+					// Check if it's an assignment to `FlightSearchPage.routeMetadata`
+					if (
+						left.type === 'MemberExpression'
+						&& (left.object as any).name === functionNameToRemove
+						&& (left.property as any).name === 'routeMetadata'
+					) {
+						const right = path.node.right; // The object being assigned
+				
+						// Get start and end index
+						objectStartIndex = right.start;
+						objectEndIndex = right.end;
+					}
+				},
 				FunctionDeclaration(path) {
 					const functionName = path.node.id?.name;
 					if (functionName === functionNameToRemove) {
@@ -85,10 +104,18 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 				]
 			});
 
-			return modifiedCode?.code ?? fileContent;
+			return {
+				fileContent: modifiedCode?.code ?? fileContent,
+				objectEndIndex,
+				objectStartIndex
+			};
 		}
 	}
-	return fileContent;
+	return {
+		fileContent,
+		objectEndIndex,
+		objectStartIndex
+	};
 }
 
 export function getOptions(minify: boolean): MinifyOptions {
