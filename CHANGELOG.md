@@ -1,3 +1,10 @@
+# [1.29.0](https://github.com/resourge/react-router/compare/v1.28.0...v1.29.0) (2025-02-19)
+
+
+### Features
+
+* **routemetadata:** remove setRouteMetadata necessity and improve vite plugin ([07e52a3](https://github.com/resourge/react-router/commit/07e52a39c881607743f8566a30cbae83029721ed))
+
 # [1.28.0](https://github.com/resourge/react-router/compare/v1.27.0...v1.28.0) (2025-02-05)
 
 
