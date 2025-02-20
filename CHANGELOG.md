@@ -1,3 +1,10 @@
+## [1.29.1](https://github.com/resourge/react-router/compare/v1.29.0...v1.29.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* **routemetadatatype:** fix routeMetadata not being included in global ([70051df](https://github.com/resourge/react-router/commit/70051df6a659b02f77256fe7d9a1cd0a13d79d99))
+
 # [1.29.0](https://github.com/resourge/react-router/compare/v1.28.0...v1.29.0) (2025-02-19)
 
 
