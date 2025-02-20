@@ -1,3 +1,10 @@
+## [1.29.2](https://github.com/resourge/react-router/compare/v1.29.1...v1.29.2) (2025-02-20)
+
+
+### Bug Fixes
+
+* **vite:** fix vite ([be19a70](https://github.com/resourge/react-router/commit/be19a7009fa8958a6a1db7e3aee8bf41b4872fa8))
+
 ## [1.29.1](https://github.com/resourge/react-router/compare/v1.29.0...v1.29.1) (2025-02-20)
 
 
