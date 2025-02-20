@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { describe, it, expect } from 'vitest';
+
 import { Param } from '../../setupPaths/Param';
 import { path, type PathType, type Path } from '../../setupPaths/path/Path';
 import { SetupPaths } from '../../setupPaths/setupPaths/SetupPaths';
@@ -156,8 +157,10 @@ describe('getUrlPattern', () => {
 	it('path', () => {
 		const pathPattern = RoutePaths.PRODUCT.CATEGORY;
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testPathPattern(pathPattern as any);
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testPathPattern(RoutePaths.PRODUCT.CATEGORY.TEST as any);
 	});
 
@@ -240,7 +243,9 @@ describe('getUrlPattern', () => {
 	};
 
 	it('hash', () => {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PATH as any);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PARAM as any);
 	});
 	

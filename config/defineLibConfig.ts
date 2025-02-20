@@ -1,68 +1,68 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import deepmerge from '@fastify/deepmerge'
-import cleanup from 'rollup-plugin-cleanup';
-import { defineConfig, type UserConfig, type UserConfigExport } from 'vite'
-import banner from 'vite-plugin-banner'
-import { checker } from 'vite-plugin-checker'
-import dts from 'vite-plugin-dts'
-import viteTsconfigPaths from 'vite-tsconfig-paths'
+import deepmerge from '@fastify/deepmerge';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { copyFileSync } from 'fs';
+import { defineConfig, type UserConfig, type UserConfigExport } from 'vite';
+import banner from 'vite-plugin-banner';
+import { checker } from 'vite-plugin-checker';
+import dts from 'vite-plugin-dts';
+import viteTsconfigPaths from 'vite-tsconfig-paths';
 
-import PackageJson from '../package.json'
+import PackageJson from '../package.json';
 
-import { createBanner } from './createBanner'
+import { createBanner } from './createBanner';
 
 const {
 	dependencies = {}, devDependencies = {}, peerDependencies = {}
-} = PackageJson as any;
+} = PackageJson;
 
 const external = Array.from(
 	new Set([
-		"crypto",
-	"dgram",
-	"diagnostics_channel",
-	"dns",
-	"dns/promises",
-	"domain",
-	"events",
-	"fs",
-	"fs/promises",
-	"http",
-	"http2",
-	"https",
-	"inspector",
-	"inspector/promises",
-	"module",
-	"net",
-	"os",
-	"path",
-	"path/posix",
-	"path/win32",
-	"perf_hooks",
-	"process",
-	"punycode",
-	"querystring",
-	"readline",
-	"readline/promises",
-	"repl",
-	"stream",
-	"stream/consumers",
-	"stream/promises",
-	"stream/web",
-	"string_decoder",
-	"timers",
-	"timers/promises",
-	"tls",
-	"trace_events",
-	"tty",
-	"url",
-	"util",
-	"util/types",
-	"v8",
-	"vm",
-	"wasi",
-	"worker_threads",
-	"zlib",
+		'crypto',
+		'dgram',
+		'diagnostics_channel',
+		'dns',
+		'dns/promises',
+		'domain',
+		'events',
+		'fs',
+		'fs/promises',
+		'http',
+		'http2',
+		'https',
+		'inspector',
+		'inspector/promises',
+		'module',
+		'net',
+		'os',
+		'path',
+		'path/posix',
+		'path/win32',
+		'perf_hooks',
+		'process',
+		'punycode',
+		'querystring',
+		'readline',
+		'readline/promises',
+		'repl',
+		'stream',
+		'stream/consumers',
+		'stream/promises',
+		'stream/web',
+		'string_decoder',
+		'timers',
+		'timers/promises',
+		'tls',
+		'trace_events',
+		'tty',
+		'url',
+		'util',
+		'util/types',
+		'v8',
+		'vm',
+		'wasi',
+		'worker_threads',
+		'zlib',
 		'react/jsx-runtime',
 		...Object.keys(peerDependencies),
 		...Object.keys(dependencies),
@@ -72,7 +72,7 @@ const external = Array.from(
 		'@resourge/history-store/dist/types/navigationActionType/NavigationActionType',
 		'@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native'
 	]).values()
-)
+);
 
 const entryLib = './src/lib/index.ts';
 const entryNativeLib = './src/lib/index.native.ts';
@@ -86,15 +86,12 @@ export const defineLibConfig = (
 ): UserConfigExport => defineConfig((originalConfig) => deepMerge(
 	typeof config === 'function' ? config(originalConfig) : config,
 	{
-		define: originalConfig.mode !== 'production' ? {
-			__DEV__: (originalConfig.mode === 'development').toString()
-		} : {},
 		test: {
 			globals: true,
 			environment: 'jsdom',
 			setupFiles: './src/setupTests.ts',
 			deps: {
-				inline: ['@resourge/history-store'],
+				inline: ['@resourge/history-store']
 			}
 		},
 		build: {
@@ -103,7 +100,7 @@ export const defineLibConfig = (
 				entry: {
 					index: entryLib,
 					'index.native': entryNativeLib,
-					'vite': entryViteLib
+					vite: entryViteLib
 				},
 				name: 'index',
 				fileName: 'index',
@@ -123,12 +120,12 @@ export const defineLibConfig = (
 				plugins: [
 					nodeResolve({
 						extensions: ['.tsx', '.ts', '.native.ts', '.native.tsx']
-					}),
-					cleanup({
-						extensions: ['js', 'jsx', 'mjs', 'ts', 'tsx']
 					})
 				]
 			}
+		},
+		resolve: {
+			preserveSymlinks: true
 		},
 		plugins: [
 			banner(createBanner()),
@@ -145,15 +142,29 @@ export const defineLibConfig = (
 			}),
 			dts({
 				insertTypesEntry: true,
-
+				
 				exclude: [
 					'**/*.test*',
 					'./src/App.tsx',
 					'./src/main.tsx',
 					'./src/setupTests.ts'
 				],
-				afterBuild
+				afterBuild,
+				beforeWriteFile(filePath: string, content: string) {
+					if ( filePath.includes('dist/lib/index.d.ts') ) {
+						return {
+							filePath,
+							content: `import './global.d';\n${content}`
+						};
+					}
+				}
 			}),
+			{
+				name: 'copy-global-dts',
+				closeBundle() {
+					copyFileSync('src/lib/global.d.ts', 'dist/lib/global.d.ts');
+				}
+			},
 			{
 				name: 'remove-file-extensions',
 				generateBundle(_, bundle) {

@@ -226,6 +226,21 @@ export class Path<
 	 * @param value {string} - param name
 	 */
 	public param<
+		K extends string
+	>(
+		value: K
+	): Path<
+		Routes,
+		ResolveSlash<[Key, ParamString<K>]>,
+		MergeParamsAndCreate<Params, K, false, string>,
+		MergeParamsAndCreate<ParamsResult, K, false, string>, 
+		SearchParams
+	>;
+	/**
+	 * Add's param to the path. (Add's the param into the path in the calling other).
+	 * @param value {string} - param name
+	 */
+	public param<
 		UseValue,
 		K extends string
 	>(

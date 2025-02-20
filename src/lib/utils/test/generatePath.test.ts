@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { Param } from '../../setupPaths/Param';
 import { path } from '../../setupPaths/path/Path';
 import { SetupPaths } from '../../setupPaths/setupPaths/SetupPaths';

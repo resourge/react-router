@@ -3,6 +3,7 @@
 
 // To remove when URLPattern becomes native
 import 'urlpattern-polyfill';
+import './global.d.ts';
 
 export {
 	BrowserRouter, type RouterProps, 

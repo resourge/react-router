@@ -1,15 +1,11 @@
-export type RouteMetadataType<
-	Langs extends string = string, 
-	R extends string | Record<Langs, string> = string,
-	Keywords extends string[] | Record<Langs, string[]> = string[]
-> = {
+export type RouteMetadataType = {
 	route: string
-	description?: R
+	description?: string | Record<string, string>
 	/**
 	 * Privates pages will not generate html and they will be excluded from sitemap.xml
 	 * @default false
 	 */
 	isPrivate?: boolean
-	keywords?: Keywords
-	title?: R
+	keywords?: string[] | Record<string, string[]>
+	title?: string | Record<string, string>
 };

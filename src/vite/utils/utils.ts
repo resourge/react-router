@@ -46,8 +46,8 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 					// Check if it's an assignment to `FlightSearchPage.routeMetadata`
 					if (
 						left.type === 'MemberExpression'
-						&& (left.object as any).name === functionNameToRemove
-						&& (left.property as any).name === 'routeMetadata'
+						&& (left.object as { name: string }).name === functionNameToRemove
+						&& (left.property as { name: string }).name === 'routeMetadata'
 					) {
 						const right = path.node.right; // The object being assigned
 				

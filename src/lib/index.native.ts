@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
-/// <reference path="./global.d.ts" />
 import { setupURLPolyfill } from 'react-native-url-polyfill';
 // To remove when URLPattern becomes native
 import 'urlpattern-polyfill';
