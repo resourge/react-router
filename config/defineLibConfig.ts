@@ -2,6 +2,7 @@
 import deepmerge from '@fastify/deepmerge';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { copyFileSync } from 'fs';
+import cleanup from 'rollup-plugin-cleanup';
 import { defineConfig, type UserConfig, type UserConfigExport } from 'vite';
 import banner from 'vite-plugin-banner';
 import { checker } from 'vite-plugin-checker';
@@ -76,13 +77,11 @@ const external = Array.from(
 
 const entryLib = './src/lib/index.ts';
 const entryNativeLib = './src/lib/index.native.ts';
-const entryViteLib = './src/vite/index.ts';
 
 const deepMerge = deepmerge();
 
 export const defineLibConfig = (
-	config: UserConfigExport,
-	afterBuild?: (() => void | Promise<void>)
+	config: UserConfigExport
 ): UserConfigExport => defineConfig((originalConfig) => deepMerge(
 	typeof config === 'function' ? config(originalConfig) : config,
 	{
@@ -99,8 +98,7 @@ export const defineLibConfig = (
 			lib: {
 				entry: {
 					index: entryLib,
-					'index.native': entryNativeLib,
-					vite: entryViteLib
+					'index.native': entryNativeLib
 				},
 				name: 'index',
 				fileName: 'index',
@@ -120,6 +118,9 @@ export const defineLibConfig = (
 				plugins: [
 					nodeResolve({
 						extensions: ['.tsx', '.ts', '.native.ts', '.native.tsx']
+					}),
+					cleanup({
+						extensions: ['js', 'jsx', 'mjs', 'ts', 'tsx']
 					})
 				]
 			}
@@ -142,16 +143,15 @@ export const defineLibConfig = (
 			}),
 			dts({
 				insertTypesEntry: true,
-				
 				exclude: [
+					'./src/vite/**/*',
 					'**/*.test*',
 					'./src/App.tsx',
 					'./src/main.tsx',
 					'./src/setupTests.ts'
 				],
-				afterBuild,
 				beforeWriteFile(filePath: string, content: string) {
-					if ( filePath.includes('dist/lib/index.d.ts') ) {
+					if ( filePath.includes('dist/index.d.ts') ) {
 						return {
 							filePath,
 							content: `import './global.d';\n${content}`
@@ -162,7 +162,7 @@ export const defineLibConfig = (
 			{
 				name: 'copy-global-dts',
 				closeBundle() {
-					copyFileSync('src/lib/global.d.ts', 'dist/lib/global.d.ts');
+					copyFileSync('src/lib/global.d.ts', 'dist/global.d.ts');
 				}
 			},
 			{

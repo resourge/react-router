@@ -9,7 +9,7 @@
 			"default": "./dist/index.js"
 		},
 		"./vite": {
-			"default": "./dist/vite.js"
+			"default": "./dist/vite/vite.js"
 		},
 		"./mobile": {
 			"default": "./dist/index.native.js"
@@ -26,7 +26,7 @@
 				"./dist/index.d.ts"
 			],
 			"vite": [
-				"./dist/vite.d.ts"
+				"./dist/vite/vite.d.ts"
 			],
 			"mobile": [
 				"./dist/index.native.d.ts"
@@ -58,7 +58,7 @@
 		"lint": "eslint \"./src/**/*.{ts,tsx}\"",
 		"lint:prod": "cross-env NODE_ENV=production npm run lint",
 		"dev": "vite",
-		"build": "tsc && vite build",
+		"build": "vite build -c vite.config.ts && vite build -c vite.viteconfig.ts",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"coverage": "vitest run --coverage",
