@@ -92,7 +92,7 @@ npm install @resourge/react-router react-native-safe-area-context react-native-s
 For web applications, use the following import:
 
 ```typescript
-import { BrowserRouter } from '@resourge/react-router';
+import { BrowserRouter } from "@resourge/react-router";
 ```
 
 ### Mobile
@@ -101,7 +101,7 @@ _NOTE: For react-native app's it's necessary to [enabling-package-exports-beta](
 For mobile applications (iOS and Android), use the following import:
 
 ```typescript
-import { MobileRouter } from '@resourge/react-router/mobile';
+import { MobileRouter } from "@resourge/react-router/mobile";
 ```
 
 # BrowserRouter (web online)
@@ -158,7 +158,7 @@ const App = () => {
 ## Usage
 
 ```tsx
-import { Router, Route } from '@resourge/react-router';
+import { Router, Route } from "@resourge/react-router";
 
 const App = () => {
   return (
@@ -180,6 +180,7 @@ const App = () => {
 ## Props
 
 - `path` (string or string[]): Defines the route path(s) to match against the current URL.
+- `index` (boolean or undefined): Defines the default route inside Switch, otherwise is ignored.
 - `children` (ReactNode): Content to render when the route matches the current URL.
 - `fallback` (ReactNode)(optional): Fallback content to render while waiting for the main content to load (if undefined it will use Router defaultFallback).
 - `exact` (boolean, default: false)(optional): Specifies whether the URL must exactly match the route path.
@@ -193,8 +194,8 @@ const App = () => {
 ## Usage
 
 ```tsx
-import react from 'react';
-import { Router, Switch, Route } from '@resourge/react-router';
+import react from "react";
+import { Router, Switch, Route } from "@resourge/react-router";
 
 const App = () => {
   return (
@@ -221,18 +222,18 @@ const App = () => {
 - `fallback` (ReactNode)(optional): Content to render while waiting for the matched route component to load. (if undefined it will use Router defaultFallback).
 - `animated` (ReactNode)(optional)(mobile only): Enables screen transition animations.
 - `animation` (ReactNode)(optional)(mobile only): Specifies a custom animation style for screen transitions. Default animation:
-	```tsx
-	(animation, { width }) => ({
-	  transform: [
-	  	{
-	  	translateX: animation.interpolate({
-	  		inputRange: [-1, 0, 1],
-	  		outputRange: [-width, 0, width]
-	  	})
-	  	}
-	  ]
-	})
-	```
+  ```tsx
+  (animation, { width }) => ({
+    transform: [
+      {
+        translateX: animation.interpolate({
+          inputRange: [-1, 0, 1],
+          outputRange: [-width, 0, width],
+        }),
+      },
+    ],
+  });
+  ```
 - `duration` (ReactNode)(optional)(mobile only): Sets the duration of the screen transition animations.
 
 # SetupPaths/path/param/searchParam
@@ -256,13 +257,13 @@ const App = () => {
 ## Usage
 
 ```typescript
-import { SetupPaths, path, searchParam } from '@resourge/react-router';
+import { SetupPaths, path, searchParam } from "@resourge/react-router";
 
 // Define path structures
 const RoutePaths = SetupPaths({
-  home: path('home'),
-  user: path('user', { hash: true }).param('id'),
-  search: path('search').searchParams({
+  home: path("home"),
+  user: path("user", { hash: true }).param("id"),
+  search: path("search").searchParams({
     query: searchParam<string>(),
     page: searchParam<number>({ optional: true }),
   }),
@@ -270,12 +271,14 @@ const RoutePaths = SetupPaths({
 
 // Usage of paths
 const homePath = RoutePaths.home.get(); // /home
-const userRoutePath = RoutePaths.user.path // #/user/:id
-const userPath = RoutePaths.user.get({ id: '123' }); // /#/user/123
-const userParams = RoutePaths.user.useParams() // { id: '123' };
-const searchPath = RoutePaths.search.get({ searchParams: { query: 'example', page: 1 } }); // /search?query=example&page=1
-const searchRouteSearchParams = RoutePaths.user.searchParams() // ['query']
-const searchSearchParams = RoutePaths.user.useSearchParams() // { query: 'example', page: 1 };
+const userRoutePath = RoutePaths.user.path; // #/user/:id
+const userPath = RoutePaths.user.get({ id: "123" }); // /#/user/123
+const userParams = RoutePaths.user.useParams(); // { id: '123' };
+const searchPath = RoutePaths.search.get({
+  searchParams: { query: "example", page: 1 },
+}); // /search?query=example&page=1
+const searchRouteSearchParams = RoutePaths.user.searchParams(); // ['query']
+const searchSearchParams = RoutePaths.user.useSearchParams(); // { query: 'example', page: 1 };
 ```
 
 # TabsRoute (mobile only)
@@ -285,9 +288,9 @@ const searchSearchParams = RoutePaths.user.useSearchParams() // { query: 'exampl
 ## Usage
 
 ```tsx
-import react from 'react';
-import { SafeAreaView, Text } from 'react-native';
-import { TabsRoute } from '@resourge/react-router/mobile';
+import react from "react";
+import { SafeAreaView, Text } from "react-native";
+import { TabsRoute } from "@resourge/react-router/mobile";
 
 const App = () => {
   return (
@@ -312,32 +315,28 @@ export default App;
 - `children`: The child components to be rendered as tabs.
 - `placement` (TOP or BOTTOM): The position of the tab bar.
 - `renderTabBar` (optional): A function to render the custom tab bar.
-	```tsx
-	<TabsRoute
-	  placement="BOTTOM"
-	  renderTabBar={({ placement, children }) => (
-	    <CustomTabBar placement={placement}>
-	      {children}
-	    </CustomTabBar>
-	  )}
-	>
-	  {/* Tab definitions */}
-	</TabsRoute>
-	```
+  ```tsx
+  <TabsRoute
+    placement="BOTTOM"
+    renderTabBar={({ placement, children }) => (
+      <CustomTabBar placement={placement}>{children}</CustomTabBar>
+    )}
+  >
+    {/* Tab definitions */}
+  </TabsRoute>
+  ```
 - `historyMode` (optional): Mode for handling history.
 - `onPress` (optional): Function to handle press events.
 - `renderLabel` (optional): Render the label of each tab.
 - `renderTabBarItem` (optional): Function to render each tab item.
-	```tsx
-	<TabsRoute
-	  placement="BOTTOM"
-	  renderTabBarItem={(props) => (
-	    <CustomTabBarItem {...props} />
-	  )}
-	>
-	  {/* Tab definitions */}
-	</TabsRoute>
-	```
+  ```tsx
+  <TabsRoute
+    placement="BOTTOM"
+    renderTabBarItem={(props) => <CustomTabBarItem {...props} />}
+  >
+    {/* Tab definitions */}
+  </TabsRoute>
+  ```
 - `animated` (optional): Boolean to enable animations.
 - `duration` (optional): Duration of animations.
 
@@ -348,8 +347,8 @@ Component for defining individual tabs within `TabsRoute`.
 ### Usage
 
 ```tsx
-import { Text } from 'react-native';
-import { TabBar } from '@resourge/react-router/mobile';
+import { Text } from "react-native";
+import { TabBar } from "@resourge/react-router/mobile";
 
 const App = () => {
   return (
@@ -380,8 +379,8 @@ Component to render the tab bar.
 ### Usage
 
 ```tsx
-import { Text } from 'react-native';
-import { TabBar } from '@resourge/react-router/mobile';
+import { Text } from "react-native";
+import { TabBar } from "@resourge/react-router/mobile";
 
 const App = () => {
   return (
@@ -407,8 +406,8 @@ Component to render individual items within the tab bar.
 ### Usage
 
 ```tsx
-import { Text } from 'react-native';
-import TabBar, { TabBarItem } from '@resourge/react-router/mobile';
+import { Text } from "react-native";
+import TabBar, { TabBarItem } from "@resourge/react-router/mobile";
 
 const App = () => {
   return (
@@ -440,23 +439,23 @@ Wrapper component for `TabsRoute` that automatically sets the tab placement to `
 ## Usage
 
 ```tsx
-import react from 'react';
-import { SafeAreaView, Text } from 'react-native';
-import { BottomTabRoute } from '@resourge/react-router/mobile';
+import react from "react";
+import { SafeAreaView, Text } from "react-native";
+import { BottomTabRoute } from "@resourge/react-router/mobile";
 
 const App = () => {
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <BottomTabsRoute>
-                <BottomTabsRoute.Tab path="/home" label="Home">
-                    <Text>Home Screen</Text>
-                </BottomTabsRoute.Tab>
-                <BottomTabsRoute.Tab path="/settings" label="Settings">
-                    <Text>Settings Screen</Text>
-                </BottomTabsRoute.Tab>
-            </BottomTabsRoute>
-        </SafeAreaView>
-    );
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <BottomTabsRoute>
+        <BottomTabsRoute.Tab path="/home" label="Home">
+          <Text>Home Screen</Text>
+        </BottomTabsRoute.Tab>
+        <BottomTabsRoute.Tab path="/settings" label="Settings">
+          <Text>Settings Screen</Text>
+        </BottomTabsRoute.Tab>
+      </BottomTabsRoute>
+    </SafeAreaView>
+  );
 };
 
 export default App;
@@ -466,32 +465,28 @@ export default App;
 
 - `children`: The child components to be rendered as tabs.
 - `renderTabBar` (optional): A function to render the custom tab bar.
-	```tsx
-	<TabsRoute
-	  placement="BOTTOM"
-	  renderTabBar={({ placement, children }) => (
-	    <CustomTabBar placement={placement}>
-	      {children}
-	    </CustomTabBar>
-	  )}
-	>
-	  {/* Tab definitions */}
-	</TabsRoute>
-	```
+  ```tsx
+  <TabsRoute
+    placement="BOTTOM"
+    renderTabBar={({ placement, children }) => (
+      <CustomTabBar placement={placement}>{children}</CustomTabBar>
+    )}
+  >
+    {/* Tab definitions */}
+  </TabsRoute>
+  ```
 - `historyMode` (optional): Mode for handling history.
 - `onPress` (optional): Function to handle press events.
 - `renderLabel` (optional): Render the label of each tab.
 - `renderTabBarItem` (optional): Function to render each tab item.
-	```tsx
-	<TabsRoute
-	  placement="BOTTOM"
-	  renderTabBarItem={(props) => (
-	    <CustomTabBarItem {...props} />
-	  )}
-	>
-	  {/* Tab definitions */}
-	</TabsRoute>
-	```
+  ```tsx
+  <TabsRoute
+    placement="BOTTOM"
+    renderTabBarItem={(props) => <CustomTabBarItem {...props} />}
+  >
+    {/* Tab definitions */}
+  </TabsRoute>
+  ```
 - `animated` (optional): Boolean to enable animations.
 - `duration` (optional): Duration of animations.
 
@@ -502,23 +497,23 @@ Wrapper component for `TabsRoute` that automatically sets the tab placement to `
 ## Usage
 
 ```tsx
-import react from 'react';
-import { SafeAreaView, Text } from 'react-native';
-import { TopTabsRoutes } from '@resourge/react-router/mobile';
+import react from "react";
+import { SafeAreaView, Text } from "react-native";
+import { TopTabsRoutes } from "@resourge/react-router/mobile";
 
 const App = () => {
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <TopTabsRoutes>
-                <TopTabsRoutes.Tab path="/home" label="Home">
-                    <Text>Home Screen</Text>
-                </TopTabsRoutes.Tab>
-                <TopTabsRoutes.Tab path="/settings" label="Settings">
-                    <Text>Settings Screen</Text>
-                </TopTabsRoutes.Tab>
-            </TopTabsRoutes>
-        </SafeAreaView>
-    );
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <TopTabsRoutes>
+        <TopTabsRoutes.Tab path="/home" label="Home">
+          <Text>Home Screen</Text>
+        </TopTabsRoutes.Tab>
+        <TopTabsRoutes.Tab path="/settings" label="Settings">
+          <Text>Settings Screen</Text>
+        </TopTabsRoutes.Tab>
+      </TopTabsRoutes>
+    </SafeAreaView>
+  );
 };
 export default App;
 ```
@@ -527,32 +522,28 @@ export default App;
 
 - `children`: The child components to be rendered as tabs.
 - `renderTabBar` (optional): A function to render the custom tab bar.
-	```tsx
-	<TabsRoute
-	  placement="BOTTOM"
-	  renderTabBar={({ placement, children }) => (
-	    <CustomTabBar placement={placement}>
-	      {children}
-	    </CustomTabBar>
-	  )}
-	>
-	  {/* Tab definitions */}
-	</TabsRoute>
-	```
+  ```tsx
+  <TabsRoute
+    placement="BOTTOM"
+    renderTabBar={({ placement, children }) => (
+      <CustomTabBar placement={placement}>{children}</CustomTabBar>
+    )}
+  >
+    {/* Tab definitions */}
+  </TabsRoute>
+  ```
 - `historyMode` (optional): Mode for handling history.
 - `onPress` (optional): Function to handle press events.
 - `renderLabel` (optional): Render the label of each tab.
 - `renderTabBarItem` (optional): Function to render each tab item.
-	```tsx
-	<TabsRoute
-	  placement="BOTTOM"
-	  renderTabBarItem={(props) => (
-	    <CustomTabBarItem {...props} />
-	  )}
-	>
-	  {/* Tab definitions */}
-	</TabsRoute>
-	```
+  ```tsx
+  <TabsRoute
+    placement="BOTTOM"
+    renderTabBarItem={(props) => <CustomTabBarItem {...props} />}
+  >
+    {/* Tab definitions */}
+  </TabsRoute>
+  ```
 - `animated` (optional): Boolean to enable animations.
 - `duration` (optional): Duration of animations.
 
@@ -560,7 +551,8 @@ export default App;
 
 `LanguageRoute` component ensures that the language is present at the beginning of the route path within a react application. By analyzing the URL and enforcing language-specific routing rules, developers can create multilingual web applications that seamlessly adapt to user language preferences, enhancing accessibility and user experience.
 
-Functionality: 
+Functionality:
+
 - `Language Detection`: Detects the language parameter in the URL and ensures that it is present at the beginning of the route path.
 - `Language Validation`: Developers can provide custom logic to validate the language parameter, ensuring that only supported languages are accepted.
 - `Fallback Handling`: The component handles scenarios where the language is missing or unsupported, redirecting users to the appropriate language-specific route.
@@ -568,13 +560,13 @@ Functionality:
 ## Usage
 
 ```tsx
-import react from 'react';
-import { Router, LanguageRoute, Route } from '@resourge/react-router';
+import react from "react";
+import { Router, LanguageRoute, Route } from "@resourge/react-router";
 
 const App = () => {
   return (
     <Router>
-      <LanguageRoute languages={['en', 'fr', 'es']} fallbackLanguage="en">
+      <LanguageRoute languages={["en", "fr", "es"]} fallbackLanguage="en">
         <Route path="/home">
           <HomePage />
         </Route>
@@ -604,7 +596,7 @@ const App = () => {
 ## Usage
 
 ```tsx
-import { Router, Navigate } from '@resourge/react-router';
+import { Router, Navigate } from "@resourge/react-router";
 
 const MyComponent = () => {
   return (
@@ -620,12 +612,12 @@ const MyComponent = () => {
 
 - `to` (string | URL | { searchParams: Record<string, any> }): Specifies the destination URL or object containing search parameters for navigation.
 - `action` (ActionType): Specifies the type of action to be performed during navigation. This option allows for fine-grained control over how navigation actions are handled. Possible values include:
-	- 'push': Pushes a new entry onto the browser history stack.
-	- 'replace': Replaces the current entry in the browser history stack.
-	- 'pop': Navigates back to the previous entry in the browser history stack.
-	- 'initial': Indicates that the navigation action is the initial page load.
+  - 'push': Pushes a new entry onto the browser history stack.
+  - 'replace': Replaces the current entry in the browser history stack.
+  - 'pop': Navigates back to the previous entry in the browser history stack.
+  - 'initial': Indicates that the navigation action is the initial page load.
 - `preventScrollReset` (boolean)(web only): Determines whether the scroll position should be preserved during navigation. When set to true, the browser will not reset the scroll position to the top of the page after navigation. This option is particularly useful for maintaining the user's scroll position when navigating within long pages or scrollable containers.
-- `replace` (boolean): Specifies whether the navigation action should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL, effectively modifying the browser history without creating a new entry. 
+- `replace` (boolean): Specifies whether the navigation action should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL, effectively modifying the browser history without creating a new entry.
 - `stack` (boolean)(mobile only): Determines whether to clear the history stack after the current URL before adding a new entry. Setting this option to true ensures that all history entries after the current URL are removed before the navigation creates a new history entry.
 
 # Redirect
@@ -635,7 +627,7 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { Router, Redirect } from '@resourge/react-router';
+import { Router, Redirect } from "@resourge/react-router";
 
 const App = () => {
   return (
@@ -660,14 +652,14 @@ const App = () => {
 ## Usage (web only)
 
 ```tsx
-import { Link } from '@resourge/react-router';
+import { Link } from "@resourge/react-router";
 
 const MyComponent = () => {
   return (
-    <Link 
-      to="/about" 
-      matchClassName="active" 
-      className="custom-link" 
+    <Link
+      to="/about"
+      matchClassName="active"
+      className="custom-link"
       onClick={handleClick}
       target="_blank"
     >
@@ -680,15 +672,11 @@ const MyComponent = () => {
 ## Usage (mobile only)
 
 ```tsx
-import { Link } from '@resourge/react-router/mobile';
+import { Link } from "@resourge/react-router/mobile";
 
 const MyComponent = () => {
   return (
-    <Link 
-      to="/about" 
-      matchStyle={styles.activeLink}
-      onPress={handleClick}
-    >
+    <Link to="/about" matchStyle={styles.activeLink} onPress={handleClick}>
       About Us
     </Link>
   );
@@ -719,14 +707,10 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { Title } from '@resourge/react-router';
+import { Title } from "@resourge/react-router";
 
 const MyComponent = () => {
-  return (
-    <Title>
-      My Page Title
-    </Title>
-  );
+  return <Title>My Page Title</Title>;
 };
 ```
 
@@ -741,7 +725,7 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { Meta } from '@resourge/react-router';
+import { Meta } from "@resourge/react-router";
 
 const MyComponent = () => {
   return (
@@ -756,9 +740,9 @@ const MyComponent = () => {
 
 ## Props
 
-- `name` (string): Name of the meta tag. 
-- `property` (string): Property of the meta tag. 
-- `content` (string): Content of the meta tag. 
+- `name` (string): Name of the meta tag.
+- `property` (string): Property of the meta tag.
+- `content` (string): Content of the meta tag.
 - `....MetaProps` (Record<string, string>): A set of key-value pairs representing the attributes and content of the meta tags to be updated.
 
 # Prompt
@@ -768,7 +752,7 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { Prompt } from '@resourge/react-router';
+import { Prompt } from "@resourge/react-router";
 
 // Usage within a component
 const MyComponent = () => {
@@ -796,7 +780,7 @@ const MyComponent = () => {
 #### example
 
 ```tsx
-import { Prompt, usePromptNext } from '@resourge/react-router';
+import { Prompt, usePromptNext } from "@resourge/react-router";
 
 // Usage within a component
 const PromptNextCompoent = () => {
@@ -807,10 +791,10 @@ const PromptNextCompoent = () => {
   };
 
   return (
-	<div>
-	  <p>This is a sample component.</p>
-	  <button onClick={handleContinue}>Continue</button>
-	</div>
+    <div>
+      <p>This is a sample component.</p>
+      <button onClick={handleContinue}>Continue</button>
+    </div>
   );
 };
 
@@ -834,19 +818,17 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useNavigate } from '@resourge/react-router';
+import { useNavigate } from "@resourge/react-router";
 
 const MyComponent = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    const destination = '/new-page';
+    const destination = "/new-page";
     navigate(destination);
   };
 
-  return (
-    <button onClick={handleClick}>Navigate to New Page</button>
-  );
+  return <button onClick={handleClick}>Navigate to New Page</button>;
 };
 ```
 
@@ -854,12 +836,12 @@ const MyComponent = () => {
 
 - `to` (string | URL | { searchParams: Record<string, any> }): Specifies the destination URL or object containing search parameters for navigation.
 - `action` (ActionType): Specifies the type of action to be performed during navigation. This option allows for fine-grained control over how navigation actions are handled. Possible values include:
-	- 'push': Pushes a new entry onto the browser history stack.
-	- 'replace': Replaces the current entry in the browser history stack.
-	- 'pop': Navigates back to the previous entry in the browser history stack.
-	- 'initial': Indicates that the navigation action is the initial page load.
+  - 'push': Pushes a new entry onto the browser history stack.
+  - 'replace': Replaces the current entry in the browser history stack.
+  - 'pop': Navigates back to the previous entry in the browser history stack.
+  - 'initial': Indicates that the navigation action is the initial page load.
 - `preventScrollReset` (boolean)(web only): Determines whether the scroll position should be preserved during navigation. When set to true, the browser will not reset the scroll position to the top of the page after navigation. This option is particularly useful for maintaining the user's scroll position when navigating within long pages or scrollable containers.
-- `replace` (boolean): Specifies whether the navigation action should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL, effectively modifying the browser history without creating a new entry. 
+- `replace` (boolean): Specifies whether the navigation action should replace the current URL in the browser history stack instead of adding a new entry. When set to true, the current URL will be replaced with the destination URL, effectively modifying the browser history without creating a new entry.
 - `stack` (boolean)(mobile only): Determines whether to clear the history stack after the current URL before adding a new entry. Setting this option to true ensures that all history entries after the current URL are removed before the navigation creates a new history entry.
 
 # useBackNavigate
@@ -869,7 +851,7 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useBackNavigate } from '@resourge/react-router';
+import { useBackNavigate } from "@resourge/react-router";
 
 const MyComponent = () => {
   const goBack = useBackNavigate();
@@ -878,9 +860,7 @@ const MyComponent = () => {
     goBack();
   };
 
-  return (
-    <button onClick={handleClick}>Navigate to Previous Page</button>
-  );
+  return <button onClick={handleClick}>Navigate to Previous Page</button>;
 };
 ```
 
@@ -895,7 +875,7 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useParams } from '@resourge/react-router';
+import { useParams } from "@resourge/react-router";
 
 // Usage within a component
 const MyComponent = () => {
@@ -920,18 +900,14 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useSearchParams } from '@resourge/react-router';
+import { useSearchParams } from "@resourge/react-router";
 
 // Usage within a component
 const MyComponent = () => {
   const searchParams = useSearchParams();
-  console.log('Current search parameters:', searchParams);
+  console.log("Current search parameters:", searchParams);
 
-  return (
-    <div>
-      {/* Your component content here */}
-    </div>
-  );
+  return <div>{/* Your component content here */}</div>;
 };
 ```
 
@@ -941,12 +917,12 @@ const MyComponent = () => {
 
 # useAction
 
-`useAction` hook provides access to the action that led to the current URL. 
+`useAction` hook provides access to the action that led to the current URL.
 
 ## Usage
 
 ```tsx
-import { useAction } from '@resourge/react-router';
+import { useAction } from "@resourge/react-router";
 
 // Usage within a component
 const MyComponent = () => {
@@ -967,10 +943,10 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useMatchPath } from '@resourge/react-router';
+import { useMatchPath } from "@resourge/react-router";
 
 const ProductPage = () => {
-  const match = useMatchPath({ path: '/products/:productId', exact: true });
+  const match = useMatchPath({ path: "/products/:productId", exact: true });
 
   if (match) {
     return <ProductDetails productId={match.params.productId} />;
@@ -994,24 +970,28 @@ const ProductPage = () => {
 ## Usage
 
 ```tsx
-import react from 'react';
-import { Router, useSwitch, Route, Navigate, Redirect } from '@resourge/react-router';
+import react from "react";
+import {
+  Router,
+  useSwitch,
+  Route,
+  Navigate,
+  Redirect,
+} from "@resourge/react-router";
 
 const App = () => {
   return (
     <Router>
-      {useSwitch(
-        [
-		  <Route path="/home">
-            <HomePage />
-          </Route>,
-          <Route path="/about">
-            <AboutPage />
-          </Route>,
-          <Redirect from="/old" to="/new" />,
-          <Navigate to="/default" />
-		]
-      )}
+      {useSwitch([
+        <Route path="/home">
+          <HomePage />
+        </Route>,
+        <Route path="/about">
+          <AboutPage />
+        </Route>,
+        <Redirect from="/old" to="/new" />,
+        <Navigate to="/default" />,
+      ])}
     </Router>
   );
 };
@@ -1031,10 +1011,10 @@ const App = () => {
 ## Usage (web only)
 
 ```tsx
-import { useLink } from '@resourge/react-router';
+import { useLink } from "@resourge/react-router";
 
 const MyComponent = () => {
-  const [href, onClick] = useLink({ to: '/new-page', replace: true });
+  const [href, onClick] = useLink({ to: "/new-page", replace: true });
 
   return (
     <a href={href} onClick={onClick}>
@@ -1047,10 +1027,10 @@ const MyComponent = () => {
 ## Usage (mobile only)
 
 ```tsx
-import { useLink } from '@resourge/react-router/mobile';
+import { useLink } from "@resourge/react-router/mobile";
 
 const MyComponent = () => {
-  const [href, onPress] = useLink({ to: '/new-page', replace: true });
+  const [href, onPress] = useLink({ to: "/new-page", replace: true });
 
   return (
     <Pressable onPress={onPress}>
@@ -1074,20 +1054,18 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useNormalizeUrl } from '@resourge/react-router';
+import { useNormalizeUrl } from "@resourge/react-router";
 
 const MyComponent = () => {
   const normalizeUrl = useNormalizeUrl();
 
   const handleClick = () => {
-    const destination = { searchParams: { key: 'value' } };
+    const destination = { searchParams: { key: "value" } };
     const normalizedUrl = normalizeUrl(destination);
     console.log(normalizedUrl.href);
   };
 
-  return (
-    <button onClick={handleClick}>Generate URL</button>
-  );
+  return <button onClick={handleClick}>Generate URL</button>;
 };
 ```
 
@@ -1104,25 +1082,21 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useBeforeURLChange } from '@resourge/react-router';
+import { useBeforeURLChange } from "@resourge/react-router";
 
 const MyComponent = () => {
   useBeforeURLChange((event) => {
     // Perform any necessary actions or validations here
-    if (event.url === '/restricted-route') {
+    if (event.url === "/restricted-route") {
       // Prevent navigation to restricted route
       return false;
     }
-    
+
     // Allow navigation to other routes
     return true;
   });
 
-  return (
-    <div>
-      {/* Your component content here */}
-    </div>
-  );
+  return <div>{/* Your component content here */}</div>;
 };
 ```
 
@@ -1139,25 +1113,26 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useBlocker } from '@resourge/react-router';
+import { useBlocker } from "@resourge/react-router";
 
 const MyComponent = () => {
-  const { isBlocking, continueNavigation, finishBlocking } = useBlocker((currentUrl, nextUrl, action) => {
-    // Perform any necessary actions or validations here
-    if (nextUrl.pathname === '/restricted-route' && action !== 'beforeunload') {
-      // Block navigation to restricted route
-      return true;
-    }
-    
-    // Allow navigation to other routes
-    return false;
-  });
+  const { isBlocking, continueNavigation, finishBlocking } = useBlocker(
+    (currentUrl, nextUrl, action) => {
+      // Perform any necessary actions or validations here
+      if (
+        nextUrl.pathname === "/restricted-route" &&
+        action !== "beforeunload"
+      ) {
+        // Block navigation to restricted route
+        return true;
+      }
 
-  return (
-    <div>
-      {/* Your component content here */}
-    </div>
+      // Allow navigation to other routes
+      return false;
+    }
   );
+
+  return <div>{/* Your component content here */}</div>;
 };
 ```
 
@@ -1172,19 +1147,15 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { usePrompt } from '@resourge/react-router';
+import { usePrompt } from "@resourge/react-router";
 
 const MyComponent = () => {
   const { isBlocking, continueNavigation, finishBlocking } = usePrompt({
     when: true, // Prompt the user when navigating away from the screen
-    message: 'Are you sure you want to leave this page?' // Customize the prompt message
+    message: "Are you sure you want to leave this page?", // Customize the prompt message
   });
 
-  return (
-    <div>
-      {/* Your component content here */}
-    </div>
-  );
+  return <div>{/* Your component content here */}</div>;
 };
 ```
 
@@ -1200,7 +1171,7 @@ const MyComponent = () => {
 ## Usage
 
 ```tsx
-import { useLanguageContext } from '@resourge/react-router';
+import { useLanguageContext } from "@resourge/react-router";
 
 // Usage within a component
 const MyComponent = () => {
@@ -1223,10 +1194,10 @@ const MyComponent = () => {
 - `Hash Routing`: Support for hash-based routing, facilitating seamless integration with single-page applications (SPAs) and hash-based navigation schemes.
 
 ```typescript
-import { matchPath } from '@resourge/react-router';
+import { matchPath } from "@resourge/react-router";
 
-const url = new URL('https://example.com/products?category=electronics');
-const match = matchPath(url, { path: '/products', searchParams: 'category' });
+const url = new URL("https://example.com/products?category=electronics");
+const match = matchPath(url, { path: "/products", searchParams: "category" });
 
 console.log(match); // Output: MatchResult object or null
 ```
@@ -1238,13 +1209,13 @@ console.log(match); // Output: MatchResult object or null
 ## Usage
 
 ```typescript
-import { generatePath } from '@resourge/react-router';
+import { generatePath } from "@resourge/react-router";
 
 // Example usage
-const path = '/user/:id/posts/:postId';
-const params = { id: '123', postId: '456' };
+const path = "/user/:id/posts/:postId";
+const params = { id: "123", postId: "456" };
 const result = generatePath(path, params);
-console.log('Generated path:', result); // Output: '/user/123/posts/456'
+console.log("Generated path:", result); // Output: '/user/123/posts/456'
 ```
 
 # viteReactRouter
@@ -1261,21 +1232,21 @@ console.log('Generated path:', result); // Output: '/user/123/posts/456'
 ## Usage
 
 ```typescript
-import { viteReactRouter } from '@resourge/react-router/vite';
+import { viteReactRouter } from "@resourge/react-router/vite";
 
 export default {
-    plugins: [
-        viteReactRouter({
-            defaultInitialRoute: '/home',
-            defaultLanguage: 'en',
-            description: 'My awesome react app',
-            keywords: ['react', 'Vite', 'Routing'],
-            onDynamicRoutes: undefined, // Define your custom dynamic routes function here
-            title: 'My react App',
-            url: 'https://example.com'
-        })
-    ]
-}
+  plugins: [
+    viteReactRouter({
+      defaultInitialRoute: "/home",
+      defaultLanguage: "en",
+      description: "My awesome react app",
+      keywords: ["react", "Vite", "Routing"],
+      onDynamicRoutes: undefined, // Define your custom dynamic routes function here
+      title: "My react App",
+      url: "https://example.com",
+    }),
+  ],
+};
 ```
 
 ## Parameters
@@ -1303,4 +1274,5 @@ Contributions to `@resourge/react-router` are welcome! To contribute, please fol
 ## Contact
 
 For questions or support, please contact the maintainers:
+
 - GitHub: [Resourge](https://github.com/resourge)

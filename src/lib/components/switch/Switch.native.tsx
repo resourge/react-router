@@ -1,6 +1,7 @@
-import {
+import React, {
 	Children,
 	cloneElement,
+	isValidElement,
 	Suspense,
 	type FC,
 	type ReactElement,
@@ -12,7 +13,7 @@ import { ScreenContainer } from 'react-native-screens';
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { IsFocusedContext } from '../../contexts/IsFocusedContext';
 import { type TabProps } from '../../contexts/TabConfigContext';
-import { useSwitch, type UseSwitchProps } from '../../hooks/useSwitch/useSwitch.native';
+import { useSwitch, type UseSwitchResultMatch, type UseSwitchProps } from '../../hooks/useSwitch/useSwitch.native';
 import { Styles } from '../../utils/Styles.native';
 import { type RouteProps } from '../index.native';
 
@@ -29,10 +30,14 @@ const Switch: FC<SwitchProps> = ({
 	children,
 	fallback
 }: SwitchProps) => {
-	const { currentIndex, match } = useSwitch({
+	const result = useSwitch({
 		children 
 	});
 	const defaultFallback = useDefaultFallbackContext();
+	
+	if ( isValidElement(result) ) {
+		return result;
+	}
 
 	return (
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -43,7 +48,7 @@ const Switch: FC<SwitchProps> = ({
 				{
 					(Children.toArray(children) as Array<ReactElement<RouteProps & TabProps>>)
 					.map((child, index) => {
-						const isFocused = currentIndex === index;
+						const isFocused = (result as UseSwitchResultMatch).currentIndex === index;
 				
 						return (
 							<IsFocusedContext.Provider
@@ -57,7 +62,7 @@ const Switch: FC<SwitchProps> = ({
 											// @ts-expect-error Its for dev only
 											_isInsideSwitch: true,
 											activityState: isFocused ? 1 : 0,							
-											computedMatch: isFocused ? match : null
+											computedMatch: isFocused ? (result as UseSwitchResultMatch).match : null
 										}
 									)
 								}

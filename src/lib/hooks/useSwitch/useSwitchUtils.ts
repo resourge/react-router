@@ -39,3 +39,31 @@ export const getMatchFromProps = (
 
 	return matchRoute(url, props as MatchPathProps, '*');
 };
+
+export function isIndexRoute(
+	props: BaseRouteProps,
+	indexRoute: JSX.Element | null,
+	getNavigate: (to: string) => {
+		component: JSX.Element
+	}
+): JSX.Element | null {
+	if ( props.index && props.path ) {
+		if ( process.env.NODE_ENV === 'development' ) {
+			if ( indexRoute ) {
+				throw new Error(`Can only exist one index route`);
+			}
+		}
+		const path = typeof props.path === 'string' 
+			? props.path 
+			: props.path[0];
+
+		indexRoute = getNavigate(path).component;
+		
+		if ( process.env.NODE_ENV === 'development' ) {
+			if ( props.path?.includes(':') ) {
+				throw new Error(`Index route ${path} cannot have param's in path`);
+			}
+		}
+	}
+	return indexRoute;
+}

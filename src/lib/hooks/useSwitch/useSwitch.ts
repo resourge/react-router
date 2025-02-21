@@ -4,8 +4,14 @@ import { type RedirectProps } from '../../components/redirect/Redirect';
 import { type BaseRouteProps } from '../../components/route/RouteUtils';
 import { useLanguageContext } from '../../contexts/LanguageContext';
 import { useRouter } from '../../contexts/RouterContext';
+import { getNavigate } from '../../utils/getNavigate/getNavigate';
 
-import { type SwitchRouteProps, getMatchFromProps, isNavigateOrRedirect } from './useSwitchUtils';
+import {
+	type SwitchRouteProps,
+	getMatchFromProps,
+	isIndexRoute,
+	isNavigateOrRedirect
+} from './useSwitchUtils';
 
 export type UseSwitchProps = {
 	children: Array<ReactElement<SwitchRouteProps>> | ReactElement<SwitchRouteProps>
@@ -20,14 +26,19 @@ export const useSwitch = ({ children }: UseSwitchProps): ReactElement<BaseRouteP
 
 	const childArray = Children.toArray(children) as Array<ReactElement<SwitchRouteProps>>;
 
+	let indexRoute: JSX.Element | null = null;
+
 	for (let i = 0; i < childArray.length; i++) {
 		const child = childArray[i];
+		const props = child.props as BaseRouteProps;
 
-		if ( !isNavigateOrRedirect(child.props as RedirectProps) && (child.props as BaseRouteProps).path === undefined ) {
+		indexRoute = isIndexRoute(props, indexRoute, getNavigate);
+
+		if ( !isNavigateOrRedirect(props as RedirectProps) && props.path === undefined ) {
 			return child as unknown as ReactElement<BaseRouteProps>;
 		}
 	
-		const match = getMatchFromProps(url, child.props, baseContext);
+		const match = getMatchFromProps(url, props, baseContext);
 
 		if ( match ) {
 			return cloneElement(child, {
@@ -37,5 +48,5 @@ export const useSwitch = ({ children }: UseSwitchProps): ReactElement<BaseRouteP
 		}
 	}
 
-	return null;
+	return indexRoute;
 };

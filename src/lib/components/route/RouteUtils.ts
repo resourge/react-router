@@ -5,6 +5,10 @@ import { type MatchResult } from '../../utils/matchPath';
 import { validateRouteProps } from '../../utils/validateRouteProps';
 
 export type BaseRouteProps = Omit<MatchPathProps, 'path'> & {
+	/**
+	 * @default false
+	 */
+	index?: boolean
 	path?: MatchPathProps['path']
 };
 

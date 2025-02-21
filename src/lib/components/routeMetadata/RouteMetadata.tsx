@@ -114,7 +114,7 @@ function RouteMetadata({ children }: { children: ReactNode }) {
 	const lang = useHtmlLanguage();
 	const { type } = children as any;
 
-	const metadata: RouteMetadataType = type.routeMetadata ?? type?._payload?._result?.default?.routeMetadata;
+	const metadata: RouteMetadataType = type?.routeMetadata ?? type?._payload?._result?.default?.routeMetadata;
 
 	if ( !metadata ) {
 		return (<></>);
