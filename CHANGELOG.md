@@ -1,3 +1,11 @@
+## [1.29.3](https://github.com/resourge/react-router/compare/v1.29.2...v1.29.3) (2025-02-21)
+
+
+### Bug Fixes
+
+* **types:** improve types to not need comments to work ([f4f9715](https://github.com/resourge/react-router/commit/f4f97155c1af496fa8e99da3d5d79a50e42687e9))
+* **vite:** fix missing types ([3bde524](https://github.com/resourge/react-router/commit/3bde524f50ec3f4c051569208eb8c67a832cad88))
+
 ## [1.29.2](https://github.com/resourge/react-router/compare/v1.29.1...v1.29.2) (2025-02-20)
 
 
