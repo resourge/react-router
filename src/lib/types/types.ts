@@ -100,3 +100,5 @@ export type MakeUndefinedOptional<T> = {
 } & {
 	[K in NullableKeys<T>]?: T[K] extends object ? MakeUndefinedOptional<T[K]> : T[K]
 };
+
+export type PickValue<T extends Record<string, any>, K extends string> = T[K];

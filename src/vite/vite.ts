@@ -53,7 +53,7 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 			}
 		},
 		async transform(code, id) {
-			const match = /\.routeMetadata\s{0,}=\s{0,}/g.exec(code);
+			const match = /([a-zA-Z0-9]+)\.routeMetadata\s{0,}=\s{0,}/g.exec(code);
 			if (match) {
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				const [_, page] = match;
@@ -76,6 +76,7 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 						baseUrl: path.resolve(projectPath, './'),
 						rootDir: path.resolve(projectPath, './'),
 						types: ['vite/client'],
+						removeComments: false,
 						jsx: JsxEmit.ReactJSX,
 						paths: (tsConfig as ConfigLoaderSuccessResult).paths,
 						allowSyntheticDefaultImports: true,

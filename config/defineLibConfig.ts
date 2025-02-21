@@ -150,6 +150,9 @@ export const defineLibConfig = (
 					'./src/main.tsx',
 					'./src/setupTests.ts'
 				],
+				compilerOptions: {
+					removeComments: false
+				},
 				beforeWriteFile(filePath: string, content: string) {
 					if ( filePath.includes('dist/index.d.ts') ) {
 						return {

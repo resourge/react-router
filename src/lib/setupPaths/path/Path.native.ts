@@ -11,6 +11,7 @@ import {
 } from '../../types/StringTypes';
 import { type StringifyObjectParams } from '../../types/StringifyObjectParams';
 import {
+	type PickValue,
 	type GetValueFromBeforePath,
 	type GetValueFromTransform,
 	type IsAllOptional,
@@ -35,24 +36,15 @@ export type InjectParamsIntoPathType<
 	ParamsResult extends Record<string, any>
 > = {
 	[K in keyof Routes]: PathType<
-	// @ts-expect-error Want to protect value, but also access it with types
-		ResolveSlash<[IsHashPath<Routes[K]['_key']> extends true ? '' : BaseKey, Routes[K]['_key']]>,
-		// @ts-expect-error Want to protect value, but also access it with types
-		IsHashPath<Routes[K]['_key']> extends true 
-		// @ts-expect-error Want to protect value, but also access it with types
-			? Routes[K]['_params'] 
-			// @ts-expect-error Want to protect value, but also access it with types
-			: MergeObj<Params, Routes[K]['_params']>,
-		// @ts-expect-error Want to protect value, but also access it with types
-		IsHashPath<Routes[K]['_key']> extends true 
-		// @ts-expect-error Want to protect value, but also access it with types
-			? Routes[K]['_paramsResult'] 
-			// @ts-expect-error Want to protect value, but also access it with types
-			: MergeObj<ParamsResult, Routes[K]['_paramsResult']>,
-		// @ts-expect-error Want to protect value, but also access it with types
-		Routes[K]['_searchParams'],
-		// @ts-expect-error Want to protect value, but also access it with types
-		Routes[K]['_routes']
+		ResolveSlash<[IsHashPath<PickValue<Routes[K], '_key'>> extends true ? '' : BaseKey, PickValue<Routes[K], '_key'>]>,
+		IsHashPath<PickValue<Routes[K], '_key'>> extends true 
+			? PickValue<Routes[K], '_params'> 
+			: MergeObj<Params, PickValue<Routes[K], '_params'>>,
+		IsHashPath<PickValue<Routes[K], '_key'>> extends true 
+			? PickValue<Routes[K], '_paramsResult'> 
+			: MergeObj<ParamsResult, PickValue<Routes[K], '_paramsResult'>>,
+		PickValue<Routes[K], '_searchParams'>,
+		PickValue<Routes[K], '_routes'>
 	>
 };
 
@@ -63,29 +55,18 @@ export type AddConfigParamsIntoRoutes<
 > = {
 	[K in keyof Routes]: Path<
 		AddConfigParamsIntoRoutes<
-		// @ts-expect-error Want to protect value, but also access it with types
-			Routes[K]['_routes'],
-			// @ts-expect-error Want to protect value, but also access it with types
-			IsHashPath<Routes[K]['_key']> extends true 
-			// @ts-expect-error Want to protect value, but also access it with types
-				? Routes[K]['_params'] 
-				// @ts-expect-error Want to protect value, but also access it with types
-				: MergeObj<Params, Routes[K]['_params']>,
-			// @ts-expect-error Want to protect value, but also access it with types
-			IsHashPath<Routes[K]['_key']> extends true 
-			// @ts-expect-error Want to protect value, but also access it with types
-				? Routes[K]['_paramsResult'] 
-				// @ts-expect-error Want to protect value, but also access it with types
-				: MergeObj<ParamsResult, Routes[K]['_paramsResult']>
+			PickValue<Routes[K], '_routes'>,
+			IsHashPath<PickValue<Routes[K], '_key'>> extends true 
+				? PickValue<Routes[K], '_params'>
+				: MergeObj<Params, PickValue<Routes[K], '_params'>>,
+			IsHashPath<PickValue<Routes[K], '_key'>> extends true 
+				? PickValue<Routes[K], '_paramsResult'>
+				: MergeObj<ParamsResult, PickValue<Routes[K], '_paramsResult'>>
 		>,
-		// @ts-expect-error Want to protect value, but also access it with types
-		Routes[K]['_key'],
-		// @ts-expect-error Want to protect value, but also access it with types
-		Routes[K]['_params'],
-		// @ts-expect-error Want to protect value, but also access it with types
-		Routes[K]['_paramsResult'],
-		// @ts-expect-error Want to protect value, but also access it with types
-		Routes[K]['_searchParams']
+		PickValue<Routes[K], '_key'>,
+		PickValue<Routes[K], '_params'>,
+		PickValue<Routes[K], '_paramsResult'>,
+		PickValue<Routes[K], '_searchParams'>
 	>
 };
 
