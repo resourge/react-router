@@ -1,3 +1,15 @@
+# [1.30.0](https://github.com/resourge/react-router/compare/v1.29.3...v1.30.0) (2025-02-21)
+
+
+### Bug Fixes
+
+* **types:** fix types ([c8279dd](https://github.com/resourge/react-router/commit/c8279dd0056553bf53bac61e6e17befae2ca672a))
+
+
+### Features
+
+* **route:** add index, for a last case in case switch cannot find the   route ([1ce6524](https://github.com/resourge/react-router/commit/1ce6524daf8caa523490f01b35efe8c7d5520ecb))
+
 ## [1.29.3](https://github.com/resourge/react-router/compare/v1.29.2...v1.29.3) (2025-02-21)
 
 
