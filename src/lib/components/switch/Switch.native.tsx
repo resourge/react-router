@@ -1,4 +1,4 @@
-import React, {
+import {
 	Children,
 	cloneElement,
 	isValidElement,
@@ -13,7 +13,7 @@ import { ScreenContainer } from 'react-native-screens';
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { IsFocusedContext } from '../../contexts/IsFocusedContext';
 import { type TabProps } from '../../contexts/TabConfigContext';
-import { useSwitch, type UseSwitchResultMatch, type UseSwitchProps } from '../../hooks/useSwitch/useSwitch.native';
+import { useSwitch, type UseSwitchProps, type UseSwitchResultMatch } from '../../hooks/useSwitch/useSwitch.native';
 import { Styles } from '../../utils/Styles.native';
 import { type RouteProps } from '../index.native';
 

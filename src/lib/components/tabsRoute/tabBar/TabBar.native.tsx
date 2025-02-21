@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 export type TabBarPropsPlacement = 'TOP' | 'BOTTOM';
@@ -8,7 +8,7 @@ export type TabBarProps = {
 	placement: TabBarPropsPlacement
 };
 
-const TabBar: React.FC<TabBarProps> = ({ placement, children }: TabBarProps) => {
+const TabBar: FC<TabBarProps> = ({ placement, children }: TabBarProps) => {
 	return (
 		<View
 			accessibilityRole="tablist"

@@ -1,4 +1,4 @@
-import React from 'react';
+import { type FC, type ReactNode, useState } from 'react';
 import {
 	Animated,
 	Easing,
@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 export type TabBarItemProps = Omit<PressableProps, 'style'> & {
-	children: React.ReactNode
+	children: ReactNode
 	pressColor?: string
 	pressOpacity?: number
 	style?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>
@@ -25,7 +25,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const ANDROID_SUPPORTS_RIPPLE = Platform.OS === 'android' && Platform.Version >= 21; // 21 ANDROID_VERSION_LOLLIPOP;
 
-const TabBarItem: React.FC<TabBarItemProps> = ({
+const TabBarItem: FC<TabBarItemProps> = ({
 	disabled,
 	onPress,
 	onPressIn,
@@ -42,7 +42,7 @@ const TabBarItem: React.FC<TabBarItemProps> = ({
 	const isDark = useColorScheme() === 'dark';
 	const defaultPressColor = isDark ? 'rgba(255, 255, 255, .32)' : 'rgba(0, 0, 0, .32)';
 
-	const [opacity] = React.useState(() => new Animated.Value(1));
+	const [opacity] = useState(() => new Animated.Value(1));
 
 	const animateTo = (toValue: number, duration: number) => {
 		if (ANDROID_SUPPORTS_RIPPLE) {

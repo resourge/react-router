@@ -1,8 +1,9 @@
-import React, {
+import {
 	type JSX,
 	useEffect,
 	useRef,
-	type ReactNode
+	type ReactNode,
+	type FC
 } from 'react';
 import { Animated, Easing, View } from 'react-native';
 
@@ -61,7 +62,7 @@ export type TabBarItemContainerProps = {
 	path: string
 } & CommonTabProps;
 
-const TabBarItemContainer: React.FC<TabBarItemContainerProps> = ({
+const TabBarItemContainer: FC<TabBarItemContainerProps> = ({
 	label, path, icon, onPress: _onPress, animated, duration = 350,
 	renderLabel = ({
 		label, animation, icon, isFocused
