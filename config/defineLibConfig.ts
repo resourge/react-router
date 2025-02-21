@@ -157,7 +157,13 @@ export const defineLibConfig = (
 					if ( filePath.includes('dist/index.d.ts') ) {
 						return {
 							filePath,
-							content: `import './global.d';\n${content}`
+							content: `import './global.d';\nimport 'urlpattern-polyfill';\n${content}`
+						};
+					}
+					if ( filePath.includes('dist/index.native.d.ts') ) {
+						return {
+							filePath,
+							content: `import 'urlpattern-polyfill';\n${content}`
 						};
 					}
 				}
