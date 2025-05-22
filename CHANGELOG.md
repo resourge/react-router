@@ -1,3 +1,10 @@
+## [1.30.1](https://github.com/resourge/react-router/compare/v1.30.0...v1.30.1) (2025-05-22)
+
+
+### Bug Fixes
+
+* **usesearchparams:** fix not working correctly with other searchParams ([762f4e5](https://github.com/resourge/react-router/commit/762f4e56e2830320ae678321c803fbfd63d1e531))
+
 # [1.30.0](https://github.com/resourge/react-router/compare/v1.29.3...v1.30.0) (2025-02-21)
 
 
