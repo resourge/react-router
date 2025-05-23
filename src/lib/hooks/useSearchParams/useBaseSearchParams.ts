@@ -63,7 +63,7 @@ function SearchParamsHistory() {
 		};
 	};
 
-	const getSnapshot = () => state.data;
+	const getSnapshot = <T extends Record<string, any>>(): T => state.data as T;
 
 	return {
 		getSnapshot,
@@ -80,10 +80,10 @@ const SearchParamsStore = SearchParamsHistory();
 export const useBaseSearchParams = <T extends Record<string, any>>(
 	store: HistoryStoreType,
 	defaultParams?: T
-) => {
+): T => {
 	const { hash } = useRoute();
 
-	return useSyncExternalStore(
+	return useSyncExternalStore<T>(
 		useCallback((notification) => {
 			return SearchParamsStore.subscribe(store, notification, hash, defaultParams);
 		}, [hash]),
