@@ -1,3 +1,10 @@
+## [1.30.2](https://github.com/resourge/react-router/compare/v1.30.1...v1.30.2) (2025-05-23)
+
+
+### Bug Fixes
+
+* **usebasesearchparams:** fix useBaseSearchParams return type ([57d8f58](https://github.com/resourge/react-router/commit/57d8f5810215692a4cc48c151cbaf178f3114d3b))
+
 ## [1.30.1](https://github.com/resourge/react-router/compare/v1.30.0...v1.30.1) (2025-05-22)
 
 
