@@ -1,14 +1,9 @@
 import { HistoryStore } from '@resourge/history-store/mobile';
 
-import { useBaseSearchParams } from './useBaseSearchParams';
+import { makeSearchParams } from './makeSearchParams';
 
 /**
  * Returns the current search parameters
  * @param defaultParams {T}
  */
-export const useSearchParams = <T extends Record<string, any>>(defaultParams?: T) => {
-	return useBaseSearchParams(
-		HistoryStore,
-		defaultParams
-	);
-};
+export const useSearchParams = makeSearchParams(HistoryStore);
