@@ -73,5 +73,5 @@ export const useLink = ({
 		}
 	};
 
-	return [url.href, onNewClick] as const;
+	return [url, onNewClick] as const;
 };

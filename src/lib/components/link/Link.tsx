@@ -6,6 +6,7 @@ import { type BaseMatchPathProps } from '../../hooks/useMatchPath';
 
 export type LinkProps = UseLinkProps & {
 	matchClassName?: string
+	matchLink?: (url: URL, linkURL: URL) => boolean
 } 
 & BaseMatchPathProps
 & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick' | 'target'>;
@@ -26,15 +27,16 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>((
 		action,
 		onClick: _onClick,
 		target,
+		matchLink,
 		...props 
 	},
 	ref
 ) => {
 	const { url } = useRouter();
-	const [href, onClick] = useLink({
+	const [linkURL, onClick] = useLink({
 		to, replace, preventScrollReset, action, onClick: _onClick, target
 	});
-	const isActive = href === url.href;
+	const isActive = matchLink ? matchLink(url, linkURL) : (linkURL.href === url.href);
 
 	const combinedClassName = [className, isActive ? matchClassName : '']
 	.filter(Boolean)
@@ -45,7 +47,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>((
 			{...props}
 			ref={ref}
 			className={combinedClassName || undefined}
-			href={href}
+			href={linkURL.href}
 			onClick={onClick}
 		>
 			{ children }

@@ -13,6 +13,7 @@ import { useLink, type UseLinkProps } from '../../hooks/useLink/useLink.native';
 import { type BaseMatchPathProps } from '../../hooks/useMatchPath';
 
 export type LinkProps = UseLinkProps & {
+	matchLink?: (url: URL, linkURL: URL) => boolean
 	matchStyle?: StyleProp<ViewStyle>
 } & BaseMatchPathProps
 & ViewProps;
@@ -32,15 +33,16 @@ const Link = forwardRef<View, LinkProps>((
 		action,
 		onPress,
 		target,
+		matchLink,
 		...props 
 	},
 	ref
 ) => {
 	const { url } = useRouter();
-	const [href, onClick] = useLink({
+	const [linkURL, onClick] = useLink({
 		to, replace, action, onPress, target
 	});
-	const isActive = href === url.href;
+	const isActive = matchLink ? matchLink(url, linkURL) : (linkURL.href === url.href);
 
 	return (
 		<Pressable
