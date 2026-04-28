@@ -4,7 +4,6 @@ import { defineConfig } from 'vite';
 import banner from 'vite-plugin-banner';
 import { checker } from 'vite-plugin-checker';
 import dts from 'vite-plugin-dts';
-import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 import PackageJson from './package.json';
 
@@ -104,9 +103,11 @@ export default defineConfig({
 			]
 		}
 	},
+	resolve: {
+		tsconfigPaths: true
+	},
 	plugins: [
 		banner(createBanner()),
-		viteTsconfigPaths(),
 		checker({ 
 			typescript: true,
 			enableBuild: true,
@@ -120,6 +121,9 @@ export default defineConfig({
 		dts({
 			outDir: 'dist/vite',
 			include: ['./src/vite/**/*'],
+			compilerOptions: {
+				baseUrl: '.'
+			},
 			exclude: [
 				'src/lib/**/*',
 				'**/*.test*',

@@ -6,15 +6,15 @@
 			"ESNext"
 		],
 		"module": "esnext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"strict": true,
-		"removeComments": false,
 		"strictNullChecks": true,
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true
 	},
 	"include": [
 		"**/vite.config.ts",
+		"**/eslint.config.ts",
 		"./config/**/*",
 		"package.json"
 	]

@@ -7,7 +7,6 @@ import { defineConfig, type UserConfig, type UserConfigExport } from 'vite';
 import banner from 'vite-plugin-banner';
 import { checker } from 'vite-plugin-checker';
 import dts from 'vite-plugin-dts';
-import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 import PackageJson from '../package.json';
 
@@ -126,11 +125,11 @@ export const defineLibConfig = (
 			}
 		},
 		resolve: {
-			preserveSymlinks: true
+			preserveSymlinks: true,
+			tsconfigPaths: true
 		},
 		plugins: [
 			banner(createBanner()),
-			viteTsconfigPaths(),
 			checker({ 
 				typescript: true,
 				enableBuild: true,
@@ -151,6 +150,7 @@ export const defineLibConfig = (
 					'./src/setupTests.ts'
 				],
 				compilerOptions: {
+					baseUrl: '.',
 					removeComments: false
 				},
 				beforeWriteFile(filePath: string, content: string) {

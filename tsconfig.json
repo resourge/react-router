@@ -2,7 +2,6 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"useDefineForClassFields": true,
-		"esModuleInterop": true,
 		"lib": [
 			"DOM",
 			"DOM.Iterable",
@@ -15,28 +14,28 @@
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"module": "ESNext",
-		"moduleResolution": "Node",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
 		"removeComments": false,
-		"baseUrl": ".",
+		"types": ["node"],
 		"paths": {
 			"src": [
 				"./src"
-			]
+			],
+			"*": ["./*"]
 		}
 	},
 	"include": [
 		"./**/src/**/*",
-		".eslintrc.cjs"
 	],
 	"exclude": [
-		"dist",
-		"**/dist",
-		"_dist",
-		"src/examples/**/*"
+		"./**/dist/**/*",
+		"dist_old",
+		"./src/examples/**/*",
+		"./node_modules/**/*"
 	],
 	"references": [
 		{
