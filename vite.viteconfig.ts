@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { defineConfig } from 'vite';
 import banner from 'vite-plugin-banner';
@@ -75,7 +76,7 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'jsdom',
-		setupFiles: './src/setupTests.ts',
+		setupFiles: './src/setupTests.ts'
 	},
 	build: {
 		emptyOutDir: false,
