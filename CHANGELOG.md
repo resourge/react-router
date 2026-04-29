@@ -1,3 +1,10 @@
+# [1.31.0](https://github.com/resourge/react-router/compare/v1.30.3...v1.31.0) (2026-04-29)
+
+
+### Features
+
+* **link:** add ability to custom condition for matchClassName ([fc38259](https://github.com/resourge/react-router/commit/fc382595d1441737b9ac4af7036b1807b99acda5))
+
 ## [1.30.3](https://github.com/resourge/react-router/compare/v1.30.2...v1.30.3) (2025-06-16)
 
 
