@@ -13,11 +13,11 @@ export const useRoute = <Params extends Record<string, string> = Record<string, 
 	const context = useContext(RouteContext);
 
 	return (context ?? {
+		exact: true,
 		getParams: () => ({}),
 		hash: false,
 		path: '',
 		search: '',
-		unique: '',
-		exact: true
+		unique: ''
 	}) as RouteContextObject<Params>;
 };

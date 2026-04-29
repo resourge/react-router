@@ -1,22 +1,26 @@
 import { type FC, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-export type TabBarPropsPlacement = 'TOP' | 'BOTTOM';
-
 export type TabBarProps = { 
 	children: ReactNode
 	placement: TabBarPropsPlacement
 };
 
-const TabBar: FC<TabBarProps> = ({ placement, children }: TabBarProps) => {
+export type TabBarPropsPlacement = 'BOTTOM' | 'TOP';
+
+const TabBar: FC<TabBarProps> = ({ children, placement }: TabBarProps) => {
 	return (
 		<View
-			accessibilityRole="tablist"
+			accessibilityRole={'tablist'}
 			style={[
 				styles.tabBar, 
 				{ 
-					borderTopWidth: placement === 'BOTTOM' ? StyleSheet.hairlineWidth : 0,
-					borderBottomWidth: placement === 'TOP' ? StyleSheet.hairlineWidth : 0
+					borderBottomWidth: placement === 'TOP'
+						? StyleSheet.hairlineWidth
+						: 0,
+					borderTopWidth: placement === 'BOTTOM'
+						? StyleSheet.hairlineWidth
+						: 0
 				}
 			]}
 		>
@@ -29,8 +33,8 @@ export default TabBar;
 
 const styles = StyleSheet.create({
 	tabBar: {
-		flexDirection: 'row',
 		borderColor: '#bbb',
+		flexDirection: 'row',
 		gap: 10,
 		justifyContent: 'space-around'
 	}

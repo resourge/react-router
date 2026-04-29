@@ -45,7 +45,7 @@ export const makeSearchParams = (
 
 		return () => {
 			const index = notifications.indexOf(notification);
-			if ( index > -1 ) {
+			if ( index !== -1 ) {
 				notifications.splice(index, 1);
 			}
 		};
@@ -77,9 +77,10 @@ export const makeSearchParams = (
 
 	return <T extends Record<string, any>>(defaultParams?: T): T => {
 		const { hash } = useRoute();
-		const dataRef = useRef<{ data: T, search: string }>({
-			search: '',
-			data: (defaultParams ?? {}) as T
+		const dataRef = useRef<{ data: T
+			search: string }>({
+			data: (defaultParams ?? {}) as T,
+			search: ''
 		});
 
 		return useSyncExternalStore<T>(

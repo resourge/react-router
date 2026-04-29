@@ -17,7 +17,7 @@ export const useNavigate = (): NavigateMethod<NavigateOptions> => {
 	 * @param options - Navigation options, such as whether to replace the current entry or perform a specific action.
 	 */
 	return (to: NavigateTo, options: NavigateOptions = {}) => {
-		const { replace = false, action } = options;
+		const { action, replace = false } = options;
 
 		const url = generateUrl(to);
 
@@ -26,8 +26,8 @@ export const useNavigate = (): NavigateMethod<NavigateOptions> => {
 		}
 
 		HistoryStore.navigate(url, {
-			replace,
-			action
+			action,
+			replace
 		});
 	};
 };

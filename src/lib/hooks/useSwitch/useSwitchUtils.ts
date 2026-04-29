@@ -1,16 +1,18 @@
+import { JSX } from 'react';
+
 import { type RedirectProps } from '../../components';
 import { type NavigateProps } from '../../components/navigate/Navigate';
 import { type BaseRouteProps } from '../../components/route/RouteUtils';
 import { validateRouteProps } from '../../utils/validateRouteProps';
-import { matchRoute, type MatchPathProps } from '../useMatchPath';
+import { type MatchPathProps, matchRoute } from '../useMatchPath';
 
-export type SwitchRouteProps = BaseRouteProps | RedirectProps | NavigateProps;
+export type SwitchRouteProps = BaseRouteProps | NavigateProps | RedirectProps;
 /**
  * Checks if the given props are related to navigation or redirection.
  * @param props - The props to check.
  * @returns `true` if the props contain a `to` attribute indicating navigation or redirection.
  */
-export const isNavigateOrRedirect = (props: RedirectProps | NavigateProps) => props.to !== undefined;
+export const isNavigateOrRedirect = (props: NavigateProps | RedirectProps) => props.to !== undefined;
 
 /**
  * Matches the current URL against the given route props to determine if it should render the component.
@@ -48,10 +50,8 @@ export function isIndexRoute(
 	}
 ): JSX.Element | null {
 	if ( props.index && props.path ) {
-		if ( process.env.NODE_ENV === 'development' ) {
-			if ( indexRoute ) {
-				throw new Error(`Can only exist one index route`);
-			}
+		if ( process.env.NODE_ENV === 'development' && indexRoute ) {
+			throw new Error(`Can only exist one index route`);
 		}
 		const path = typeof props.path === 'string' 
 			? props.path 
@@ -59,10 +59,8 @@ export function isIndexRoute(
 
 		indexRoute = getNavigate(path).component;
 		
-		if ( process.env.NODE_ENV === 'development' ) {
-			if ( props.path?.includes(':') ) {
-				throw new Error(`Index route ${path} cannot have param's in path`);
-			}
+		if ( process.env.NODE_ENV === 'development' && props.path?.includes(':') ) {
+			throw new Error(`Index route ${path} cannot have param's in path`);
 		}
 	}
 	return indexRoute;

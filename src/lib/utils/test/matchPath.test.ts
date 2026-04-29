@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { matchRoute } from '../../hooks/useMatchPath';
 import { ORIGIN } from '../constants';

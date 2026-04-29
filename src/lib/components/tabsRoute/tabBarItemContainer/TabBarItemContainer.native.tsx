@@ -1,9 +1,9 @@
 import {
+	type FC,
 	type JSX,
-	useEffect,
-	useRef,
 	type ReactNode,
-	type FC
+	useEffect,
+	useRef
 } from 'react';
 import { Animated, Easing, View } from 'react-native';
 
@@ -13,11 +13,6 @@ import { useMatchPath } from '../../../hooks/useMatchPath';
 import { useNavigate } from '../../../hooks/useNavigate/useNavigate.native';
 import { type NavigateMethod } from '../../../hooks/useNavigate/useNavigateType';
 import TabBarItem from '../tabBarItem/TabBarItem.native';
-
-/**
- * @default path will default to TabRoute path
- */
-export type TabDefaultAction = (path?: string) => void;
 
 export type CommonTabProps = {
 	/**
@@ -42,10 +37,10 @@ export type CommonTabProps = {
 	renderLabel?: (
 		props: {
 			animation: Animated.Value
-			icon: ReactNode | ((props: { animation: Animated.Value }) => JSX.Element)
+			icon: ((props: { animation: Animated.Value }) => JSX.Element) | ReactNode
+			isFocused?: boolean
 			label: string
 			path: string
-			isFocused?: boolean
 		}
 	) => ReactNode
 	renderTabBarItem?: (
@@ -56,26 +51,35 @@ export type CommonTabProps = {
 	) => ReactNode
 };
 
-export type TabBarItemContainerProps = {
-	icon: ReactNode | ((props: { animation: Animated.Value }) => JSX.Element)
+export type TabBarItemContainerProps = CommonTabProps & {
+	icon: ((props: { animation: Animated.Value }) => JSX.Element) | ReactNode
 	label: string
 	path: string
-} & CommonTabProps;
+};
+
+/**
+ * @default path will default to TabRoute path
+ */
+export type TabDefaultAction = (path?: string) => void;
 
 const TabBarItemContainer: FC<TabBarItemContainerProps> = ({
-	label, path, icon, onPress: _onPress, animated, duration = 350,
+	animated, duration = 350, icon, label, onPress: _onPress, path,
 	renderLabel = ({
-		label, animation, icon, isFocused
+		animation, icon, isFocused, label
 	}) => (
 		<View>
 			{
-				typeof icon === 'function' ? icon({
-					animation
-				}) : icon
+				typeof icon === 'function'
+					? icon({
+						animation
+					})
+					: icon
 			}
 			<Animated.Text
 				style={{
-					fontWeight: isFocused ? 'bold' : 'normal'
+					fontWeight: isFocused
+						? 'bold'
+						: 'normal'
 				}}
 			>
 				{ label }
@@ -119,28 +123,28 @@ const TabBarItemContainer: FC<TabBarItemContainerProps> = ({
 	};
 
 	const _label = renderLabel({
-		icon,
-		path,
-		label,
 		animation: animationRef.current,
-		isFocused: Boolean(match)
+		icon,
+		isFocused: Boolean(match),
+		label,
+		path
 	});
 
 	useEffect(() => {
 		if ( animated && !renderLabel && match ) {
 			Animated.timing(animationRef.current, {
-				toValue: 1,
 				duration,
-				useNativeDriver: true,
-				easing: Easing.linear
+				easing: Easing.linear,
+				toValue: 1,
+				useNativeDriver: true
 			}).start();
 
 			return () => {
 				Animated.timing(animationRef.current, {
-					toValue: 0,
 					duration,
-					useNativeDriver: true,
-					easing: Easing.linear
+					easing: Easing.linear,
+					toValue: 0,
+					useNativeDriver: true
 				}).start();
 			};
 		}

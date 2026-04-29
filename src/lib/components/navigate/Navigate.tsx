@@ -1,11 +1,11 @@
 import { type FC, useEffect } from 'react';
 
-import { useNavigate, type NavigateOptions } from '../../hooks/useNavigate/useNavigate';
+import { type NavigateOptions, useNavigate } from '../../hooks/useNavigate/useNavigate';
 import { type NavigateTo } from '../../hooks/useNormalizeUrl/useNormalizeUrlUtils';
 
-export type NavigateProps = {
+export type NavigateProps = NavigateOptions & {
 	to: NavigateTo
-} & NavigateOptions;
+};
 /**
  * Navigates to `to`.
  *
@@ -16,7 +16,6 @@ const Navigate: FC<NavigateProps> = ({ to, ...navigateOptions }: NavigateProps) 
 
 	useEffect(() => {
 		navigate(to, navigateOptions);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return null;

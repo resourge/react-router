@@ -1,33 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/prefer-reduce-type-parameter */
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import importSync from 'import-sync';
-import path from 'path';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { createMatchPath, loadConfig } from 'tsconfig-paths';
 import ts, { type CompilerOptions } from 'typescript';
-import { pathToFileURL } from 'url';
 
 import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
-import { type ViteRouteMetadata, type VitePathRouteMetadata } from './type';
+import { type VitePathRouteMetadata, type ViteRouteMetadata } from './type';
 import { replaceExtension } from './utils';
 
 export const tsConfig = loadConfig();
-
-function getDefaultValue<T extends (string | Record<string, string>) | (
-	string[] | Record<string, string[]>
-)>(
-	config: DefaultViteReactRouterConfig, 
-	value: T
-): T extends (string | Record<string, string>) ? Record<string, string> : Record<string, string[]> {
-	return (
-		typeof value === 'string' || Array.isArray(value)
-			? {
-				[config.defaultLanguage]: value
-			}
-			: value
-	) as T extends (string | Record<string, string>) ? Record<string, string> : Record<string, string[]>;
-}
 
 export function convertPathRouteMetadataToRouteMetadata(
 	config: DefaultViteReactRouterConfig,
@@ -40,14 +21,15 @@ export function convertPathRouteMetadataToRouteMetadata(
 	const isPrivate = routeMetadata.isPrivate;
 
 	return {
-		title,
 		description,
+		isPrivate,
 		keywords,
 		route,
-		isPrivate
+		title
 	};
 }
 
+// eslint-disable-next-line max-params
 export function getRouteMetadata(
 	fileName: string,
 	code: string,
@@ -58,6 +40,7 @@ export function getRouteMetadata(
 	return new Promise<ViteRouteMetadata>((resolve, reject) => {
 		const { outDir } = options;
 		if ( tsConfig.resultType === 'failed' ) {
+			// eslint-disable-next-line unicorn/error-message
 			reject(new Error());
 			return;
 		}
@@ -76,7 +59,6 @@ export function getRouteMetadata(
 			ts.sys,
 			ts.createSemanticDiagnosticsBuilderProgram,
 			undefined,
-			// eslint-disable-next-line @typescript-eslint/no-misused-promises
 			async (diagnostics) => {
 				if (diagnostics.code !== 6031) {
 					const newId = fileName.split('src');
@@ -115,15 +97,18 @@ export function getRouteMetadata(
 		const originalReadFile = host.readFile;
 		
 		host.readFile = (fileNameHost) => {
-			return fileNameHost === fileName ? code : originalReadFile(fileNameHost);
+			return fileNameHost === fileName
+				? code
+				: originalReadFile(fileNameHost);
 		};
 		host.afterProgramCreate = (builderProgram) => {
 			const originalEmit = builderProgram.emit;
+			// eslint-disable-next-line max-params
 			builderProgram.emit = (targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, customTransformers): ts.EmitResult => {
 				const transformers = customTransformers ?? {
 					before: [] 
 				};
-				if (!transformers.before) transformers.before = [];
+				transformers.before ??= [];
 				transformers.before.push(
 					(context) => {
 						const { factory } = context;
@@ -131,18 +116,16 @@ export function getRouteMetadata(
 							return factory.updateSourceFile(
 								rootNode,
 								rootNode.statements.map((node: any) => {
-									if (node.moduleSpecifier) {
-										if (node.moduleSpecifier.text.includes('src')) {
-											return factory.updateImportDeclaration(
-												node,
-												node.modifiers,
-												node.importClause,
-												factory.createStringLiteral(
-													resolvePath(`${node.moduleSpecifier.text as string}.js`) ?? ''
-												),
-												node.assertClause
-											);
-										}
+									if (node.moduleSpecifier && node.moduleSpecifier.text.includes('src')) {
+										return factory.updateImportDeclaration(
+											node,
+											node.modifiers,
+											node.importClause,
+											factory.createStringLiteral(
+												resolvePath(`${node.moduleSpecifier.text as string}.js`) ?? ''
+											),
+											node.assertClause
+										);
 									}
 									return node;
 								})
@@ -153,9 +136,26 @@ export function getRouteMetadata(
 
 				return originalEmit(targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, transformers);
 			};
-			if (originalAfterProgramCreate) originalAfterProgramCreate(builderProgram);
+			if (originalAfterProgramCreate) {
+				originalAfterProgramCreate(builderProgram); 
+			}
 		};
 
 		const { close } = ts.createWatchProgram(host);
 	});
+}
+
+function getDefaultValue<T extends (Record<string, string> | string) | (
+	Record<string, string[]> | string[]
+)>(
+	config: DefaultViteReactRouterConfig, 
+	value: T
+): T extends (Record<string, string> | string) ? Record<string, string> : Record<string, string[]> {
+	return (
+		typeof value === 'string' || Array.isArray(value)
+			? {
+				[config.defaultLanguage]: value
+			}
+			: value
+	) as T extends (Record<string, string> | string) ? Record<string, string> : Record<string, string[]>;
 }

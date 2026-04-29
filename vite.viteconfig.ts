@@ -1,6 +1,5 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { defineConfig } from 'vite';
 import banner from 'vite-plugin-banner';
 import { checker } from 'vite-plugin-checker';
@@ -24,7 +23,9 @@ const external = Array.from(
 		'domain',
 		'events',
 		'fs',
+		'node:fs',
 		'fs/promises',
+		'node:fs/promises',
 		'http',
 		'http2',
 		'https',
@@ -34,6 +35,7 @@ const external = Array.from(
 		'net',
 		'os',
 		'path',
+		'node:path',
 		'path/posix',
 		'path/win32',
 		'perf_hooks',
@@ -54,6 +56,7 @@ const external = Array.from(
 		'trace_events',
 		'tty',
 		'url',
+		'node:url',
 		'util',
 		'util/types',
 		'v8',
@@ -67,8 +70,6 @@ const external = Array.from(
 		...Object.keys(devDependencies),
 		'@resourge/history-store/mobile',
 		'@resourge/history-store/utils',
-		'@resourge/history-store/dist/types/navigationActionType/NavigationActionType',
-		'@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native'
 	]).values()
 );
 
@@ -92,16 +93,11 @@ export default defineConfig({
 		rollupOptions: {
 			output: {
 				dir: './dist/vite',
-				inlineDynamicImports: false,
+				codeSplitting: true,
 				
 				entryFileNames: 'vite.js' // Ensures main file name does not have an extension
 			},
-			external,
-			plugins: [
-				nodeResolve({
-					extensions: ['.tsx', '.ts', '.native.ts', '.native.tsx']
-				})
-			]
+			external
 		}
 	},
 	resolve: {
@@ -123,7 +119,7 @@ export default defineConfig({
 			outDir: 'dist/vite',
 			include: ['./src/vite/**/*'],
 			compilerOptions: {
-				baseUrl: '.'
+				baseUrl: '.',
 			},
 			exclude: [
 				'src/lib/**/*',

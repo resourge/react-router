@@ -6,7 +6,7 @@ import {
 	useSyncExternalStore
 } from 'react';
 
-import { HistoryStore } from '@resourge/history-store';
+import { HistoryStore } from 'node_modules/@resourge/history-store/dist/index.js';
 
 /**
  * Returns the current {@link URL} object.
@@ -29,10 +29,14 @@ export const useUrl = () => {
 
 	return useMemo(
 		() => ({
-			url,
 			action,
-			previousUrl: previousValue ? previousValue[0] : undefined,
-			previousAction: previousValue ? previousValue[1] : undefined
+			previousAction: previousValue
+				? previousValue[1]
+				: undefined,
+			previousUrl: previousValue
+				? previousValue[0]
+				: undefined,
+			url
 		}), 
 		[url, action, previousValue]
 	);

@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import {
+	type FlexStyle,
 	StyleSheet,
 	Text,
-	View,
-	type FlexStyle
+	View
 } from 'react-native';
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type HeaderProps, type HeaderTitlePlacement } from '../header/Header.native';
@@ -14,16 +13,16 @@ import { type HeaderProps, type HeaderTitlePlacement } from '../header/Header.na
 export let HeaderConfigEvent = (_props: HeaderProps) => {};
 
 const PLACEMENTS: { [key in HeaderTitlePlacement]: FlexStyle['justifyContent'] } = {
+	center: 'center',
 	left: 'flex-start',
-	right: 'flex-end',
-	center: 'center'
+	right: 'flex-end'
 };
 
 const getTitlePlacement = (placement?: HeaderTitlePlacement) => PLACEMENTS[placement ?? 'center'];
 
 const HeaderConfig = () => {
 	const { top } = useSafeAreaInsets();
-	const [props, setShowHeader] = useState<HeaderProps | undefined>(undefined);
+	const [props, setShowHeader] = useState<HeaderProps | undefined>();
 
 	useEffect(() => {
 		HeaderConfigEvent = (props: HeaderProps) => {
@@ -40,8 +39,8 @@ const HeaderConfig = () => {
 			style={[
 				Styles.container,
 				{
-					marginTop: top, 
-					justifyContent: getTitlePlacement(props.titlePlacement) 
+					justifyContent: getTitlePlacement(props.titlePlacement), 
+					marginTop: top 
 				}
 			]}
 		>
@@ -49,12 +48,13 @@ const HeaderConfig = () => {
 				props.title
 					? (
 						<Text
-							accessibilityRole="header"
+							accessibilityRole={'header'}
 							style={Styles.text}
 						>
 							{ props.title }
 						</Text>
-					) : (<></>)
+					)
+					: (<></>)
 			}
 			{ props.children }
 		</View>
@@ -63,8 +63,8 @@ const HeaderConfig = () => {
 
 const Styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		flexDirection: 'row'
 	},
 	text: {
 		fontSize: 17,

@@ -1,13 +1,12 @@
 import {
 	Children,
 	cloneElement,
-	isValidElement,
-	Suspense,
 	type FC,
+	isValidElement,
 	type ReactElement,
-	type ReactNode
+	type ReactNode,
+	Suspense
 } from 'react';
-
 import { ScreenContainer } from 'react-native-screens';
 
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
@@ -61,8 +60,12 @@ const Switch: FC<SwitchProps> = ({
 										{
 											// @ts-expect-error Its for dev only
 											_isInsideSwitch: true,
-											activityState: isFocused ? 1 : 0,							
-											computedMatch: isFocused ? (result as UseSwitchResultMatch).match : null
+											activityState: isFocused
+												? 1
+												: 0,							
+											computedMatch: isFocused
+												? (result as UseSwitchResultMatch).match
+												: null
 										}
 									)
 								}

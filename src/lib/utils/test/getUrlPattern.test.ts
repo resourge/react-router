@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { Param } from '../../setupPaths/Param';
-import { path, type PathType, type Path } from '../../setupPaths/path/Path';
+import { path, type Path, type PathType } from '../../setupPaths/path/Path';
 import { SetupPaths } from '../../setupPaths/setupPaths/SetupPaths';
 import { ORIGIN } from '../constants';
 import { getUrlPattern } from '../getUrlPattern';
@@ -18,48 +18,14 @@ export enum NewFieldPositionEnum {
 }
 
 const DataSourceIdParam = Param('dataSourceId', {
-	onUseParams: (dataSourceId: string) => Number(dataSourceId)
+	onUseParams: Number
 });
 
 const ProductIdParam = Param('productId', {
-	onUseParams: (productId: string) => Number(productId)
+	onUseParams: Number
 });
 
 export const RoutePaths = SetupPaths({
-	HOME: path(''),
-
-	PRODUCT: path('product')
-	.routes({
-		CATEGORY: path('category')
-		.param(ProductIdParam)
-		.routes({
-			TEST: path('test'),
-			OPTIONAL_PARAM: path('test1')
-			.param('id', {
-				optional: true
-			})
-			.addPath('secondPart'),
-			MODAL: path('category', {
-				hash: true
-			})
-			.routes({
-				ENDS_WITH_PATH: path()
-				.param('index', {
-					onUseParams: (index) => Number(index)
-				})
-				.addPath('edit'),
-
-				ENDS_WITH_PARAM: path()
-				.param('index', {
-					onUseParams: (index) => Number(index)
-				}),
-
-				CREATE: path('create')
-			})
-		})
-		.includeCurrentURL()
-	}),
-
 	DATA_SOURCE: path('datasource')
 	.routes({
 		FORM: path()
@@ -78,6 +44,40 @@ export const RoutePaths = SetupPaths({
 			})
 			.includeCurrentURL()
 		})
+	}),
+
+	HOME: path(''),
+
+	PRODUCT: path('product')
+	.routes({
+		CATEGORY: path('category')
+		.param(ProductIdParam)
+		.routes({
+			MODAL: path('category', {
+				hash: true
+			})
+			.routes({
+				CREATE: path('create'),
+
+				ENDS_WITH_PARAM: path()
+				.param('index', {
+					onUseParams: Number
+				}),
+
+				ENDS_WITH_PATH: path()
+				.param('index', {
+					onUseParams: Number
+				})
+				.addPath('edit')
+			}),
+			OPTIONAL_PARAM: path('test1')
+			.param('id', {
+				optional: true
+			})
+			.addPath('secondPart'),
+			TEST: path('test')
+		})
+		.includeCurrentURL()
 	})
 });
 
@@ -102,7 +102,9 @@ describe('getUrlPattern', () => {
 			productId
 		});
 
-		const basePath = _basePath.includes('http') ? _basePath : createBaseUrl(_basePath);
+		const basePath = _basePath.includes('http')
+			? _basePath
+			: createBaseUrl(_basePath);
 
 		expect(
 			url.test(basePath)
@@ -156,18 +158,14 @@ describe('getUrlPattern', () => {
 	};
 	it('path', () => {
 		const pathPattern = RoutePaths.PRODUCT.CATEGORY;
-
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testPathPattern(pathPattern as any);
-
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testPathPattern(RoutePaths.PRODUCT.CATEGORY.TEST as any);
 	});
 
 	it('optional param', () => {
 		const pathPattern = RoutePaths.PRODUCT.CATEGORY.OPTIONAL_PARAM.get({
-			productId: 10,
-			id: 1
+			id: 1,
+			productId: 10
 		});
 
 		expect(pathPattern)
@@ -185,8 +183,8 @@ describe('getUrlPattern', () => {
 	) => {
 		const url = getUrlPattern({
 			baseURL: ORIGIN,
-			path: pathPattern.path,
-			hash: true
+			hash: true,
+			path: pathPattern.path
 		});
 
 		const index = 10;
@@ -197,7 +195,7 @@ describe('getUrlPattern', () => {
 			})
 		);
 
-		const basePath = `${ORIGIN}${_basePath.substring(_basePath.indexOf('#') + 1)}`;
+		const basePath = `${ORIGIN}${_basePath.slice(Math.max(0, _basePath.indexOf('#') + 1))}`;
 
 		expect(
 			url.test(basePath)
@@ -243,9 +241,7 @@ describe('getUrlPattern', () => {
 	};
 
 	it('hash', () => {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PATH as any);
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		testHashPattern(RoutePaths.PRODUCT.CATEGORY.MODAL.ENDS_WITH_PARAM as any);
 	});
 	
@@ -274,9 +270,9 @@ describe('getUrlPattern', () => {
 		).toMatchObject({
 			pathname: {
 				groups: {
-					dataSourceTab: 'areas_attributes',
+					areaName: undefined,
 					dataSourceId: '421',
-					areaName: undefined
+					dataSourceTab: 'areas_attributes'
 				}
 			}
 		});
@@ -294,9 +290,9 @@ describe('getUrlPattern', () => {
 		).toMatchObject({
 			pathname: {
 				groups: {
-					dataSourceTab: 'areas_attributes',
+					areaName: undefined,
 					dataSourceId: '421',
-					areaName: undefined
+					dataSourceTab: 'areas_attributes'
 				}
 			}
 		});
@@ -320,9 +316,9 @@ describe('getUrlPattern', () => {
 		).toMatchObject({
 			pathname: {
 				groups: {
-					dataSourceTab: 'areas_attributes',
+					areaName: 'A_Check_DS_Separators_S02_DIP04_Fix.Hours',
 					dataSourceId: '421',
-					areaName: 'A_Check_DS_Separators_S02_DIP04_Fix.Hours'
+					dataSourceTab: 'areas_attributes'
 				}
 			}
 		});

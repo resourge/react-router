@@ -17,8 +17,12 @@ export const normalizeUrl = (
 	// If to is string, resolve to with current url
 	if ( typeof to === 'string' ) {
 		return new URL(
-			base ? resolveSlash(base, to) : to, 
-			isValidUrl(to) ? undefined : ORIGIN
+			base
+				? resolveSlash(base, to)
+				: to, 
+			isValidUrl(to)
+				? undefined
+				: ORIGIN
 		);
 	}
 

@@ -8,7 +8,7 @@ export type UsePromptProps = {
 	/**
 	 * When true blocks url change
 	 */
-	when: boolean | Blocker<NavigationActionType>
+	when: Blocker<NavigationActionType> | boolean
 };
 
 /**
@@ -17,5 +17,7 @@ export type UsePromptProps = {
  *  (accepts method that return's boolean).
  */
 export const usePrompt = ({ when }: UsePromptProps): BlockerResult => {
-	return useBlocker(typeof when === 'boolean' ? () => when : (when));
+	return useBlocker(typeof when === 'boolean'
+		? () => when
+		: (when));
 };

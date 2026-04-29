@@ -4,6 +4,8 @@ export function getFitInAllRoutesReg() {
 	return /\{\*\}\?/g;
 }
 
-export const IS_BROWSER: boolean = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+export const IS_BROWSER: boolean = globalThis.window !== undefined && globalThis.document !== undefined;
 
-export const ORIGIN = IS_BROWSER ? window.location.origin : 'http://localhost';
+export const ORIGIN = IS_BROWSER
+	? globalThis.location.origin
+	: 'http://localhost';

@@ -7,15 +7,6 @@ import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
 import { setRouteMetadata } from './setRouteMetadata';
 import { getOptions } from './utils';
 
-export type FilesType = { 
-	fileName: string
-	url: string
-	description?: string
-	keywords?: string[]
-	title?: string
-	translation?: string
-};
-
 export type CreateHtmlFilesConfig = {
 	config: DefaultViteReactRouterConfig
 	html: string
@@ -24,12 +15,21 @@ export type CreateHtmlFilesConfig = {
 	rootConfig: ResolvedConfig
 };
 
+export type FilesType = { 
+	description?: string
+	fileName: string
+	keywords?: string[]
+	title?: string
+	translation?: string
+	url: string
+};
+
 export function createHtmlFiles({
-	pages, 
+	config, 
 	html, 
-	rootConfig,
-	config,
-	maxFileNameLength
+	maxFileNameLength,
+	pages,
+	rootConfig
 }: CreateHtmlFilesConfig) {
 	const root = parse(html);
 
@@ -44,11 +44,11 @@ export function createHtmlFiles({
 				const titleComponent = root.querySelector('title');
 				const htmlElement = root.querySelector('html');
 
-				if ( !translation ) {
-					htmlElement?.removeAttribute('lang');
+				if ( translation ) {
+					htmlElement?.setAttribute('lang', translation);
 				}
 				else {
-					htmlElement?.setAttribute('lang', translation);
+					htmlElement?.removeAttribute('lang');
 				}
 
 				if ( titleComponent ) {
@@ -65,7 +65,7 @@ export function createHtmlFiles({
 					fileName,
 					await minifyFn(
 						root.toString(), 
-						getOptions(Boolean(rootConfig.build.minify) ?? true)
+						getOptions(Boolean(rootConfig.build.minify))
 					),
 					maxFileNameLength
 				);

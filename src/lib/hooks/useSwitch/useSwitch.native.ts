@@ -1,4 +1,4 @@
-import { Children, type LegacyRef, type ReactElement } from 'react';
+import { Children, JSX, type LegacyRef, type ReactElement } from 'react';
 
 import { type RouteProps } from '../../components/route/Route.native';
 import { type BaseRouteProps } from '../../components/route/RouteUtils';
@@ -9,10 +9,10 @@ import { getNavigate } from '../../utils/getNavigate/getNavigate.native';
 import { type MatchResult } from '../../utils/matchPath';
 
 import {
-	type SwitchRouteProps,
 	getMatchFromProps,
 	isIndexRoute,
-	isNavigateOrRedirect
+	isNavigateOrRedirect,
+	type SwitchRouteProps
 } from './useSwitchUtils';
 
 export type UseSwitchProps = {
@@ -20,7 +20,7 @@ export type UseSwitchProps = {
 };
 
 export type UseSwitchResultMatch = {
-	currentIndex: number | null
+	currentIndex: null | number
 	match: MatchResult<Record<string, string>> | null
 };
 
@@ -41,11 +41,11 @@ export const useSwitch = ({ children }: UseSwitchProps): ReactElement<any> | Use
 
 		const match = getMatchFromProps(
 			url, 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 			!isNavigateOrRedirect(props as any) && (props as BaseRouteProps).path === undefined 
 				? {
 					path: '*'
-				} : props, 
+				}
+				: props, 
 			baseContext
 		);
 

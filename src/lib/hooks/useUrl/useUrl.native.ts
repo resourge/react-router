@@ -29,10 +29,14 @@ export const useUrl = () => {
 
 	return useMemo(
 		() => ({
-			url,
 			action,
-			previousUrl: previousValue ? previousValue[0] : undefined,
-			previousAction: previousValue ? previousValue[1] : undefined
+			previousAction: previousValue
+				? previousValue[1]
+				: undefined,
+			previousUrl: previousValue
+				? previousValue[0]
+				: undefined,
+			url
 		}), 
 		[url, action, previousValue]
 	);

@@ -13,6 +13,10 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 */
 	checkNewVersion: (url: URL) => boolean
 	/**
+	 * If URL pattern is exact
+	 */
+	exact?: boolean
+	/**
 	 * Get current route params
 	 */
 	getParams: () => Params
@@ -25,6 +29,10 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 */
 	path: string
 	/**
+	 * All possible paths for the route
+	 */
+	paths?: string[]
+	/**
 	 * Current route search
 	 */
 	search: string
@@ -33,18 +41,68 @@ export type MatchResult<Params extends Record<string, string> = Record<string, s
 	 */
 	unique: string
 	/**
-	 * If URL pattern is exact
-	 */
-	exact?: boolean
-	/**
-	 * All possible paths for the route
-	 */
-	paths?: string[]
-	/**
 	 * Route URL
 	 */
 	url?: URL
 };
+
+/**
+ * Method to match href to {@link MatchProps path}
+ * @param _href {string}
+ * @param matchProps {@link MatchProps} - props to define the route
+ */
+export function matchPath<Params extends Record<string, string> = Record<string, string>>(
+	url: URL,
+	{
+		baseURL, exact, hash, path, paths
+	}: MatchProps
+): MatchResult<Params> | null {
+	const urlPattern = getUrlPattern({
+		baseURL,
+		exact,
+		hash,
+		path 
+	});
+	const _href = getHrefWhenHashOrNormal(url, hash);
+
+	const match = urlPattern.exec(_href);
+
+	if ( match ) {
+		const search = match.search.input;
+		const unique = getUniqueId(path, match);
+
+		return {
+			checkNewVersion: (url: URL) => {
+				const _href = getHrefWhenHashOrNormal(url, hash);
+				const match = urlPattern.exec(_href);
+
+				return match
+					? unique === getUniqueId(path, match)
+					: false;
+			},
+			exact, 
+			getParams: () => {
+				const { groups } = match.pathname;
+
+				return Object.entries(groups)
+				.filter(([key, value]) => key !== '0' && value)
+				.reduce<Record<string, string>>((obj, [key, value]) => {
+					obj[key] = value!;
+
+					return obj;
+				}, {}) as Params;
+			},
+			hash: hash ?? false,
+			path,
+			paths,
+			search,
+			unique,
+			url
+		};
+	}
+
+	return null;
+}
 
 function getUniqueId(path: string, match: URLPatternResult) {
 	const { pathname } = match;
@@ -56,63 +114,9 @@ function getUniqueId(path: string, match: URLPatternResult) {
 		const length = group.length;
 
 		return path.includes(FIT_IN_ALL_ROUTES)
-			? input.substring(index + length)
-			: input.substring(0, index);
+			? input.slice(Math.max(0, index + length))
+			: input.slice(0, Math.max(0, index));
 	}
 
 	return input;
-}
-
-/**
- * Method to match href to {@link MatchProps path}
- * @param _href {string}
- * @param matchProps {@link MatchProps} - props to define the route
- */
-export function matchPath<Params extends Record<string, string> = Record<string, string>>(
-	url: URL,
-	{
-		hash, path, exact, paths, baseURL
-	}: MatchProps
-): MatchResult<Params> | null {
-	const urlPattern = getUrlPattern({
-		hash, path, exact, baseURL 
-	});
-	const _href = getHrefWhenHashOrNormal(url, hash);
-
-	const match = urlPattern.exec(_href);
-
-	if ( match ) {
-		const search = match.search.input;
-		const unique = getUniqueId(path, match);
-
-		return {
-			url,
-			exact, 
-			unique,
-			path,
-			paths,
-			search,
-			checkNewVersion: (url: URL) => {
-				const _href = getHrefWhenHashOrNormal(url, hash);
-				const match = urlPattern.exec(_href);
-
-				return match ? unique === getUniqueId(path, match) : false;
-			},
-			getParams: () => {
-				const { groups } = match.pathname;
-
-				return Object.entries(groups)
-				.filter(([key, value]) => key !== '0' && value)
-				.reduce<Record<string, string>>((obj, [key, value]) => {
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					obj[key] = value!;
-
-					return obj;
-				}, {}) as Params;
-			},
-			hash: hash ?? false
-		};
-	}
-
-	return null;
 }

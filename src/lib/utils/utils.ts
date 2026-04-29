@@ -4,49 +4,6 @@ import { ORIGIN } from './constants';
 import { WINDOWS } from './window/window';
 
 /**
- * Returns the href based on whether to include the hash or not.
- * 
- * @param url - The URL object.
- * @param hash - Boolean indicating whether to include the hash in the result.
- * @returns The href string with or without hash based on the `hash` parameter.
- */
-export function getHrefWhenHashOrNormal(url: URL, hash?: boolean) {
-	if ( hash ) {
-		return `${url.origin}${url.hash.substring(1)}`;
-	}
-	const hashIndex = url.href.indexOf('#');
-	return url.href.substring(0, hashIndex > -1 ? hashIndex : undefined);
-}
-
-/**
- * Validates if the provided string is a valid URL.
- * 
- * @param urlString - The URL string to validate.
- * @returns True if valid URL, false otherwise.
- */
-export function isValidUrl(urlString: string) {
-	try { 
-		return Boolean(new URL(urlString)); 
-	}
-	catch (e) { 
-		return false; 
-	}
-}
-
-/**
- * Get current the current location's hash if applicable.
- * 
- * @returns The current location.
- */
-export function getCurrentLocationHasHash() {
-	const windowURL = new URL(WINDOWS.location.href);
-	
-	return WINDOWS.location.pathname && WINDOWS.location.pathname !== '/' 
-		? windowURL.href.replace(windowURL.origin, '') 
-		: '';
-}
-
-/**
  * Creates a path by appending the current location's hash if applicable.
  * 
  * @param path - The base path to which the current location's hash is appended.
@@ -65,6 +22,39 @@ export function createPathWithCurrentLocationHasHash(
 }
 
 /**
+ * Get current the current location's hash if applicable.
+ * 
+ * @returns The current location.
+ */
+export function getCurrentLocationHasHash() {
+	const windowURL = new URL(WINDOWS.location.href);
+	
+	return WINDOWS.location.pathname && WINDOWS.location.pathname !== '/' 
+		? windowURL.href.replace(windowURL.origin, '') 
+		: '';
+}
+
+/**
+ * Returns the href based on whether to include the hash or not.
+ * 
+ * @param url - The URL object.
+ * @param hash - Boolean indicating whether to include the hash in the result.
+ * @returns The href string with or without hash based on the `hash` parameter.
+ */
+export function getHrefWhenHashOrNormal(url: URL, hash?: boolean) {
+	if ( hash ) {
+		return `${url.origin}${url.hash.slice(1)}`;
+	}
+	const hashIndex = url.href.indexOf('#');
+	return url.href.slice(
+		0, 
+		hashIndex === -1 
+			? undefined 
+			: hashIndex
+	);
+}
+
+/**
  * Applies transformations to params based on the provided functions.
  * 
  * @param params - The parameters object.
@@ -72,9 +62,11 @@ export function createPathWithCurrentLocationHasHash(
  * @returns The transformed params.
  */
 export function getParams<Params>(params: Params, beforePaths: Array<(params: Params) => void>) {
-	const _params: Exclude<Params, undefined> = (params ? {
-		...params 
-	} : {}) as Exclude<Params, undefined>;
+	const _params: Exclude<Params, undefined> = (params
+		? {
+			...params 
+		}
+		: {}) as Exclude<Params, undefined>;
 
 	beforePaths.forEach((beforePaths) => {
 		beforePaths(_params);
@@ -98,4 +90,19 @@ export function getSearchParams<Params extends { searchParams?: any }>(params?: 
 	}
 
 	return '';
+}
+
+/**
+ * Validates if the provided string is a valid URL.
+ * 
+ * @param urlString - The URL string to validate.
+ * @returns True if valid URL, false otherwise.
+ */
+export function isValidUrl(urlString: string) {
+	try { 
+		return Boolean(new URL(urlString)); 
+	}
+	catch { 
+		return false; 
+	}
 }

@@ -1,7 +1,7 @@
-import { type ReactNode, Suspense, type FC } from 'react';
+import { type FC, type ReactNode, Suspense } from 'react';
 
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
-import { type UseSwitchProps, useSwitch } from '../../hooks/useSwitch/useSwitch';
+import { useSwitch, type UseSwitchProps } from '../../hooks/useSwitch/useSwitch';
 
 export type SwitchProps = UseSwitchProps & {
 	fallback?: ReactNode

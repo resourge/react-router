@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 import { createFile } from './createFile';
 import { type FilesType } from './createHtmlFiles';
@@ -12,10 +12,10 @@ export type CreateSiteMapConfig = {
 };
 
 export function createSiteMap({
-	pages, 
-	outputPath,
+	config, 
 	maxFileNameLength,
-	config
+	outputPath,
+	pages
 }: CreateSiteMapConfig) {
 	const today = new Date();
 	const date = today.toISOString().split('T')[0];

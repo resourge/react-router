@@ -16,7 +16,7 @@ export const useNormalizeUrl = () => {
 	return (to: NavigateTo) => {
 		return normalizeUrl(
 			to,
-			new URL(window.location.href),
+			new URL(globalThis.location.href),
 			base,
 			hash
 		);

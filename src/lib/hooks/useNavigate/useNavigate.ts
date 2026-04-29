@@ -1,4 +1,4 @@
-import { HistoryStore, type NavigateOptions as RNavigateOptions } from '@resourge/history-store';
+import { HistoryStore, type NavigateOptions as RNavigateOptions } from 'node_modules/@resourge/history-store/dist/index.js';
 
 import { useNormalizeUrl } from '../useNormalizeUrl/useNormalizeUrl';
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';
@@ -22,19 +22,20 @@ export const useNavigate = (): NavigateMethod<NavigateOptions> => {
 
 	return (to: NavigateTo, options: NavigateOptions = {}) => {
 		const {
-			replace = false, action, preventScrollReset = false 
+			action, preventScrollReset = false, replace = false 
 		} = options;
 
 		const url = generateUrl(to);
 
-		if ( window.location.href === url.href ) {
+		if ( globalThis.location.href === url.href ) {
 			return;
 		}
 
 		HistoryStore.navigate(
 			url, 
 			{
-				replace, action 
+				action,
+				replace 
 			}
 		);
 

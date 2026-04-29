@@ -1,34 +1,34 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
 import { setupURLPolyfill } from 'react-native-url-polyfill';
+
 // To remove when URLPattern becomes native
 import 'urlpattern-polyfill';
 
 setupURLPolyfill();
 
 export {
-	MobileRouter, type RouterProps, 
-	Link, type LinkProps, 
+	BottomTabsRoute, type BottomTabsRouteProps, 
+	Header, Link, 
+	type LinkProps, MobileRouter, 
 	Navigate, type NavigateProps, 
 	Prompt, type PromptProps, 
 	Redirect, type RedirectProps, 
 	Route, type RouteProps, 
-	Switch, type SwitchProps, 
-	Header, 
-	TabBar, type TabBarProps, type TabBarPropsPlacement, 
-	TabBarItem, type TabRouteTabProps, 
+	type RouterProps, 
+	Switch, type SwitchProps, TabBar, 
+	TabBarItem, type TabBarProps, 
+	type TabBarPropsPlacement, type TabRouteTabProps,
 	TabsRoute, type TabsRouteProps,
-	BottomTabsRoute, type BottomTabsRouteProps,
 	TopTabsRoute, type TopTabsRouteProps
 } from './components/index.native';
 export {
 	PromptNextContext, RouteContext, type RouteContextObject, RouterContext, type RouterContextType, useLanguageContext, usePromptNext, useRoute, useRouter 
 } from './contexts';
 export {
-	type BaseMatchPathProps, type Blocker, type NavigateOptions, type NavigateTo, type UseLinkProps, type UsePromptProps, useAction, useBeforeURLChange, useBlocker, useLink, useMatchPath, useNavigate, useNormalizeUrl, useParams, usePrompt, useSearchParams, useSwitch,
-	type BackNavigateMethod, useBackNavigate
+	type BackNavigateMethod, type BaseMatchPathProps, type Blocker, type NavigateOptions, type NavigateTo, useAction, useBackNavigate, useBeforeURLChange, useBlocker, useLink, type UseLinkProps, useMatchPath, useNavigate, useNormalizeUrl, useParams, usePrompt, type UsePromptProps,
+	useSearchParams, useSwitch
 } from './hooks/index.native';
-export { generatePath, matchPath } from './utils';
-export { type RouteMetadataType } from './types';
 export {
-	Param, type PathType, SetupPaths, type SetupPathsResult, path, type SearchParamConfig, searchParam 
+	Param, path, type PathType, searchParam, type SearchParamConfig, SetupPaths, type SetupPathsResult 
 } from './setupPaths/index.native';
+export { type RouteMetadataType } from './types';
+export { generatePath, matchPath } from './utils';

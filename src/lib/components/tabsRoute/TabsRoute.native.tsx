@@ -1,11 +1,11 @@
 import {
 	Children,
 	type JSX,
-	useMemo,
 	type PropsWithChildren,
 	type ReactElement,
 	type ReactNode,
-	type Ref
+	type Ref,
+	useMemo
 } from 'react';
 import { View } from 'react-native';
 
@@ -17,25 +17,25 @@ import Switch from '../switch/Switch.native';
 import TabBar, { type TabBarPropsPlacement } from './tabBar/TabBar.native';
 import TabBarItemContainer, { type CommonTabProps, type TabBarItemContainerProps } from './tabBarItemContainer/TabBarItemContainer.native';
 
-export type TabsRouteProps = PropsWithChildren & { 
-	placement: TabBarPropsPlacement
-	renderTabBar?: (
-		props: {
-			children: Array<ReactElement<TabRouteTabProps>>
-			placement: TabBarPropsPlacement
-			tabs: TabRouteTabProps[]
-		}
-	) => ReactNode
-} 
-& TabProps
-& CommonTabProps;
+export type TabRouteTabProps = CommonTabProps & Omit<RouteProps, 'path'> 
+	& TabProps
+	& { 
+		label: string
+		path: string
+	};
 
-export type TabRouteTabProps = Omit<RouteProps, 'path'> & { 
-	label: string
-	path: string
-} 
-& TabProps
-& CommonTabProps;
+export type TabsRouteProps = CommonTabProps & PropsWithChildren 
+	& TabProps
+	& { 
+		placement: TabBarPropsPlacement
+		renderTabBar?: (
+			props: {
+				children: Array<ReactElement<TabRouteTabProps>>
+				placement: TabBarPropsPlacement
+				tabs: TabRouteTabProps[]
+			}
+		) => ReactNode
+	};
 
 /**
  * `TabsRoute` provides a customizable tab navigation component. 
@@ -44,19 +44,19 @@ export type TabRouteTabProps = Omit<RouteProps, 'path'> & {
  */
 function TabsRoute(
 	{
-		children, placement, historyMode, 
+		animated, children, duration, 
+		historyMode,
 		onPress,
+		placement,
 		renderLabel,
-		renderTabBarItem,
-		renderTabBar = ({ placement, children }) => (
+		renderTabBar = ({ children, placement }) => (
 			<TabBar
 				placement={placement}
 			>
 				{ children }
 			</TabBar>
 		),
-		animated,
-		duration
+		renderTabBarItem
 	}: TabsRouteProps
 ) {
 	const childs = Children.toArray(children) as Array<ReactElement<TabBarItemContainerProps> & { ref?: Ref<any> }>;
@@ -78,36 +78,38 @@ function TabsRoute(
 			<View
 				style={Styles.screen}
 			>
-				{
-					isTop ? (<></>) : Screens
+				{ 
+					isTop
+						? (<></>)
+						: Screens 
 				}
 				{
 					renderTabBar({
-						placement,
 						get children() {
 							return childs
 							.map(({ props }) => (
 								<TabBarItemContainer
-									key={props.path}
 									animated={props.animated ?? animated}
 									duration={props.duration ?? duration}
 									icon={props.icon}
+									key={props.path}
 									label={props.label}
+									onPress={props.onPress ?? onPress}
 									path={props.path}
 									renderLabel={(props.renderLabel ?? renderLabel)}
 									renderTabBarItem={props.renderTabBarItem ?? renderTabBarItem}
-									onPress={props.onPress ?? onPress}
 								/>
 							));
 						},
+						placement,
 						get tabs() {
 							return childs.map(({ props }) => props);
 						}
 					})
 				}
-				{
-					isTop ? Screens : (<></>)
-				}
+				{ isTop
+					? Screens
+					: (<></>) }
 			</View>
 		</TabConfigContext.Provider>
 	);

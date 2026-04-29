@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 import {
 	Pressable,
-	Text,
 	type StyleProp,
+	Text,
 	type View,
 	type ViewProps,
 	type ViewStyle
@@ -12,11 +12,11 @@ import { useRouter } from '../../contexts/RouterContext';
 import { useLink, type UseLinkProps } from '../../hooks/useLink/useLink.native';
 import { type BaseMatchPathProps } from '../../hooks/useMatchPath';
 
-export type LinkProps = UseLinkProps & {
-	matchLink?: (url: URL, linkURL: URL) => boolean
-	matchStyle?: StyleProp<ViewStyle>
-} & BaseMatchPathProps
-& ViewProps;
+export type LinkProps = BaseMatchPathProps & UseLinkProps & ViewProps
+	& {
+		matchLink?: (url: URL, linkURL: URL) => boolean
+		matchStyle?: StyleProp<ViewStyle>
+	};
 
 /**
  * A component that navigates to a specified URL using the `to` prop.
@@ -25,31 +25,39 @@ export type LinkProps = UseLinkProps & {
  */
 const Link = forwardRef<View, LinkProps>((
 	{ 
-		to, 
+		action, 
+		children,
+		matchLink,
+		matchStyle,
+		onPress,
 		replace,
 		style,
-		matchStyle,
-		children,
-		action,
-		onPress,
 		target,
-		matchLink,
+		to,
 		...props 
 	},
 	ref
 ) => {
 	const { url } = useRouter();
 	const [linkURL, onClick] = useLink({
-		to, replace, action, onPress, target
+		action,
+		onPress,
+		replace,
+		target,
+		to
 	});
-	const isActive = matchLink ? matchLink(url, linkURL) : (linkURL.href === url.href);
+	const isActive = matchLink
+		? matchLink(url, linkURL)
+		: (linkURL.href === url.href);
 
 	return (
 		<Pressable
 			{...props}
-			ref={ref}
-			style={[style, isActive ? matchStyle : undefined]}
 			onPress={onClick}
+			ref={ref}
+			style={[style, isActive
+				? matchStyle
+				: undefined]}
 		>
 			{ 
 				typeof children === 'string' 

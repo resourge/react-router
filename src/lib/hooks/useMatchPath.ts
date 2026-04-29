@@ -41,15 +41,19 @@ export type MatchPathProps = BaseMatchPathProps & {
 export const matchRoute = (
 	url: URL,
 	{
-		hash, exact, searchParams 
+		exact, hash, searchParams 
 	}: MatchPathProps, 
 	path: MatchPathProps['path'],
 	base?: string
 ): MatchResult<Record<string, string>> | null => {
 	if ( searchParams ) {
-		const _search = Array.isArray(searchParams) ? searchParams : [searchParams];
+		const _search = Array.isArray(searchParams)
+			? searchParams
+			: [searchParams];
 
-		const _url = hash ? new URL(url.hash.replace('#', ''), url.origin) : new URL(url as unknown as string);
+		const _url = hash
+			? new URL(url.hash.replace('#', ''), url.origin)
+			: new URL(url);
 
 		const keys = Array.from(_url.searchParams.keys());
 		if ( _search.some((search) => !keys.some((key) => key === search || search.replace(/\[\d\]/, '') === key)) ) {
@@ -57,7 +61,9 @@ export const matchRoute = (
 		}
 	}
 	
-	const paths = Array.isArray(path) ? path : [path];
+	const paths = Array.isArray(path)
+		? path
+		: [path];
 	const length = paths.length;
 	for (let i = 0; i < length; i++) {
 		const p = paths[i];
@@ -73,11 +79,11 @@ export const matchRoute = (
 		const match = matchPath(
 			url, 
 			{
-				path: _path,
-				hash,
 				baseURL: url.origin,
-				exact,
 				currentPath: p,
+				exact,
+				hash,
+				path: _path,
 				paths
 			}
 		);

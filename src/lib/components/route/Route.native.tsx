@@ -1,13 +1,12 @@
-import { Suspense, forwardRef, useRef } from 'react';
+import { forwardRef, Suspense, useRef } from 'react';
 import { type View } from 'react-native';
-
 import { Screen, type ScreenProps } from 'react-native-screens';
 
 import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { RouteContext } from '../../contexts/RouteContext';
 import { Styles } from '../../utils/Styles.native';
 
-import { useRouteMatch, type BasicRouteProps } from './RouteUtils';
+import { type BasicRouteProps, useRouteMatch } from './RouteUtils';
 
 export type RouteProps = BasicRouteProps & ScreenProps;
 
@@ -38,12 +37,17 @@ const Route = forwardRef<View, RouteProps>((props, ref) => {
 			style={[
 				Styles.screen, 
 				{
-					position: props.activityState === 0 ? 'absolute' : undefined
+					position: props.activityState === 0
+						? 'absolute'
+						: undefined
 				},
 				props.style
 			]}
 		>
-			<RouteContext.Provider value={typeof match === 'string' ? undefined : (match ?? undefined)}>
+			<RouteContext.Provider value={typeof match === 'string'
+				? undefined
+				: (match ?? undefined)}
+			>
 				<Suspense fallback={props.fallback ?? defaultFallback}>
 					{ props.children }
 				</Suspense>

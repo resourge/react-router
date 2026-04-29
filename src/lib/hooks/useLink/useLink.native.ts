@@ -1,8 +1,8 @@
 import { type AnchorHTMLAttributes } from 'react';
 import {
 	Alert,
-	Linking,
 	type GestureResponderEvent,
+	Linking,
 	type PressableProps
 } from 'react-native';
 
@@ -13,18 +13,18 @@ import { useNavigate } from '../useNavigate/useNavigate.native';
 import { useNormalizeUrl } from '../useNormalizeUrl/useNormalizeUrl.native';
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';
 
-export type UseLinkProps = {
-	to: NavigateTo
-	onPress?: PressableProps['onPress']
-	target?: AnchorHTMLAttributes<HTMLAnchorElement>['target']
-} 
-& NavigateOptions;
+export type UseLinkProps = NavigateOptions 
+	& {
+		onPress?: PressableProps['onPress']
+		target?: AnchorHTMLAttributes<HTMLAnchorElement>['target']
+		to: NavigateTo
+	};
 
 /**
  * Hook that returns 'href' and onClick method to navigate to link
  */
 export const useLink = ({
-	to, replace, action, onPress, target
+	action, onPress, replace, target, to
 }: UseLinkProps) => {
 	const navigate = useNavigate();
 	const normalizeUrl = useNormalizeUrl();
@@ -36,10 +36,9 @@ export const useLink = ({
 			// Call custom onPress handler if provided
 			onPress?.(event);
 		}
-		catch (ex) {
+		catch (error) {
 			event.preventDefault();
-			// eslint-disable-next-line @typescript-eslint/only-throw-error
-			throw ex;
+			throw error;
 		}
 
 		if (
@@ -53,11 +52,11 @@ export const useLink = ({
 			if ( url.origin !== ORIGIN ) {
 				Linking.canOpenURL(url.href)
 				.then((supported) => {
-					if (!supported) {
-						Alert.alert(`Don't know how to open URI: ${url.href}`);
+					if (supported) {
+						Linking.openURL(url.href);
 					}
 					else {
-						Linking.openURL(url.href);
+						Alert.alert(`Don't know how to open URI: ${url.href}`);
 					}
 				});
 				return; 

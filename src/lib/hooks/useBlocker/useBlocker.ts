@@ -1,4 +1,4 @@
-import { type NavigationActionType } from '@resourge/history-store';
+import { type NavigationActionType } from 'node_modules/@resourge/history-store/dist/index.js';
 
 import { useBeforeURLChange } from '../useBeforeURLChange/useBeforeURLChange';
 

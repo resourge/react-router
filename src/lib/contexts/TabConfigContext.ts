@@ -6,9 +6,9 @@ export type TabProps = {
 	 * @default ['push']
 	 * !All mode will always reset state 
 	 */
-	historyMode?: Array<'push' | 'replace' | 'tab_view' | 'ALL'>
+	historyMode?: Array<'ALL' | 'push' | 'replace' | 'tab_view'>
 };
 
-export const TabConfigContext = createContext<TabProps | null>(null);
+export const TabConfigContext = createContext<null | TabProps>(null);
 
 export const useTabConfig = () => useContext(TabConfigContext) ?? {};

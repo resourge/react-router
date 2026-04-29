@@ -5,7 +5,7 @@ import { type RouteMetadataType } from '../../types/RouteMetadataType';
 import Meta from '../meta/Meta';
 import Title from '../title/Title';
 
-function getLocalizedContent(metadata?: string | Record<string, string>, lang?: string) {
+function getLocalizedContent(metadata?: Record<string, string> | string, lang?: string) {
 	if ( !metadata ) {
 		return '';
 	}
@@ -14,7 +14,8 @@ function getLocalizedContent(metadata?: string | Record<string, string>, lang?: 
 			lang 
 				? metadata[lang] 
 				: ''
-		) : metadata;
+		)
+		: metadata;
 }
 
 const getTitle = (metadata: RouteMetadataType, lang?: string) => getLocalizedContent(metadata.title, lang);
@@ -26,82 +27,84 @@ const INITIAL_KEYWORDS = globalThis.document
 	: '';
 
 const META_COMPONENTS = {
-	description: {
-		name: 'description',
-		content: getDescription
+	'description': {
+		content: getDescription,
+		name: 'description'
 	},
-	keywords: {
-		name: 'keywords',
+	'image': {
+		content: () => '/favicon.ico',
+		itemprop: 'image'
+	},
+
+	'itemprop_description': {
+		content: getDescription,
+		itemprop: 'description'
+	},
+	'keywords': {
 		content: (metadata: RouteMetadataType, lang?: string) => (
 			metadata.keywords
 				? (
 					Array.isArray(metadata.keywords)
 						? metadata.keywords
 						: (
-							lang ? metadata.keywords[lang] : []
+							lang
+								? metadata.keywords[lang]
+								: []
 						)
 				).join(', ')
 				: INITIAL_KEYWORDS
-		)
+		),
+		name: 'keywords'
 	},
-
-	title: {
-		name: 'title',
-		content: getTitle
-	},
-	image: {
-		itemprop: 'image',
-		content: () => '/favicon.ico'
-	},
-	name: {
-		itemprop: 'name',
-		content: getTitle
-	},
-	itemprop_description: {
-		itemprop: 'description',
-		content: getDescription
-	},
-
-	'og:url': {
-		property: 'og:url',
-		content: () => window.location.href
-	},
-	'og:title': {
-		property: 'og:title',
-		content: getTitle
+	'name': {
+		content: getTitle,
+		itemprop: 'name'
 	},
 	'og:description': {
-		property: 'og:description',
-		content: getDescription
-	},
-	'og:type': {
-		property: 'og:type',
-		content: () => 'website'
-	},
-	'og:image': {
-		property: 'og:image',
-		content: () => '/favicon.ico'
+		content: getDescription,
+		property: 'og:description'
 	},
 
-	'twitter:url': {
-		property: 'twitter:url',
-		content: () => window.location.href
+	'og:image': {
+		content: () => '/favicon.ico',
+		property: 'og:image'
 	},
-	'twitter:title': {
-		property: 'twitter:title',
-		content: getTitle
+	'og:title': {
+		content: getTitle,
+		property: 'og:title'
+	},
+	'og:type': {
+		content: () => 'website',
+		property: 'og:type'
+	},
+	'og:url': {
+		content: () => globalThis.location.href,
+		property: 'og:url'
+	},
+	'title': {
+		content: getTitle,
+		name: 'title'
+	},
+
+	'twitter:card': {
+		content: () => 'summary_large_image',
+		property: 'twitter:card'
 	},
 	'twitter:description': {
-		property: 'twitter:description',
-		content: getDescription
-	},
-	'twitter:card': {
-		property: 'twitter:card',
-		content: () => 'summary_large_image'
+		content: getDescription,
+		property: 'twitter:description'
 	},
 	'twitter:image': {
-		property: 'twitter:image',
-		content: () => '/favicon.ico'
+		content: () => '/favicon.ico',
+		property: 'twitter:image'
+	},
+	'twitter:title': {
+		content: getTitle,
+		property: 'twitter:title'
+	},
+	'twitter:url': {
+		content: () => globalThis.location.href,
+		property: 'twitter:url'
 	}
 };
 
@@ -131,8 +134,8 @@ function RouteMetadata({ children }: { children: ReactNode }) {
 
 					return (
 						<Meta
-							key={key}
 							content={content(metadata, lang)}
+							key={key}
 							{...attrs as Record<string, string>}
 						/>
 					);

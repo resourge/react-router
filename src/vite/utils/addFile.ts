@@ -1,15 +1,15 @@
-import path from 'path';
+import path from 'node:path';
 
 import { type DefaultViteReactRouterConfig } from './getDefaultViteConfig';
 import { type ViteRouteMetadata } from './type';
 
 type FilesType = { 
-	fileName: string
-	url: string
 	description?: string
+	fileName: string
 	keywords?: string[]
 	title?: string
 	translation?: string
+	url: string
 };
 
 /**
@@ -44,7 +44,8 @@ export const addFile = (
 				...config,
 				defaultInitialRoute: '-1'
 			}
-		) : [];
+		)
+		: [];
 	
 	if ( translations.length > 1 ) {
 		files.push(
@@ -56,12 +57,12 @@ export const addFile = (
 					const fileName = path.join(folder, './index.html');
 
 					return { 
-						url,
-						translation,
-						fileName, 
-						title: title[translation], 
 						description: description[translation],
-						keywords: keywords[translation]
+						fileName,
+						keywords: keywords[translation], 
+						title: title[translation], 
+						translation,
+						url
 					};
 				})
 			)
@@ -73,18 +74,20 @@ export const addFile = (
 						
 	const fileName = path.join(folder, './index.html');
 
-	const translation = title[config.defaultLanguage] ? config.defaultLanguage : translations[0];
+	const translation = title[config.defaultLanguage]
+		? config.defaultLanguage
+		: translations[0];
 	const newTitle = title[config.defaultLanguage] ?? title[translations[0]];
 	const newDescription = description[config.defaultLanguage] ?? description[translations[0]];
 	const newKeywords = keywords[config.defaultLanguage] ?? keywords[translations[0]];
 
 	files.unshift({ 
-		url,
-		translation,
-		fileName, 
-		title: newTitle,
 		description: newDescription,
-		keywords: newKeywords
+		fileName,
+		keywords: newKeywords, 
+		title: newTitle,
+		translation,
+		url
 	});
 
 	return files;

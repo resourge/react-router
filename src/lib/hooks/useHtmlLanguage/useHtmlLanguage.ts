@@ -9,6 +9,7 @@ export const useHtmlLanguage = () => {
 	useLayoutEffect(() => {
 		const _language = baseLanguage ?? document.documentElement.lang;
 
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setLang(_language);
 
 		const observer = new MutationObserver(() => {
@@ -16,18 +17,16 @@ export const useHtmlLanguage = () => {
 		});
 
 		if ( !baseLanguage ) {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			const elementToObserve = document.querySelector('html')!;
 			observer.observe(elementToObserve, {
-				attributes: true,
-				attributeFilter: ['lang'] 
+				attributeFilter: ['lang'],
+				attributes: true 
 			});
 		}
 
 		return () => {
 			observer.disconnect();
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [baseLanguage]);
 
 	return lang;

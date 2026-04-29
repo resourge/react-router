@@ -3,9 +3,9 @@ import { type FC, type ReactNode } from 'react';
 import { PromptNextContext } from '../../contexts/PromptNextContext';
 import { usePrompt, type UsePromptProps } from '../../hooks/usePrompt/usePrompt';
 
-export type PromptProps = {
+export type PromptProps = UsePromptProps & {
 	children?: ReactNode
-} & UsePromptProps;
+};
 
 /**
  * Component for prompting the user before navigating.

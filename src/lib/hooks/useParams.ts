@@ -17,6 +17,5 @@ export const useParams = <Params extends Record<string, string> = Record<string,
 
 	return useMemo(() => transformsParams({
 		...route.getParams()
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}), [route.unique]);
 };

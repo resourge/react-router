@@ -1,15 +1,15 @@
 import { type AnchorHTMLAttributes, type MouseEvent } from 'react';
 
-import { useNavigate, type NavigateOptions } from '../useNavigate/useNavigate';
+import { type NavigateOptions, useNavigate } from '../useNavigate/useNavigate';
 import { useNormalizeUrl } from '../useNormalizeUrl/useNormalizeUrl';
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';
 
-export type UseLinkProps = {
-	to: NavigateTo
-	onClick?: AnchorHTMLAttributes<HTMLAnchorElement>['onClick']
-	target?: AnchorHTMLAttributes<HTMLAnchorElement>['target']
-} 
-& NavigateOptions;
+export type UseLinkProps = NavigateOptions 
+	& {
+		onClick?: AnchorHTMLAttributes<HTMLAnchorElement>['onClick']
+		target?: AnchorHTMLAttributes<HTMLAnchorElement>['target']
+		to: NavigateTo
+	};
 
 function isModifiedEvent(event: MouseEvent<any>) {
 	return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
@@ -19,7 +19,7 @@ function isModifiedEvent(event: MouseEvent<any>) {
  * Hook that returns 'href' and onClick method to navigate to link
  */
 export const useLink = ({
-	to, replace, preventScrollReset, action, onClick, target
+	action, onClick, preventScrollReset, replace, target, to
 }: UseLinkProps) => {
 	const navigate = useNavigate();
 	const normalizeUrl = useNormalizeUrl();
@@ -30,10 +30,9 @@ export const useLink = ({
 		try {
 			onClick?.(event);
 		}
-		catch (ex) {
+		catch (error) {
 			event.preventDefault();
-			// eslint-disable-next-line @typescript-eslint/only-throw-error
-			throw ex;
+			throw error;
 		}
 
 		if (
@@ -49,8 +48,8 @@ export const useLink = ({
 				url, 
 				{
 					action,
-					replace,
-					preventScrollReset 
+					preventScrollReset,
+					replace 
 				}
 			);
 		}

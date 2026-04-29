@@ -1,13 +1,10 @@
 import { useState } from 'react';
 
-import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
-import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
+import { NavigationActionType } from 'src/lib/types/NavigationActionType';
 
 import { useRouter } from '../../contexts/RouterContext';
 
 import { type Blocker, type BlockerResult } from './useBlockerTypes';
-
-type NavigationActionType = RNavigationActionType | RNNavigationActionType;
 
 /**
  * Creates a custom hook to block or allow route changes based on a blocker function.
@@ -19,15 +16,16 @@ export function makeBlocker<T extends NavigationActionType>(
 ) {
 	const useBlocker = (blocker: Blocker<T>): BlockerResult => {
 		const { url } = useRouter();
-		const [{ isBlocking, continueNavigation }, setBlocker] = useState<{ continueNavigation: () => void, isBlocking: boolean }>({
-			isBlocking: false,
-			continueNavigation: () => {}
+		const [{ continueNavigation, isBlocking }, setBlocker] = useState<{ continueNavigation: () => void
+			isBlocking: boolean }>({
+			continueNavigation: () => {},
+			isBlocking: false
 		});
 
 		const finishBlocking = () => {
 			setBlocker({
-				isBlocking: false,
-				continueNavigation: () => {}
+				continueNavigation: () => {},
+				isBlocking: false
 			});
 		};
 
@@ -40,17 +38,17 @@ export function makeBlocker<T extends NavigationActionType>(
 		
 			if ( isBlocking ) {
 				setBlocker({
-					isBlocking: action !== 'beforeunload',
-					continueNavigation
+					continueNavigation,
+					isBlocking: action !== 'beforeunload'
 				});
 			}
 			return !isBlocking;
 		});
 
 		return {
-			isBlocking, 
 			continueNavigation, 
-			finishBlocking
+			finishBlocking, 
+			isBlocking
 		};
 	};
 	return useBlocker;

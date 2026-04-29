@@ -1,4 +1,4 @@
-import { HistoryStore } from '@resourge/history-store';
+import { HistoryStore } from 'node_modules/@resourge/history-store/dist/index.js';
 
 import { makeSearchParams } from './makeSearchParams';
 

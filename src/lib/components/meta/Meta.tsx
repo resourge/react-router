@@ -1,10 +1,9 @@
-import { memo, useState, type MetaHTMLAttributes } from 'react';
+import { memo, type MetaHTMLAttributes, useState } from 'react';
 
 type MetaProps = MetaHTMLAttributes<HTMLMetaElement>;
 
 const useElement = (props: MetaProps) => {
 	const [element] = useState(() => {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const key = Object.keys(props).find((key) => key !== 'content')!;
 
 		const metaElement = document.querySelector(
@@ -12,7 +11,7 @@ const useElement = (props: MetaProps) => {
 		) ?? document.createElement('meta');
 
 		// Append the meta elements to the document head
-		document.head.appendChild(metaElement);
+		document.head.append(metaElement);
 
 		return metaElement;
 	});

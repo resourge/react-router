@@ -3,9 +3,9 @@ import { type FC } from 'react';
 import Navigate, { type NavigateProps } from '../navigate/Navigate';
 import Route, { type RouteProps } from '../route/Route';
 
-export type RedirectProps = {
+export type RedirectProps = NavigateProps & Omit<RouteProps, 'path'> & {
 	from: RouteProps['path']
-} & NavigateProps & Omit<RouteProps, 'path'>;
+};
 
 /**
  * Navigates from `path` to `to`.
@@ -14,7 +14,7 @@ export type RedirectProps = {
  */
 const Redirect: FC<RedirectProps> = ({ 
 	from,
-	to, replace,
+	replace, to,
 	...routeProps
 }: RedirectProps) => (
 	<Route

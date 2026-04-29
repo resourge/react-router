@@ -1,7 +1,4 @@
-import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
-import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
-
-type NavigationActionType = RNavigationActionType | RNNavigationActionType;
+import { NavigationActionType } from 'src/lib/types/NavigationActionType';
 
 export type Blocker<T extends NavigationActionType> = (currentUrl: URL, nextUrl: URL, action: T) => boolean;
 

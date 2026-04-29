@@ -1,6 +1,5 @@
-/* eslint-disable prefer-regex-literals */
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { type ConfigLoaderSuccessResult } from 'tsconfig-paths';
 import ts from 'typescript';
 import { type PluginOption, type ResolvedConfig } from 'vite';
@@ -9,15 +8,15 @@ import { addFile } from './utils/addFile';
 import { createHtmlFiles, type FilesType } from './utils/createHtmlFiles';
 import { createSiteMap } from './utils/createSiteMap';
 import { getDefaultViteConfig, type ViteReactRouterConfig } from './utils/getDefaultViteConfig';
-import { getRouteMetadata, tsConfig, convertPathRouteMetadataToRouteMetadata } from './utils/getRouteMetadata';
+import { convertPathRouteMetadataToRouteMetadata, getRouteMetadata, tsConfig } from './utils/getRouteMetadata';
 import { type ViteRouteMetadata } from './utils/type';
 import { stripCodeOfUnnecessaryCode } from './utils/utils';
 
 const {
+	JsxEmit,
 	ModuleKind,
 	ModuleResolutionKind,
-	ScriptTarget,
-	JsxEmit
+	ScriptTarget
 } = ts;
 
 export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption => {
@@ -34,24 +33,120 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 	const routeMetadata: ViteRouteMetadata[] = [];
 
 	return {
-		name: 'vite-react-router',
-		enforce: 'post',
 		apply: 'build',
 		buildStart: () => {
 			if ( !fs.existsSync(cacheOutDir) ) {
 				fs.mkdirSync(cacheOutDir);
 			}
 		},
+		async closeBundle() {
+			const fitInAllRoutes = routeMetadata
+			.filter(({ route }) => route.includes('{*}?'))
+			.map(({ route, ...rest }) => ({
+				...rest,
+				route: route.replace('{*}?', '')
+			}));
+
+			const validRouteMetadata = routeMetadata
+			.filter(({ isPrivate, route }) => 
+				!(
+					route.includes('#') 
+					|| route.includes('{*}?')
+					|| (route === '/' && _config.defaultInitialRoute !== '/')
+				) 
+				&& !isPrivate
+			);
+
+			const dynamicValidRouteMetadata = _config.onDynamicRoutes
+				? (
+					await Promise.all(
+						validRouteMetadata
+						.filter(({ route }) => route.includes(':'))
+						.map(async (item) => {
+							const newRoutes = await Promise.resolve(_config.onDynamicRoutes!(item));
+
+							if ( newRoutes && newRoutes.length > 0 ) {
+								return newRoutes.map((newRouteMetadata) => 
+									convertPathRouteMetadataToRouteMetadata(
+										_config,
+										{
+											...item,
+											...newRouteMetadata
+										}
+									)
+								);
+							}
+
+							return;
+						})
+					) 
+				)
+				// eslint-disable-next-line unicorn/no-await-expression-member
+				.filter(Boolean)
+				.flat() as ViteRouteMetadata[]
+				: [];
+
+			const pages: FilesType[] = [
+				...validRouteMetadata
+				.filter(({ route }) => !route.includes(':')),
+				...dynamicValidRouteMetadata
+			]
+			.flatMap((item) => {
+				const newFiles = addFile(
+					(route, translation = '') => path.join(outputPath, translation, route), 
+					item,
+					_config
+				);
+
+				fitInAllRoutes.forEach((fitInAllRoutesItem) => {
+					newFiles.push(
+						...addFile(
+							(route, translation = '') => path.join(outputPath, translation, item.route, route), 
+							fitInAllRoutesItem,
+							_config
+						)
+					);
+				});
+
+				return newFiles;
+			});
+
+			const maxFileNameLength = Math.max(...pages.map(({ fileName }) => fileName.length));
+
+			const files = await createHtmlFiles({
+				config: _config, 
+				html, 
+				maxFileNameLength,
+				pages,
+				rootConfig
+			});
+
+			if ( _config.url ) {
+				files.push(
+					await createSiteMap({
+						config: _config, 
+						maxFileNameLength,
+						outputPath,
+						pages
+					})
+				);
+			}
+
+			files.forEach((message) => {
+				rootConfig.logger.info(message);
+			});
+
+			fs.rmSync(cacheOutDir, {
+				force: true,
+				recursive: true 
+			});
+		},
 		configResolved(c) {
 			rootConfig = c;
 			outputPath = c.build.outDir;
 		},
-		transformIndexHtml: {
-			order: 'post',
-			handler(code) {
-				html = code;
-			}
-		},
+		enforce: 'post',
+		name: 'vite-react-router',
 		async transform(code, id) {
 			const match = /([a-zA-Z0-9]+)\.routeMetadata\s{0,}=\s{0,}/g.exec(code);
 			if (match) {
@@ -67,20 +162,20 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 					fileContent, 
 					cacheOutDir,
 					{
-						noEmitOnError: false,
-						noImplicitAny: true,
-						target: ScriptTarget.ES2016,
+						allowJs: true,
+						allowSyntheticDefaultImports: true,
+						baseUrl: path.resolve(projectPath, './'),
+						jsx: JsxEmit.ReactJSX,
 						module: ModuleKind.ES2020,
 						moduleResolution: ModuleResolutionKind.NodeJs,
+						noEmitOnError: false,
+						noImplicitAny: true,
 						outDir: cacheOutDir,
-						baseUrl: path.resolve(projectPath, './'),
-						rootDir: path.resolve(projectPath, './'),
-						types: ['vite/client'],
-						removeComments: false,
-						jsx: JsxEmit.ReactJSX,
 						paths: (tsConfig as ConfigLoaderSuccessResult).paths,
-						allowSyntheticDefaultImports: true,
-						allowJs: true
+						removeComments: false,
+						rootDir: path.resolve(projectPath, './'),
+						target: ScriptTarget.ES2016,
+						types: ['vite/client']
 					},
 					_config
 				);
@@ -103,108 +198,11 @@ export const viteReactRouter = (config?: ViteReactRouterConfig): PluginOption =>
 				return code;
 			}
 		},
-		async closeBundle() {
-			const fitInAllRoutes = routeMetadata
-			.filter(({ route }) => route.includes('{*}?'))
-			.map(({ route, ...rest }) => ({
-				...rest,
-				route: route.replace('{*}?', '')
-			}));
-
-			const validRouteMetadata = routeMetadata
-			.filter(({ route, isPrivate }) => 
-				!(
-					route.includes('#') 
-					|| route.includes('{*}?')
-					|| (route === '/' && _config.defaultInitialRoute !== '/')
-				) 
-				&& !isPrivate
-			);
-
-			const dynamicValidRouteMetadata = _config.onDynamicRoutes
-				? (
-					await Promise.all(
-						validRouteMetadata
-						.filter(({ route }) => route.includes(':'))
-						.map(async (item) => {
-							// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-							const newRoutes = await Promise.resolve(_config.onDynamicRoutes!(item));
-
-							if ( newRoutes && newRoutes.length ) {
-								return newRoutes.map((newRouteMetadata) => 
-									convertPathRouteMetadataToRouteMetadata(
-										_config,
-										{
-											...item,
-											...newRouteMetadata
-										}
-									)
-								);
-							}
-
-							return undefined;
-						})
-					) 
-				)
-				.filter(Boolean)
-				.flat() as ViteRouteMetadata[]
-				: [];
-
-			const pages: FilesType[] = [
-				...validRouteMetadata
-				.filter(({ route }) => !route.includes(':')),
-				...dynamicValidRouteMetadata
-			]
-			.map((item) => {
-				const newFiles = addFile(
-					(route, translation = '') => path.join(outputPath, translation, route), 
-					item,
-					_config
-				);
-
-				fitInAllRoutes.forEach((fitInAllRoutesItem) => {
-					newFiles.push(
-						...addFile(
-							(route, translation = '') => path.join(outputPath, translation, item.route, route), 
-							fitInAllRoutesItem,
-							_config
-						)
-					);
-				});
-
-				return newFiles;
-			})
-			.flat();
-
-			const maxFileNameLength = Math.max(...pages.map(({ fileName }) => fileName.length));
-
-			const files = await createHtmlFiles({
-				pages, 
-				html, 
-				rootConfig,
-				config: _config,
-				maxFileNameLength
-			});
-
-			if ( _config.url ) {
-				files.push(
-					await createSiteMap({
-						pages, 
-						maxFileNameLength,
-						outputPath,
-						config: _config
-					})
-				);
-			}
-
-			files.forEach((message) => {
-				rootConfig.logger.info(message);
-			});
-
-			fs.rmSync(cacheOutDir, {
-				recursive: true,
-				force: true 
-			});
+		transformIndexHtml: {
+			handler(code) {
+				html = code;
+			},
+			order: 'post'
 		}
 	};
 };

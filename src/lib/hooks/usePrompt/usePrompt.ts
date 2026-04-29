@@ -1,14 +1,14 @@
-import { type NavigationActionType } from '@resourge/history-store';
+import { type NavigationActionType } from 'node_modules/@resourge/history-store/dist/index.js';
 
 import { useBlocker } from '../useBlocker/useBlocker';
 import { type Blocker, type BlockerResult } from '../useBlocker/useBlockerTypes';
 
 export type UsePromptProps = {
+	message?: ((currentUrl: URL, nextUrl: URL, action: NavigationActionType) => string) | string
 	/**
 	 * When true blocks url change
 	 */
-	when: boolean | Blocker<NavigationActionType>
-	message?: string | ((currentUrl: URL, nextUrl: URL, action: NavigationActionType) => string)
+	when: Blocker<NavigationActionType> | boolean
 };
 
 /**
@@ -19,16 +19,20 @@ export type UsePromptProps = {
  * 	When `undefined` will wait for `continueNavigation or finishBlocking` method to be called
  * @returns promptResult {BlockerResult}
  */
-export const usePrompt = ({ when, message }: UsePromptProps): BlockerResult => {
-	const _blocker = typeof when === 'boolean' ? () => when : (when);
+export const usePrompt = ({ message, when }: UsePromptProps): BlockerResult => {
+	const _blocker = typeof when === 'boolean'
+		? () => when
+		: (when);
 
 	return useBlocker((currentUrl, nextUrl, action) => {
 		const isBlocking = _blocker(currentUrl, nextUrl, action);
 
 		if ( isBlocking && message && action !== 'beforeunload' ) {
-			const _message = typeof message === 'string' ? message : message(currentUrl, nextUrl, action);
+			const _message = typeof message === 'string'
+				? message
+				: message(currentUrl, nextUrl, action);
 
-			return !window.confirm(_message);
+			return !globalThis.confirm(_message);
 		}
 
 		return isBlocking;

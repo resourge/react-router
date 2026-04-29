@@ -1,15 +1,15 @@
-import { forwardRef, type AnchorHTMLAttributes } from 'react';
+import { type AnchorHTMLAttributes, forwardRef } from 'react';
 
 import { useRouter } from '../../contexts/RouterContext';
 import { useLink, type UseLinkProps } from '../../hooks/useLink/useLink';
 import { type BaseMatchPathProps } from '../../hooks/useMatchPath';
 
-export type LinkProps = UseLinkProps & {
-	matchClassName?: string
-	matchLink?: (url: URL, linkURL: URL) => boolean
-} 
-& BaseMatchPathProps
-& Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick' | 'target'>;
+export type LinkProps = BaseMatchPathProps & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick' | 'target'> 
+	& UseLinkProps
+	& {
+		matchClassName?: string
+		matchLink?: (url: URL, linkURL: URL) => boolean
+	};
 
 /**
  * Component extends element `a` and navigates to `to`.
@@ -18,37 +18,48 @@ export type LinkProps = UseLinkProps & {
  */
 const Link = forwardRef<HTMLAnchorElement, LinkProps>((
 	{ 
-		to, 
-		replace,
+		action, 
+		children,
 		className,
 		matchClassName,
-		children,
-		preventScrollReset,
-		action,
-		onClick: _onClick,
-		target,
 		matchLink,
+		onClick: _onClick,
+		preventScrollReset,
+		replace,
+		target,
+		to,
 		...props 
 	},
 	ref
 ) => {
 	const { url } = useRouter();
 	const [linkURL, onClick] = useLink({
-		to, replace, preventScrollReset, action, onClick: _onClick, target
+		action,
+		onClick: _onClick,
+		preventScrollReset,
+		replace,
+		target,
+		to
 	});
-	const isActive = matchLink ? matchLink(url, linkURL) : (linkURL.href === url.href);
+	const isActive = matchLink
+		? matchLink(url, linkURL)
+		: (linkURL.href === url.href);
 
-	const combinedClassName = [className, isActive ? matchClassName : '']
+	const combinedClassName = [
+		className, isActive
+			? matchClassName
+			: ''
+	]
 	.filter(Boolean)
 	.join(' ');
 
 	return (
 		<a
 			{...props}
-			ref={ref}
 			className={combinedClassName || undefined}
 			href={linkURL.href}
 			onClick={onClick}
+			ref={ref}
 		>
 			{ children }
 		</a>

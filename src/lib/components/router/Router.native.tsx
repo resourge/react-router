@@ -1,8 +1,8 @@
-import { useMemo, type FC } from 'react';
+import { type FC, useMemo } from 'react';
 import { View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { History, HistoryStore } from '@resourge/history-store/mobile';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { DefaultFallbackContext } from '../../contexts/DefaultFallbackContext';
 import { RouterContext } from '../../contexts/RouterContext';
@@ -27,10 +27,12 @@ export type RouterProps = BaseRouterProps & {
 const Router: FC<RouterProps> = ({
 	children, defaultFallback, linking 
 }) => {
+	// eslint-disable-next-line react-hooks/void-use-memo
 	useMemo(() => {
 		if ( linking ) {
 			History.initial(linking((url) => History.navigate(url)));
 			// @ts-expect-error Its necessary to make sure initial is on par
+			// eslint-disable-next-line react-hooks/immutability
 			HistoryStore.value[0] = History.state.url;
 		}
 	}, []);

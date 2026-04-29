@@ -1,4 +1,4 @@
-import { Children, cloneElement, type ReactElement } from 'react';
+import { Children, cloneElement, JSX, type ReactElement } from 'react';
 
 import { type RedirectProps } from '../../components/redirect/Redirect';
 import { type BaseRouteProps } from '../../components/route/RouteUtils';
@@ -7,10 +7,10 @@ import { useRouter } from '../../contexts/RouterContext';
 import { getNavigate } from '../../utils/getNavigate/getNavigate';
 
 import {
-	type SwitchRouteProps,
 	getMatchFromProps,
 	isIndexRoute,
-	isNavigateOrRedirect
+	isNavigateOrRedirect,
+	type SwitchRouteProps
 } from './useSwitchUtils';
 
 export type UseSwitchProps = {
@@ -20,7 +20,7 @@ export type UseSwitchProps = {
 /**
  * Returns the first children component with props `path`, `search`, `to/from` that matches the current location or without previous props.
  */
-export const useSwitch = ({ children }: UseSwitchProps): ReactElement<BaseRouteProps> | null => {	
+export const useSwitch = ({ children }: UseSwitchProps): null | ReactElement<BaseRouteProps> => {	
 	const { url } = useRouter();
 	const baseContext = useLanguageContext();
 

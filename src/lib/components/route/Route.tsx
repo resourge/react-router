@@ -4,7 +4,7 @@ import { useDefaultFallbackContext } from '../../contexts/DefaultFallbackContext
 import { RouteContext } from '../../contexts/RouteContext';
 import RouteMetadata from '../routeMetadata/RouteMetadata';
 
-import { useRouteMatch, type BasicRouteProps } from './RouteUtils';
+import { type BasicRouteProps, useRouteMatch } from './RouteUtils';
 
 export type RouteProps = BasicRouteProps;
 
@@ -31,15 +31,17 @@ function Route(props: RouteProps): JSX.Element {
 		</Suspense>
 	);
 
-	return match === 'NO_ROUTE' ? (
-		<>
-			{ Component }
-		</>
-	) : (
-		<RouteContext.Provider value={match}>
-			{ Component }
-		</RouteContext.Provider>
-	);
+	return match === 'NO_ROUTE'
+		? (
+			<>
+				{ Component }
+			</>
+		)
+		: (
+			<RouteContext.Provider value={match}>
+				{ Component }
+			</RouteContext.Provider>
+		);
 };
 
 export default Route;

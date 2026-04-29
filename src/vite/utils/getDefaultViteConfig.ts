@@ -1,5 +1,15 @@
 import { type ViteRouteMetadata } from './type';
 
+type RequiredRouterConfig = Required<
+	Pick<
+		ViteReactRouterConfig, 
+		'defaultInitialRoute' | 'defaultLanguage'
+	>
+>;
+
+export type DefaultViteReactRouterConfig = Omit<ViteReactRouterConfig, 'defaultLanguage'>
+	& RequiredRouterConfig;
+
 export type ViteReactRouterConfig = {
 	/**
 	 * Origin url for site
@@ -12,15 +22,15 @@ export type ViteReactRouterConfig = {
 	 */
 	defaultLanguage?: string
 
-	description?: string | Record<string, string>
+	description?: Record<string, string> | string
 
-	keywords?: string[] | Record<string, string[]>
+	keywords?: Record<string, string[]> | string[]
 	/**
 	 * To generic pages for dynamic pages
 	 * @default en
 	 */
-	onDynamicRoutes?: (routeMetadata: ViteRouteMetadata) => Array<Partial<ViteRouteMetadata>> | undefined | Promise<Array<Partial<ViteRouteMetadata>> | undefined>
-	title?: string | Record<string, string>
+	onDynamicRoutes?: (routeMetadata: ViteRouteMetadata) => Array<Partial<ViteRouteMetadata>> | Promise<Array<Partial<ViteRouteMetadata>> | undefined> | undefined
+	title?: Record<string, string> | string
 
 	/**
 	 * Url for sitemap and twitter
@@ -29,19 +39,9 @@ export type ViteReactRouterConfig = {
 	url?: string
 };
 
-type RequiredRouterConfig = Required<
-	Pick<
-		ViteReactRouterConfig, 
-		'defaultLanguage' | 'defaultInitialRoute'
-	>
->;
-
-export type DefaultViteReactRouterConfig = RequiredRouterConfig
-	& Omit<ViteReactRouterConfig, 'defaultLanguage'>;
-
 const DEFAULT_CONFIG: DefaultViteReactRouterConfig = {
-	defaultLanguage: 'en',
-	defaultInitialRoute: '/'
+	defaultInitialRoute: '/',
+	defaultLanguage: 'en'
 };
 
 export function getDefaultViteConfig(config?: ViteReactRouterConfig): DefaultViteReactRouterConfig {

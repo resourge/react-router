@@ -8,7 +8,7 @@ export type TopTabsRouteProps = Omit<TabsRouteProps, 'placement'>;
 function TopTabsRoute(props: TopTabsRouteProps) {
 	return (
 		<TabsRoute 
-			placement="TOP"
+			placement={'TOP'}
 			{...props}
 		/>
 	);

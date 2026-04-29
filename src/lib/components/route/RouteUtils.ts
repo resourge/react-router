@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { useMatchPath, type MatchPathProps } from '../../hooks/useMatchPath';
+import { type MatchPathProps, useMatchPath } from '../../hooks/useMatchPath';
 import { type MatchResult } from '../../utils/matchPath';
 import { validateRouteProps } from '../../utils/validateRouteProps';
 

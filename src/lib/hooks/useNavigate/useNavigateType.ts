@@ -1,9 +1,6 @@
-import { type NavigationActionType as RNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType';
-import { type NavigationActionType as RNNavigationActionType } from '@resourge/history-store/dist/types/navigationActionType/NavigationActionType.native';
+import { NavigationActionType } from 'src/lib/types/NavigationActionType';
 
 import { type NavigateTo } from '../useNormalizeUrl/useNormalizeUrlUtils';
-
-type NavigationActionType = RNavigationActionType | RNNavigationActionType;
 
 export type BaseNavigateOptions = {
 	/**

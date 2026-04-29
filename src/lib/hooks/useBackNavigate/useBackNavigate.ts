@@ -5,8 +5,8 @@ import { type BackNavigateMethod } from './useBackNavigateType';
  */
 export const useBackNavigate = (): BackNavigateMethod => (delta?: number) => {
 	if ( delta !== undefined ) {
-		window.history.go(delta);
+		globalThis.history.go(delta);
 		return;
 	}
-	window.history.back();
+	globalThis.history.back();
 };

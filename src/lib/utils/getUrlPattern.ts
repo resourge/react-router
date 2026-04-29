@@ -1,32 +1,35 @@
 const cacheCompile = new Map<string, URLPattern>();
-const cacheLimit = 10000;
+const cacheLimit = 10_000;
 
 export type UrlPattern = {
-	path: string
 	baseURL?: string
 	/**
 	 * @default false
 	 */
 	exact?: boolean
 	hash?: boolean
+	path: string
 };
 
 export const getUrlPattern = ({
-	path, baseURL, exact, hash
+	baseURL, exact, hash, path
 }: UrlPattern): URLPattern => {
 	const key = `${path}_${String(exact)}_${String(hash)}`;
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	if (cacheCompile.has(key)) return cacheCompile.get(key)!;
+	if (cacheCompile.has(key)) {
+		return cacheCompile.get(key)!; 
+	}
 
-	const pathname = `${path.replace('#', '')}${exact ? '' : '{/*}?'}`;
+	const pathname = `${path.replace('#', '')}${exact
+		? ''
+		: '{/*}?'}`;
 
 	const generator = new URLPattern({
 		baseURL,
+		hash: '*',
 		hostname: '*',
+		pathname,
 		port: '*',
 		protocol: '*',
-		pathname,
-		hash: '*',
 		search: '*'
 	});
 

@@ -2,13 +2,13 @@ import { type FC, type ReactNode, useState } from 'react';
 import {
 	Animated,
 	Easing,
+	type GestureResponderEvent,
 	Platform,
 	Pressable,
-	StyleSheet,
-	useColorScheme,
-	type GestureResponderEvent,
 	type PressableProps,
 	type StyleProp,
+	StyleSheet,
+	useColorScheme,
 	type ViewStyle
 } from 'react-native';
 
@@ -26,21 +26,22 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const ANDROID_SUPPORTS_RIPPLE = Platform.OS === 'android' && Platform.Version >= 21; // 21 ANDROID_VERSION_LOLLIPOP;
 
 const TabBarItem: FC<TabBarItemProps> = ({
+	android_ripple = {
+		borderless: true 
+	},
 	disabled,
 	onPress,
 	onPressIn,
 	onPressOut,
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	android_ripple = {
-		borderless: true 
-	},
 	pressColor,
 	pressOpacity = 1,
 	style,
 	...rest
 }) => {
 	const isDark = useColorScheme() === 'dark';
-	const defaultPressColor = isDark ? 'rgba(255, 255, 255, .32)' : 'rgba(0, 0, 0, .32)';
+	const defaultPressColor = isDark
+		? 'rgba(255, 255, 255, .32)'
+		: 'rgba(0, 0, 0, .32)';
 
 	const [opacity] = useState(() => new Animated.Value(1));
 
@@ -50,9 +51,9 @@ const TabBarItem: FC<TabBarItemProps> = ({
 		}
 
 		Animated.timing(opacity, {
-			toValue,
 			duration,
 			easing: Easing.inOut(Easing.quad),
+			toValue,
 			useNativeDriver: true
 		}).start();
 	};
@@ -69,7 +70,7 @@ const TabBarItem: FC<TabBarItemProps> = ({
 
 	return (
 		<AnimatedPressable
-			accessibilityRole="button"
+			accessibilityRole={'button'}
 			accessible
 			android_ripple={
 				ANDROID_SUPPORTS_RIPPLE
@@ -79,16 +80,20 @@ const TabBarItem: FC<TabBarItemProps> = ({
 					}
 					: undefined
 			}
+			onPress={disabled
+				? undefined
+				: onPress}
+			onPressIn={handlePressIn}
+			onPressOut={handlePressOut}
 			style={[
 				styles.item,
 				{
-					opacity: ANDROID_SUPPORTS_RIPPLE ? 1 : opacity
+					opacity: ANDROID_SUPPORTS_RIPPLE
+						? 1
+						: opacity
 				}, 
 				style
 			]}
-			onPress={disabled ? undefined : onPress}
-			onPressIn={handlePressIn}
-			onPressOut={handlePressOut}
 			{...rest}
 		/>
 	);
@@ -96,10 +101,10 @@ const TabBarItem: FC<TabBarItemProps> = ({
 
 const styles = StyleSheet.create({
 	item: {
+		alignItems: 'center',
 		flex: 1,
-		padding: SPACING * 2,
 		justifyContent: 'center',
-		alignItems: 'center'
+		padding: SPACING * 2
 	}
 });
 

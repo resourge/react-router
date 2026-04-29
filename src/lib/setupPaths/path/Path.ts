@@ -1,17 +1,15 @@
-/* eslint-disable @typescript-eslint/prefer-reduce-type-parameter */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { useParams } from '../../hooks/useParams';
 import { useSearchParams } from '../../hooks/useSearchParams/useSearchParams';
+import { type StringifyObjectParams } from '../../types/StringifyObjectParams';
 import {
 	type IfIncludesParam,
 	type IsHashPath,
 	type ParamString,
 	type ResolveSlash
 } from '../../types/StringTypes';
-import { type StringifyObjectParams } from '../../types/StringifyObjectParams';
 import {
-	type PickValue,
 	type GetValueFromBeforePath,
 	type GetValueFromTransform,
 	type IsAllOptional,
@@ -19,7 +17,8 @@ import {
 	type MakeObjectOptional,
 	type MakeUndefinedOptional,
 	type MergeObj,
-	type MergeParamsAndCreate
+	type MergeParamsAndCreate,
+	type PickValue
 } from '../../types/types';
 import { FIT_IN_ALL_ROUTES, getFitInAllRoutesReg } from '../../utils/constants';
 import { generatePath } from '../../utils/generatePath';
@@ -29,23 +28,18 @@ import { WINDOWS } from '../../utils/window/window';
 import { Param, ParamPath, type ParamsConfig } from '../Param';
 import { type SearchParamsPathType, type SearchParamsType } from '../SearchParam';
 
-export type InjectParamsIntoPathType<
-	BaseKey extends string,
-	Routes extends Record<string, Path<any, string>>,
-	Params extends Record<string, any>,
-	ParamsResult extends Record<string, any>
-> = {
-	[K in keyof Routes]: PathType<
-		ResolveSlash<[IsHashPath<PickValue<Routes[K], '_key'>> extends true ? '' : BaseKey, PickValue<Routes[K], '_key'>]>,
-		IsHashPath<PickValue<Routes[K], '_key'>> extends true 
-			? PickValue<Routes[K], '_params'> 
-			: MergeObj<Params, PickValue<Routes[K], '_params'>>,
-		IsHashPath<PickValue<Routes[K], '_key'>> extends true 
-			? PickValue<Routes[K], '_paramsResult'> 
-			: MergeObj<ParamsResult, PickValue<Routes[K], '_paramsResult'>>,
-		PickValue<Routes[K], '_searchParams'>,
-		PickValue<Routes[K], '_routes'>
-	>
+/**
+ * @important This config is not used in children paths
+ */
+type PathConfig = {
+	/**
+	 * Makes so path works in all routes
+	 */
+	fitInAllRoutes?: boolean
+	/**
+	 * Turns path into a hash path
+	 */
+	hash?: boolean
 };
 
 export type AddConfigParamsIntoRoutes<
@@ -70,6 +64,25 @@ export type AddConfigParamsIntoRoutes<
 	>
 };
 
+export type InjectParamsIntoPathType<
+	BaseKey extends string,
+	Routes extends Record<string, Path<any, string>>,
+	Params extends Record<string, any>,
+	ParamsResult extends Record<string, any>
+> = {
+	[K in keyof Routes]: PathType<
+		ResolveSlash<[IsHashPath<PickValue<Routes[K], '_key'>> extends true ? '' : BaseKey, PickValue<Routes[K], '_key'>]>,
+		IsHashPath<PickValue<Routes[K], '_key'>> extends true 
+			? PickValue<Routes[K], '_params'> 
+			: MergeObj<Params, PickValue<Routes[K], '_params'>>,
+		IsHashPath<PickValue<Routes[K], '_key'>> extends true 
+			? PickValue<Routes[K], '_paramsResult'> 
+			: MergeObj<ParamsResult, PickValue<Routes[K], '_paramsResult'>>,
+		PickValue<Routes[K], '_searchParams'>,
+		PickValue<Routes[K], '_routes'>
+	>
+};
+
 export type PathType<
 	Key extends string,
 	Params extends Record<string, any>,
@@ -77,22 +90,7 @@ export type PathType<
 	SearchParams extends SearchParamsType | undefined,
 	Routes extends Record<string, Path<any, string>>,
 	All = IfIncludesParam<Key>
-> = {
-	/**
-	 * Generated string from chain functions. Includes path with `params`.
-	 */
-	path: Key
-} 
-& InjectParamsIntoPathType<Key, Routes, Params, ParamsResult>
-& (
-	IsOptional<SearchParams> extends true
-		? {} 
-		: {
-			searchParams: string[]
-			useSearchParams: () => SearchParams
-		}
-)
-& (
+> = (
 	All extends false
 		? (
 			{
@@ -117,21 +115,65 @@ export type PathType<
 			 */
 			useParams: () => ParamsResult
 		}
-);
+) 
+& InjectParamsIntoPathType<Key, Routes, Params, ParamsResult>
+& (
+	IsOptional<SearchParams> extends true
+		? {} 
+		: {
+			searchParams: string[]
+			useSearchParams: () => SearchParams
+		}
+)
+& {
+	/**
+	 * Generated string from chain functions. Includes path with `params`.
+	 */
+	path: Key
+};
 
 /**
- * @important This config is not used in children paths
+ * Creates a new path
+ * @param path {string} - path base/start
  */
-type PathConfig = {
-	/**
-	 * Makes so path works in all routes
-	 */
-	fitInAllRoutes?: boolean
-	/**
-	 * Turns path into a hash path
-	 */
-	hash?: boolean
-};
+export function path<
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	Params extends Record<string, any> = Record<string, any>,
+	ParamsResult extends Record<string, any> = Record<string, any>,
+	SearchParams extends SearchParamsType = SearchParamsType
+>(): Path<Routes, '', Params, ParamsResult, SearchParams>;
+export function path<
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	Params extends Record<string, any> = Record<string, any>,
+	ParamsResult extends Record<string, any> = Record<string, any>,
+	SearchParams extends SearchParamsType = SearchParamsType,
+	Key extends string = string
+>(path: Key): Path<Routes, Key, Params, ParamsResult, SearchParams>; 
+export function path<
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	Params extends Record<string, any> = Record<string, any>,
+	ParamsResult extends Record<string, any> = Record<string, any>,
+	SearchParams extends SearchParamsType = SearchParamsType,
+	Key extends string = string
+>(path: Key, config: PathConfig & {
+	hash: true
+}): Path<Routes, ResolveSlash<['#', Key]>, Params, ParamsResult, SearchParams>; 
+export function path<
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	Params extends Record<string, any> = Record<string, any>,
+	ParamsResult extends Record<string, any> = Record<string, any>,
+	SearchParams extends SearchParamsType = SearchParamsType,
+	Key extends string = string
+>(path: Key, config: PathConfig): Path<Routes, Key, Params, ParamsResult, SearchParams>; 
+export function path<
+	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
+	Params extends Record<string, any> = Record<string, any>,
+	ParamsResult extends Record<string, any> = Record<string, any>,
+	SearchParams extends SearchParamsType = SearchParamsType,
+	Key extends string = string
+>(path?: Key, config?: PathConfig): Path<Routes, Key, Params, ParamsResult, SearchParams> {
+	return new Path(path, config);
+} 
 
 export class Path<
 	Routes extends Record<string, Path<any, string>>, 
@@ -140,16 +182,16 @@ export class Path<
 	ParamsResult extends Record<string, any> = Record<string, any>,
 	SearchParams extends SearchParamsType = SearchParamsType
 > {
-	protected _routes!: Routes;
 	protected _key!: Key;
 	protected _params!: Params;
 	protected _paramsResult!: ParamsResult;
+	protected _routes!: Routes;
 	protected _searchParams!: SearchParams;
 
 	protected config: PathConfig = {};
 	protected paths: Array<ParamPath<string> | string> = [];
 	protected searchParamsList: string[] = [];
-	private _includeCurrentURL?: boolean | ((currentURL: URL) => string | undefined);
+	private _includeCurrentURL?: ((currentURL: URL) => string | undefined) | boolean;
 
 	constructor(path?: string, config?: PathConfig) {
 		this.config = config ?? {};
@@ -167,29 +209,6 @@ export class Path<
 		}
 	}
 
-	protected clone() { 
-		const _this = new Path<Routes, Key, Params, ParamsResult, SearchParams>();
-
-		_this.paths = [...this.paths] as unknown as Array<ParamPath<string> | string>;
-		_this._routes = {
-			...this._routes
-		} as unknown as Routes;
-		_this._includeCurrentURL = this._includeCurrentURL;
-		_this.config = this.config;
-
-		return _this;
-	}
-
-	/**
-	 * Makes method `get` to return the current path as hash.
-	 * @param includeCurrentURL {boolean | ((currentURL: URL) => string | undefined)} @default true
-	 */
-	public includeCurrentURL(includeCurrentURL: boolean | ((currentURL: URL) => string | undefined) = true) {
-		const _this = this.clone();
-		_this._includeCurrentURL = includeCurrentURL;
-		return _this;
-	}
-
 	/**
 	 * Add's new value to the path. (Add's the value into the path in the calling other).
 	 * @param path {string} - new path part
@@ -199,6 +218,16 @@ export class Path<
 		if ( path ) {
 			_this.paths.push(`/${path}`);
 		}
+		return _this;
+	}
+
+	/**
+	 * Makes method `get` to return the current path as hash.
+	 * @param includeCurrentURL {boolean | ((currentURL: URL) => string | undefined)} @default true
+	 */
+	public includeCurrentURL(includeCurrentURL: ((currentURL: URL) => string | undefined) | boolean = true) {
+		const _this = this.clone();
+		_this._includeCurrentURL = includeCurrentURL;
 		return _this;
 	}
 
@@ -321,6 +350,46 @@ export class Path<
 
 		return _this as any;
 	}
+
+	/**
+	 * Children path's of current path.
+	 * 
+	 * @param routes {Record<string, Path<any, any, any>>} - object containing the current path children path's
+	 */
+	public routes<
+		S extends Record<string, Path<any, string>>
+	>(
+		routes: S
+	): Path<
+			S, 
+			Key, 
+			Params,
+			ParamsResult,
+			SearchParams
+		> {
+		const _this = this.clone() as unknown as Path<S, Key, Params, ParamsResult, SearchParams>;
+
+		if ( process.env.NODE_ENV === 'development' && this.config?.fitInAllRoutes) {
+			function checkFitInAllRoute(routes: Record<string, Path<any, string>>): boolean {
+				return Object.values(routes)
+				.some((value) => (
+					value.config.fitInAllRoutes
+					|| (
+						value._routes
+						&& checkFitInAllRoute(value._routes)
+					)
+				));
+			}
+
+			if ( checkFitInAllRoute(routes) ) {
+				throw new Error('Path\'s inside a fitInAllRoutes Path cannot have another fitInAllRoutes\'s');
+			}
+		}
+
+		_this._routes = routes;
+
+		return _this;
+	}
 	
 	/**
 	 * Add's param to the path. (Add's the param into the path in the calling other).
@@ -345,63 +414,21 @@ export class Path<
 		return _this as any;
 	}
 
-	private extractSearchParams<SP extends SearchParamsType>(searchParams: SP, baseKey: string = '', index: number = -1): string[] {
-		return Object.keys(searchParams)
-		.flatMap<string>((key) => {
-			const value = searchParams[key];
-			if ( typeof value === 'object' && !('optional' in value) ) {
-				return this.extractSearchParams(value as SP, key);
-			}
+	protected clone() { 
+		const _this = new Path<Routes, Key, Params, ParamsResult, SearchParams>();
 
-			return value && value.optional ? [] : [`${baseKey ? `${baseKey}${index === -1 ? '.' : `[${index}]`}` : ''}${key}`];
-		});
-	}
-
-	/**
-	 * Children path's of current path.
-	 * 
-	 * @param routes {Record<string, Path<any, any, any>>} - object containing the current path children path's
-	 */
-	public routes<
-		S extends Record<string, Path<any, string>>
-	>(
-		routes: S
-	): Path<
-			S, 
-			Key, 
-			Params,
-			ParamsResult,
-			SearchParams
-		> {
-		const _this = this.clone() as unknown as Path<S, Key, Params, ParamsResult, SearchParams>;
-
-		if ( process.env.NODE_ENV === 'development' ) {
-			if ( this.config?.fitInAllRoutes) {
-				function checkFitInAllRoute(routes: Record<string, Path<any, string>>): boolean {
-					return Object.values(routes)
-					.some((value) => (
-						value.config.fitInAllRoutes
-						|| (
-							value._routes
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-							&& checkFitInAllRoute(value._routes)
-						)
-					));
-				}
-
-				if ( checkFitInAllRoute(routes) ) {
-					throw new Error('Path\'s inside a fitInAllRoutes Path cannot have another fitInAllRoutes\'s');
-				}
-			}
-		}
-
-		_this._routes = routes;
+		_this.paths = [...this.paths];
+		_this._routes = {
+			...this._routes
+		};
+		_this._includeCurrentURL = this._includeCurrentURL;
+		_this.config = this.config;
 
 		return _this;
 	}
 
 	protected createPath(
-		previousPaths: Array<string | ParamPath<string, ParamsConfig>> = []
+		previousPaths: Array<ParamPath<string, ParamsConfig> | string> = []
 	): any {
 		// Groups new transformations with transformations from parents
 		const transforms: Array<(params: StringifyObjectParams<Record<string, any>>) => void> = [];
@@ -409,7 +436,9 @@ export class Path<
 		const beforePaths: Array<(params: Record<string, any>) => void> = [];
 
 		const newPaths = [
-			...(this.config.hash ? ['#'] : previousPaths), 
+			...(this.config.hash
+				? ['#']
+				: previousPaths), 
 			...this.paths
 		];
 
@@ -464,8 +493,6 @@ export class Path<
 		const _includeCurrentURL = this._includeCurrentURL;
 
 		return {
-			path,
-			searchParams: this.searchParamsList,
 			get(params: Params) {
 				const _params = getParams(params, beforePaths);
 
@@ -495,6 +522,8 @@ export class Path<
 
 				return newPath;
 			},
+			path,
+			searchParams: this.searchParamsList,
 			useParams() {
 				return useParams<StringifyObjectParams<Exclude<Params, undefined>>>((params) => {
 					transforms.forEach((onUseParams) => {
@@ -510,47 +539,22 @@ export class Path<
 			...paths
 		};
 	}
-}
 
-/**
- * Creates a new path
- * @param path {string} - path base/start
- */
-export function path<
-	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
-	Params extends Record<string, any> = Record<string, any>,
-	ParamsResult extends Record<string, any> = Record<string, any>,
-	SearchParams extends SearchParamsType = SearchParamsType
->(): Path<Routes, '', Params, ParamsResult, SearchParams>; 
-export function path<
-	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
-	Params extends Record<string, any> = Record<string, any>,
-	ParamsResult extends Record<string, any> = Record<string, any>,
-	SearchParams extends SearchParamsType = SearchParamsType,
-	Key extends string = string
->(path: Key): Path<Routes, Key, Params, ParamsResult, SearchParams>; 
-export function path<
-	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
-	Params extends Record<string, any> = Record<string, any>,
-	ParamsResult extends Record<string, any> = Record<string, any>,
-	SearchParams extends SearchParamsType = SearchParamsType,
-	Key extends string = string
->(path: Key, config: PathConfig & {
-	hash: true
-}): Path<Routes, ResolveSlash<['#', Key]>, Params, ParamsResult, SearchParams>; 
-export function path<
-	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
-	Params extends Record<string, any> = Record<string, any>,
-	ParamsResult extends Record<string, any> = Record<string, any>,
-	SearchParams extends SearchParamsType = SearchParamsType,
-	Key extends string = string
->(path: Key, config: PathConfig): Path<Routes, Key, Params, ParamsResult, SearchParams>; 
-export function path<
-	Routes extends Record<string, Path<any, string>> = Record<string, Path<any, string>>,
-	Params extends Record<string, any> = Record<string, any>,
-	ParamsResult extends Record<string, any> = Record<string, any>,
-	SearchParams extends SearchParamsType = SearchParamsType,
-	Key extends string = string
->(path?: Key, config?: PathConfig): Path<Routes, Key, Params, ParamsResult, SearchParams> {
-	return new Path(path, config);
+	private extractSearchParams<SP extends SearchParamsType>(searchParams: SP, baseKey: string = '', index: number = -1): string[] {
+		return Object.keys(searchParams)
+		.flatMap<string>((key) => {
+			const value = searchParams[key];
+			if ( typeof value === 'object' && !('optional' in value) ) {
+				return this.extractSearchParams(value as SP, key);
+			}
+
+			return value && value.optional
+				? []
+				: [`${baseKey
+					? `${baseKey}${index === -1
+						? '.'
+						: `[${index}]`}`
+					: ''}${key}`];
+		});
+	}
 }

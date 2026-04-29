@@ -4,9 +4,9 @@ import Navigate, { type NavigateProps } from '../navigate/Navigate.native';
 import Route, { type RouteProps } from '../route/Route.native';
 import { useRouteMatch } from '../route/RouteUtils';
 
-export type RedirectProps = {
+export type RedirectProps = NavigateProps & Omit<RouteProps, 'path'> & {
 	from: RouteProps['path']
-} & NavigateProps & Omit<RouteProps, 'path'>;
+};
 
 /**
  * Navigates from `path` to `to`.
@@ -15,7 +15,7 @@ export type RedirectProps = {
  */
 const Redirect: FC<RedirectProps> = ({ 
 	from,
-	to, replace,
+	replace, to,
 	...routeProps
 }: RedirectProps) => {
 	const match = useRouteMatch({

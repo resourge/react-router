@@ -1,7 +1,39 @@
 import * as babel from '@babel/core';
 import { type Options as MinifyOptions } from 'html-minifier-terser';
 import { type HTMLElement } from 'node-html-parser';
-import path from 'path';
+import path from 'node:path';
+
+export function findOrCreateMeta(root: HTMLElement, metaName: string, value: string, propertyName: string = 'name') {
+	const head = root.querySelector('head');
+	const querySelectorString = `meta[${propertyName}="${metaName}"]`;
+	let metaDescription = root.querySelector(querySelectorString);
+	if ( !metaDescription ) {
+		head?.insertAdjacentHTML('beforeend', `<meta ${propertyName}="${metaName}" content="">`);
+		metaDescription = root.querySelector(querySelectorString);
+	}
+	metaDescription?.setAttribute('content', value);
+}
+
+export function findOrCreateMetaItemProp(root: HTMLElement, metaName: string, value: string) {
+	findOrCreateMeta(root, metaName, value, 'itemprop');
+}
+
+export function findOrCreateMetaProperty(root: HTMLElement, metaName: string, value: string) {
+	findOrCreateMeta(root, metaName, value, 'property');
+}
+
+export function getOptions(minify: boolean): MinifyOptions {
+	return {
+		collapseWhitespace: minify,
+		keepClosingSlash: minify,
+		minifyCSS: minify,
+		removeComments: minify,
+		removeRedundantAttributes: minify,
+		removeScriptTypeAttributes: minify,
+		removeStyleLinkTypeAttributes: minify,
+		useShortDoctype: minify
+	};
+}
 
 export function replaceExtension(filename: string, newExtension: string) {
 	// Use path module to parse the filename
@@ -18,16 +50,16 @@ export function replaceExtension(filename: string, newExtension: string) {
 
 export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRemove: string) {
 	const transpiledCode = babel.transformSync(fileContent, {
+		ast: true,
 		presets: [
 			[
 				'@babel/preset-typescript',
 				{
-					isTSX: true,
-					allExtensions: true 
+					allExtensions: true,
+					isTSX: true 
 				}
 			]
-		],
-		ast: true
+		]
 	});
 
 	let objectStartIndex = null;
@@ -40,6 +72,13 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 			const usedImports = new Set();
 
 			babel.traverse(ast, {
+				ArrowFunctionExpression(path) {
+					// @ts-expect-error It works but doesn't exist?
+					const functionName = path.parent.id?.name;
+					if (functionName === functionNameToRemove) {
+						path.get('body').replaceWithMultiple([]);// Remove the entire ArrowFunctionExpression
+					}
+				},
 				AssignmentExpression(path) {
 					const left = path.node.left;
 			
@@ -62,20 +101,13 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 						path.get('body').replaceWithMultiple([]);
 					}
 				},
-				ArrowFunctionExpression(path) {
-					// @ts-expect-error It works but doesn't exist?
-					const functionName = path.parent.id?.name;
-					if (functionName === functionNameToRemove) {
-						path.get('body').replaceWithMultiple([]);// Remove the entire ArrowFunctionExpression
-					}
+				Identifier(path) {
+					// Collect identifiers used in other contexts, e.g., function arguments
+					usedImports.add(path.node.name);
 				},
 				ImportDeclaration(path) {
 					const importName = path.node.source.value;
 					usedImports.add(importName);
-				},
-				Identifier(path) {
-					// Collect identifiers used in other contexts, e.g., function arguments
-					usedImports.add(path.node.name);
 				}
 			});
 
@@ -97,8 +129,8 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 					[
 						'@babel/preset-typescript',
 						{
-							isTSX: true,
-							allExtensions: true 
+							allExtensions: true,
+							isTSX: true 
 						}
 					]
 				]
@@ -116,36 +148,4 @@ export function stripCodeOfUnnecessaryCode(fileContent: string, functionNameToRe
 		objectEndIndex,
 		objectStartIndex
 	};
-}
-
-export function getOptions(minify: boolean): MinifyOptions {
-	return {
-		collapseWhitespace: minify,
-		keepClosingSlash: minify,
-		removeComments: minify,
-		removeRedundantAttributes: minify,
-		removeScriptTypeAttributes: minify,
-		removeStyleLinkTypeAttributes: minify,
-		useShortDoctype: minify,
-		minifyCSS: minify
-	};
-}
-
-export function findOrCreateMeta(root: HTMLElement, metaName: string, value: string, propertyName: string = 'name') {
-	const head = root.querySelector('head');
-	const querySelectorString = `meta[${propertyName}="${metaName}"]`;
-	let metaDescription = root.querySelector(querySelectorString);
-	if ( !metaDescription ) {
-		head?.insertAdjacentHTML('beforeend', `<meta ${propertyName}="${metaName}" content="">`);
-		metaDescription = root.querySelector(querySelectorString);
-	}
-	metaDescription?.setAttribute('content', value);
-}
-
-export function findOrCreateMetaProperty(root: HTMLElement, metaName: string, value: string) {
-	findOrCreateMeta(root, metaName, value, 'property');
-}
-
-export function findOrCreateMetaItemProp(root: HTMLElement, metaName: string, value: string) {
-	findOrCreateMeta(root, metaName, value, 'itemprop');
 }

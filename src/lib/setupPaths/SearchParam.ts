@@ -1,6 +1,8 @@
 import { type IsAllOptional } from '../types/types';
 
-export type SearchParamsType = Record<string, any>;
+export type SearchParamConfig = {
+	optional?: boolean
+};
 
 export type SearchParamsPathType<SearchParams extends SearchParamsType | undefined> = 
 	SearchParams extends undefined
@@ -11,9 +13,7 @@ export type SearchParamsPathType<SearchParams extends SearchParamsType | undefin
 				: { searchParams: SearchParams }
 		);
 
-export type SearchParamConfig = {
-	optional?: boolean
-};
+export type SearchParamsType = Record<string, any>;
 
 export function searchParam(): string;
 export function searchParam<
